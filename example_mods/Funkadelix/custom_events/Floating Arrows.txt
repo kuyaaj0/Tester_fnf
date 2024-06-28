@@ -1,0 +1,8 @@
+Floating Arrows Event uwu
+
+Value 1: on, off
+Value 2: Speed/Intensity (Default is 0.5)
+
+WARNING The Minimum speed is 0.25 and Maximum speed is Infinity
+
+Make sure that you don't leave any value blank!
