@@ -1,0 +1,37 @@
+{
+	"storyName": "",
+	"difficulties": "hard",
+	"hideFreeplay": false,
+	"weekBackground": "weka2",
+	"weekBefore": "week1",
+	"startUnlocked": true,
+	"weekCharacters": [
+		"",
+		"",
+		""
+	],
+	"songs": [
+		[
+			"Spookeez",
+			"spooky",
+			[
+				34,
+				51,
+				68
+			],
+			"150"
+		],
+		[
+			"South",
+			"spooky",
+			[
+				34,
+				51,
+				68
+			],
+			"170"
+		]
+	],
+	"hideStoryMode": false,
+	"weekName": "Week 2"
+}

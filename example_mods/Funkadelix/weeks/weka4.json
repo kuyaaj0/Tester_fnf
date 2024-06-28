@@ -1,0 +1,36 @@
+{
+	"storyName": "extras",
+	"difficulties": "Normal",
+	"hideFreeplay": false,
+	"weekBackground": "",
+	"weekBefore": "",
+	"startUnlocked": true,
+	"weekCharacters": [
+		"",
+		"",
+		""
+	],
+	"songs": [
+		[
+			"leaked",
+			"no",
+			[
+				148,
+				22,
+				83
+			],
+			"175"
+		],
+		[
+			"themesong",
+			"no",
+			[
+				146,
+				113,
+				253
+			]
+		]
+	],
+	"hideStoryMode": true,
+	"weekName": "extras"
+}

@@ -1,0 +1,27 @@
+{
+	"storyName": "",
+	"difficulties": "hard",
+	"hideFreeplay": false,
+	"weekBackground": "weka3",
+	"weekBefore": "week2",
+	"startUnlocked": true,
+	"weekCharacters": [
+		"",
+		"",
+		""
+	],
+	"songs": [
+		[
+			"Philly Nice",
+			"pico",
+			[
+				148,
+				22,
+				83
+			],
+			"175"
+		]
+	],
+	"hideStoryMode": false,
+	"weekName": "Week 3"
+}

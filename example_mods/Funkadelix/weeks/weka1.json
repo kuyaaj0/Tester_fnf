@@ -1,0 +1,47 @@
+{
+	"storyName": "",
+	"difficulties": "hard",
+	"hideFreeplay": false,
+	"weekBackground": "weka1",
+	"weekBefore": "tutorial",
+	"startUnlocked": true,
+	"weekCharacters": [
+		"",
+		"",
+		""
+	],
+	"songs": [
+		[
+			"Bopeebo",
+			"dad",
+			[
+				146,
+				113,
+				253
+			],
+			"100"
+		],
+		[
+			"Fresh",
+			"dad",
+			[
+				146,
+				113,
+				253
+			],
+			"120"
+		],
+		[
+			"Dad Battle",
+			"dad",
+			[
+				146,
+				113,
+				253
+			],
+			"180"
+		]
+	],
+	"hideStoryMode": false,
+	"weekName": "Week 1"
+}

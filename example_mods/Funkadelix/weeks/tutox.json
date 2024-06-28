@@ -1,0 +1,27 @@
+{
+	"storyName": "",
+	"difficulties": "hard",
+	"hideFreeplay": false,
+	"weekBackground": "tutox",
+	"weekBefore": "tutorial",
+	"startUnlocked": true,
+	"weekCharacters": [
+		"",
+		"",
+		""
+	],
+	"songs": [
+		[
+			"Tutorial",
+			"gf",
+			[
+				165,
+				0,
+				77
+			],
+			"100"
+		]
+	],
+	"hideStoryMode": false,
+	"weekName": "Tutorial"
+}
