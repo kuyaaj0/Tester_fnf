@@ -1,0 +1,596 @@
+{
+	"song": {
+		"events": [
+			[
+				8250,
+				[
+					[
+						"Lyrics",
+						"I object!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				10250,
+				[
+					[
+						"Lyrics",
+						"No respect!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				12250,
+				[
+					[
+						"Lyrics",
+						"Yo life a mess!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				14250,
+				[
+					[
+						"Lyrics",
+						"I keep it fresh!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				16250,
+				[
+					[
+						"Lyrics",
+						"But no success... HOO!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				18250,
+				[
+					[
+						"Lyrics",
+						"I must confess... HA!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				20000,
+				[
+					[
+						"Lyrics",
+						"Leave you in distress, bye!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				22000,
+				[
+					[
+						"Lyrics",
+						"I'll beat your contest, guy!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				24000,
+				[
+					[
+						"Lyrics",
+						"That's right, keep it up",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				26000,
+				[
+					[
+						"Lyrics",
+						"Keep it up and keep it fresh!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				28000,
+				[
+					[
+						"Lyrics",
+						"That's right, keep it up",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				30000,
+				[
+					[
+						"Lyrics",
+						"Keep it up and keep it fresh!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				32500,
+				[
+					[
+						"Lyrics",
+						"Ain't no way that I'd let you date my daughter",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				36500,
+				[
+					[
+						"Lyrics",
+						"Fuck yo rules, bitch, I'm bout to get my rocks off!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				40500,
+				[
+					[
+						"Lyrics",
+						"So you really think you all that, huh?",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				42875,
+				[
+					[
+						"Lyrics",
+						"Fuck yeah, I am! Whether you like it or not... she's mine, bitch!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				48250,
+				[
+					[
+						"Lyrics",
+						"I object!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				50250,
+				[
+					[
+						"Lyrics",
+						"No respect!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				52250,
+				[
+					[
+						"Lyrics",
+						"Yo life a mess!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				54250,
+				[
+					[
+						"Lyrics",
+						"I keep it fresh!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				56250,
+				[
+					[
+						"Lyrics",
+						"But no success... HOO!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				58250,
+				[
+					[
+						"Lyrics",
+						"I must confess... HA!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				60000,
+				[
+					[
+						"Lyrics",
+						"Leave you in distress, bye!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				62000,
+				[
+					[
+						"Lyrics",
+						"I'll beat your contest, guy!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				64000,
+				[
+					[
+						"Lyrics",
+						"That's right, keep it up",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				66000,
+				[
+					[
+						"Lyrics",
+						"Keep it up and keep it fresh!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				68000,
+				[
+					[
+						"Lyrics",
+						"That's right, keep it up",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				70000,
+				[
+					[
+						"Lyrics",
+						"Keep it up and keep it fresh!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				72500,
+				[
+					[
+						"Lyrics",
+						"Ain't no way that I'd let you date my daughter",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				76500,
+				[
+					[
+						"Lyrics",
+						"Fuck yo rules, bitch, I'm bout to get my rocks off!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				80750,
+				[
+					[
+						"Lyrics",
+						"Lil' boy tryna get sum",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				82125,
+				[
+					[
+						"Lyrics",
+						"Now he best watch hisself 'fore he act dumb",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				84000,
+				[
+					[
+						"Lyrics",
+						"Now Papa Dearest gotta teach you a lesson",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				85821.875,
+				[
+					[
+						"Lyrics",
+						"'Cuz class is in session",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				86825,
+				[
+					[
+						"Lyrics",
+						"No place for a less-than",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				88000,
+				[
+					[
+						"Lyrics",
+						"Damn... Now yo' daughter lookin' mad fine,",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				90125,
+				[
+					[
+						"Lyrics",
+						"Ain't no joke when I say that she mine",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				91687.5,
+				[
+					[
+						"Lyrics",
+						"'Cuz Imean what I say and I say what I mean",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				93675,
+				[
+					[
+						"Lyrics",
+						"And you not gon be laughin' once I'm stackin' green",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				96681.25,
+				[
+					[
+						"Lyrics",
+						"You 'bout ready to let up ol' man?",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				98500,
+				[
+					[
+						"Lyrics",
+						"Hmph! Hell nah! This lil' party of ours... is just gettin' started!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				104250,
+				[
+					[
+						"Lyrics",
+						"I object!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				106250,
+				[
+					[
+						"Lyrics",
+						"No respect!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				108250,
+				[
+					[
+						"Lyrics",
+						"Yo life a mess!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				110250,
+				[
+					[
+						"Lyrics",
+						"I keep it fresh!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				112250,
+				[
+					[
+						"Lyrics",
+						"But no success... HOO!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				114250,
+				[
+					[
+						"Lyrics",
+						"I must confess... HA!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				116000,
+				[
+					[
+						"Lyrics",
+						"Leave you in distress, bye!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				118000,
+				[
+					[
+						"Lyrics",
+						"I'll beat your contest, guy!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				120250,
+				[
+					[
+						"Lyrics",
+						"I object!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				122250,
+				[
+					[
+						"Lyrics",
+						"No respect!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				124250,
+				[
+					[
+						"Lyrics",
+						"Yo life a mess!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				126250,
+				[
+					[
+						"Lyrics",
+						"I keep it fresh!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				128250,
+				[
+					[
+						"Lyrics",
+						"But no success... HOO!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				130250,
+				[
+					[
+						"Lyrics",
+						"I must confess... HA!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				132000,
+				[
+					[
+						"Lyrics",
+						"Leave you in distress, bye!",
+						"AF66CE"
+					]
+				]
+			],
+			[
+				134000,
+				[
+					[
+						"Lyrics",
+						"I'll beat your contest, guy!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				136000,
+				[
+					[
+						"Camera Zoom",
+						"-0.05",
+						"8"
+					],
+					[
+						"Camera Follow Pos",
+						"1250",
+						"800"
+					],
+					[
+						"Lyrics",
+						"",
+						""
+					]
+				]
+			]
+		]
+	}
+}
