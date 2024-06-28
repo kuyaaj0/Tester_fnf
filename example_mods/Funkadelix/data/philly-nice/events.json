@@ -1,0 +1,1236 @@
+{
+	"song": {
+		"events": [
+			[
+				1542.85714285714,
+				[
+					[
+						"Lyrics",
+						"I'm the hunta'",
+						"ff8000"
+					]
+				]
+			],
+			[
+				2914.28571428571,
+				[
+					[
+						"Lyrics",
+						"Bring the thunda",
+						"ff8000"
+					]
+				]
+			],
+			[
+				4285.71428571429,
+				[
+					[
+						"Lyrics",
+						"A big gunna",
+						"ff8000"
+					]
+				]
+			],
+			[
+				5314.28571428571,
+				[
+					[
+						"Lyrics",
+						"A shooter put you unda!",
+						"ff8000"
+					]
+				]
+			],
+			[
+				7028.57142857143,
+				[
+					[
+						"Lyrics",
+						"I get money",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				8400,
+				[
+					[
+						"Lyrics",
+						"Ain't no funny",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				9771.42857142857,
+				[
+					[
+						"Lyrics",
+						"You a dummy",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				10971.4285714286,
+				[
+					[
+						"Chromatic Shader Tween",
+						"1.0",
+						"1.03"
+					],
+					[
+						"Lyrics",
+						"Tryna become me!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				12000,
+				[
+					[
+						"Add Glitch Shader",
+						"",
+						""
+					],
+					[
+						"Set Camera Zoom",
+						"0.7",
+						""
+					]
+				]
+			],
+			[
+				12342.8571428571,
+				[
+					[
+						"Remove Glitch Shader",
+						"",
+						""
+					],
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				12514.2857142857,
+				[
+					[
+						"Lyrics",
+						"I'm the shit",
+						"ff8000"
+					]
+				]
+			],
+			[
+				12857.1428571429,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				13371.4285714286,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"You try me? Get hit!",
+						"ff8000"
+					]
+				]
+			],
+			[
+				13714.2857142857,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				14228.5714285714,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				14742.8571428571,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"I'm pullin out my blicky",
+						"ff8000"
+					]
+				]
+			],
+			[
+				15085.7142857143,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				15600,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				16114.2857142857,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Shit's about to get lit",
+						"ff8000"
+					]
+				]
+			],
+			[
+				16457.1428571429,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				16971.4285714286,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				17485.7142857143,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"C'mon.",
+						"ff8000"
+					]
+				]
+			],
+			[
+				17828.5714285714,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				18000,
+				[
+					[
+						"Lyrics",
+						"Got you stressed",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				18342.8571428571,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				18857.1428571429,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"With flow and finesse",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				19200,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				19714.2857142857,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				20228.5714285714,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Give my fat dick a rest",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				20571.4285714286,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				21085.7142857143,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				21428.5714285714,
+				[
+					[
+						"Lyrics",
+						"I'll put that booty to the test",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				21600,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				21942.8571428571,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				22457.1428571429,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				22971.4285714286,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"C'mon!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				23314.2857142857,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				23314.2857142857,
+				[
+					[
+						"Lyrics",
+						"You and your ho",
+						"ff8000"
+					]
+				]
+			],
+			[
+				23828.5714285714,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				24342.8571428571,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Disturbin' my flow",
+						"ff8000"
+					]
+				]
+			],
+			[
+				24685.7142857143,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				25200,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				25714.2857142857,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Yo body hit the floor",
+						"ff8000"
+					]
+				]
+			],
+			[
+				26057.1428571429,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				26571.4285714286,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				26914.2857142857,
+				[
+					[
+						"Lyrics",
+						"And I collect her dad's dough",
+						"ff8000"
+					]
+				]
+			],
+			[
+				27085.7142857143,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				27428.5714285714,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				27942.8571428571,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				28457.1428571429,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Y'know?",
+						"ff8000"
+					]
+				]
+			],
+			[
+				28800,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				28800,
+				[
+					[
+						"Lyrics",
+						"Cuh, with this girth",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				29314.2857142857,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				29828.5714285714,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"I know what I'm worth",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				30171.4285714286,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				30685.7142857143,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				31200,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Been that way since my birth",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				31542.8571428571,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				32057.1428571428,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				32400,
+				[
+					[
+						"Lyrics",
+						"And I'm still walkin' the earth",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				32571.4285714286,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				32914.2857142857,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				33428.5714285714,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				33942.8571428571,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Y'know!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				34285.7142857143,
+				[
+					[
+						"Lyrics",
+						"Bullet in yo head",
+						"ff8000"
+					]
+				]
+			],
+			[
+				35142.8571428571,
+				[
+					[
+						"Lyrics",
+						"I put a bullet in yo head",
+						"ff8000"
+					]
+				]
+			],
+			[
+				36514.2857142857,
+				[
+					[
+						"Lyrics",
+						"I'm boutta fill yo ass with lead",
+						"ff8000"
+					]
+				]
+			],
+			[
+				37885.7142857143,
+				[
+					[
+						"Lyrics",
+						"And they pronounce yo body dead",
+						"ff8000"
+					]
+				]
+			],
+			[
+				39257.1428571429,
+				[
+					[
+						"Lyrics",
+						"I'm singin'",
+						"ff8000"
+					]
+				]
+			],
+			[
+				39771.4285714286,
+				[
+					[
+						"Lyrics",
+						"Bounty on my head",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				40628.5714285714,
+				[
+					[
+						"Lyrics",
+						"I got a bounty on my head",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				42000,
+				[
+					[
+						"Lyrics",
+						"Bitch, I did not hear what you said",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				43371.4285714286,
+				[
+					[
+						"Lyrics",
+						"I'm with my girl up in the bed",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				44742.8571428572,
+				[
+					[
+						"Lyrics",
+						"She screamin'!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				45257.1428571429,
+				[
+					[
+						"Lyrics",
+						"This late Philly night",
+						"ff8000"
+					]
+				]
+			],
+			[
+				46114.2857142857,
+				[
+					[
+						"Lyrics",
+						"I'm thinkin' shit is Philly nice",
+						"ff8000"
+					]
+				]
+			],
+			[
+				47485.7142857143,
+				[
+					[
+						"Lyrics",
+						"My aim about to get precise",
+						"ff8000"
+					]
+				]
+			],
+			[
+				48857.1428571429,
+				[
+					[
+						"Lyrics",
+						"My boy about to pay the price",
+						"ff8000"
+					]
+				]
+			],
+			[
+				50228.5714285714,
+				[
+					[
+						"Lyrics",
+						"I'm singin'",
+						"ff8000"
+					]
+				]
+			],
+			[
+				50742.8571428572,
+				[
+					[
+						"Lyrics",
+						"This late Philly night",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				51600,
+				[
+					[
+						"Lyrics",
+						"I'm thinkin' shit is Philly nice",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				52971.4285714286,
+				[
+					[
+						"Lyrics",
+						"So if you wanna roll the dice",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				54342.8571428572,
+				[
+					[
+						"Lyrics",
+						"Just go ahead, I'm cold as ice",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				55714.2857142857,
+				[
+					[
+						"Lyrics",
+						"I'm singin'",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				56228.5714285714,
+				[
+					[
+						"Lyrics",
+						"Bitch, I'm not the one",
+						"ff8000"
+					]
+				]
+			],
+			[
+				57085.7142857143,
+				[
+					[
+						"Lyrics",
+						"You fuck with me, you better run",
+						"ff8000"
+					]
+				]
+			],
+			[
+				58628.5714285714,
+				[
+					[
+						"Lyrics",
+						"Cuz the last one, he was done",
+						"ff8000"
+					]
+				]
+			],
+			[
+				59828.5714285714,
+				[
+					[
+						"Lyrics",
+						"He met the barrel of my gun",
+						"ff8000"
+					]
+				]
+			],
+			[
+				61371.4285714286,
+				[
+					[
+						"Lyrics",
+						"Listen well",
+						"ff8000"
+					]
+				]
+			],
+			[
+				61714.2857142857,
+				[
+					[
+						"Lyrics",
+						"Bitch, I fuck with demons",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				62914.2857142857,
+				[
+					[
+						"Lyrics",
+						"I tame that bitch with semen",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				64114.2857142857,
+				[
+					[
+						"GF Philly Nice Reaction",
+						"",
+						""
+					]
+				]
+			],
+			[
+				64285.7142857143,
+				[
+					[
+						"Lyrics",
+						"I'm leavin' shawty creamin'",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				65657.1428571429,
+				[
+					[
+						"Lyrics",
+						"So bitch, I'm gunna win",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				66857.1428571429,
+				[
+					[
+						"Lyrics",
+						"Try again!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				67200,
+				[
+					[
+						"Lyrics",
+						"Tired of the tricks.",
+						"ff8000"
+					]
+				]
+			],
+			[
+				68228.5714285714,
+				[
+					[
+						"Lyrics",
+						"Tired of hearin' bout your dick.",
+						"ff8000"
+					]
+				]
+			],
+			[
+				69600,
+				[
+					[
+						"Lyrics",
+						"Actin' like a fuckin' prick",
+						"ff8000"
+					]
+				]
+			],
+			[
+				70971.4285714286,
+				[
+					[
+						"Lyrics",
+						"Pull the trigger, end you quick",
+						"ff8000"
+					]
+				]
+			],
+			[
+				72171.4285714286,
+				[
+					[
+						"Lyrics",
+						"You make me sick!",
+						"ff8000"
+					]
+				]
+			],
+			[
+				72685.7142857143,
+				[
+					[
+						"Lyrics",
+						"Y'all already know",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				73714.2857142857,
+				[
+					[
+						"Lyrics",
+						"Who boutta blow this place fo sho",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				74914.2857142857,
+				[
+					[
+						"Lyrics",
+						"Like you was blowin' on my pole",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				76457.1428571428,
+				[
+					[
+						"Lyrics",
+						"Got you lookin' like a",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				77485.7142857143,
+				[
+					[
+						"Lyrics",
+						"Ho-o-o-o~",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				78171.4285714285,
+				[
+					[
+						"Lyrics",
+						"This late Philly night",
+						"ff8000"
+					]
+				]
+			],
+			[
+				79028.5714285714,
+				[
+					[
+						"Lyrics",
+						"I'm thinkin' shit is Philly nice",
+						"ff8000"
+					]
+				]
+			],
+			[
+				80400,
+				[
+					[
+						"Lyrics",
+						"My aim about to get precise",
+						"ff8000"
+					]
+				]
+			],
+			[
+				81771.4285714285,
+				[
+					[
+						"Lyrics",
+						"My boy about to pay the price",
+						"ff8000"
+					]
+				]
+			],
+			[
+				83142.8571428571,
+				[
+					[
+						"Lyrics",
+						"I'm singin'",
+						"ff8000"
+					]
+				]
+			],
+			[
+				83657.1428571428,
+				[
+					[
+						"Lyrics",
+						"This late Philly night",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				84514.2857142857,
+				[
+					[
+						"Lyrics",
+						"I'm thinkin' shit is Philly nice",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				85885.7142857142,
+				[
+					[
+						"Lyrics",
+						"So if you wanna roll the dice",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				87257.1428571428,
+				[
+					[
+						"Lyrics",
+						"Just go ahead, I'm cold as ice",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				88628.5714285713,
+				[
+					[
+						"Lyrics",
+						"I'm singin' now!",
+						"31B0D1"
+					]
+				]
+			]
+		]
+	}
+}
