@@ -1,0 +1,781 @@
+{
+	"song": {
+		"events": [
+			[
+				9600,
+				[
+					[
+						"Lyrics",
+						"Esquerda, direita!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				14400,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Esquerda, direita!",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				18000,
+				[
+					[
+						"Second Lyric Line low",
+						"(É assim que se faz!)",
+						"A5004D"
+					],
+					[
+						"Play Animation",
+						"cheer",
+						"dad"
+					]
+				]
+			],
+			[
+				19200,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Cima, baixo!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				24000,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Cima, baixo!",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				27600,
+				[
+					[
+						"Second Lyric Line low",
+						"(É assim que se faz!)",
+						"A5004D"
+					],
+					[
+						"Play Animation",
+						"cheer",
+						"dad"
+					]
+				]
+			],
+			[
+				28800,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Esquerda, cima, baixo, direita!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				33600,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Esquerda, cima, baixo, direita!",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				38400,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Baixo, baixo, cima!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				40800,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Baixo, baixo, direita!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				43200,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Baixo, baixo, cima!",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				45600,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Baixo, baixo, direita!",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				47100,
+				[
+					[
+						"Second Lyric Line low",
+						"(Freestyle!)",
+						"A5004D"
+					],
+					[
+						"Play Animation",
+						"freestyle",
+						"dad"
+					]
+				]
+			],
+			[
+				48000,
+				[
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"",
+						"",
+						""
+					]
+				]
+			],
+			[
+				48150,
+				[
+					[
+						"Lyrics",
+						"Para vencer seu pai eu devo,",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				49350,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Cantar no ritmo,baby!-",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				50550,
+				[
+					[
+						"Lyrics",
+						"Me siga no espaço tempo baby,",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				51750,
+				[
+					[
+						"Lyrics",
+						"Não posso errar ou eu tô ferrado",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				52950,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Para ganhar do meu pai",
+						"A5004D"
+					]
+				]
+			],
+			[
+				54150,
+				[
+					[
+						"Lyrics",
+						"Deve cantar no ritmo!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				55350,
+				[
+					[
+						"Lyrics",
+						"Lhe acompanharei no espaço tempo,baby-",
+						"A5004D"
+					]
+				]
+			],
+			[
+				56550,
+				[
+					[
+						"Lyrics",
+						"Se cê errar vai dar ruim!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				57750,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Essa é para minha bebê,",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				58950,
+				[
+					[
+						"Lyrics",
+						"Que me faixa lelé,",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				60150,
+				[
+					[
+						"Lyrics",
+						"Distorcendo com sua beleza...",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				61350,
+				[
+					[
+						"Lyrics",
+						"Toda a realidade!",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				62550,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Isso é pra nossa vida juntos",
+						"A5004D"
+					]
+				]
+			],
+			[
+				63750,
+				[
+					[
+						"Lyrics",
+						"Apenas você e eu!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				64950,
+				[
+					[
+						"Lyrics",
+						"Meu paizinho tá putinho...",
+						"A5004D"
+					]
+				]
+			],
+			[
+				66150,
+				[
+					[
+						"Lyrics",
+						"Nunca vi alguém tão idiota!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				67800,
+				[
+					[
+						"Lyrics",
+						"Garoto, estou feliz de lhe fazer meu,",
+						"A5004D"
+					]
+				]
+			],
+			[
+				70200,
+				[
+					[
+						"Lyrics",
+						"Sim, seu amor é a minha luz do sol!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				72600,
+				[
+					[
+						"Lyrics",
+						"Quando me agarra, me faz sentit tão bem,",
+						"A5004D"
+					]
+				]
+			],
+			[
+				75000,
+				[
+					[
+						"Lyrics",
+						"Apertem os cintos, pois nosso amor vai decolar!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				76800,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Ooo amor, nosso amor é infinito'",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				81900,
+				[
+					[
+						"Lyrics",
+						"Depois da luta,faremos a noite toda!",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				84300,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Meu amor, você vai ganhar, digo isso de coração!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				86550,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Pra vencer seu pai eu devo",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				87000,
+				[
+					[
+						"Second Lyric Line",
+						"Esquerda, direita!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				87750,
+				[
+					[
+						"Lyrics",
+						"Cantar no ritmo-",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				88950,
+				[
+					[
+						"Lyrics",
+						"Me siga no espaço tempo, baby",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				90150,
+				[
+					[
+						"Lyrics",
+						"Se eu errar fudeu",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				91350,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Pra vencer meu pai cê deve",
+						"A5004D"
+					]
+				]
+			],
+			[
+				91800,
+				[
+					[
+						"Second Lyric Line",
+						"Esquerda, direita!",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				92550,
+				[
+					[
+						"Lyrics",
+						"Cantar no ritmo!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				93750,
+				[
+					[
+						"Lyrics",
+						"Te seguirei no espaço tempo",
+						"A5004D"
+					]
+				]
+			],
+			[
+				94950,
+				[
+					[
+						"Lyrics",
+						"Se cê errar fudeu!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				96150,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Essa é pro meu amorzinho,",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				96600,
+				[
+					[
+						"Second Lyric Line",
+						"Que me deixa lelé!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				97350,
+				[
+					[
+						"Lyrics",
+						"Distorcendo com sua beleza",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				98550,
+				[
+					[
+						"Lyrics",
+						"Todo o espaço tempo!",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				99750,
+				[
+					[
+						"Lyrics",
+						"Somos como prof Girafales e florinda!",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				100950,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Isso é pra nossa vida juntos'",
+						"A5004D"
+					]
+				]
+			],
+			[
+				101400,
+				[
+					[
+						"Second Lyric Line",
+						"Cima, baixo!",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				102150,
+				[
+					[
+						"Lyrics",
+						"Só eu e você pra sempre!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				103350,
+				[
+					[
+						"Lyrics",
+						"Meu paizinho ta putinho...",
+						"A5004D"
+					]
+				]
+			],
+			[
+				104550,
+				[
+					[
+						"Lyrics",
+						"É um grande idiota!",
+						"A5004D"
+					]
+				]
+			],
+			[
+				105750,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Change Character",
+						"bf",
+						"bfwawa"
+					],
+					[
+						"Play Animation",
+						"idle",
+						"bf"
+					]
+				]
+			],
+			[
+				105900,
+				[
+					[
+						"Lyrics",
+						"Docinho de coco, se eu ganhasse um real... ",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				107850,
+				[
+					[
+						"Lyrics",
+						"...toda vez que pensasse em você...",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				109500,
+				[
+					[
+						"Lyrics",
+						"Eu teria um, pois nunca paro de pensar em você.",
+						"31B0D1 "
+					]
+				]
+			],
+			[
+				112350,
+				[
+					[
+						"Lyrics",
+						"Agora vou vencer seu pai, e te fazer minha!",
+						"31B0D1 "
+					]
+				]
+			]
+		]
+	}
+}
