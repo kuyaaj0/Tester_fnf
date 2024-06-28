@@ -1,0 +1,1216 @@
+{
+	"song": {
+		"events": [
+			[
+				6400,
+				[
+					[
+						"Lyrics",
+						"Chegou o mês de assustar, hora de comemorar",
+						"96989A"
+					]
+				]
+			],
+			[
+				9200,
+				[
+					[
+						"Lyrics",
+						"A-HA!",
+						"96989A"
+					]
+				]
+			],
+			[
+				9600,
+				[
+					[
+						"Lyrics",
+						"Este é o mês do medo, cuidado com a assombração",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				12400,
+				[
+					[
+						"Lyrics",
+						"BA-HA!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				12800,
+				[
+					[
+						"Lyrics",
+						"Hora de pegar doce",
+						"b86614"
+					]
+				]
+			],
+			[
+				14400,
+				[
+					[
+						"Lyrics",
+						"Docinho grátis de passatempo, YEAH!",
+						"b86614"
+					]
+				]
+			],
+			[
+				16000,
+				[
+					[
+						"Lyrics",
+						"Agora é hora das travessuras",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				17600,
+				[
+					[
+						"Lyrics",
+						"MONSTROS TE OBSERVANDO PRA TE DEVORAR!",
+						"31B0D1"
+					],
+					[
+						"Camera Zoom",
+						"0.1",
+						"2.5"
+					]
+				]
+			],
+			[
+				18800,
+				[
+					[
+						"Second Lyric Line",
+						"Indo de porta em porta",
+						"96989A"
+					]
+				]
+			],
+			[
+				19600,
+				[
+					[
+						"Camera Zoom",
+						"0",
+						"2.5"
+					],
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Second Lyric Line",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Indo de porta em porta",
+						"96989A"
+					],
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO! BOO! BOO!)",
+						"b86614"
+					]
+				]
+			],
+			[
+				20800,
+				[
+					[
+						"Lyrics",
+						"Sinta o terror!",
+						"96989A"
+					],
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					]
+				]
+			],
+			[
+				21200,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO!)",
+						"b86614"
+					]
+				]
+			],
+			[
+				21800,
+				[
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"É a hora de se empanturrar",
+						"96989A"
+					]
+				]
+			],
+			[
+				22800,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO! BOO! BOO!)",
+						"b86614"
+					]
+				]
+			],
+			[
+				24000,
+				[
+					[
+						"Second Lyric Line",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"E se amendrontar!",
+						"96989A"
+					]
+				]
+			],
+			[
+				24400,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO!)",
+						"b86614"
+					]
+				]
+			],
+			[
+				25200,
+				[
+					[
+						"Second Lyric Line",
+						"A-HA!",
+						"96989A"
+					],
+					[
+						"Lyrics",
+						"Aquele que ligou a luz",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				26000,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO! BOO! BOO!)",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				27200,
+				[
+					[
+						"Second Lyric Line",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Dormir não vai",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				27600,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO!)",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				28400,
+				[
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Cheio de medo",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				29200,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO! BOO! BOO!)",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				30400,
+				[
+					[
+						"Lyrics",
+						"Nessa sexta a noite!",
+						"31B0D1"
+					],
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					]
+				]
+			],
+			[
+				30800,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO!)",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				31600,
+				[
+					[
+						"Second Lyric Line",
+						"Já dissemos que",
+						"b86614"
+					],
+					[
+						"Lyrics",
+						"BA-HA!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				32000,
+				[
+					[
+						"Lyrics",
+						"Esse é o mês de assustar,hora de comemorar",
+						"b86614"
+					],
+					[
+						"Second Lyric Line",
+						"",
+						""
+					]
+				]
+			],
+			[
+				34800,
+				[
+					[
+						"Lyrics",
+						"A-HA!",
+						"b86614"
+					]
+				]
+			],
+			[
+				35200,
+				[
+					[
+						"Lyrics",
+						"Chegou o mês de assustar, hora de se amendrontar",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				38000,
+				[
+					[
+						"Lyrics",
+						"BA-HA!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				38400,
+				[
+					[
+						"Lyrics",
+						"JOGOS MACABROS e FILMES LOUCOS",
+						"96989A"
+					]
+				]
+			],
+			[
+				40000,
+				[
+					[
+						"Lyrics",
+						"FANTASIAS QUE SE TRANFORMAM COMO MAGIA, YEA!",
+						"96989A"
+					]
+				]
+			],
+			[
+				41600,
+				[
+					[
+						"Lyrics",
+						"MAGIAS, RITUAIS E FEITIÇOS",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				43200,
+				[
+					[
+						"Lyrics",
+						"GENTE QUE QUER CAUSAR O CAOS, YEA!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				44400,
+				[
+					[
+						"Second Lyric Line",
+						"Indo de porta em porta",
+						"b86614"
+					]
+				]
+			],
+			[
+				45200,
+				[
+					[
+						"Lyrics",
+						"Indo de porta em porta",
+						"b86614"
+					],
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO! BOO! BOO!)",
+						"96989A"
+					]
+				]
+			],
+			[
+				46400,
+				[
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Sinta o pavor",
+						"b86614"
+					]
+				]
+			],
+			[
+				46800,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO!)",
+						"96989A"
+					]
+				]
+			],
+			[
+				47400,
+				[
+					[
+						"Lyrics",
+						"Pois vamos nos empanturrar",
+						"b86614"
+					],
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					]
+				]
+			],
+			[
+				48400,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO! BOO! BOO!)",
+						"96989A"
+					]
+				]
+			],
+			[
+				49600,
+				[
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"E se amedrontar!",
+						"b86614"
+					]
+				]
+			],
+			[
+				50000,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO!)",
+						"96989A"
+					]
+				]
+			],
+			[
+				50800,
+				[
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Aquele que ligou a luz",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				51600,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO! BOO! BOO!)",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				52800,
+				[
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Dormir não vai",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				53200,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO!)",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				54000,
+				[
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"De tanto medo",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				54800,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO! BOO! BOO!)",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				56000,
+				[
+					[
+						"Lyrics",
+						"Nessa sexta a noite!",
+						"31B0D1"
+					],
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					]
+				]
+			],
+			[
+				56400,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO!)",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				57600,
+				[
+					[
+						"Camera Zoom",
+						"-0.05",
+						"6"
+					],
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Olhe para as estrelas",
+						"b86614"
+					],
+					[
+						"Move Arrows",
+						"",
+						"5"
+					],
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Camera Follow Pos",
+						"1200",
+						"600"
+					]
+				]
+			],
+			[
+				59200,
+				[
+					[
+						"Lyrics",
+						"Alto você verá",
+						"b86614"
+					]
+				]
+			],
+			[
+				60800,
+				[
+					[
+						"Lyrics",
+						"É como se fosse um trance",
+						"b86614"
+					]
+				]
+			],
+			[
+				62400,
+				[
+					[
+						"Lyrics",
+						"Enquanto dançamos",
+						"b86614"
+					]
+				]
+			],
+			[
+				64000,
+				[
+					[
+						"Lyrics",
+						"É tão bizarro",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				65600,
+				[
+					[
+						"Lyrics",
+						"mas longe, não vai",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				67200,
+				[
+					[
+						"Lyrics",
+						"Com magia negra",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				68800,
+				[
+					[
+						"Lyrics",
+						"Possuindo os miseráveis",
+						"31B0D1"
+					],
+					[
+						"Second Lyric Line low",
+						"(Wo~ah)",
+						"96989A"
+					]
+				]
+			],
+			[
+				70400,
+				[
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"De tanto doce uma assombração verá",
+						"96989A"
+					]
+				]
+			],
+			[
+				71800,
+				[
+					[
+						"Lyrics",
+						"É o melhor dia da primavera!",
+						"96989A"
+					]
+				]
+			],
+			[
+				73600,
+				[
+					[
+						"Lyrics",
+						"Mesmo sendo tão pequenos",
+						"96989A"
+					]
+				]
+			],
+			[
+				75000,
+				[
+					[
+						"Lyrics",
+						"Esse duelo ganharemos!",
+						"96989A"
+					]
+				]
+			],
+			[
+				76600,
+				[
+					[
+						"Lyrics",
+						"Mesmo tentado lutar contra",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				78200,
+				[
+					[
+						"Lyrics",
+						"A assombração não vai te deixar",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				80000,
+				[
+					[
+						"Lyrics",
+						"Cês parecem apavorados",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				81400,
+				[
+					[
+						"Lyrics",
+						"Mas agora devem as consequências aguentar",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				83200,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					]
+				]
+			],
+			[
+				84800,
+				[
+					[
+						"Move Arrows",
+						"",
+						""
+					],
+					[
+						"Camera Follow Pos",
+						"",
+						""
+					],
+					[
+						"Camera Zoom",
+						"0.05",
+						"1.5"
+					],
+					[
+						"Lyrics",
+						"Chegou o mês de assustar, hora de comemorar",
+						"b86614"
+					]
+				]
+			],
+			[
+				87600,
+				[
+					[
+						"Lyrics",
+						"A-HA!",
+						"b86614"
+					]
+				]
+			],
+			[
+				88000,
+				[
+					[
+						"Lyrics",
+						"Esse é o mês de assustar, hora de se amedrontar",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				90800,
+				[
+					[
+						"Lyrics",
+						"BA-HA!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				91200,
+				[
+					[
+						"Lyrics",
+						"Esse é o momento dos doces",
+						"96989A"
+					]
+				]
+			],
+			[
+				92800,
+				[
+					[
+						"Lyrics",
+						"Docinho grátis para a viegem, YEA!",
+						"96989A"
+					]
+				]
+			],
+			[
+				94400,
+				[
+					[
+						"Lyrics",
+						"Agora é hora das travessuras",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				96000,
+				[
+					[
+						"Lyrics",
+						"MONSTROS PRONTOS PRA TE DEVORAR, HA!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				97200,
+				[
+					[
+						"Second Lyric Line",
+						"Andando de porta em porta",
+						"b86614"
+					]
+				]
+			],
+			[
+				98000,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO! BOO! BOO!)",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				99200,
+				[
+					[
+						"Second Lyric Line",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Sinta o medo",
+						"96989A"
+					]
+				]
+			],
+			[
+				99600,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO!)",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				100200,
+				[
+					[
+						"Lyrics",
+						"De doces nos empanturrar",
+						"b86614"
+					],
+					[
+						"Second Lyric Line",
+						"",
+						""
+					]
+				]
+			],
+			[
+				101200,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO! BOO! BOO!)",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				102400,
+				[
+					[
+						"Second Lyric Line",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"E se amedrontar!",
+						"96989A"
+					]
+				]
+			],
+			[
+				102800,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO!)",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				103600,
+				[
+					[
+						"Lyrics",
+						"Aquele que ligou a luz",
+						"31B0D1"
+					],
+					[
+						"Second Lyric Line",
+						"A-HA!",
+						"96989A"
+					]
+				]
+			],
+			[
+				104000,
+				[
+					[
+						"Second Lyric Line",
+						"",
+						""
+					]
+				]
+			],
+			[
+				104400,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO! BOO! BOO!)",
+						"b86614"
+					]
+				]
+			],
+			[
+				105600,
+				[
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Dormir não vai",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				106000,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO!)",
+						"b86614"
+					]
+				]
+			],
+			[
+				106800,
+				[
+					[
+						"Lyrics",
+						"De tanto medo",
+						"31B0D1"
+					],
+					[
+						"Second Lyric Line",
+						"",
+						""
+					]
+				]
+			],
+			[
+				107600,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO! BOO! BOO!)",
+						"96989A"
+					]
+				]
+			],
+			[
+				108800,
+				[
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Nessa sexta a noite!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				109200,
+				[
+					[
+						"Second Lyric Line low",
+						"(BOO! BOO!)",
+						"96989A"
+					]
+				]
+			],
+			[
+				110400,
+				[
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Chegou o mês de assustar, hora de comemorar",
+						"96989A"
+					]
+				]
+			],
+			[
+				113200,
+				[
+					[
+						"Lyrics",
+						"A-HA!",
+						"96989A"
+					]
+				]
+			],
+			[
+				113600,
+				[
+					[
+						"Lyrics",
+						"Esse é o mês de se assustar, hora de se amedrontar ",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				116400,
+				[
+					[
+						"Lyrics",
+						"BA-HA!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				116800,
+				[
+					[
+						"Lyrics",
+						"Toda noite de halloween",
+						"b86614"
+					]
+				]
+			],
+			[
+				118400,
+				[
+					[
+						"Lyrics",
+						"Essa é a melhor rotina",
+						"96989A"
+					]
+				]
+			],
+			[
+				119600,
+				[
+					[
+						"Lyrics",
+						"YEA!",
+						""
+					]
+				]
+			],
+			[
+				120000,
+				[
+					[
+						"Lyrics",
+						"Toda noite de halloween",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				121600,
+				[
+					[
+						"Lyrics",
+						"Esse é o melhor dia, YEA!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				123200,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					]
+				]
+			]
+		]
+	}
+}
