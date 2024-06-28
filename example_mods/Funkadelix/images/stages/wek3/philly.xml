@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="philly.png">
+<SubTexture name="beams0000" x="1250" y="900" width="1236" height="270" frameX="-6" frameY="-291" frameWidth="1250" frameHeight="900" />
+<SubTexture name="buildings0000" x="1250" y="0" width="1250" height="636" frameX="0" frameY="-49" frameWidth="1250" frameHeight="900" />
+<SubTexture name="roof0000" x="0" y="900" width="1250" height="584" frameX="0" frameY="-316" frameWidth="1250" frameHeight="900" />
+<SubTexture name="sky0000" x="0" y="0" width="1250" height="900" frameX="0" frameY="0" frameWidth="1250" frameHeight="900" />
+</TextureAtlas>
