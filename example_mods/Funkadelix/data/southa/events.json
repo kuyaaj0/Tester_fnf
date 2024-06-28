@@ -1,0 +1,741 @@
+{
+	"song": {
+		"events": [
+			[
+				2823.52941176471,
+				[
+					[
+						"Lyrics",
+						"Tem uma particula de terror voando no ar",
+						"96989A"
+					]
+				]
+			],
+			[
+				4058.82352941176,
+				[
+					[
+						"Camera Zoom",
+						"",
+						"0.53"
+					]
+				]
+			],
+			[
+				4588.23529411765,
+				[
+					[
+						"Camera Zoom",
+						"",
+						"0.35"
+					]
+				]
+			],
+			[
+				5647.05882352941,
+				[
+					[
+						"Lyrics",
+						"Goblins, fantasmas, bruxas",
+						"96989A"
+					]
+				]
+			],
+			[
+				7058.82352941176,
+				[
+					[
+						"Lyrics",
+						"Eles vão te apavorar",
+						"96989A"
+					]
+				]
+			],
+			[
+				8470.58823529412,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Um demônio andando no escuro, cheia de pelo",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				9705.88235294117,
+				[
+					[
+						"Camera Zoom",
+						"",
+						"0.53"
+					]
+				]
+			],
+			[
+				10235.2941176471,
+				[
+					[
+						"Camera Zoom",
+						"",
+						"0.53"
+					]
+				]
+			],
+			[
+				11294.1176470588,
+				[
+					[
+						"Lyrics",
+						"Num arrepio, ele te estuda como um livro",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				13058.8235294118,
+				[
+					[
+						"Lyrics",
+						"É melhor se cuidar",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				14117.6470588235,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"As crianças mais macabras da rua",
+						"b86614"
+					]
+				]
+			],
+			[
+				16235.2941176471,
+				[
+					[
+						"Add Camera Zoom",
+						"0.0225",
+						"0.0425"
+					],
+					[
+						"Lyrics",
+						"Numa missão",
+						"b86614"
+					]
+				]
+			],
+			[
+				16588.2352941176,
+				[
+					[
+						"Add Camera Zoom",
+						"0.0225",
+						"0.0425"
+					]
+				]
+			],
+			[
+				16941.1764705882,
+				[
+					[
+						"Add Camera Zoom",
+						"0.03",
+						"-0.075"
+					],
+					[
+						"Camera Flash",
+						"hud",
+						"1.0"
+					]
+				]
+			],
+			[
+				16941.1764705882,
+				[
+					[
+						"Lyrics",
+						"Chamada de corrida açucarada",
+						"b86614"
+					]
+				]
+			],
+			[
+				18176.4705882353,
+				[
+					[
+						"Lyrics",
+						"Não ligamos pra nutrição",
+						"b86614"
+					]
+				]
+			],
+			[
+				19764.7058823529,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Com um arrepio na espinha",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				21000,
+				[
+					[
+						"Camera Zoom",
+						"0.53",
+						""
+					]
+				]
+			],
+			[
+				21529.4117647059,
+				[
+					[
+						"Camera Zoom",
+						"0.35",
+						""
+					],
+					[
+						"Lyrics",
+						"Sem suspeitas",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				22588.2352941176,
+				[
+					[
+						"Lyrics",
+						"Bem no canto do seu olho",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				24352.9411764706,
+				[
+					[
+						"Lyrics",
+						"Vê uma entidade",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				25411.7647058824,
+				[
+					[
+						"Move Arrows",
+						"",
+						"5"
+					],
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Yea, somos espertos",
+						"b86614"
+					]
+				]
+			],
+			[
+				26823.5294117647,
+				[
+					[
+						"Lyrics",
+						"Mas não nerds falantes",
+						"b86614"
+					]
+				]
+			],
+			[
+				28235.2941176471,
+				[
+					[
+						"Lyrics",
+						"Hora de se assustar",
+						"b86614"
+					]
+				]
+			],
+			[
+				29117.6470588235,
+				[
+					[
+						"Lyrics",
+						"Vamos rir de sua perda de fala",
+						"b86614"
+					]
+				]
+			],
+			[
+				30882.3529411765,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Um monstro seus corações roubando",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				32294.1176470588,
+				[
+					[
+						"Lyrics",
+						"Silenciando os seus gritos",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				33705.8823529412,
+				[
+					[
+						"Lyrics",
+						"Sua mamão gritando \"AI-AI-AI!\"",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				34764.7058823529,
+				[
+					[
+						"Lyrics",
+						"Quando ver picadinho de menino!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				36529.4117647059,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Cê age como um bebezão",
+						"96989A"
+					]
+				]
+			],
+			[
+				37588.2352941176,
+				[
+					[
+						"Lyrics",
+						"Os seus dedinhos não te ajudarão",
+						"96989A"
+					]
+				]
+			],
+			[
+				39529.4117647059,
+				[
+					[
+						"Lyrics",
+						"Estamos numa corrida",
+						"96989A"
+					]
+				]
+			],
+			[
+				40411.7647058823,
+				[
+					[
+						"Lyrics",
+						"uma corrida açucarada",
+						"96989A"
+					]
+				]
+			],
+			[
+				41117.6470588235,
+				[
+					[
+						"Lyrics",
+						"Será que entendeu?",
+						"96989A"
+					]
+				]
+			],
+			[
+				42176.4705882353,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Surpreso que não fugiu",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				43235.294117647,
+				[
+					[
+						"Lyrics",
+						"Seus dedos no buchinho dele",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				45176.4705882353,
+				[
+					[
+						"Lyrics",
+						"Então faça um favor",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				46058.8235294117,
+				[
+					[
+						"Lyrics",
+						"Ele se pergunta sobre o sabor",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				47294.1176470588,
+				[
+					[
+						"Second Lyric Line low",
+						"(Você já sente?)",
+						"b86614"
+					]
+				]
+			],
+			[
+				48000,
+				[
+					[
+						"Move Arrows",
+						"",
+						""
+					],
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Tem aquele pedacinho macabro",
+						"b86614"
+					]
+				]
+			],
+			[
+				49235.294117647,
+				[
+					[
+						"Camera Zoom",
+						"0.53",
+						""
+					]
+				]
+			],
+			[
+				49764.7058823529,
+				[
+					[
+						"Camera Zoom",
+						"0.35",
+						""
+					],
+					[
+						"Lyrics",
+						"Que está em qualquer lugar",
+						"b86614"
+					]
+				]
+			],
+			[
+				50823.5294117647,
+				[
+					[
+						"Lyrics",
+						"Goblins, fantasmas, bruxas",
+						"b86614"
+					]
+				]
+			],
+			[
+				52235.294117647,
+				[
+					[
+						"Lyrics",
+						"Prontos pra te assustar",
+						"b86614"
+					]
+				]
+			],
+			[
+				52941.1764705882,
+				[
+					[
+						"Second Lyric Line low",
+						"(Cuidado com o)",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				53647.0588235294,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Second Lyric Line low",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Demônio, onservando no escuro",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				54882.3529411764,
+				[
+					[
+						"Camera Zoom",
+						"0.53",
+						""
+					]
+				]
+			],
+			[
+				55411.7647058823,
+				[
+					[
+						"Camera Zoom",
+						"0.35",
+						""
+					],
+					[
+						"Lyrics",
+						"Com um cabelão",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				56470.5882352941,
+				[
+					[
+						"Lyrics",
+						"Num arrepio, te estuda como um livro",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				58235.294117647,
+				[
+					[
+						"Lyrics",
+						"É melhor se cuidar",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				59294.1176470588,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"As crianças mais macabras da rua",
+						"96989A"
+					]
+				]
+			],
+			[
+				61235.294117647,
+				[
+					[
+						"Lyrics",
+						"Numa missão",
+						"96989A"
+					]
+				]
+			],
+			[
+				61411.7647058824,
+				[
+					[
+						"Add Camera Zoom",
+						"0.0225",
+						"0.0425"
+					]
+				]
+			],
+			[
+				61764.7058823529,
+				[
+					[
+						"Add Camera Zoom",
+						"0.0225",
+						"0.0425"
+					]
+				]
+			],
+			[
+				62117.6470588235,
+				[
+					[
+						"Add Camera Zoom",
+						"0.03",
+						"-0.075"
+					],
+					[
+						"Camera Flash",
+						"hud",
+						"1.0"
+					],
+					[
+						"Lyrics",
+						"Chamada de corrida açucarada",
+						"96989A"
+					]
+				]
+			],
+			[
+				63352.9411764705,
+				[
+					[
+						"Lyrics",
+						"Sem ligar pra nutrição!",
+						"96989A"
+					]
+				]
+			],
+			[
+				64941.1764705882,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Com um arrepio na espinha",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				66176.4705882352,
+				[
+					[
+						"Camera Zoom",
+						"0.53",
+						""
+					]
+				]
+			],
+			[
+				66705.8823529411,
+				[
+					[
+						"Camera Zoom",
+						"0.35",
+						""
+					],
+					[
+						"Lyrics",
+						"Levantando suspeitas",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				67764.7058823529,
+				[
+					[
+						"Lyrics",
+						"Bem no canto do seu olho",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				69176.4705882352,
+				[
+					[
+						"Lyrics",
+						"Vê uma entidade",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				70764.7058823529,
+				[
+					[
+						"Lyrics",
+						"",
+						""
+					]
+				]
+			]
+		]
+	}
+}
