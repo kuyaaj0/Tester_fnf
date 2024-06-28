@@ -1,0 +1,1236 @@
+{
+	"song": {
+		"events": [
+			[
+				1542.85714285714,
+				[
+					[
+						"Lyrics",
+						"Eu sou o fodão'",
+						"ff8000"
+					]
+				]
+			],
+			[
+				2914.28571428571,
+				[
+					[
+						"Lyrics",
+						"Traga o rojão",
+						"ff8000"
+					]
+				]
+			],
+			[
+				4285.71428571429,
+				[
+					[
+						"Lyrics",
+						"Com um armão",
+						"ff8000"
+					]
+				]
+			],
+			[
+				5314.28571428571,
+				[
+					[
+						"Lyrics",
+						"Te coloco no chão!",
+						"ff8000"
+					]
+				]
+			],
+			[
+				7028.57142857143,
+				[
+					[
+						"Lyrics",
+						"Eu sou o dindin",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				8400,
+				[
+					[
+						"Lyrics",
+						"Nada de gracin",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				9771.42857142857,
+				[
+					[
+						"Lyrics",
+						"Cê é doidin",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				10971.4285714286,
+				[
+					[
+						"Chromatic Shader Tween",
+						"1.0",
+						"1.03"
+					],
+					[
+						"Lyrics",
+						"Tente me matar!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				12000,
+				[
+					[
+						"Add Glitch Shader",
+						"",
+						""
+					],
+					[
+						"Set Camera Zoom",
+						"0.7",
+						""
+					]
+				]
+			],
+			[
+				12342.8571428571,
+				[
+					[
+						"Remove Glitch Shader",
+						"",
+						""
+					],
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				12514.2857142857,
+				[
+					[
+						"Lyrics",
+						"Eu to doidão",
+						"ff8000"
+					]
+				]
+			],
+			[
+				12857.1428571429,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				13371.4285714286,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Me incomodou? vai pro caixão!",
+						"ff8000"
+					]
+				]
+			],
+			[
+				13714.2857142857,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				14228.5714285714,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				14742.8571428571,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Sacando minha blicky",
+						"ff8000"
+					]
+				]
+			],
+			[
+				15085.7142857143,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				15600,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				16114.2857142857,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Com um tiroteio aqui",
+						"ff8000"
+					]
+				]
+			],
+			[
+				16457.1428571429,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				16971.4285714286,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				17485.7142857143,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Tendeu?",
+						"ff8000"
+					]
+				]
+			],
+			[
+				17828.5714285714,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				18000,
+				[
+					[
+						"Lyrics",
+						"Tu ta estressado",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				18342.8571428571,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				18857.1428571429,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Com o meu saco",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				19200,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				19714.2857142857,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				20228.5714285714,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"De meu pinto umas férias",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				20571.4285714286,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				21085.7142857143,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				21428.5714285714,
+				[
+					[
+						"Lyrics",
+						"Botando aquela bunda no teste",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				21600,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				21942.8571428571,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				22457.1428571429,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				22971.4285714286,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Coé!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				23314.2857142857,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				23314.2857142857,
+				[
+					[
+						"Lyrics",
+						"Tu e essa puta",
+						"ff8000"
+					]
+				]
+			],
+			[
+				23828.5714285714,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				24342.8571428571,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Vão pro chão",
+						"ff8000"
+					]
+				]
+			],
+			[
+				24685.7142857143,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				25200,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				25714.2857142857,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Apenas com um clique",
+						"ff8000"
+					]
+				]
+			],
+			[
+				26057.1428571429,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				26571.4285714286,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				26914.2857142857,
+				[
+					[
+						"Lyrics",
+						"Eu ganho uma grana",
+						"ff8000"
+					]
+				]
+			],
+			[
+				27085.7142857143,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				27428.5714285714,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				27942.8571428571,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				28457.1428571429,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Tendeu?",
+						"ff8000"
+					]
+				]
+			],
+			[
+				28800,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				28800,
+				[
+					[
+						"Lyrics",
+						"Foda-se tua grana",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				29314.2857142857,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				29828.5714285714,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Pois eu sei do meu valor",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				30171.4285714286,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				30685.7142857143,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				31200,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Desde que nasci",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				31542.8571428571,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				32057.1428571428,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				32400,
+				[
+					[
+						"Lyrics",
+						"E mesmo assim destruo a terra",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				32571.4285714286,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				32914.2857142857,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				33428.5714285714,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				33942.8571428571,
+				[
+					[
+						"Chromatic Shader Bop",
+						"",
+						""
+					],
+					[
+						"Lyrics",
+						"Porra!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				34285.7142857143,
+				[
+					[
+						"Lyrics",
+						"Bala na cabeça",
+						"ff8000"
+					]
+				]
+			],
+			[
+				35142.8571428571,
+				[
+					[
+						"Lyrics",
+						"Te boto a bala na cabeça",
+						"ff8000"
+					]
+				]
+			],
+			[
+				36514.2857142857,
+				[
+					[
+						"Lyrics",
+						"Encho teu cu com ferrugem",
+						"ff8000"
+					]
+				]
+			],
+			[
+				37885.7142857143,
+				[
+					[
+						"Lyrics",
+						"Enquanto anunciam sua morte",
+						"ff8000"
+					]
+				]
+			],
+			[
+				39257.1428571429,
+				[
+					[
+						"Lyrics",
+						"Eu canto",
+						"ff8000"
+					]
+				]
+			],
+			[
+				39771.4285714286,
+				[
+					[
+						"Lyrics",
+						"Recompensa na cabeça",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				40628.5714285714,
+				[
+					[
+						"Lyrics",
+						"Tenho recompensa na minha cabeça",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				42000,
+				[
+					[
+						"Lyrics",
+						"Tu ta mudo a beça",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				43371.4285714286,
+				[
+					[
+						"Lyrics",
+						"Com minha putinha na cama",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				44742.8571428572,
+				[
+					[
+						"Lyrics",
+						"Gozando!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				45257.1428571429,
+				[
+					[
+						"Lyrics",
+						"Nessa noite baleadora",
+						"ff8000"
+					]
+				]
+			],
+			[
+				46114.2857142857,
+				[
+					[
+						"Lyrics",
+						"Acho que a porra é boa",
+						"ff8000"
+					]
+				]
+			],
+			[
+				47485.7142857143,
+				[
+					[
+						"Lyrics",
+						"A mira vai ficar precisa",
+						"ff8000"
+					]
+				]
+			],
+			[
+				48857.1428571429,
+				[
+					[
+						"Lyrics",
+						"Cê vai pagar o preço",
+						"ff8000"
+					]
+				]
+			],
+			[
+				50228.5714285714,
+				[
+					[
+						"Lyrics",
+						"Eu canto",
+						"ff8000"
+					]
+				]
+			],
+			[
+				50742.8571428572,
+				[
+					[
+						"Lyrics",
+						"Nessa noite baleadora",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				51600,
+				[
+					[
+						"Lyrics",
+						"Acho que a porra tá boa",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				52971.4285714286,
+				[
+					[
+						"Lyrics",
+						"Então se quer se arriscar",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				54342.8571428572,
+				[
+					[
+						"Lyrics",
+						"Então pode ir, to como gelo",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				55714.2857142857,
+				[
+					[
+						"Lyrics",
+						"Eu canto'",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				56228.5714285714,
+				[
+					[
+						"Lyrics",
+						"Porra, esse não sou eu",
+						"ff8000"
+					]
+				]
+			],
+			[
+				57085.7142857143,
+				[
+					[
+						"Lyrics",
+						"Se mecher comigo, se fudeu",
+						"ff8000"
+					]
+				]
+			],
+			[
+				58628.5714285714,
+				[
+					[
+						"Lyrics",
+						"Já que o último se comprometeu",
+						"ff8000"
+					]
+				]
+			],
+			[
+				59828.5714285714,
+				[
+					[
+						"Lyrics",
+						"Pois a minha arma ele conheceu",
+						"ff8000"
+					]
+				]
+			],
+			[
+				61371.4285714286,
+				[
+					[
+						"Lyrics",
+						"ouça",
+						"ff8000"
+					]
+				]
+			],
+			[
+				61714.2857142857,
+				[
+					[
+						"Lyrics",
+						"Porra, já fudi demônios",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				62914.2857142857,
+				[
+					[
+						"Lyrics",
+						"Eu a tomo com meu esperma",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				64114.2857142857,
+				[
+					[
+						"GF Philly Nice Reaction",
+						"",
+						""
+					]
+				]
+			],
+			[
+				64285.7142857143,
+				[
+					[
+						"Lyrics",
+						"Meu leitin sempre ganhando",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				65657.1428571429,
+				[
+					[
+						"Lyrics",
+						"Então, eu vo vencer, cacete",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				66857.1428571429,
+				[
+					[
+						"Lyrics",
+						"Tente denovo!",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				67200,
+				[
+					[
+						"Lyrics",
+						"Cansado das mentiras.",
+						"ff8000"
+					]
+				]
+			],
+			[
+				68228.5714285714,
+				[
+					[
+						"Lyrics",
+						"Cansado de ouvir sobre teu pau.",
+						"ff8000"
+					]
+				]
+			],
+			[
+				69600,
+				[
+					[
+						"Lyrics",
+						"Agindo como um idiota",
+						"ff8000"
+					]
+				]
+			],
+			[
+				70971.4285714286,
+				[
+					[
+						"Lyrics",
+						"Se eu apertar vai acabar, tendeu?",
+						"ff8000"
+					]
+				]
+			],
+			[
+				72171.4285714286,
+				[
+					[
+						"Lyrics",
+						"Cê é nojento!",
+						"ff8000"
+					]
+				]
+			],
+			[
+				72685.7142857143,
+				[
+					[
+						"Lyrics",
+						"Cê já deveria saber",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				73714.2857142857,
+				[
+					[
+						"Lyrics",
+						"Quem vai dar show nesse lugar",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				74914.2857142857,
+				[
+					[
+						"Lyrics",
+						"Como quando cê viu o meu pau",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				76457.1428571428,
+				[
+					[
+						"Lyrics",
+						"Parecia um",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				77485.7142857143,
+				[
+					[
+						"Lyrics",
+						"Ho-o-o-o~",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				78171.4285714285,
+				[
+					[
+						"Lyrics",
+						"Essa noite baleadora",
+						"ff8000"
+					]
+				]
+			],
+			[
+				79028.5714285714,
+				[
+					[
+						"Lyrics",
+						"Acho essa porra boa",
+						"ff8000"
+					]
+				]
+			],
+			[
+				80400,
+				[
+					[
+						"Lyrics",
+						"Minha mira boa vai ficar",
+						"ff8000"
+					]
+				]
+			],
+			[
+				81771.4285714285,
+				[
+					[
+						"Lyrics",
+						"Agora cê vai pagar",
+						"ff8000"
+					]
+				]
+			],
+			[
+				83142.8571428571,
+				[
+					[
+						"Lyrics",
+						"Eu canto",
+						"ff8000"
+					]
+				]
+			],
+			[
+				83657.1428571428,
+				[
+					[
+						"Lyrics",
+						"Nessa noite baleadora",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				84514.2857142857,
+				[
+					[
+						"Lyrics",
+						"Acho que a porra ta boa",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				85885.7142857142,
+				[
+					[
+						"Lyrics",
+						"Cê você quer arriscar",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				87257.1428571428,
+				[
+					[
+						"Lyrics",
+						"Vem com tudo, sou como gelo",
+						"31B0D1"
+					]
+				]
+			],
+			[
+				88628.5714285713,
+				[
+					[
+						"Lyrics",
+						"Eu ganharei!",
+						"31B0D1"
+					]
+				]
+			]
+		]
+	}
+}
