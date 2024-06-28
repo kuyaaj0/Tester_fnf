@@ -1,0 +1,7 @@
+{
+	"name": "Funkadelix Port Mobile 0.7.3",
+	"description": "Versão final:D",
+	"restart":true,
+	"runsGlobally": false,
+	"color": [170, 0, 255]
+}
