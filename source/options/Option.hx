@@ -272,6 +272,27 @@ class ResultsScreen extends Option
 	}
 }
 
+class SmoothHealth extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	override function press()
+	{
+		
+		ClientPrefs.data.snoothHealth = !ClientPrefs.data.smoothHealth;
+		display = updateDisplay();
+    }
+
+	private override function updateDisplay():String
+	{
+		return "Smooth Health: " + (ClientPrefs.data.smoothHealth ? enable_O : disable_O);
+	}
+}
+
 class NoteOffset extends Option
 {
 	public function new(desc:String)
