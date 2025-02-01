@@ -38,7 +38,6 @@ class Replay
     static public var songLength:Float = 0;
     static public var songHits:Int = 0;
     static public var songMisses:Int = 0;
-    static public var songScore:Int = 0;
         
     static public var ratingPercent:Float = 0;
     static public var ratingFC:String = '';
@@ -164,12 +163,11 @@ class Replay
         songLength = putData[2];
         songHits = putData[3];
         songMisses = putData[4];
-        songScore = putData[5];
-        ratingPercent = putData[6];
-        ratingFC = putData[7];
-        ratingName = putData[8];
-        highestCombo = putData[9];
-        NoteTime = putData[10];
-        NoteMs = putData[11];
+        ratingPercent = putData[5];
+        ratingFC = putData[6];
+        ratingName = putData[7];
+        highestCombo = putData[8];
+        NoteTime = putData[9];
+        NoteMs = putData[10];
     } //六百六十六 -狐月影
 }

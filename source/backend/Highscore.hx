@@ -17,8 +17,6 @@ class Highscore
 		setScore(daSong, 0);
 		setTime(daSong, 'N/A');
 		setRating(daSong, 0);
-		setMsGroup(daSong, []);
-		setTimeGroup(daSong, []);
 		setKeyHit(daSong,  [[[],[],[],[]],[[],[],[],[]]]);
 		setDetails(daSong, []);
 	}
@@ -38,7 +36,6 @@ class Highscore
 				setScore(daSong, score);
 				setTime(daSong, Date.now().toString());
 				if(rating >= 0) setRating(daSong, rating);
-				setMsGroup(daSong, msGroup);
 				setTimeGroup(daSong, timeGroup);
 				setKeyHit(daSong, songNoteHit);
 				setDetails(daSong, details);
@@ -47,7 +44,6 @@ class Highscore
 			setScore(daSong, score);
 			setTime(daSong, Date.now().toString());
 			if(rating >= 0) setRating(daSong, rating);
-			setMsGroup(daSong, msGroup);
 			setTimeGroup(daSong, timeGroup);
 			setKeyHit(daSong, songNoteHit);
 			setDetails(daSong, details);
@@ -113,7 +109,7 @@ class Highscore
 	static function setDetails(song:String, group:Array<Dynamic>):Void
 	{
 		// Reminder that I don't need to format this song, it should come formatted!
-		songDetails(song, group);
+		songDetails.set(song, group);
 		FlxG.save.data.songDetails = songDetails;
 		FlxG.save.flush();
 	}
