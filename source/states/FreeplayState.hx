@@ -660,7 +660,7 @@ class FreeplayState extends MusicBeatState
 		accSave.text =  Language.get('accurate', 'fp') + ': ' + Std.string(FlxMath.roundDecimal(Highscore.getRating(songs[curSelected].songName, curDifficulty) * 100, 2)) + '%';
 		scoreSave.text =  Language.get('score', 'fp') + ': ' + Std.string(Highscore.getScore(songs[curSelected].songName, curDifficulty));
 		
-		var details = Highscore.getDetails(songs[curSelected].songName, curDifficulty);
+		var details:Array<Dynamic> = Highscore.getDetails(songs[curSelected].songName, curDifficulty);
 		result.updateRect(details[9], details[10], details[2]);
 	}
 
