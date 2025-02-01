@@ -199,7 +199,7 @@ class ResultsScreen extends MusicBeatSubstate
 		
 		scTextAdd('Score: ' + game.songScore, 1);
 		scTextAdd('Highest Combe: ' + game.highestCombo, 2);
-		scTextAdd('Accuracy: ' + Math.ceil(ratingPercent * 10000) / 100 + '%', 1);
+		scTextAdd('Accuracy: ' + Math.ceil(game.ratingPercent * 10000) / 100 + '%', 1);
 		if (game.ratingFC == '') scTextAdd('Rank: N/A', 2);
 		else scTextAdd('Rank: ' + game.ratingName + ' - ' + game.ratingFC, 2);
 		scTextAdd('Hits: ' + game.songHits, 1);
