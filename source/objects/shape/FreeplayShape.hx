@@ -575,7 +575,7 @@ class ResultRect extends FlxSpriteGroup
         this._height = height;
     }
     
-    public function updateRect(?msGroup:Array<Float>, ?timeGroup:Array<Float>)
+    public function updateRect(?msGroup:Array<Float>, ?timeGroup:Array<Float>, ?timeLength:Float)
     {
         var shape:Shape = new Shape();
 
@@ -593,7 +593,7 @@ class ResultRect extends FlxSpriteGroup
     		    if (Math.abs(msGroup[i]) > safeZoneOffset) data = safeZoneOffset; 	
     		    
     		    shape.graphics.beginFill(color);     		    
-                shape.graphics.drawCircle(_width * (timeGroup[i] / timeGroup[timeGroup.length - 1]), _height / 2 + _height / 2 * (data / safeZoneOffset), 1.8);
+                shape.graphics.drawCircle(_width * (timeGroup[i] / timeLength), _height / 2 + _height / 2 * (data / safeZoneOffset), 1.8);
                 shape.graphics.endFill();	
             }
         }
