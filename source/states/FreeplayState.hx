@@ -448,6 +448,7 @@ class FreeplayState extends MusicBeatState
 				PlayState.replayMode = true;
 				closeCheck = true;
 				Replay.saveData = Highscore.getKeyHit(songs[curSelected].songName, curDifficulty);
+				Replay.putDetails(Highscore.getDetails(songs[curSelected].songName, curDifficulty));
 				startGame();
 			}else{
 				getReadyReplay = true;
@@ -659,9 +660,8 @@ class FreeplayState extends MusicBeatState
 		accSave.text =  Language.get('accurate', 'fp') + ': ' + Std.string(FlxMath.roundDecimal(Highscore.getRating(songs[curSelected].songName, curDifficulty) * 100, 2)) + '%';
 		scoreSave.text =  Language.get('score', 'fp') + ': ' + Std.string(Highscore.getScore(songs[curSelected].songName, curDifficulty));
 		
-		var msArray = Highscore.getMsGroup(songs[curSelected].songName, curDifficulty);
-		var timeArray = Highscore.getTimeGroup(songs[curSelected].songName, curDifficulty);
-		result.updateRect(msArray, timeArray);
+		var details = Highscore.getDetails(songs[curSelected].songName, curDifficulty);
+		result.updateRect(details[10], details[11], details[2]);
 	}
 
 	var rectMutex:Mutex = new Mutex();

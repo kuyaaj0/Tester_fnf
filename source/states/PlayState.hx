@@ -2844,7 +2844,10 @@ class PlayState extends MusicBeatState
 			#if !switch
 			var percent:Float = ratingPercent;
 			if(Math.isNaN(percent)) percent = 0;
-			if (!ClientPrefs.data.playOpponent && !replayMode) Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent, NoteMs, NoteTime,Replay.saveData);
+			if (!ClientPrefs.data.playOpponent && !replayMode) {
+			    Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent, Replay.saveData, [songName, songScore, songLength, songHits, songMisses, songScore, ratingPercent, ratingFC, ratingName, highestCombo, NoteTime, NoteMs]);
+			    Replay.putData([songName, songScore, songLength, songHits, songMisses, songScore, ratingPercent, ratingFC, ratingName, highestCombo, NoteTime, NoteMs]);
+			}
 			#end
 			playbackRate = 1;
 
