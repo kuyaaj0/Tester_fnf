@@ -108,7 +108,7 @@ class ResultsScreen extends MusicBeatSubstate
 	    
 		super();		
 		
-		if (PlayState.replayMode) game = Replay;
+		if (PlayState.replayMode) game = backend.Replay;
 	    
 	    cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 	    
