@@ -82,7 +82,7 @@ class ResultsScreen extends MusicBeatSubstate
 	static public var camOther:FlxCamera;        
     //camera
     
-    public var game = PlayState.instance;
+    var game:Dynamic = PlayState.instance;
     
     var ColorArray:Array<FlxColor> = [
     		0xFFFFFF00, //marvelous
