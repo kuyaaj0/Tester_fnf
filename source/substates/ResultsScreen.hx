@@ -199,7 +199,7 @@ class ResultsScreen extends MusicBeatSubstate
 		
 		scTextAdd('Score: ' + game.songScore, 1);
 		scTextAdd('Highest Combe: ' + game.highestCombo, 2);
-		scTextAdd('Accuracy: ' + Math.floor(game.ratingPercent * 10000) / 100 + '%', 1);
+		scTextAdd('Accuracy: ' + Math.ceil(ratingPercent * 10000) / 100 + '%', 1);
 		if (game.ratingFC == '') scTextAdd('Rank: N/A', 2);
 		else scTextAdd('Rank: ' + game.ratingName + ' - ' + game.ratingFC, 2);
 		scTextAdd('Hits: ' + game.songHits, 1);
@@ -400,7 +400,7 @@ class ResultsScreen extends MusicBeatSubstate
 	    var MoveSize = 0.8;
 	    var color:FlxColor;
 	    
-	    for (i in 0...game.NoteTime.length - 1){
+	    for (i in 0...Math.floor(game.NoteTime.length - 1)){
 		    if (Math.abs(game.NoteMs[i]) <= ClientPrefs.data.marvelousWindow && ClientPrefs.data.marvelousRating) color = ColorArray[0];
 		    else if (Math.abs(game.NoteMs[i]) <= ClientPrefs.data.sickWindow) color = ColorArray[1];
 		    else if (Math.abs(game.NoteMs[i]) <= ClientPrefs.data.goodWindow) color = ColorArray[2];
@@ -456,7 +456,7 @@ class ResultsScreen extends MusicBeatSubstate
     	var numBads:Int = 0;
     	var numShits:Int = 0;
 	
-	    for (i in 0...game.NoteTime.length - 1){
+	    for (i in 0...Math.floor(game.NoteTime.length - 1)){
 		    if (Math.abs(game.NoteMs[i]) <= ClientPrefs.data.marvelousWindow && ClientPrefs.data.marvelousRating) numMarvelous++;
 		    else if (Math.abs(game.NoteMs[i]) <= ClientPrefs.data.sickWindow) numSicks++;
 		    else if (Math.abs(game.NoteMs[i]) <= ClientPrefs.data.goodWindow) numGoods++;
