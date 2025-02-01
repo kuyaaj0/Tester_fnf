@@ -27,7 +27,7 @@ class Highscore
 		setWeekScore(daWeek, 0);
 	}
 
-	public static function saveScore(song:String, score:Int = 0, diff:Int = 0, rating:Float = -1, msGroup:Array<Float>, timeGroup:Array<Float>, songNoteHit:Array<Array<Array<Float>>>, details:Array<Dynamic>):Void
+	public static function saveScore(song:String, score:Int = 0, diff:Int = 0, rating:Float = -1, songNoteHit:Array<Array<Array<Float>>>, details:Array<Dynamic>):Void
 	{
 		var daSong:String = formatSong(song, diff);
 
@@ -36,7 +36,6 @@ class Highscore
 				setScore(daSong, score);
 				setTime(daSong, Date.now().toString());
 				if(rating >= 0) setRating(daSong, rating);
-				setTimeGroup(daSong, timeGroup);
 				setKeyHit(daSong, songNoteHit);
 				setDetails(daSong, details);
 			}
@@ -44,7 +43,6 @@ class Highscore
 			setScore(daSong, score);
 			setTime(daSong, Date.now().toString());
 			if(rating >= 0) setRating(daSong, rating);
-			setTimeGroup(daSong, timeGroup);
 			setKeyHit(daSong, songNoteHit);
 			setDetails(daSong, details);
 		}
