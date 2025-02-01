@@ -661,7 +661,7 @@ class FreeplayState extends MusicBeatState
 		scoreSave.text =  Language.get('score', 'fp') + ': ' + Std.string(Highscore.getScore(songs[curSelected].songName, curDifficulty));
 		
 		var details = Highscore.getDetails(songs[curSelected].songName, curDifficulty);
-		result.updateRect(details[10], details[11], details[2]);
+		result.updateRect(details[9], details[10], details[2]);
 	}
 
 	var rectMutex:Mutex = new Mutex();
