@@ -6,10 +6,9 @@ class Highscore
 	public static var songScores:Map<String, Int> = new Map<String, Int>();
 	public static var songRating:Map<String, Float> = new Map<String, Float>();
     public static var songTimes:Map<String, String> = new Map<String, String>();
-    public static var songNoteMs:Map<String, Array<Float>> = new Map<String, Array<Float>>();
-    public static var songNoteTime:Map<String, Array<Float>> = new Map<String, Array<Float>>();
 	
-    public static var songNoteHit:Map<String, Dynamic> = new Map<String, Dynamic>();
+    public static var songNoteHit:Map<String, Dynamic> = new Map<String, Dynamic>(); //Array<Array<Array<Float>>>
+    public static var songDetails:Map<String, Array<Dynamic>> = new Map<String, Array<Dynamic>>();
 
     
 	public static function resetSong(song:String, diff:Int = 0):Void
@@ -21,7 +20,7 @@ class Highscore
 		setMsGroup(daSong, []);
 		setTimeGroup(daSong, []);
 		setKeyHit(daSong,  [[[],[],[],[]],[[],[],[],[]]]);
-		
+		setDetails(daSong, []);
 	}
 
 	public static function resetWeek(week:String, diff:Int = 0):Void
@@ -30,27 +29,28 @@ class Highscore
 		setWeekScore(daWeek, 0);
 	}
 
-	public static function saveScore(song:String, score:Int = 0, diff:Int = 0, rating:Float = -1, msGroup:Array<Float>, timeGroup:Array<Float>, songNoteHit:Array<Array<Array<Float>>>):Void
+	public static function saveScore(song:String, score:Int = 0, diff:Int = 0, rating:Float = -1, msGroup:Array<Float>, timeGroup:Array<Float>, songNoteHit:Array<Array<Array<Float>>>, details:Array<Dynamic>):Void
 	{
 		var daSong:String = formatSong(song, diff);
 
 		if (songScores.exists(daSong)) {
-			if (songScores.get(daSong) < score) {
+			if (songScores.get(daSong) < score || songRating.get(daSong) < rating) {
 				setScore(daSong, score);
 				setTime(daSong, Date.now().toString());
 				if(rating >= 0) setRating(daSong, rating);
 				setMsGroup(daSong, msGroup);
 				setTimeGroup(daSong, timeGroup);
 				setKeyHit(daSong, songNoteHit);
+				setDetails(daSong, details);
 			}
-		}
-		else {
+		} else {
 			setScore(daSong, score);
 			setTime(daSong, Date.now().toString());
 			if(rating >= 0) setRating(daSong, rating);
 			setMsGroup(daSong, msGroup);
 			setTimeGroup(daSong, timeGroup);
 			setKeyHit(daSong, songNoteHit);
+			setDetails(daSong, details);
 		}
 	}
 
@@ -101,28 +101,20 @@ class Highscore
 		FlxG.save.data.songTimes = songTimes;
 		FlxG.save.flush();
 	}
-	
-	static function setMsGroup(song:String, group:Array<Float>):Void
-	{
-		// Reminder that I don't need to format this song, it should come formatted!
-		songNoteMs.set(song, group);
-		FlxG.save.data.songNoteMs = songNoteMs;
-		FlxG.save.flush();
-	}
-	
-	static function setTimeGroup(song:String, group:Array<Float>):Void
-	{
-		// Reminder that I don't need to format this song, it should come formatted!
-		songNoteTime.set(song, group);
-		FlxG.save.data.songNoteTime = songNoteTime;
-		FlxG.save.flush();
-	}
 
 	static function setKeyHit(song:String, group:Array<Array<Array<Float>>>):Void
 	{
 		// Reminder that I don't need to format this song, it should come formatted!
 		songNoteHit.set(song, group);
 		FlxG.save.data.songNoteHit = songNoteHit;
+		FlxG.save.flush();
+	}
+	
+	static function setDetails(song:String, group:Array<Dynamic>):Void
+	{
+		// Reminder that I don't need to format this song, it should come formatted!
+		songDetails(song, group);
+		FlxG.save.data.songDetails = songDetails;
 		FlxG.save.flush();
 	}
 
@@ -166,24 +158,6 @@ class Highscore
         }
 		return songTimes.get(daSong);
 	}
-	
-	public static function getMsGroup(song:String, diff:Int):Array<Float>
-	{
-		var daSong:String = formatSong(song, diff);
-		if (!songNoteMs.exists(daSong)){
-			setMsGroup(daSong, []);			
-        }
-		return songNoteMs.get(daSong);				
-	}
-	
-	public static function getTimeGroup(song:String, diff:Int):Array<Float>
-	{
-		var daSong:String = formatSong(song, diff);
-		if (!songNoteTime.exists(daSong)){
-			setTimeGroup(daSong, []);			
-        }
-		return songNoteTime.get(daSong);				
-	}
 
 	public static function getKeyHit(song:String, diff:Int):Dynamic
 	{
@@ -192,6 +166,15 @@ class Highscore
 			setKeyHit(daSong, [[[],[],[],[]],[[],[],[],[]]]);
         }
 		return songNoteHit.get(daSong);
+	}
+	
+	public static function getDetails(song:String, diff:Int):Dynamic
+	{
+		var daSong:String = formatSong(song, diff);
+		if (!songDetails.exists(daSong)){
+			setDetails(daSong, []);
+        }
+		return songDetails.get(daSong);
 	}
 
 	public static function load():Void
@@ -211,18 +194,14 @@ class Highscore
 		if (FlxG.save.data.songTimes != null)
 		{
 			songTimes = FlxG.save.data.songTimes;
-		}
-		if (FlxG.save.data.songNoteMs != null)
-		{
-			songNoteMs = FlxG.save.data.songNoteMs;
-		}
-		if (FlxG.save.data.songNoteTime != null)
-		{
-			songNoteTime = FlxG.save.data.songNoteTime;
-		}
+		}		
 		if (FlxG.save.data.songNoteHit != null)
 		{
 			songNoteHit = FlxG.save.data.songNoteHit;
+		}
+		if (FlxG.save.data.songDetails != null)
+		{
+			songDetails = FlxG.save.data.songDetails;
 		}
 	}
 }
