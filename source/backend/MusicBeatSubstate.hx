@@ -2,6 +2,8 @@ package backend;
 
 import flixel.FlxSubState;
 
+import shaders.ColorblindFilter;
+
 class MusicBeatSubstate extends FlxSubState
 {
 	public static var instance:MusicBeatSubstate;
@@ -10,6 +12,7 @@ class MusicBeatSubstate extends FlxSubState
 	{
 		instance = this;
 		controls.isInSubstate = true;
+		ColorblindFilter.UpdateColors();
 		super();
 	}
 	private var curSection:Int = 0;
