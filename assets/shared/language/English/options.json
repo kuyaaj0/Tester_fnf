@@ -130,11 +130,11 @@
     "UserInterface": "UserInterface",
     "UserInterfaceTitle": "User Interface",
     
-    "CustomFade": "Custom tade type",
+    "CustomFade": "Custom fade type",
     "CustomFadeSound": "Custom fade sound volume",
     "CustomFadeText": "Custom fade text visible",
     "skipTitleVideo": "Skip intro video",
-    "audioDisplayQuality": "The higher the analytical quality of music data,the greater the computational requirements",
+    "audioDisplayQuality": "The analytical quality of music data",
     "audioDisplayUpdate": "The reaction interval of the music analyzer",
     "freeplayOld": "Use psych freeplay",
     "resultsScreen": "Open Results Screen at end song",
