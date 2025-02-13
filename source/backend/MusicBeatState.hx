@@ -5,6 +5,8 @@ import flixel.FlxState;
 import flixel.addons.ui.FlxUIState;
 import backend.PsychCamera;
 
+import shaders.ColorblindFilter;
+
 class MusicBeatState extends FlxUIState
 {
 	public static var instance:MusicBeatState;
@@ -110,6 +112,8 @@ class MusicBeatState extends FlxUIState
 		#if MODS_ALLOWED Mods.updatedOnState = false; #end
 
 		if(!_psychCameraInitialized) initPsychCamera();
+		
+		ColorblindFilter.UpdateColors();
 
 		super.create();
 
