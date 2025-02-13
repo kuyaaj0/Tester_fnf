@@ -11,8 +11,6 @@ import states.FreeplayState;
 import states.FreeplayStatePsych;
 import states.StoryMenuState;
 
-import shaders.ColorblindFilter;
-
 import options.OptionsState;
 
 import flixel.util.FlxStringUtil;
@@ -113,7 +111,6 @@ class PauseSubState extends MusicBeatSubstate
 
 	override function create()
 	{
-		ColorblindFilter.UpdateColors();
 		font = Paths.font(Language.get('fontName', 'ma') + '.ttf'); 
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		pauseMusic = new FlxSound();
