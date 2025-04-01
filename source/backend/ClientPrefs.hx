@@ -63,7 +63,7 @@ import states.TitleState;
 	public var fileLoad:String = 'NovaFlare Engine';
 	public var openedFlash:Bool = false;
 	public var screensaver:Bool = false;
-	public var filesCheck:Bool = false;  //还不如就别自动复制了
+	public var filesCheck:Bool = #if ios false #else true #end;
 	
 	//Game UI
 	//Visble s
