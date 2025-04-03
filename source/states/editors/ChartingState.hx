@@ -1765,7 +1765,11 @@ class ChartingState extends MusicBeatState
 		for (touch in FlxG.touches.list)
 		{
 			var nowMoveNote = null;
-			if (touch.pressed && noteMove) 
+			if (touch.pressed && noteMove
+			   && touch.x > gridBG.x
+				&& touch.x < gridBG.x + gridBG.width
+				&& touch.y > gridBG.y
+				&& touch.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom]) 
 			{
 				if (touch.overlaps(curRenderedNotes) && nowMoveNote == null)
 				{
