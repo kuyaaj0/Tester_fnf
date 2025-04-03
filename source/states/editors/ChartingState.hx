@@ -1780,12 +1780,17 @@ class ChartingState extends MusicBeatState
 				     });
 				}
 				if (FlxG.keys.pressed.SHIFT || virtualPad.buttonY.pressed){
-					nowMoveNote.y = dummyArrow.y = touch.y;
+					nowMoveNote.y = touch.y;
 				}else{
-					nowMoveNote.y = dummyArrow.y = Math.floor(touch.y / GRID_SIZE) * GRID_SIZE;
+					nowMoveNote.y = Math.floor(touch.y / GRID_SIZE) * GRID_SIZE;
 				}
-			}else if(touch.justReleased && noteMove){
-				if (nowMoveNote != null) {
+			}
+			if(touch.justReleased && noteMove){
+				if (nowMoveNote != null 
+			        && touch.x > gridBG.x
+				&& touch.x < gridBG.x + gridBG.width
+				&& touch.y > gridBG.y
+				&& touch.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom]) {
 					addNote(null,nowMoveNote.noteData);
 					deleteNote(nowMoveNote);
 					nowMoveNote = null;
@@ -1793,16 +1798,14 @@ class ChartingState extends MusicBeatState
 			}
 			if (touch.justReleased && !noteMove)
 			{
-                var noteSelected = false; //要是箭头叠一块了就不会同时触发
 				if (touch.overlaps(curRenderedNotes))
 				{
 					curRenderedNotes.forEachAlive(function(note:Note)
 					{
-						if (touch.overlaps(note) && !noteSelected)
+						if (touch.overlaps(note))
 						{
 							deleteNote(note);
 						}
-                        noteSelected = true; //限制按下后最多只能选中一个箭头
 					});
 				}
 				else
@@ -1846,15 +1849,19 @@ class ChartingState extends MusicBeatState
 					    {
 						nowMoveNote = note;
 						if (FlxG.keys.pressed.SHIFT || virtualPad.buttonY.pressed){
-					            nowMoveNote.y = dummyArrow.y = FlxG.mouse.y;
+					            nowMoveNote.y = FlxG.mouse.y;
 				                }else{
-					            nowMoveNote.y = dummyArrow.y = Math.floor(FlxG.mouse.y / GRID_SIZE) * GRID_SIZE;
+					            nowMoveNote.y = Math.floor(FlxG.mouse.y / GRID_SIZE) * GRID_SIZE;
 				                }
 					    }
 					});
 				}
 			}else if(FlxG.mouse.released && noteMove){
-				if (nowMoveNote != null) {
+				if (nowMoveNote != null
+			        && touch.x > gridBG.x
+				&& touch.x < gridBG.x + gridBG.width
+				&& touch.y > gridBG.y
+				&& touch.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom]) {
 					addNote(null,nowMoveNote.noteData);
 					deleteNote(nowMoveNote);
 					nowMoveNote = null;
@@ -1865,10 +1872,9 @@ class ChartingState extends MusicBeatState
 		{
 			if (FlxG.mouse.overlaps(curRenderedNotes))
 			{
-                var noteSelected = false; //要是箭头叠一块了就不会同时触发
 				curRenderedNotes.forEachAlive(function(note:Note)
 				{
-					if (FlxG.mouse.overlaps(note) && !noteSelected)
+					if (FlxG.mouse.overlaps(note))
 					{
 						if (FlxG.keys.pressed.CONTROL)
 						{
@@ -1885,7 +1891,6 @@ class ChartingState extends MusicBeatState
 							//trace('tryin to delete note...');
 							deleteNote(note);
 						}
-                        noteSelected = true; //限制按下左键后最多只能选中一个箭头
 					}
 				});
 			}
