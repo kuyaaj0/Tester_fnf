@@ -1820,7 +1820,7 @@ class ChartingState extends MusicBeatState
 		}
 
 		} else {
-			var nowMoveNote:null;
+			var nowMoveNote = null;
 			if (FlxG.mouse.pressed && noteMove) 
 			{
 				if (FlxG.mouse.overlaps(curRenderedNotes))
