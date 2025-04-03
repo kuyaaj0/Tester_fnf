@@ -1757,14 +1757,16 @@ class ChartingState extends MusicBeatState
 		{
 			if (touch.justReleased)
 			{
+                var noteSelected = false; //要是箭头叠一块了就不会同时触发
 				if (touch.overlaps(curRenderedNotes))
 				{
 					curRenderedNotes.forEachAlive(function(note:Note)
 					{
-						if (touch.overlaps(note))
+						if (touch.overlaps(note) && !noteSelected)
 						{
 							deleteNote(note);
 						}
+                        noteSelected = true; //限制按下后最多只能选中一个箭头
 					});
 				}
 				else
@@ -1802,9 +1804,10 @@ class ChartingState extends MusicBeatState
 		{
 			if (FlxG.mouse.overlaps(curRenderedNotes))
 			{
+                var noteSelected = false; //要是箭头叠一块了就不会同时触发
 				curRenderedNotes.forEachAlive(function(note:Note)
 				{
-					if (FlxG.mouse.overlaps(note))
+					if (FlxG.mouse.overlaps(note) && !noteSelected)
 					{
 						if (FlxG.keys.pressed.CONTROL)
 						{
@@ -1821,6 +1824,7 @@ class ChartingState extends MusicBeatState
 							//trace('tryin to delete note...');
 							deleteNote(note);
 						}
+                        noteSelected = true; //限制按下左键后最多只能选中一个箭头
 					}
 				});
 			}
