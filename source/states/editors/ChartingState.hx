@@ -1753,7 +1753,7 @@ class ChartingState extends MusicBeatState
 		FlxG.watch.addQuick('daBeat', curBeat);
 		FlxG.watch.addQuick('daStep', curStep);
 
-		if (virtualPad.buttonS.pressed || FlxG.keys.pressed.L){
+		if (virtualPad.buttonS.justPressed || FlxG.keys.justPressed.L){
 			if (noteMove) {
 				noteMove = false;
 			}else{
@@ -1767,24 +1767,31 @@ class ChartingState extends MusicBeatState
 			var nowMoveNote = null;
 			if (touch.pressed && noteMove) 
 			{
-				if (touch.overlaps(curRenderedNotes))
+				if (touch.overlaps(curRenderedNotes) && nowMoveNote == null)
 				{
-					curRenderedNotes.forEachAlive(function(note:Note)
+				    curRenderedNotes.forEachAlive(function(note:Note)
 				    {
 					    if (touch.overlaps(note))
 					    {
-							note.y = touch.y;
-							nowMoveNote = note;
-						}
-					});
+						    selectNote(note);
+						    
+						    nowMoveNote = note;
+					    }
+				     });
+				}
+				if (FlxG.keys.pressed.SHIFT || virtualPad.buttonY.pressed){
+					nowMoveNote.y = dummyArrow.y = touch.y;
+				}else{
+					nowMoveNote.y = dummyArrow.y = Math.floor(touch.y / GRID_SIZE) * GRID_SIZE;
 				}
 			}else if(touch.justReleased && noteMove){
 				if (nowMoveNote != null) {
+					addNote(null,nowMoveNote.noteData);
 					deleteNote(nowMoveNote);
-					addNote();
+					nowMoveNote = null;
 				}
 			}
-			if (touch.justReleased)
+			if (touch.justReleased && !noteMove)
 			{
                 var noteSelected = false; //要是箭头叠一块了就不会同时触发
 				if (touch.overlaps(curRenderedNotes))
@@ -1831,21 +1838,26 @@ class ChartingState extends MusicBeatState
 			var nowMoveNote = null;
 			if (FlxG.mouse.pressed && noteMove) 
 			{
-				if (FlxG.mouse.overlaps(curRenderedNotes))
+				if (FlxG.mouse.overlaps(curRenderedNotes) && nowMoveNote == null)
 				{
 					curRenderedNotes.forEachAlive(function(note:Note)
 				    {
 					    if (FlxG.mouse.overlaps(note))
 					    {
-							note.y = FlxG.mouse.y;
-							nowMoveNote = note;
-						}
+						if (FlxG.keys.pressed.SHIFT || virtualPad.buttonY.pressed){
+					            nowMoveNote.y = dummyArrow.y = touch.y;
+				                }else{
+					            nowMoveNote.y = dummyArrow.y = Math.floor(touch.y / GRID_SIZE) * GRID_SIZE;
+				                }
+						nowMoveNote = note;
+					    }
 					});
 				}
 			}else if(FlxG.mouse.released && noteMove){
 				if (nowMoveNote != null) {
+					addNote(null,nowMoveNote.noteData);
 					deleteNote(nowMoveNote);
-					addNote();
+					nowMoveNote = null;
 				}
 			}
 
