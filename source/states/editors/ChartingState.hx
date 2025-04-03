@@ -1858,10 +1858,10 @@ class ChartingState extends MusicBeatState
 				}
 			}else if(FlxG.mouse.released && noteMove){
 				if (nowMoveNote != null
-			        && touch.x > gridBG.x
-				&& touch.x < gridBG.x + gridBG.width
-				&& touch.y > gridBG.y
-				&& touch.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom]) {
+			        && FlxG.mouse.x > gridBG.x
+				&& FlxG.mouse.x < gridBG.x + gridBG.width
+				&& FlxG.mouse.y > gridBG.y
+				&& FlxG.mouse.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom]) {
 					addNote(null,nowMoveNote.noteData);
 					deleteNote(nowMoveNote);
 					nowMoveNote = null;
