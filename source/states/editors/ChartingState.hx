@@ -1772,7 +1772,7 @@ class ChartingState extends MusicBeatState
 				}
 			}else if(touch.justReleased && noteMove){
 				if (nowMoveNote != null) {
-					deleteNote(note);
+					deleteNote(nowMoveNote);
 					addNote();
 				}
 			}
@@ -1829,14 +1829,14 @@ class ChartingState extends MusicBeatState
 				    {
 					    if (FlxG.mouse.overlaps(note))
 					    {
-							note.y = mouse.y;
+							note.y = FlxG.mouse.y;
 							nowMoveNote = note;
 						}
 					});
 				}
 			}else if(FlxG.mouse.released && noteMove){
 				if (nowMoveNote != null) {
-					deleteNote(note);
+					deleteNote(nowMoveNote);
 					addNote();
 				}
 			}
