@@ -1753,6 +1753,14 @@ class ChartingState extends MusicBeatState
 		FlxG.watch.addQuick('daBeat', curBeat);
 		FlxG.watch.addQuick('daStep', curStep);
 
+		if (virtualPad.buttonS.presse || FlxG.keys.pressed.L){
+			if (noteMove) {
+				noteMove = false;
+			}else{
+				noteMove = true;
+			}
+		}
+
 		if (controls.mobileC) {
 		for (touch in FlxG.touches.list)
 		{
