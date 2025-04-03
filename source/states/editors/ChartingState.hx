@@ -1713,6 +1713,7 @@ class ChartingState extends MusicBeatState
 
 	var lastConductorPos:Float;
 	var colorSine:Float = 0;
+	var noteMove:Bool =false;
 	override function update(elapsed:Float)
 	{
 		curStep = recalculateSteps();
@@ -1755,6 +1756,26 @@ class ChartingState extends MusicBeatState
 		if (controls.mobileC) {
 		for (touch in FlxG.touches.list)
 		{
+			var nowMoveNote:null;
+			if (touch.pressed && noteMove) 
+			{
+				if (touch.overlaps(curRenderedNotes))
+				{
+					curRenderedNotes.forEachAlive(function(note:Note)
+				    {
+					    if (touch.overlaps(note))
+					    {
+							note.y = touch.y;
+							nowMoveNote = note;
+						}
+					});
+				}
+			}else if(touch.justReleased && noteMove){
+				if (nowMoveNote != null) {
+					deleteNote(note);
+					addNote();
+				}
+			}
 			if (touch.justReleased)
 			{
                 var noteSelected = false; //要是箭头叠一块了就不会同时触发
@@ -1799,8 +1820,28 @@ class ChartingState extends MusicBeatState
 		}
 
 		} else {
+			var nowMoveNote:null;
+			if (FlxG.mouse.pressed && noteMove) 
+			{
+				if (FlxG.mouse.overlaps(curRenderedNotes))
+				{
+					curRenderedNotes.forEachAlive(function(note:Note)
+				    {
+					    if (FlxG.mouse.overlaps(note))
+					    {
+							note.y = mouse.y;
+							nowMoveNote = note;
+						}
+					});
+				}
+			}else if(FlxG.mouse.released && noteMove){
+				if (nowMoveNote != null) {
+					deleteNote(note);
+					addNote();
+				}
+			}
 
-		if (FlxG.mouse.justPressed)
+		if (FlxG.mouse.justPressed && !noteMove)
 		{
 			if (FlxG.mouse.overlaps(curRenderedNotes))
 			{
