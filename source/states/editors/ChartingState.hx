@@ -1756,7 +1756,7 @@ class ChartingState extends MusicBeatState
 		if (controls.mobileC) {
 		for (touch in FlxG.touches.list)
 		{
-			var nowMoveNote:null;
+			var nowMoveNote = null;
 			if (touch.pressed && noteMove) 
 			{
 				if (touch.overlaps(curRenderedNotes))
