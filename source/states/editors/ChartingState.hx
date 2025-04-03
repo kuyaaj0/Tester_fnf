@@ -1844,12 +1844,12 @@ class ChartingState extends MusicBeatState
 				    {
 					    if (FlxG.mouse.overlaps(note))
 					    {
-						if (FlxG.keys.pressed.SHIFT || virtualPad.buttonY.pressed){
-					            nowMoveNote.y = dummyArrow.y = touch.y;
-				                }else{
-					            nowMoveNote.y = dummyArrow.y = Math.floor(touch.y / GRID_SIZE) * GRID_SIZE;
-				                }
 						nowMoveNote = note;
+						if (FlxG.keys.pressed.SHIFT || virtualPad.buttonY.pressed){
+					            nowMoveNote.y = dummyArrow.y = FlxG.mouse.y;
+				                }else{
+					            nowMoveNote.y = dummyArrow.y = Math.floor(FlxG.mouse.y / GRID_SIZE) * GRID_SIZE;
+				                }
 					    }
 					});
 				}
