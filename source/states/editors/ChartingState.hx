@@ -1766,7 +1766,7 @@ class ChartingState extends MusicBeatState
 			noteMove = true;
 		}
 		if (FlxG.mouse.justReleasedRight){
-			noteMove false;
+			noteMove = false;
 		}
 
 		if (controls.mobileC) {
