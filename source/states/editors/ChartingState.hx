@@ -1762,6 +1762,12 @@ class ChartingState extends MusicBeatState
 				noteMove = true;
 			}
 		}
+		if (FlxG.mouse.pressedRight){
+			noteMove = true;
+		}
+		if (FlxG.mouse.justReleasedRight){
+			noteMove false;
+		}
 
 		if (controls.mobileC) {
 		for (touch in FlxG.touches.list)
@@ -1840,26 +1846,29 @@ class ChartingState extends MusicBeatState
 		}
 
 		} else {
-			var nowMoveNote = null;
-			if (FlxG.mouse.pressed && noteMove) 
+			if (FlxG.mouse.pressedRight && noteMove
+			   && FlxG.mouse.x > gridBG.x
+				&& FlxG.mouse.x < gridBG.x + gridBG.width
+				&& FlxG.mouse.y > gridBG.y
+				&& FlxG.mouse.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom]) 
 			{
-				if (FlxG.mouse.overlaps(curRenderedNotes) && nowMoveNote == null)
+				if (FlxG.mouse.overlaps(curRenderedNotes))
 				{
-					curRenderedNotes.forEachAlive(function(note:Note)
+				    curRenderedNotes.forEachAlive(function(note:Note)
 				    {
 					    if (FlxG.mouse.overlaps(note))
 					    {
-						nowMoveNote = note;
-						if (FlxG.keys.pressed.SHIFT || virtualPad.buttonY.pressed){
-					            nowMoveNote.y = FlxG.mouse.y;
-				                }else{
-					            nowMoveNote.y = Math.floor(FlxG.mouse.y / GRID_SIZE) * GRID_SIZE;
-				                }
+						    if (nowMoveNote == null){
+						        nowMoveNote = note;
+							selectNote(note);
+						    }
 					    }
-					});
+				     });
+				     nowMoveNote.y = dummyArrow.y;
 				}
-			}else if(FlxG.mouse.released && noteMove){
-				if (nowMoveNote != null
+			}
+			if(FlxG.mouse.justReleasedRight && noteMove){
+				if (nowMoveNote != null 
 			        && FlxG.mouse.x > gridBG.x
 				&& FlxG.mouse.x < gridBG.x + gridBG.width
 				&& FlxG.mouse.y > gridBG.y
@@ -2301,7 +2310,8 @@ class ChartingState extends MusicBeatState
 		"\n\nBeat: " + Std.string(curDecBeat).substring(0,4) +
 		"\n\nStep: " + curStep +
 		if ((quantization - 2) % 10 == 0 && quantization != 12) "\n\nBeat Snap: " + quantization + "nd";
-		else "\n\nBeat Snap: " + quantization + "th";
+		else "\n\nBeat Snap: " + quantization + "th" +
+		"\n\nMove Note Mode: " + noteMove;
 
 		var playedSound:Array<Bool> = [false, false, false, false]; //Prevents ouchy GF sex sounds
 		curRenderedNotes.forEachAlive(function(note:Note) {
