@@ -1713,7 +1713,9 @@ class ChartingState extends MusicBeatState
 
 	var lastConductorPos:Float;
 	var colorSine:Float = 0;
-	var noteMove:Bool =false;
+					
+	var noteMove:Bool = false;
+	var nowMoveNote = null;	
 	override function update(elapsed:Float)
 	{
 		curStep = recalculateSteps();
@@ -1764,7 +1766,6 @@ class ChartingState extends MusicBeatState
 		if (controls.mobileC) {
 		for (touch in FlxG.touches.list)
 		{
-			var nowMoveNote = null;
 			if (touch.pressed && noteMove
 			   && touch.x > gridBG.x
 				&& touch.x < gridBG.x + gridBG.width
@@ -1781,9 +1782,9 @@ class ChartingState extends MusicBeatState
 						        nowMoveNote = note;
 							selectNote(note);
 						    }
-					            nowMoveNote.y = dummyArrow.y;
 					    }
 				     });
+				     nowMoveNote.y = dummyArrow.y;
 				}
 			}
 			if(touch.justReleased && noteMove){
