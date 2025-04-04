@@ -1778,15 +1778,17 @@ class ChartingState extends MusicBeatState
 					    if (touch.overlaps(note))
 					    {
 						    selectNote(note);
-						    
-						    nowMoveNote = note;
+						    if (nowMoveNote == null){
+						        nowMoveNote = note;
+						    }else{
+						        if (FlxG.keys.pressed.SHIFT || virtualPad.buttonY.pressed){
+					                    nowMoveNote.y = touch.y;
+				                        }else{
+					                    nowMoveNote.y = Math.floor(touch.y / GRID_SIZE) * GRID_SIZE;
+				                        }
+						    }
 					    }
 				     });
-				}
-				if (FlxG.keys.pressed.SHIFT || virtualPad.buttonY.pressed){
-					nowMoveNote.y = touch.y;
-				}else{
-					nowMoveNote.y = Math.floor(touch.y / GRID_SIZE) * GRID_SIZE;
 				}
 			}
 			if(touch.justReleased && noteMove){
