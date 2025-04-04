@@ -194,7 +194,7 @@ class FlxVirtualPad extends FlxMobileInputManager
 			    add(buttonB = createButton(FlxG.width - 258, FlxG.height - 135, 132, 127, 'b', 0xFFCB00));
 				add(buttonA = createButton(FlxG.width - 132, FlxG.height - 135, 132, 127, 'a', 0xFF0000));				
 			case ChartingStateC:
-				add(buttonS = createButton(FlxG.width - 636, FlxG.height - 375, 132, 127, 's', 0x49A9B2));
+				add(buttonS = createButton(FlxG.width - 132, FlxG.height - 375, 132, 127, 's', 0x49A9B2));
 			    add(buttonG = createButton(FlxG.width - (44 + 42 * 1) * 3, 25, 132, 127, 'g', 0x49A9B2));
 			    add(buttonP = createButton(FlxG.width - 636, FlxG.height - 255, 132, 127, 'up', 0x49A9B2));
 			    add(buttonE = createButton(FlxG.width - 636, FlxG.height - 135, 132, 127, 'down', 0x49A9B2));
