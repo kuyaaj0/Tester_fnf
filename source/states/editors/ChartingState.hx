@@ -1771,22 +1771,17 @@ class ChartingState extends MusicBeatState
 				&& touch.y > gridBG.y
 				&& touch.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom]) 
 			{
-				if (touch.overlaps(curRenderedNotes) && nowMoveNote == null)
+				if (touch.overlaps(curRenderedNotes))
 				{
 				    curRenderedNotes.forEachAlive(function(note:Note)
 				    {
 					    if (touch.overlaps(note))
 					    {
-						    selectNote(note);
 						    if (nowMoveNote == null){
 						        nowMoveNote = note;
-						    }else{
-						        if (FlxG.keys.pressed.SHIFT || virtualPad.buttonY.pressed){
-					                    nowMoveNote.y = touch.y;
-				                        }else{
-					                    nowMoveNote.y = Math.floor(touch.y / GRID_SIZE) * GRID_SIZE;
-				                        }
+							selectNote(note);
 						    }
+					            nowMoveNote.y = dummyArrow.y;
 					    }
 				     });
 				}
