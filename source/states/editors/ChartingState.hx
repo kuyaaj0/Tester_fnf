@@ -1762,12 +1762,6 @@ class ChartingState extends MusicBeatState
 				noteMove = true;
 			}
 		}
-		if (FlxG.mouse.pressedRight){
-			noteMove = true;
-		}
-		if (FlxG.mouse.justReleasedRight){
-			noteMove = false;
-		}
 
 		if (controls.mobileC) {
 		for (touch in FlxG.touches.list)
@@ -1846,12 +1840,12 @@ class ChartingState extends MusicBeatState
 		}
 
 		} else {
-			if (FlxG.mouse.pressedRight && noteMove
-			   && FlxG.mouse.x > gridBG.x
+			if (FlxG.mouse.pressedRight && FlxG.mouse.x > gridBG.x
 				&& FlxG.mouse.x < gridBG.x + gridBG.width
 				&& FlxG.mouse.y > gridBG.y
 				&& FlxG.mouse.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom]) 
 			{
+				noteMove = true;
 				if (FlxG.mouse.overlaps(curRenderedNotes))
 				{
 				    curRenderedNotes.forEachAlive(function(note:Note)
@@ -1867,7 +1861,8 @@ class ChartingState extends MusicBeatState
 				     nowMoveNote.y = dummyArrow.y;
 				}
 			}
-			if(FlxG.mouse.justReleasedRight && noteMove){
+			if(FlxG.mouse.justReleasedRight){
+				noteMove = false;
 				if (nowMoveNote != null 
 			        && FlxG.mouse.x > gridBG.x
 				&& FlxG.mouse.x < gridBG.x + gridBG.width
