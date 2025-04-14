@@ -26,8 +26,10 @@
     },
     {
       "name": "flixel-ui",
-      "type": "haxelib",
-      "version": null
+      "type": "git",
+      "dir": null,
+      "ref": "dev",
+      "url": "https://github.com/MaoPou/flixel-ui-beauty"
     },
     {
       "name": "flixel-tools",
