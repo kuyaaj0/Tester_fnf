@@ -536,12 +536,8 @@ class FreeplayState extends MusicBeatState
 			case 5:
 				randomSel();
 			case 6:
-				if (songs.length >= 21 && (curSelected <= 21 || curSelected == songs.length)) {
+				if (songs.length > 21 && curSelected <= 21) {
 					curSelected = 22;
-					changeSelection(0);
-				}
-				if (curSelected >= 22){
-					curSelected = songs.length;
 					changeSelection(0);
 				}
 		}
