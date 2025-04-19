@@ -5,6 +5,7 @@ import haxe.ds.StringMap;
 
 import lime.utils.Assets;
 
+import openfl.Assets;
 import openfl.display.BitmapData;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
@@ -72,7 +73,8 @@ class LoadingState extends MusicBeatState
     
 	var intendedPercent:Float = 0;
 	var curPercent:Float = 0;
-	var precentText:FlxText;	
+	var precentText:FlxText;
+	var JustSay:FlxText;
 	
 	static var realStart:Bool = false;
 
@@ -116,14 +118,33 @@ class LoadingState extends MusicBeatState
 		OMG.updateHitbox();
 		add(OMG);
                 */
-                precentText = new FlxText(520, 600, 400, '0%', 30);
+                
+		precentText = new FlxText(520, 600, 400, '0%', 30);
 		precentText.setFormat(Paths.font("loadScreen.ttf"), 25, FlxColor.WHITE, RIGHT, OUTLINE_FAST, FlxColor.TRANSPARENT);
 		precentText.borderSize = 0;
 		precentText.antialiasing = ClientPrefs.data.antialiasing;
 		add(precentText);		
 		precentText.x = FlxG.width - precentText.width - 2;
         precentText.y = FlxG.height - precentText.height - barHeight - 2;   
-        
+
+		JustSay = new FlxText(10, 600, 400, '', 30);
+		JustSay.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 25, FlxColor.WHITE, RIGHT, OUTLINE_FAST, FlxColor.TRANSPARENT);
+		JustSay.borderSize = 0;
+		JustSay.antialiasing = ClientPrefs.data.antialiasing;
+		add(JustSay);		
+		
+                JustSay.y = FlxG.height - precentText.height - barHeight - 2;   
+
+		try{
+			var filename:String = 'language/.JustSay/JustSay-' + Language.get('fontName', 'ma') + '.txt';
+			var file:String = Assets.getText(Paths.txt(filename));
+                        var lines:Array<String> = file.split('\n');
+                        var randomIndex:Int = Math.floor(Math.random() * lines.length);
+                        var randomLine:String = lines[randomIndex];
+			JustSay.text = randomLine;
+		} catch (e:Dynamic) {
+			JustSay.text = '???';
+		}
         addNote();                            
         		
 		super.create();				
