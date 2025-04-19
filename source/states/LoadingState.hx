@@ -5,7 +5,6 @@ import haxe.ds.StringMap;
 
 import lime.utils.Assets;
 
-import openfl.Assets;
 import openfl.display.BitmapData;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
@@ -140,11 +139,11 @@ class LoadingState extends MusicBeatState
 			var filename:String = 'language/JustSay/JustSay-' + Language.get('fontName', 'ma') + '.txt';
 			var file:String = File.getContent(Paths.getSharedPath(filename));
                         var lines:Array<String> = file.split('\n');
-                        var randomIndex:Int = Math.floor(Math.random() * lines.length);
+                        var randomIndex:Int = FlxG.random.int(0, lines.length);
                         var randomLine:String = lines[randomIndex];
 			JustSay.text = randomLine;
 		} catch (e:Dynamic) {
-			JustSay.text = '???';
+			JustSay.text = Std.string(e);
 		}
         addNote();                            
         		
