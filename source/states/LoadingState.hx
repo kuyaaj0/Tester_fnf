@@ -67,7 +67,7 @@ class LoadingState extends MusicBeatState
     var filePath:String = 'menuExtend/LoadingState/';
     
 	var bar:FlxSprite;
-	var OMG:FlxSprite;
+	
     var button:LoadButton;
     var barHeight:Int = 10;
     
@@ -127,17 +127,18 @@ class LoadingState extends MusicBeatState
 		precentText.x = FlxG.width - precentText.width - 2;
         precentText.y = FlxG.height - precentText.height - barHeight - 2;   
 
-		JustSay = new FlxText(10, 600, 400, '', 30);
+		JustSay = new FlxText(0, 600, 400, '', 30);
 		JustSay.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 25, FlxColor.WHITE, RIGHT, OUTLINE_FAST, FlxColor.TRANSPARENT);
 		JustSay.borderSize = 0;
 		JustSay.antialiasing = ClientPrefs.data.antialiasing;
 		add(JustSay);		
 		
                 JustSay.y = FlxG.height - precentText.height - barHeight - 2;   
+		JustSay.x = 0.5;
 
 		try{
-			var filename:String = 'language/.JustSay/JustSay-' + Language.get('fontName', 'ma') + '.txt';
-			var file:String = Assets.getText(Paths.txt(filename));
+			var filename:String = 'language/JustSay/JustSay-' + Language.get('fontName', 'ma') + '.txt';
+			var file:String = File.getContent(Paths.getSharedPath(filename));
                         var lines:Array<String> = file.split('\n');
                         var randomIndex:Int = Math.floor(Math.random() * lines.length);
                         var randomLine:String = lines[randomIndex];
