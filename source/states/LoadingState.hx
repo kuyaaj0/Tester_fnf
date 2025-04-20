@@ -74,7 +74,7 @@ class LoadingState extends MusicBeatState
 	var curPercent:Float = 0;
 	var precentText:FlxText;
 	var JustSay:FlxText;
-	
+	var loads:FlxSprite;
 	static var realStart:Bool = false;
 
 	override public function create()
@@ -88,7 +88,7 @@ class LoadingState extends MusicBeatState
 		bg.updateHitbox();
 		add(bg);
 
-		var loads = new FlxSprite().loadGraphic(Paths.image(filePath + 'loadIcon'));
+		loads = new FlxSprite().loadGraphic(Paths.image(filePath + 'loadIcon'));
 		loads.antialiasing = ClientPrefs.data.antialiasing;
 		loads.updateHitbox();
 		loads.x = FlxG.width - loads.width - 2;
