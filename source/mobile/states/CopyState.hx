@@ -235,9 +235,7 @@ class CopyState extends MusicBeatState
         		var toFile = Path.join([to, file]);
         		if (FileSystem.exists(toFile))
         		{
-            			var originalMD5 = getOriginalMD5(file);
-            			var targetMD5 = calculateMD5(toFile);
-            			if (originalMD5 == targetMD5)
+            			if (getOriginalMD5(toFile) == calculateMD5(toFile))
             			{
                 			filesToRemove.push(file);
             			}
@@ -253,15 +251,16 @@ class CopyState extends MusicBeatState
 	
 	public static function getOriginalMD5(file:String)
 	{
-    		var bytes = getFileBytes(file);
-		var origMd5 = haxe.crypto.Md5.make(bytes);
-   		return Std.string(origMd5.toHex);
+    		var bytes:haxe.io.Bytes = getFileBytes(file);
+		var origMd5:haxe.io.Bytes = haxe.crypto.Md5.make(bytes);
+   		return origMd5;
 	}
 
 	public static function calculateMD5(filePath:String)
 	{
-    		var file = File.getContent(filePath);
-    		return Std.string(haxe.crypto.Md5.encode(file));
+    		var bytes:haxe.io.Bytes = File.getBytes(filePath);
+		var calcMd5:haxe.io.Bytes = haxe.crypto.Md5.make(file);
+    		return calcMd5;
 	}
 
 
