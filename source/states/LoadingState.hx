@@ -86,7 +86,14 @@ class LoadingState extends MusicBeatState
 		bg.setGraphicSize(Std.int(FlxG.width));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		bg.updateHitbox();
-		add(bg);			
+		add(bg);
+
+		var loads = new FlxSprite().loadGraphic(Paths.image(filePath + 'loadIcon'));
+		loads.antialiasing = ClientPrefs.data.antialiasing;
+		loads.updateHitbox();
+		loads.x = FlxG.width - loads.width - 2;
+		loads.y = 5;
+		add(loads);
 
 		var bg:FlxSprite = new FlxSprite(0, FlxG.height - barHeight).makeGraphic(1, 1, FlxColor.BLACK);
 		bg.scale.set(FlxG.width, barHeight);
@@ -126,14 +133,13 @@ class LoadingState extends MusicBeatState
 		precentText.x = FlxG.width - precentText.width - 2;
         precentText.y = FlxG.height - precentText.height - barHeight - 2;   
 
-		JustSay = new FlxText(0, 600, 400, '', 30);
-		JustSay.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 25, FlxColor.WHITE, RIGHT, OUTLINE_FAST, FlxColor.TRANSPARENT);
-		JustSay.borderSize = 0;
+		JustSay = new FlxText(0, 600, FlxG.width, '', 30);
+		JustSay.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 25, FlxColor.WHITE, LEFT, OUTLINE_FAST, FlxColor.TRANSPARENT);
 		JustSay.antialiasing = ClientPrefs.data.antialiasing;
 		add(JustSay);		
 		
-                JustSay.y = FlxG.height - precentText.height - barHeight - 2;   
-		JustSay.x = 0.5;
+                JustSay.y = FlxG.height - precentText.height - barHeight - 2;
+		JustSay.x = 10;	
 
 		try{
 			var filename:String = 'language/JustSay/JustSay-' + Language.get('fontName', 'ma') + '.txt';
@@ -141,7 +147,7 @@ class LoadingState extends MusicBeatState
                         var lines:Array<String> = file.split('\n');
                         var randomIndex:Int = FlxG.random.int(0, lines.length);
                         var randomLine:String = lines[randomIndex];
-			JustSay.text = randomLine;
+			JustSay.text = 'Tags: ' + randomLine;
 		} catch (e:Dynamic) {
 			JustSay.text = Std.string(e);
 		}
@@ -154,6 +160,9 @@ class LoadingState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		Thread.create(() -> {
+			loads.angle += 1.5;
+		});
 		if (dontUpdate) return;		
 		
 		if (!realStart) startThreads();
