@@ -233,18 +233,9 @@ class CopyState extends MusicBeatState
 		for (file in locatedFiles)
 		{
 			var toFile = Path.join([to, file]);
-			if (FileSystem.exists(toFile))
+			if (FileSystem.exists(toFile) && File.getBytes(toFile).toHex == OpenflAssets.getBytes(toFile).toHex)
 			{
-				var file0 = OpenflAssets.getBytes(toFile);
-				var file0MD5 = haxe.crypto.Md5.make(file0);
-				
-				var file1 = File.getBytes(toFile);
-				var file1MD5 = haxe.crypto.Md5.make(file1);
-				
-				if (compareBytes(file0,file1))
-				{
-					filesToRemove.push(file);
-				}
+				filesToRemove.push(file);
 			}
 		}
 
@@ -254,18 +245,5 @@ class CopyState extends MusicBeatState
 		maxLoopTimes = locatedFiles.length;
 
 		return (maxLoopTimes < 0);
-        }
-	
-	public static function compareBytes(bytes1:haxe.io.Bytes, bytes2:haxe.io.Bytes):Bool
-	{
-    		if (bytes1.length != bytes2.length)
-        	return false;
-
-    		for (i in 0...bytes1.length)
-    		{
-        		if (bytes1.get(i) != bytes2.get(i))
-            		return false;
-    		}
-    		return true;
 	}
 }
