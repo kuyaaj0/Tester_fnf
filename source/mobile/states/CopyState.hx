@@ -239,7 +239,9 @@ class CopyState extends MusicBeatState
                 		if (internalBytes.length == externalBytes.length)
                 		{
                     			filesToRemove.push(file);
-                		}
+                		}else{
+					FileSystem.deleteFile(toFile);
+				}
 			}
 		}
 
