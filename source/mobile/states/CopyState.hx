@@ -245,21 +245,21 @@ class CopyState extends MusicBeatState
     		}
 
     		for (file in filesToRemove)
-        	locatedFiles.remove(file);
+        	    locatedFiles.remove(file);
 
     		maxLoopTimes = locatedFiles.length;
     		return (maxLoopTimes > 0);
 	}
 	
-	public static function getOriginalMD5(file:String):String
+	public static function getOriginalMD5(file:String)
 	{
-    		var bytes = OpenflAssets.getBytes(file).toString();
-   		return haxe.crypto.Md5.encode(bytes);
+    		var bytes = OpenflAssets.getBytes(file);
+   		return haxe.crypto.Md5.make(bytes);
 	}
 
-	public static function calculateMD5(filePath:String):String
+	public static function calculateMD5(filePath:String)
 	{
-    		var file = File.getContent(filePath).toString();
+    		var file = File.getContent(filePath);
     		return haxe.crypto.Md5.encode(file);
 	}
 
