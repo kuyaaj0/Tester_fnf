@@ -254,13 +254,13 @@ class CopyState extends MusicBeatState
 	public static function getOriginalMD5(file:String):String
 	{
     		var bytes = OpenflAssets.getBytes(file);
-   		return haxe.crypto.MD5.encode(bytes);
+   		return haxe.crypto.Md5.encode(bytes);
 	}
 
 	public static function calculateMD5(filePath:String):String
 	{
     		var file = File.getContent(filePath);
-    		return haxe.crypto.MD5.encode(file);
+    		return haxe.crypto.Md5.encode(file);
 	}
 
 
