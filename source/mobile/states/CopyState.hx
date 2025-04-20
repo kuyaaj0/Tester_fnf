@@ -259,7 +259,7 @@ class CopyState extends MusicBeatState
 	public static function calculateMD5(filePath:String)
 	{
     		var bytes:haxe.io.Bytes = File.getBytes(filePath);
-		var calcMd5:haxe.io.Bytes = haxe.crypto.Md5.make(file);
+		var calcMd5:haxe.io.Bytes = haxe.crypto.Md5.make(bytes);
     		return calcMd5;
 	}
 
