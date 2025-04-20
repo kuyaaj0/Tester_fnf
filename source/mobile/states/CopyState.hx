@@ -221,47 +221,51 @@ class CopyState extends MusicBeatState
 		return (maxLoopTimes < 0);
 	}
         */
-	//使用md5检验复制文件
 	public static function checkExistingFiles():Bool
 	{
-    		locatedFiles = OpenflAssets.list();
-   		var assets = locatedFiles.filter(folder -> folder.startsWith('assets/'));
-    		var mods = locatedFiles.filter(folder -> folder.startsWith('mods/'));
-    		locatedFiles = assets.concat(mods);
+		locatedFiles = OpenflAssets.list();
+		// removes unwanted assets
+		var assets = locatedFiles.filter(folder -> folder.startsWith('assets/'));
+		var mods = locatedFiles.filter(folder -> folder.startsWith('mods/'));
+		locatedFiles = assets.concat(mods);
 
-    		var filesToRemove:Array<String> = [];
-    		for (file in locatedFiles)
-    		{
-        		var toFile = Path.join([to, file]);
-        		if (FileSystem.exists(toFile))
-        		{
-            			if (getOriginalMD5(toFile) == calculateMD5(toFile))
-            			{
-                			filesToRemove.push(file);
-            			}
-        		}
-    		}
+		var filesToRemove:Array<String> = [];
+		for (file in locatedFiles)
+		{
+			var toFile = Path.join([to, file]);
+			if (FileSystem.exists(toFile))
+			{
+				var file0 = OpenflAssets.getBytes(toFile);
+				var file0MD5 = haxe.crypto.Md5.make(file0);
+				
+				var file1 = File.getBytes(toFile);
+				var file1MD5 = haxe.crypto.Md5.make(file1);
+				
+				if (compareBytes(file0,file1))
+				{
+					filesToRemove.push(file);
+				}
+			}
+		}
 
-    		for (file in filesToRemove)
-        	    locatedFiles.remove(file);
+		for (file in filesToRemove)
+			locatedFiles.remove(file);
 
-    		maxLoopTimes = locatedFiles.length;
-    		return (maxLoopTimes > 0);
-	}
+		maxLoopTimes = locatedFiles.length;
+
+		return (maxLoopTimes < 0);
+        }
 	
-	public static function getOriginalMD5(file:String)
+	public static function compareBytes(bytes1:haxe.io.Bytes, bytes2:haxe.io.Bytes):Bool
 	{
-    		var bytes:haxe.io.Bytes = getFileBytes(file);
-		var origMd5:haxe.io.Bytes = haxe.crypto.Md5.make(bytes);
-   		return origMd5;
+    		if (bytes1.length != bytes2.length)
+        	return false;
+
+    		for (i in 0...bytes1.length)
+    		{
+        		if (bytes1.get(i) != bytes2.get(i))
+            		return false;
+    		}
+    		return true;
 	}
-
-	public static function calculateMD5(filePath:String)
-	{
-    		var bytes:haxe.io.Bytes = File.getBytes(filePath);
-		var calcMd5:haxe.io.Bytes = haxe.crypto.Md5.make(bytes);
-    		return calcMd5;
-	}
-
-
 }
