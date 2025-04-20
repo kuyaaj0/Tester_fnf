@@ -233,9 +233,18 @@ class CopyState extends MusicBeatState
 		for (file in locatedFiles)
 		{
 			var toFile = Path.join([to, file]);
-			if (FileSystem.exists(toFile) && File.getBytes(toFile).toHex == OpenflAssets.getBytes(toFile).toHex)
-			{
-				filesToRemove.push(file);
+			var file1:haxe.io.Bytes = File.getBytes(toFile);
+			var file2:haxe.io.Bytes = OpenflAssets.getBytes(toFile);
+			try{
+				if (FileSystem.exists(toFile) && file1.toHex == file2.toHex)
+				{
+					filesToRemove.push(file);
+				}
+			} catch (e:Dynamic) {
+				if (FileSystem.exists(toFile))
+				{
+					filesToRemove.push(file);
+				}
 			}
 		}
 
