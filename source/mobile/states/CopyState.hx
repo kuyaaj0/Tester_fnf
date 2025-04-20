@@ -194,6 +194,7 @@ class CopyState extends MusicBeatState
 		}
 	}
 
+	/*
 	public static function checkExistingFiles():Bool
 	{
 		locatedFiles = OpenflAssets.list();
@@ -219,4 +220,48 @@ class CopyState extends MusicBeatState
 
 		return (maxLoopTimes < 0);
 	}
+        */
+	//使用md5检验复制文件
+	public static function checkExistingFiles():Bool
+	{
+    		locatedFiles = OpenflAssets.list();
+   		var assets = locatedFiles.filter(folder -> folder.startsWith('assets/'));
+    		var mods = locatedFiles.filter(folder -> folder.startsWith('mods/'));
+    		locatedFiles = assets.concat(mods);
+
+    		var filesToRemove:Array<String> = [];
+    		for (file in locatedFiles)
+    		{
+        		var toFile = Path.join([to, file]);
+        		if (FileSystem.exists(toFile))
+        		{
+            			var originalMD5 = getOriginalMD5(file);
+            			var targetMD5 = calculateMD5(toFile);
+            			if (originalMD5 == targetMD5)
+            			{
+                			filesToRemove.push(file);
+            			}
+        		}
+    		}
+
+    		for (file in filesToRemove)
+        	locatedFiles.remove(file);
+
+    		maxLoopTimes = locatedFiles.length;
+    		return (maxLoopTimes > 0);
+	}
+	
+	public static function getOriginalMD5(file:String):String
+	{
+    		var bytes = OpenflAssets.getBytes(file);
+   		return haxe.crypto.MD5.encode(bytes);
+	}
+
+	public static function calculateMD5(filePath:String):String
+	{
+    		var file = File.getContent(filePath);
+    		return haxe.crypto.MD5.encode(file);
+	}
+
+
 }
