@@ -9,6 +9,9 @@ Let’s say the fontName is blabla, then it will read the content from language/
 If the fontName is Lang-ZH, it will read from language/JustSay/JustSay-Lang-ZH.txt instead.
 
 The stuff shown on the preload screen is just a random line from the JustSay file, and the font displayed is based on the fontName value.
+
+look here!!!!!!!
+MaoPou: "I've only joined the Chinese JustSay for now because it has a lot of local Chinese phrases that I can't translate well, so I'll let the language pros handle it."
 ////////////////////
 JustSay就是当你打开预加载界面的时候会显示一些好玩的话打发无聊的等待。
 
