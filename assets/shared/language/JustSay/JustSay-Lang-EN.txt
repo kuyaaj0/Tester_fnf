@@ -52,7 +52,7 @@ Rumor: Tweak a setting to make it compatible with some 0.6.3 mods.
 The first option in settings is literally language selection—why do people still ask?  
 Check NovaFlare’s GitHub Actions for update progress.  
 Fun fact: What you “output” is related to what you “input” earlier. (Double entendre)  
-Minor bugs must appear under parental supervision. (Error code: 0xDEADBEEF)  
+Minor bugs must appear under parental supervision.
 Congrats! You’ve been congratulated.  
 Thinking up these tags is giving me a headache.  
 Let me see which tags you haven’t seen yet.  
@@ -98,3 +98,4 @@ We meet again... again. :)
 Crashes? Just part of the experience.  
 Fun fact: *Dead Cells* was written in Haxe.  
 Yeah, yeah, sure, uh-huh.
+You should thank DeepSeek for letting you see the English tags.
