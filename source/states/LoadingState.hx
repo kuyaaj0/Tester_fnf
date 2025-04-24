@@ -142,7 +142,7 @@ class LoadingState extends MusicBeatState
 		JustSay.x = 10;	
 
 		try{
-			var filename:String = 'language/JustSay/JustSay-' + Language.get('fontName', 'ma') + '.txt';
+			var filename:String = 'language/JustSay/JustSay-' + Language.get('justsayLang', 'ma') + '.txt';
 			var file:String = File.getContent(Paths.getSharedPath(filename));
                         var lines:Array<String> = file.split('\n');
                         var randomIndex:Int = FlxG.random.int(0, lines.length);
