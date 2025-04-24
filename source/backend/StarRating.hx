@@ -9,9 +9,9 @@ class StarRating {
     static final CHORD_MULTIPLIER:Float = 1.35;
     static final SUSTAIN_FACTOR:Float = 0.018;
     var chartData:SwagSong;
+    var filteredNotes:Array<NoteData> = [];
 
-    public static function calculateFromJSON(chart:SwagSong):Float {
-        var filteredNotes:Array<NoteData> = [];
+    public function calculateFromJSON(chart:SwagSong):Float {
         chartData = chart;
 
         parseSections(chartData.song.notes);
@@ -19,7 +19,7 @@ class StarRating {
         return calculateStrain(filteredNotes);
     }
     
-    static function parseSections(sections:Array<Dynamic>) {
+    function parseSections(sections:Array<Dynamic>) {
         for (section in sections) {
             if (section.sectionNotes == null) continue;
                 
@@ -43,12 +43,12 @@ class StarRating {
     }
 
     // 时间计算（考虑mustHitSection）
-    static function calculateSectionTime(section:Dynamic):Float {
+    function calculateSectionTime(section:Dynamic):Float {
         var beats = section.lengthInSteps / 4;
         return (beats * (60000 / chartData.bpm)) * (section.mustHitSection ? 1 : 0);
     }
 
-    static function detectPatterns(notes:Array<NoteData>) {
+    function detectPatterns(notes:Array<NoteData>) {
         var timeMap = new Map<Float, Array<Int>>();
         
         // 和弦检测（仅限4-7轨道）
@@ -73,7 +73,7 @@ class StarRating {
         }
     }
 
-    static function calculateStrain(notes:Array<NoteData>):Float {
+    function calculateStrain(notes:Array<NoteData>):Float {
         notes.sort((a, b) -> a.time < b.time ? -1 : 1);
         
         var strain:Float = 0;
