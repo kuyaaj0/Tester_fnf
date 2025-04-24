@@ -4,9 +4,9 @@ This text is located in assets/shared/language/JustSay/JustSay-example.txt.
 
 Here's how it reads: first, it looks up the fontName value from main.json in the current language, then it sticks that onto JustSay-
 
-For example, if my current language is Chinese, it would look in /language/Chinese/main.json for the fontName. 
-Let’s say the fontName is blabla, then it will read the content from language/JustSay/JustSay-blabla.txt. 
-If the fontName is Lang-ZH, it will read from language/JustSay/JustSay-Lang-ZH.txt instead.
+For example, if my current language is Chinese, it would look in /language/Chinese/main.json for the justsayLang. 
+Let’s say the justsayLang is blabla, then it will read the content from language/JustSay/JustSay-blabla.txt. 
+If the justsayLang is Lang-ZH, it will read from language/JustSay/JustSay-Lang-ZH.txt instead.
 
 The stuff shown on the preload screen is just a random line from the JustSay file, and the font displayed is based on the fontName value.
 
@@ -20,8 +20,8 @@ JustSay就是当你打开预加载界面的时候会显示一些好玩的话打�
 
 他的读取方式是这样的：首先读取当前语言的main.json里的fontName值，然后插入在JustSay-后面
 
-比如说，我当前的语言是Chinese，那么他会先去读取/language/Chinese/main.json里的fontName，
-假设fontName是blabla，那么它将会读取language/JustSay/JustSay-blabla.txt里的内容，
-如果fontName为Lang-ZH那么将会读取language/JustSay/JustSay-Lang-ZH.txt
+比如说，我当前的语言是Chinese，那么他会先去读取/language/Chinese/main.json里的justsayLang，
+假设justsayLang是blabla，那么它将会读取language/JustSay/JustSay-blabla.txt里的内容，
+如果justsayLang为Lang-ZH那么将会读取language/JustSay/JustSay-Lang-ZH.txt
 
 预加载界面显示的内容是JustSay文件里的随机一行 显示的字体是fontName的值。
