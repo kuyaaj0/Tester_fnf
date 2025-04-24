@@ -13,21 +13,13 @@ class StarRating {
 
     public function calculateFromJSON(chart:SwagSong):Float {
         chartData = chart;
-
-        parseSections(chartData.notes);
-        detectPatterns(filteredNotes);
-        return calculateStrain(filteredNotes);
-    }
-    
-    function parseSections(sections:Array<Dynamic>) {
-        for (section in sections) {
+        for (section in chartData.notes) {
             if (section.sectionNotes == null) continue;
                 
             var baseTime = calculateSectionTime(section);
             for (rawNote in section.sectionNotes) {
                 var originalLane = Std.int(rawNote[1]);
-                    
-                // 核心过滤逻辑：只保留4-7轨道
+                
                 if (TARGET_LANES.contains(originalLane)) {
                     var mappedLane = originalLane - 4; // 映射到0-3
                     filteredNotes.push({
@@ -40,6 +32,8 @@ class StarRating {
                 }
             }
         }
+        detectPatterns(filteredNotes);
+        return calculateStrain(filteredNotes);
     }
 
     // 时间计算（考虑mustHitSection）
