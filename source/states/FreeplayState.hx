@@ -709,7 +709,8 @@ class FreeplayState extends MusicBeatState
 
 			//var rate = DiffCalc.CalculateDiff(Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase())) / 5;
 			//rate = FlxMath.roundDecimal(rate, 2);
-			var rate = StarRating.calculateFromJSON(Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase()));
+			var rates:StarRating;
+			var rate = rates.calculateFromJSON(Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase()));
 			speed = FlxMath.roundDecimal(speed, 2);
 
 			infoNote.maxData = Math.floor(rate * 300);
