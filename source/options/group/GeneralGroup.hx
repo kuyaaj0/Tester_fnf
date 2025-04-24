@@ -31,8 +31,8 @@ class GeneralGroup
         var langArray:Array<String> = [];
         var contents:Array<String> = FileSystem.readDirectory(Paths.getPath('language'));
         for (item in contents) {
+	    if (item == "JustSay") continue; //JustSay不能被读取为语言文件
             var itemPath = Paths.getPath('language') + '/' + item;
-            
             if (FileSystem.isDirectory(itemPath)) {
                 langArray.push(item);
             }
