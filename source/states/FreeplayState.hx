@@ -681,6 +681,7 @@ class FreeplayState extends MusicBeatState
 	}
 
 	var rateMutex:Mutex = new Mutex();
+	var rates:StarRating = new StarRating();
 	function updateInfo() {
 		
 		var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
@@ -709,7 +710,6 @@ class FreeplayState extends MusicBeatState
 
 			//var rate = DiffCalc.CalculateDiff(Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase())) / 5;
 			//rate = FlxMath.roundDecimal(rate, 2);
-			var rates:StarRating;
 			var rate = rates.calculateFromJSON(Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase()));
 			speed = FlxMath.roundDecimal(speed, 2);
 
