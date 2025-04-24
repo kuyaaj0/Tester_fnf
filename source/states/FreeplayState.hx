@@ -19,6 +19,8 @@ import backend.Song;
 import backend.DiffCalc;
 import backend.Replay;
 
+import backend.StarRating;
+
 import objects.HealthIcon;
 import objects.shape.ShapeEX;
 import objects.shape.FreeplayShape;
@@ -705,8 +707,9 @@ class FreeplayState extends MusicBeatState
 				}
 			}
 
-			var rate = DiffCalc.CalculateDiff(Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase())) / 5;
-			rate = FlxMath.roundDecimal(rate, 2);
+			//var rate = DiffCalc.CalculateDiff(Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase())) / 5;
+			//rate = FlxMath.roundDecimal(rate, 2);
+			var rate = StarRating.calculateFromJSON(Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase()));
 			speed = FlxMath.roundDecimal(speed, 2);
 
 			infoNote.maxData = Math.floor(rate * 300);
