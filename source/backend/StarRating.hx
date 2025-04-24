@@ -1,48 +1,51 @@
 package backend;
 
+import backend.Song;
+
 class StarRating {
     // 配置参数
     static final TARGET_LANES = [4,5,6,7]; // 只处理这些轨道
     static final BASE_WEIGHT:Float = 0.42;
     static final CHORD_MULTIPLIER:Float = 1.35;
     static final SUSTAIN_FACTOR:Float = 0.018;
+    var chartData:SwagSong;
 
-    public static function calculateFromJSON(chartData:Dynamic):Float {
+    public static function calculateFromJSON(chart:SwagSong):Float {
         var filteredNotes:Array<NoteData> = [];
-        
-        // 递归解析并严格过滤
-        function parseSections(sections:Array<Dynamic>) {
-            for (section in sections) {
-                if (section.sectionNotes == null) continue;
-                
-                var baseTime = calculateSectionTime(section);
-                for (rawNote in section.sectionNotes) {
-                    var originalLane = Std.int(rawNote[1]);
-                    
-                    // 核心过滤逻辑：只保留4-7轨道
-                    if (TARGET_LANES.contains(originalLane)) {
-                        var mappedLane = originalLane - 4; // 映射到0-3
-                        filteredNotes.push({
-                            time: baseTime + rawNote[0],
-                            lane: mappedLane,
-                            originalLane: originalLane,
-                            sustain: rawNote[2],
-                            isChord: false
-                        });
-                    }
-                }
-            }
-        }
-
-        // 时间计算（考虑mustHitSection）
-        function calculateSectionTime(section:Dynamic):Float {
-            var beats = section.lengthInSteps / 4;
-            return (beats * (60000 / chartData.bpm)) * (section.mustHitSection ? 1 : 0);
-        }
+        chartData = chart;
 
         parseSections(chartData.song.notes);
         detectPatterns(filteredNotes);
         return calculateStrain(filteredNotes);
+    }
+    
+    static function parseSections(sections:Array<Dynamic>) {
+        for (section in sections) {
+            if (section.sectionNotes == null) continue;
+                
+            var baseTime = calculateSectionTime(section);
+            for (rawNote in section.sectionNotes) {
+                var originalLane = Std.int(rawNote[1]);
+                    
+                // 核心过滤逻辑：只保留4-7轨道
+                if (TARGET_LANES.contains(originalLane)) {
+                    var mappedLane = originalLane - 4; // 映射到0-3
+                    filteredNotes.push({
+                        time: baseTime + rawNote[0],
+                        lane: mappedLane,
+                        originalLane: originalLane,
+                        sustain: rawNote[2],
+                        isChord: false
+                    });
+                }
+            }
+        }
+    }
+
+    // 时间计算（考虑mustHitSection）
+    static function calculateSectionTime(section:Dynamic):Float {
+        var beats = section.lengthInSteps / 4;
+        return (beats * (60000 / chartData.bpm)) * (section.mustHitSection ? 1 : 0);
     }
 
     static function detectPatterns(notes:Array<NoteData>) {
