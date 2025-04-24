@@ -43,8 +43,8 @@ class StarRating {
     }
 
     function detectPatterns(notes:Array<NoteData>) {
-        var timeMap = new Map<Float, Array<Int>>();
-        
+        var timeMap = new haxe.ds.BalancedTree<Float, Array<Int>>();
+
         // 和弦检测（仅限4-7轨道）
         for (note in notes) {
             if (!timeMap.exists(note.time)) {
