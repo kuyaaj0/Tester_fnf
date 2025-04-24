@@ -8,13 +8,13 @@ class StarRating {
     static final BASE_WEIGHT:Float = 0.42;
     static final CHORD_MULTIPLIER:Float = 1.35;
     static final SUSTAIN_FACTOR:Float = 0.018;
-    var chartData:SwagSong;
+    var chartData:SwagSong = null;
     var filteredNotes:Array<NoteData> = [];
 
     public function calculateFromJSON(chart:SwagSong):Float {
         chartData = chart;
 
-        parseSections(chartData.song.notes);
+        parseSections(chartData.notes);
         detectPatterns(filteredNotes);
         return calculateStrain(filteredNotes);
     }
