@@ -10,6 +10,9 @@ class StarRating {
     static final SUSTAIN_FACTOR:Float = 0.018;
     var chartData:SwagSong = null;
     var filteredNotes:Array<NoteData> = [];
+    public function new(){
+        
+    }
 
     public function calculateFromJSON(chart:SwagSong):Float {
         chartData = chart;
