@@ -10,11 +10,13 @@ class StarRating {
     var chartData:SwagSong = null;
     var filteredNotes:Array<NoteData> = [];
 
-    public function new() {filteredNotes = []; //clean}
+    public function new() {
+        filteredNotes = []; //clean
+    }
     
     public function calculateFromJSON(chart:SwagSong):Float {
         chartData = chart;
-        filteredNotes = []; //
+        filteredNotes = []; //clean
         for (section in chartData.notes) {
             if (section.sectionNotes == null) continue;
             
