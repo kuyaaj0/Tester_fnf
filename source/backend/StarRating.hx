@@ -3,7 +3,7 @@ package backend;
 import backend.Song;
 
 class StarRating {
-    private var playerNotes:Array<Note> = [];
+    private var playerNotes:Array<owoNote> = [];
     private var songSpeed:Float = 1.0;
     private var timingWindows = { perfect: 45, great: 90, good: 135 };
 
@@ -35,7 +35,7 @@ class StarRating {
         return getDifficultyRating(rawDiff);
     }
 
-    private function processNotes(sections:Array<Section>) {
+    private function processNotes(sections:Array<owoSection>) {
         playerNotes = [];
         for (section in sections) {
             var isPlayer = section.mustHitSection;
@@ -158,12 +158,12 @@ class StarRating {
     }
 }
 
-typedef Section = {
+typedef owoSection = {
     var mustHitSection:Bool;
     var sectionNotes:Array<Array<Float>>;
 }
 
-typedef Note = {
+typedef owoNote = {
     var time:Float;
     var lane:Int;
     var duration:Float;
