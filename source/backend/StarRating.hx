@@ -25,7 +25,7 @@ class StarRating {
         processNotes(songData.notes);
         if (playerNotes.length < 5) return { rating: "Easy", stars: 0.0 };
 
-        playerNotes.sort((a, b) -> a.time - b.time);
+        playerNotes.sort((a, b) -> Math.round(a.time - b.time));
         this.songSpeed = songData.speed;
 
         var metrics = {
@@ -52,7 +52,7 @@ class StarRating {
         for (section in sections) {
             var isPlayer = section.mustHitSection;
             for (noteData in section.sectionNotes) {
-                var lane = convertLane(noteData[1], isPlayer);
+                var lane = convertLane(Std.int(noteData[1]), isPlayer);
                 if (lane == -1) continue;
 
                 playerNotes.push({
