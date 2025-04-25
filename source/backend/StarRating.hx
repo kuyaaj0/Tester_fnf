@@ -10,10 +10,11 @@ class StarRating {
     var chartData:SwagSong = null;
     var filteredNotes:Array<NoteData> = [];
 
-    public function new() {}
+    public function new() {filteredNotes = []; //clean}
     
     public function calculateFromJSON(chart:SwagSong):Float {
         chartData = chart;
+        filteredNotes = []; //
         for (section in chartData.notes) {
             if (section.sectionNotes == null) continue;
             
@@ -36,7 +37,7 @@ class StarRating {
             }
         }
         detectPatterns(filteredNotes);
-        return calculateStrain(filteredNotes);
+        return Math.round(calculateStrain(filteredNotes) * 100) / 100;
     }
 
     function calculateSectionTime(section:Dynamic):Float {
