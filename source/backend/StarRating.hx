@@ -2,8 +2,20 @@ package backend;
 
 import backend.Song;
 
+typedef RaSection = {
+    var mustHitSection:Bool;
+    var sectionNotes:Array<Array<Float>>;
+}
+
+typedef RaNote = {
+    var time:Float;
+    var lane:Int;
+    var duration:Float;
+    var isSlide:Bool;
+}
+
 class StarRating {
-    private var playerNotes:Array<owoNote> = [];
+    private var playerNotes:Array<RaNote> = [];
     private var songSpeed:Float = 1.0;
     private var timingWindows = { perfect: 45, great: 90, good: 135 };
 
@@ -35,7 +47,7 @@ class StarRating {
         return getDifficultyRating(rawDiff);
     }
 
-    private function processNotes(sections:Array<owoSection>) {
+    private function processNotes(sections:Array<RaSection>) {
         playerNotes = [];
         for (section in sections) {
             var isPlayer = section.mustHitSection;
@@ -156,16 +168,4 @@ class StarRating {
             { rating: "God", stars: stars };
         }
     }
-}
-
-typedef owoSection = {
-    var mustHitSection:Bool;
-    var sectionNotes:Array<Array<Float>>;
-}
-
-typedef owoNote = {
-    var time:Float;
-    var lane:Int;
-    var duration:Float;
-    var isSlide:Bool;
 }
