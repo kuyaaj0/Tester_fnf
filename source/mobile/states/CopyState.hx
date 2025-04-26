@@ -34,7 +34,7 @@ class CopyState extends MusicBeatState
 	{
 		locatedFiles = [];
 		maxLoopTimes = 0;
-		checkExistingFiles();
+		checkExistingFiles(true);
 		if (maxLoopTimes > 0)
 		{
 			shouldCopy = true;
@@ -220,7 +220,7 @@ class CopyState extends MusicBeatState
 		return (maxLoopTimes < 0);
 	}
 	*/
-	public static function checkExistingFiles():Bool
+	public static function checkExistingFiles(delete:Bool = false):Bool
 	{
 		locatedFiles = OpenflAssets.list();
 		// removes unwanted assets
@@ -240,7 +240,9 @@ class CopyState extends MusicBeatState
                 		{
                     			filesToRemove.push(file);
                 		}else{
-					FileSystem.deleteFile(toFile);
+					if (delete) {
+						FileSystem.deleteFile(toFile);
+					}
 				}
 			}
 		}
