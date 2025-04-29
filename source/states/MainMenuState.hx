@@ -84,7 +84,9 @@ class MainMenuState extends MusicBeatState
 		Paths.clearUnusedMemory();
 		var titleFuck = new TitleState();
 
-		ActionStatus = titleFuck.updateGitAction();
+		titleFuck.updateGitAction(function(result) {
+                    ActionStatus = result;
+                });
 		
 		//Lib.application.window.title = "NF Engine - MainMenuState";
 		
