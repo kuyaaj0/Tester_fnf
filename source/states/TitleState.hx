@@ -186,7 +186,7 @@ class TitleState extends MusicBeatState
     					trace('versions arent matching!');
     					mustUpdate = true;
     				}
-    			}
+			}
     
     			http.onError = function (error) {
     				trace('error: $error');
@@ -195,7 +195,9 @@ class TitleState extends MusicBeatState
     			http.request();
 			}			
 		}
-		#end				
+		#end
+
+		updateGitAction();
 
 		Language.resetData();
 
@@ -902,4 +904,25 @@ class TitleState extends MusicBeatState
 	
 	}
 	#end
+
+	public function updateGitAction(){
+		try{
+    		        trace('checking for Github Action');
+    			var http = new haxe.Http("https://api.github.com/repos/beihu235/FNF-NovaFlare-Engine/actions/runs?per_page=1");
+    
+    			http.onData = function (data:String)
+    			{
+    				var actionJson = Json.parse(data);
+				MainMenuState.NovaFlareGithubAction = actionJson.workflow_runs[0].head_commit.message;
+				MainMenuState.createTime = actionJson.workflow_runs[0].updated_at + '\nBy ' + actionJson.workflow_runs[0].actor.login;
+    			}
+    
+    			http.onError = function (error) {
+				MainMenuState.NovaFlareGithubAction = '$error';
+    				trace('error: $error');
+    			}
+    
+    			http.request();
+		}
+	}
 }
