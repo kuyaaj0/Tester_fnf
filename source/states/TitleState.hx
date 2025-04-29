@@ -905,27 +905,30 @@ class TitleState extends MusicBeatState
 	}
 	#end
 
-	public function updateGitAction():{status:String, conclusion:String}{
-		try{
-    		        trace('checking for Github Action');
-    			var http = new haxe.Http("https://api.github.com/repos/beihu235/FNF-NovaFlare-Engine/actions/runs?per_page=1");
-    
-    			http.onData = function (data:String)
-    			{
-    				var actionJson = Json.parse(data);
-				MainMenuState.NovaFlareGithubAction = actionJson.workflow_runs[0].head_commit.message;
-				MainMenuState.createTime = actionJson.workflow_runs[0].updated_at + '\nBy ' + actionJson.workflow_runs[0].actor.login;
-				var Sus = actionJson.workflow_runs[0].status;
-				var Con = actionJson.workflow_runs[0].conclusion;
-				return { rating: Sus, stars: Con };
-    			}
-    
-    			http.onError = function (error) {
-				MainMenuState.NovaFlareGithubAction = '$error';
-    				trace('error: $error');
-    			}
-    
-    			http.request();
-		}
+	public function updateGitAction(callback:({ status: String, conclusion: String } -> Void)):Void {
+    		try {
+        		trace('checking for Github Action');
+        		var http = new haxe.Http("https://api.github.com/repos/beihu235/FNF-NovaFlare-Engine/actions/runs?per_page=1");
+
+        		http.onData = function (data:String) {
+            			var actionJson = Json.parse(data);
+            			MainMenuState.NovaFlareGithubAction = actionJson.workflow_runs[0].head_commit.message;
+            			MainMenuState.createTime = actionJson.workflow_runs[0].updated_at + '\nBy ' + actionJson.workflow_runs[0].actor.login;
+            			var Sus = actionJson.workflow_runs[0].status;
+            			var Con = actionJson.workflow_runs[0].conclusion;
+            			callback({ status: Sus, conclusion: Con });
+        		};
+
+        		http.onError = function (error) {
+            		MainMenuState.NovaFlareGithubAction = '$error';
+            		trace('error: $error');
+            		callback({ status: "error", conclusion: "error" });
+        		};
+
+        		http.request();
+    		} catch (e:Dynamic) {
+        		trace('exception: $e');
+        		callback({ status: "exception", conclusion: "exception" });
+    		}
 	}
 }
