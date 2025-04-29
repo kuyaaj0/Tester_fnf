@@ -23,6 +23,10 @@ class MainMenuState extends MusicBeatState
 	public static var psychEngineVersion:String = '0.7.3'; //This is also used for Discord RPC
 	public static var novaFlareEngineDataVersion:Float = 2.4;
 	public static var novaFlareEngineVersion:String = '1.1.7';
+
+	public var NovaFlareGithubAction:String = '????';
+	public var createTime:String = 'Time: ????';
+	
 	public static var curSelected:Int = 0;
     public static var saveCurSelected:Int = 0;
     
@@ -184,6 +188,13 @@ class MainMenuState extends MusicBeatState
 		}
 
 		//FlxG.camera.follow(camFollow, null, 0);
+		var updateShit:FlxText = new FlxText(12, 0, FlxG.width, NovaFlareGithubAction + '\n' + createTime, 12);
+		updateShit.alignment = FlxTextAlignment.RIGHT;
+		updateShit.x = FlxG.width - updateShit.width;
+		updateShit.setFormat(Paths.font('Lang-ZH.ttf'), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		updateShit.antialiasing = ClientPrefs.data.antialiasing;
+		add(updateShit);
+		updateShit.cameras = [camHUD];
 
 		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, Language.get('novaFlareEngine', 'mm') + " v " + novaFlareEngineVersion + ' -HOTFIX', 12);
 		versionShit.scrollFactor.set();
