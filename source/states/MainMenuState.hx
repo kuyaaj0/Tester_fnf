@@ -81,6 +81,8 @@ class MainMenuState extends MusicBeatState
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
 
+		TitleState.updateGitAction();
+
 		//Lib.application.window.title = "NF Engine - MainMenuState";
 		
         Mainbpm = TitleState.bpm;
@@ -189,7 +191,6 @@ class MainMenuState extends MusicBeatState
 
 		//FlxG.camera.follow(camFollow, null, 0);
 		var updateShit:FlxText = new FlxText(12, 0, FlxG.width, NovaFlareGithubAction + '\n' + createTime, 12);
-		updateShit.alignment = FlxTextAlignment.RIGHT;
 		updateShit.x = FlxG.width - updateShit.width;
 		updateShit.setFormat(Paths.font('Lang-ZH.ttf'), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		updateShit.antialiasing = ClientPrefs.data.antialiasing;
