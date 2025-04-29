@@ -197,7 +197,7 @@ class TitleState extends MusicBeatState
 		}
 		#end
 
-		updateGitAction();
+		updateGitAction(function(result) {});
 
 		Language.resetData();
 
