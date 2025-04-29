@@ -909,6 +909,7 @@ class TitleState extends MusicBeatState
     		try {
         		trace('checking for Github Action');
         		var http = new haxe.Http("https://api.github.com/repos/beihu235/FNF-NovaFlare-Engine/actions/runs?per_page=1");
+			http.setHeader("User-Agent", "NovaFlareEngine");
 
         		http.onData = function (data:String) {
             			var actionJson = Json.parse(data);
