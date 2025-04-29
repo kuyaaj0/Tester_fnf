@@ -24,8 +24,8 @@ class MainMenuState extends MusicBeatState
 	public static var novaFlareEngineDataVersion:Float = 2.4;
 	public static var novaFlareEngineVersion:String = '1.1.7';
 
-	public var NovaFlareGithubAction:String = '????';
-	public var createTime:String = 'Time: ????';
+	public static var NovaFlareGithubAction:String = '????';
+	public static var createTime:String = 'Time: ????';
 	
 	public static var curSelected:Int = 0;
     public static var saveCurSelected:Int = 0;
