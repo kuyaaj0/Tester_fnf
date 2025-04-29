@@ -75,14 +75,17 @@ class MainMenuState extends MusicBeatState
 	public static var Mainbpm:Float = 0;
 	public static var bpm:Float = 0;
 	
+	var StatusIcon:FlxSprite;
+	var ActionStatus:Dynamic;
 
 	override function create()
 	{
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
+		var titleFuck = new TitleState();
 
-		TitleState.updateGitAction();
-
+		ActionStatus = titleFuck.updateGitAction();
+		
 		//Lib.application.window.title = "NF Engine - MainMenuState";
 		
         Mainbpm = TitleState.bpm;
@@ -190,6 +193,7 @@ class MainMenuState extends MusicBeatState
 		}
 
 		//FlxG.camera.follow(camFollow, null, 0);
+		
 		var updateShit:FlxText = new FlxText(12, 0, FlxG.width, NovaFlareGithubAction + '\n' + createTime, 12);
 		updateShit.x = FlxG.width - updateShit.width;
 		updateShit.setFormat(Paths.font('Lang-ZH.ttf'), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -197,6 +201,28 @@ class MainMenuState extends MusicBeatState
 		add(updateShit);
 		updateShit.cameras = [camHUD];
 
+		StatusIcon = new FlxSprite(0, 0);
+		StatusIcon.frames = Paths.getSparrowAtlas('menuExtend/MainMenu/gitAction');
+		StatusIcon.scale.x = 0.5;
+	        StatusIcon.scale.y = 0.5;
+		StatusIcon.x = updateShit.x - StatusIcon.width;
+		StatusIcon.updateHitbox();
+		
+		StatusIcon.animation.addByPrefix('in_progress', "in_progress", 24);
+		StatusIcon.animation.addByPrefix('queued', "queued", 24);
+		StatusIcon.animation.addByPrefix('cancelled', "cancelled", 24);
+		StatusIcon.animation.addByPrefix('failure', "failure", 24);
+		
+		StatusIcon.cameras = [camHUD];
+		add(StatusIcon);
+		if (ActionStatus.status == 'in_progress') {
+			StatusIcon.animation.play('in_progress');
+		}else if (ActionStatus.status = 'queued') {
+			StatusIcon.animation.play('queued');
+		}else if (ActionStatus.status == 'completed') {
+			StatusIcon.animation.play(ActionStatus.conclusion);
+		}
+		
 		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, Language.get('novaFlareEngine', 'mm') + " v " + novaFlareEngineVersion + ' -HOTFIX', 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -249,7 +275,10 @@ class MainMenuState extends MusicBeatState
 	        if (FlxG.android.justReleased.BACK)
 		    FlxG.debugger.visible = !FlxG.debugger.visible;
 		#end
-	
+
+		if (ActionStatus.status == 'in_progress') {
+			StatusIcon.angle += 2;
+		}
 	
 		if (FlxG.sound.music.volume < 0.8)
 		{
