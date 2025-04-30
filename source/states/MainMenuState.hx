@@ -213,7 +213,7 @@ class MainMenuState extends MusicBeatState
 			StatusIcon.animation.addByPrefix('queued', "queued", 24);
 			StatusIcon.animation.addByPrefix('cancelled', "cancelled", 24);
 			StatusIcon.animation.addByPrefix('failure', "failure", 24);
-			StatusIcon.animation.addByPrefix('completed', "completed", 24);
+			StatusIcon.animation.addByPrefix('success', "success", 24);
 			
 			StatusIcon.cameras = [camHUD];
 			add(StatusIcon);
@@ -243,7 +243,7 @@ class MainMenuState extends MusicBeatState
 			StatusIcon.y =  updateShit.height + 10 - StatusIcon.height * StatusIcon.scale.y / 2;
 		});	
 			
-			var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, Language.get('novaFlareEngine', 'mm') + " v " + novaFlareEngineVersion + ' -HOTFIX', 12);
+			var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 400, Language.get('novaFlareEngine', 'mm') + " v " + novaFlareEngineVersion + ' -HOTFIX', 12);
 			versionShit.scrollFactor.set();
 			versionShit.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			versionShit.antialiasing = ClientPrefs.data.antialiasing;
