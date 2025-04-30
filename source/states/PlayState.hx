@@ -331,6 +331,9 @@ class PlayState extends MusicBeatState
 		startCallback = startCountdown;
 		endCallback = endSong;
 
+		cpp.NativeGc.enterGCFreeZone();
+		cpp.NativeGc.exitGCFreeZone();
+
 		// for lua
 		instance = this;
 
@@ -1816,7 +1819,6 @@ class PlayState extends MusicBeatState
 
 	override function openSubState(SubState:FlxSubState)
 	{
-		stagesFunc(function(stage:BaseStage) stage.openSubState(SubState));
 		if (paused)
 		{
 			if (FlxG.sound.music != null)
@@ -1831,6 +1833,7 @@ class PlayState extends MusicBeatState
 			FlxTimer.globalManager.forEach(function(tmr:FlxTimer) if(!tmr.finished) tmr.active = false);
 			FlxTween.globalManager.forEach(function(twn:FlxTween) if(!twn.finished) twn.active = false);
 		}
+		stagesFunc(function(stage:BaseStage) stage.openSubState(SubState));
 
 		super.openSubState(SubState);
 	}

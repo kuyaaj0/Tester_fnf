@@ -180,6 +180,7 @@
 		<haxedef name="HXCPP_STACK_LINE" />
 		<haxedef name="HXCPP_STACK_TRACE" />
 		<haxedef name="HXCPP_CATCH_SEGV" />
+		<haxedef name="HXCPP_GC_DISABLE" />
 	</section>
  
 	<section if="desktop">
