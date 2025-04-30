@@ -4,7 +4,7 @@
 	<!-- https://uncertainprod.github.io/FNF-Spritesheet-XML-generator-Web -->
 	<SubTexture name="queued0000" x="154" y="154" width="52" height="52" frameX="-49" frameY="-49" frameWidth="150" frameHeight="150"/>
 	<SubTexture name="cancelled0000" x="154" y="0" width="154" height="154" frameX="2" frameY="2" frameWidth="150" frameHeight="150"/>
-	<SubTexture name="completed0000" x="0" y="0" width="154" height="154" frameX="2" frameY="2" frameWidth="150" frameHeight="150"/>
+	<SubTexture name="success0000" x="0" y="0" width="154" height="154" frameX="2" frameY="2" frameWidth="150" frameHeight="150"/>
 	<SubTexture name="in_progress0000" x="0" y="154" width="154" height="153" frameX="2" frameY="1" frameWidth="150" frameHeight="150"/>
 	<SubTexture name="failure0000" x="308" y="0" width="154" height="154" frameX="2" frameY="2" frameWidth="150" frameHeight="150"/>
 </TextureAtlas>
