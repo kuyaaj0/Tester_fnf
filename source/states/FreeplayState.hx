@@ -696,7 +696,7 @@ class FreeplayState extends MusicBeatState
 			return;
 		}
 
-		Thread.create(() -> {			
+		var thread = Thread.create(() -> {			
 			rateMutex.acquire();
 			for (i in jsonData.notes) // sections
 			{
@@ -708,10 +708,10 @@ class FreeplayState extends MusicBeatState
 				}
 			}
 
-			//var rate = DiffCalc.CalculateDiff(Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase())) / 5;
-			//rate = FlxMath.roundDecimal(rate, 2);
-			var rate1 = rates.calculateFullDifficulty(Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase()));
-		        var rate = rate1.stars;
+			var rate = DiffCalc.CalculateDiff(Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase())) / 5;
+			rate = FlxMath.roundDecimal(rate, 2);
+			//var rate1 = rates.calculateFullDifficulty(Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase()));
+		        //var rate = rate1.stars;
 			speed = FlxMath.roundDecimal(speed, 2);
 
 			infoNote.maxData = Math.floor(rate * 300);
@@ -807,7 +807,7 @@ class FreeplayState extends MusicBeatState
 
 			if (songs[curSelected] == null) return;		
 
-			Thread.create(() -> {			
+			var thread = Thread.create(() -> {			
 				musicMutex.acquire();
 
 				if (songs[curSelected].songName == playedSongName)

@@ -64,10 +64,6 @@ import psychlua.HScript;
 import tea.SScript;
 #end
 
-#if cpp
-import cpp.NativeGc;
-#end
-
 /**
  * This is where all the Gameplay stuff happens and is managed
  *
@@ -330,9 +326,6 @@ class PlayState extends MusicBeatState
 		if (!ClientPrefs.data.loadingScreen) Paths.clearStoredMemory();
 		startCallback = startCountdown;
 		endCallback = endSong;
-
-		cpp.NativeGc.enterGCFreeZone();
-		cpp.NativeGc.exitGCFreeZone();
 
 		// for lua
 		instance = this;
@@ -1841,20 +1834,28 @@ class PlayState extends MusicBeatState
 	override function closeSubState()
 	{
 		stagesFunc(function(stage:BaseStage) stage.closeSubState());
-		if (paused)
-		{	    
-			if(FlxG.sound.music != null && !startingSong)
-				resyncVocals(true);
-	
-			FlxTimer.globalManager.forEach(function(tmr:FlxTimer) if(!tmr.finished) tmr.active = true);
-			FlxTween.globalManager.forEach(function(twn:FlxTween) if(!twn.finished) twn.active = true);
-
-			paused = false;
-			if (mobileControls != null) mobileControls.visible = true;
-			callOnScripts('onResume');
-			resetRPC(startTimer != null && startTimer.finished);						
-		}
+		
 		super.closeSubState();
+
+		if (paused)
+		{	  
+			persistentDraw = false;
+			persistentUpdate = false;
+			new FlxTimer().start(0.2, function(tmr:FlxTimer){    	
+				persistentUpdate = true;
+				persistentDraw = true;	        		                        				
+				if(FlxG.sound.music != null && !startingSong)
+					resyncVocals(true);
+		
+				FlxTimer.globalManager.forEach(function(tmr:FlxTimer) if(!tmr.finished) tmr.active = true);
+				FlxTween.globalManager.forEach(function(twn:FlxTween) if(!twn.finished) twn.active = true);
+	
+				paused = false;
+				if (mobileControls != null) mobileControls.visible = true;
+				callOnScripts('onResume');
+				resetRPC(startTimer != null && startTimer.finished);
+			});					
+		}
 	}
 
 	override public function onFocus():Void

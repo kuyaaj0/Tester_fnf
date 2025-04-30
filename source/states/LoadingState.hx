@@ -424,7 +424,7 @@ class LoadingState extends MusicBeatState
         
 		// for images, they get to have their own thread   		                        				                 		
 		for (image in imagesToPrepare)
-			Thread.create(() -> {
+			var thread = Thread.create(() -> {
 				imageMutex.acquire();
 				try {
 					var bitmap:BitmapData;
@@ -472,7 +472,7 @@ class LoadingState extends MusicBeatState
 
 	static function initThread(func:Void->Dynamic, traceData:String)
 	{
-		Thread.create(() -> {
+		var thread = Thread.create(() -> {
 			mutex.acquire();
 			try {
 				var ret:Dynamic = func();
@@ -706,7 +706,7 @@ class LoadingState extends MusicBeatState
 	        
 	    var noteData:Array<SwagSection> =  PlayState.SONG.notes;	
 		
-		Thread.create(() -> {
+		var thread = Thread.create(() -> {
 			//chartMutex.acquire();  
     	    	
 			for (section in noteData)
@@ -817,7 +817,7 @@ class LoadingState extends MusicBeatState
 	
 	static function addLoad()
 	{
-	    Thread.create(() -> {
+	    var thread = Thread.create(() -> {
 			loadMutex.acquire();  
 	        loaded.add(1);
 	        loadMutex.release();    

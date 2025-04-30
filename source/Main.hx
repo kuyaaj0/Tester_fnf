@@ -7,6 +7,7 @@ import flixel.graphics.FlxGraphic;
 import flixel.FlxGame;
 import flixel.FlxState;
 import haxe.io.Path;
+
 import openfl.Assets;
 import openfl.system.System;
 import openfl.Lib;
@@ -17,6 +18,7 @@ import openfl.events.KeyboardEvent;
 
 import lime.system.System as LimeSystem;
 import lime.app.Application;
+
 import states.TitleState;
 import mobile.backend.Data;
 
@@ -190,7 +192,11 @@ class Main extends Sprite
 
 		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
 
-		#if mobile LimeSystem.allowScreenTimeout = ClientPrefs.data.screensaver; #end
+		#if mobile 
+		LimeSystem.allowScreenTimeout = ClientPrefs.data.screensaver; 
+		//Application.current.addEventListener(Event.ACTIVATE, onActivate);
+		//Application.current.addEventListener(Event.DEACTIVATE, onDeactivate);
+		#end
 
 		#if html5
 		FlxG.autoPause = false;
@@ -205,6 +211,9 @@ class Main extends Sprite
 		LimeSystem.allowScreenTimeout = ClientPrefs.data.screensaver;
 		#end
 		Data.setup();
+
+		if (ClientPrefs.data.gcFreeZone) cpp.NativeGc.enterGCFreeZone;
+		//GcZoneChange();
 
 		// shader coords fix
 		FlxG.signals.gameResized.add(function (w, h) {
@@ -232,5 +241,28 @@ class Main extends Sprite
 	function toggleFullScreen(event:KeyboardEvent){
 		if(Controls.instance.justReleased('fullscreen'))
 			FlxG.fullscreen = !FlxG.fullscreen;
+	}
+
+	function onDeactivate(e:Event) {
+		//暂时没需要
+	}
+	
+	function onActivate(e:Event) {	
+		// 延迟设置确保系统状态稳定
+		haxe.Timer.delay(() -> {
+			//Application.current.window.displayMode.refreshRate = ClientPrefs.data.framerate;
+		}, 50); // 50ms延迟适配慢速设备
+	}
+
+	static public var type:Bool = ClientPrefs.data.gcFreeZone;
+	static public function GcZoneChange() {
+		if (type == true) 
+		{
+			cpp.NativeGc.exitGCFreeZone;
+			type = false;
+		} else {
+			cpp.NativeGc.enterGCFreeZone;
+			type = true;
+		}
 	}
 }

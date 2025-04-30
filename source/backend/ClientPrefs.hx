@@ -18,6 +18,7 @@ import states.TitleState;
 	public var shaders:Bool = true;
 	public var cacheOnGPU:Bool = false;	
 	public var autoPause:Bool = true;
+	public var gcFreeZone:Bool = true;
 
 	//Gameplay
 	public var downScroll:Bool = false;

@@ -110,6 +110,14 @@ class GeneralGroup
         );
         follow.addOption(option);
         option.onChange = onChangePause;
+
+        var option:Option = new Option(
+            Language.get('gcFreeZone'),
+            'gcFreeZone',
+            BOOL
+        );
+        follow.addOption(option);
+        option.onChange = onChangeGcZone;
     }
 
     static function onChangeFramerate()
@@ -143,6 +151,11 @@ class GeneralGroup
         FlxTransitionableState.skipNextTransIn = true;
 		FlxTransitionableState.skipNextTransOut = true;
         MusicBeatState.switchState(new OptionsState());
+    }
+
+    static function onChangeGcZone()
+    {
+       Main.GcZoneChange();
     }
 }
 

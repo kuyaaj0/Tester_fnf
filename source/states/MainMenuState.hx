@@ -21,8 +21,8 @@ import openfl.Lib;
 class MainMenuState extends MusicBeatState
 {
 	public static var psychEngineVersion:String = '0.7.3'; //This is also used for Discord RPC
-	public static var novaFlareEngineDataVersion:Float = 2.4;
-	public static var novaFlareEngineVersion:String = '1.1.7';
+	public static var novaFlareEngineDataVersion:Float = 2.5;
+	public static var novaFlareEngineVersion:String = '1.1.8';
 
 	public static var NovaFlareGithubAction:String = '????';
 	public static var createTime:String = 'Time: ????';
@@ -195,6 +195,8 @@ class MainMenuState extends MusicBeatState
 		}
 
 		//FlxG.camera.follow(camFollow, null, 0);
+
+		/*
 		
 		var updateShit:FlxText = new FlxText(12, 0, FlxG.width, NovaFlareGithubAction + '\n' + createTime, 12);
 		updateShit.x = FlxG.width - updateShit.width;
@@ -224,6 +226,7 @@ class MainMenuState extends MusicBeatState
 		}else if (ActionStatus.status == 'completed') {
 			StatusIcon.animation.play(ActionStatus.conclusion);
 		}
+		*/
 		
 		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, Language.get('novaFlareEngine', 'mm') + " v " + novaFlareEngineVersion + ' -HOTFIX', 12);
 		versionShit.scrollFactor.set();
