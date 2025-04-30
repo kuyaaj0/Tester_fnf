@@ -223,14 +223,21 @@ class MainMenuState extends MusicBeatState
 			trace(ActionStatus.conclusion);
 			if (ActionStatus.status == 'in_progress') {
 				StatusIcon.animation.play('in_progress');
-			}else if (ActionStatus.status = 'queued') {
+			}else if (ActionStatus.status == 'queued') {
 				StatusIcon.animation.play('queued');
 			}else if (ActionStatus.status == 'cancelled') {
 				StatusIcon.animation.play('cancelled');
 			}else if (ActionStatus.status == 'failure') {
 				StatusIcon.animation.play('failure');
 			}else if (ActionStatus.status == 'completed') {
-				StatusIcon.animation.play('completed');
+				//complete只是标记这个工作流有没有完成
+				if (ActionStatus.conclusion == 'success') {
+					StatusIcon.animation.play('success');
+				}else if  (ActionStatus.conclusion == 'cancelled') {
+					StatusIcon.animation.play('cancelled');
+				}else if (ActionStatus.conclusion == 'failure') {
+					StatusIcon.animation.play('failure');
+				}
 			}
 		});	
 			
@@ -288,7 +295,7 @@ class MainMenuState extends MusicBeatState
 
 		if (ActionStatus != null)
 			if (ActionStatus.status == 'in_progress') 
-			StatusIcon.angle += 2;
+			if (StatusIcon != null) StatusIcon.angle += 2;
 	
 		if (FlxG.sound.music.volume < 0.8)
 		{
