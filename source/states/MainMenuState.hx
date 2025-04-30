@@ -17,6 +17,10 @@ import states.editors.MasterEditorMenu;
 import options.OptionsState;
 import openfl.Lib;
 
+import haxe.Json;
+
+import sys.thread.Thread;
+import sys.thread.Mutex;
 
 class MainMenuState extends MusicBeatState
 {
@@ -82,13 +86,6 @@ class MainMenuState extends MusicBeatState
 	{
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
-		var titleFuck = new TitleState();
-
-		titleFuck.updateGitAction(function(result) {
-                    ActionStatus = result;
-                });
-		
-		//Lib.application.window.title = "NF Engine - MainMenuState";
 		
         Mainbpm = TitleState.bpm;
         bpm = TitleState.bpm;
@@ -193,54 +190,62 @@ class MainMenuState extends MusicBeatState
 					ease: FlxEase.backInOut
 			    });
 		}
+		
+		var thread = Thread.create(() -> {	
+			updateGitAction(function(result) {
+				ActionStatus = result;
+			});
 
-		//FlxG.camera.follow(camFollow, null, 0);
+			var updateShit:FlxText = new FlxText(0, 0, 0, NovaFlareGithubAction + '\n' + createTime, 12);
+			updateShit.x = FlxG.width - updateShit.width;
+			updateShit.setFormat(Paths.font('Lang-ZH.ttf'), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			updateShit.antialiasing = ClientPrefs.data.antialiasing;
+			add(updateShit);
+			updateShit.cameras = [camHUD];
 
-		/*
-		
-		var updateShit:FlxText = new FlxText(12, 0, FlxG.width, NovaFlareGithubAction + '\n' + createTime, 12);
-		updateShit.x = FlxG.width - updateShit.width;
-		updateShit.setFormat(Paths.font('Lang-ZH.ttf'), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		updateShit.antialiasing = ClientPrefs.data.antialiasing;
-		add(updateShit);
-		updateShit.cameras = [camHUD];
-
-		StatusIcon = new FlxSprite(0, 0);
-		StatusIcon.frames = Paths.getSparrowAtlas('menuExtend/MainMenu/gitAction');
-		StatusIcon.scale.x = 0.5;
-	        StatusIcon.scale.y = 0.5;
-		StatusIcon.x = updateShit.x - StatusIcon.width;
-		StatusIcon.updateHitbox();
-		
-		StatusIcon.animation.addByPrefix('in_progress', "in_progress", 24);
-		StatusIcon.animation.addByPrefix('queued', "queued", 24);
-		StatusIcon.animation.addByPrefix('cancelled', "cancelled", 24);
-		StatusIcon.animation.addByPrefix('failure', "failure", 24);
-		
-		StatusIcon.cameras = [camHUD];
-		add(StatusIcon);
-		if (ActionStatus.status == 'in_progress') {
-			StatusIcon.animation.play('in_progress');
-		}else if (ActionStatus.status = 'queued') {
-			StatusIcon.animation.play('queued');
-		}else if (ActionStatus.status == 'completed') {
-			StatusIcon.animation.play(ActionStatus.conclusion);
-		}
-		*/
-		
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, Language.get('novaFlareEngine', 'mm') + " v " + novaFlareEngineVersion + ' -HOTFIX', 12);
-		versionShit.scrollFactor.set();
-		versionShit.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		versionShit.antialiasing = ClientPrefs.data.antialiasing;
-		add(versionShit);
-		versionShit.cameras = [camHUD];
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, Language.get('fridayNightFunkin', 'mm') + " v " + '0.2.8', 12);
-		versionShit.scrollFactor.set();
-		versionShit.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(versionShit);
-		versionShit.antialiasing = ClientPrefs.data.antialiasing;
-        versionShit.cameras = [camHUD];
-		// NG.core.calls.event.logEvent('swag').send();
+			StatusIcon = new FlxSprite(0, 0);
+			StatusIcon.frames = Paths.getSparrowAtlas('menuExtend/MainMenu/gitAction');
+			StatusIcon.scale.x = 0.5;
+				StatusIcon.scale.y = 0.5;
+			StatusIcon.x =  FlxG.width - StatusIcon.width;
+			StatusIcon.y =  updateShit.height;
+			StatusIcon.updateHitbox();
+			
+			StatusIcon.animation.addByPrefix('in_progress', "in_progress", 24);
+			StatusIcon.animation.addByPrefix('queued', "queued", 24);
+			StatusIcon.animation.addByPrefix('cancelled', "cancelled", 24);
+			StatusIcon.animation.addByPrefix('failure', "failure", 24);
+			StatusIcon.animation.addByPrefix('completed', "completed", 24);
+			
+			StatusIcon.cameras = [camHUD];
+			add(StatusIcon);
+			trace(ActionStatus.status);
+			trace(ActionStatus.conclusion);
+			if (ActionStatus.status == 'in_progress') {
+				StatusIcon.animation.play('in_progress');
+			}else if (ActionStatus.status = 'queued') {
+				StatusIcon.animation.play('queued');
+			}else if (ActionStatus.status == 'cancelled') {
+				StatusIcon.animation.play('cancelled');
+			}else if (ActionStatus.status == 'failure') {
+				StatusIcon.animation.play('failure');
+			}else if (ActionStatus.status == 'completed') {
+				StatusIcon.animation.play('completed');
+			}
+		});	
+			
+			var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, Language.get('novaFlareEngine', 'mm') + " v " + novaFlareEngineVersion + ' -HOTFIX', 12);
+			versionShit.scrollFactor.set();
+			versionShit.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			versionShit.antialiasing = ClientPrefs.data.antialiasing;
+			add(versionShit);
+			versionShit.cameras = [camHUD];
+			var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, Language.get('fridayNightFunkin', 'mm') + " v " + '0.2.8', 12);
+			versionShit.scrollFactor.set();
+			versionShit.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			add(versionShit);
+			versionShit.antialiasing = ClientPrefs.data.antialiasing;
+			versionShit.cameras = [camHUD];
 
 		checkChoose();
         
@@ -281,9 +286,9 @@ class MainMenuState extends MusicBeatState
 		    FlxG.debugger.visible = !FlxG.debugger.visible;
 		#end
 
-		if (ActionStatus.status == 'in_progress') {
+		if (ActionStatus != null)
+			if (ActionStatus.status == 'in_progress') 
 			StatusIcon.angle += 2;
-		}
 	
 		if (FlxG.sound.music.volume < 0.8)
 		{
@@ -539,5 +544,31 @@ class MainMenuState extends MusicBeatState
         });        
 	}
 	
-	
+	function updateGitAction(callback:({ status: String, conclusion: String } -> Void)):Void {
+		try {
+			trace('checking for Github Action');
+			var http = new haxe.Http("https://api.github.com/repos/beihu235/FNF-NovaFlare-Engine/actions/runs?per_page=1");
+		http.setHeader("User-Agent", "NovaFlareEngine");
+
+			http.onData = function (data:String) {
+					var actionJson = Json.parse(data);
+					MainMenuState.NovaFlareGithubAction = actionJson.workflow_runs[0].head_commit.message;
+					MainMenuState.createTime = actionJson.workflow_runs[0].updated_at + '\nBy ' + actionJson.workflow_runs[0].actor.login;
+					var Sus = actionJson.workflow_runs[0].status;
+					var Con = actionJson.workflow_runs[0].conclusion;
+					callback({ status: Sus, conclusion: Con });
+			};
+
+			http.onError = function (error) {
+				MainMenuState.NovaFlareGithubAction = '$error';
+				trace('error: $error');
+				callback({ status: "error", conclusion: "error" });
+			};
+
+			http.request();
+		} catch (e:Dynamic) {
+			trace('exception: $e');
+			callback({ status: "exception", conclusion: "exception" });
+		}
+}
 }

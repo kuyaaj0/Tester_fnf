@@ -9,7 +9,6 @@ import backend.Rating;
 import backend.Replay;
 
 import sys.thread.Thread;
-import sys.thread.FixedThreadPool;
 import sys.thread.Mutex;
 import haxe.Timer;
 
