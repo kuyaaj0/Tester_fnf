@@ -230,7 +230,14 @@ class MainMenuState extends MusicBeatState
 			}else if (ActionStatus.status == 'failure') {
 				StatusIcon.animation.play('failure');
 			}else if (ActionStatus.status == 'completed') {
-				StatusIcon.animation.play('completed');
+				//complete只是标记这个工作流有没有完成
+				if (ActionStatus.conclusion == 'success') {
+					StatusIcon.animation.play('success');
+				}else if  (ActionStatus.conclusion == 'cancelled') {
+					StatusIcon.animation.play('cancelled');
+				}else if (ActionStatus.conclusion == 'failure') {
+					StatusIcon.animation.play('failure');
+				}
 			}
 		});	
 			
