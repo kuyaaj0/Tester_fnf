@@ -893,7 +893,7 @@ class TitleState extends MusicBeatState
 	{
 	    skipVideo.visible = false;
 		if (video != null) video.stop();
-		//video.visible = false;
+		video.visible = false;
 		startCutscenesOut();
 		videoBool = false;
 		trace("end");
