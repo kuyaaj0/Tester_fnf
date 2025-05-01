@@ -160,9 +160,8 @@ class LoadingState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		Thread.create(() -> {
-			loads.angle += 1.5;
-		});
+		
+		loads.angle += 1.5;
 		if (dontUpdate) return;		
 		
 		if (!realStart) startThreads();
@@ -707,10 +706,9 @@ class LoadingState extends MusicBeatState
 	    var noteData:Array<SwagSection> =  PlayState.SONG.notes;	
 		
 		var thread = Thread.create(() -> {
-			//chartMutex.acquire();  
-    	    	
 			for (section in noteData)
-			{								
+			{							
+				Sys.sleep(0.001);	
 				for (songNotes in section.sectionNotes)
 				{
 					var daStrumTime:Float = songNotes[0];

@@ -195,11 +195,13 @@ class MainMenuState extends MusicBeatState
 			updateGitAction(function(result) {
 				ActionStatus = result;
 			});
-
+			trace(NovaFlareGithubAction);
 			try{
+				createTime = StringTools.replace(createTime, "T", " ");
+				createTime = StringTools.replace(createTime, "Z", " ");
+				createTime = StringTools.replace(createTime, "U C", "UTC"); //fix
 				var updateShit:FlxText = new FlxText(0, 10, 0, NovaFlareGithubAction + '\n' + createTime, 12);
-				updateShit.text = StringTools.replace(updateShit.text, "T", " ");
-				updateShit.text = StringTools.replace(updateShit.text, "Z", " ");
+				
 				updateShit.setFormat(Paths.font('Lang-ZH.ttf'), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 				updateShit.x = FlxG.width - updateShit.width - 10;
 				updateShit.antialiasing = ClientPrefs.data.antialiasing;
@@ -299,7 +301,7 @@ class MainMenuState extends MusicBeatState
 
 		if (ActionStatus != null)
 			if (ActionStatus.status == 'in_progress') 
-			if (StatusIcon != null) StatusIcon.angle += 2;
+			if (StatusIcon != null) StatusIcon.angle += 6 * (elapsed / (1 / 60));
 	
 		if (FlxG.sound.music.volume < 0.8)
 		{
