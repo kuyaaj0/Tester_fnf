@@ -99,12 +99,21 @@ class CopyState extends MusicBeatState
 						FileSystem.createDirectory('logs');
 					File.saveContent('logs/' + Date.now().toString().replace(' ', '-').replace(':', "'") + '-CopyState' + '.txt', failedFiles.join('\n'));
 				}
-				if (!checkExistingFiles() || !checkExistingFilesNew())
+				if (!isOption && !checkExistingFiles())
 				{
 					trace('reloaded CopyState...');
 					FlxG.resetState();
 					return;
 				}
+				if (isOption)
+				{
+					if(!checkExistingFilesNew())｛
+					    trace('reloaded CopyState...');
+					    FlxG.resetState();
+					    return;
+					｝
+				}
+				
 				canUpdate = false;
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 				var black = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
