@@ -222,6 +222,8 @@ class CopyState extends MusicBeatState
 	*/
 	public static function checkExistingFiles(delete:Bool = false):Bool
 	{
+		//delete变量是规定了他是什么状态，是只检查文件有没有问题，还是把有问题的文件换掉。
+		//当delete为true的时候为检查+替换，为false的时候为检查。
 		locatedFiles = OpenflAssets.list();
 		// removes unwanted assets
 		var assets = locatedFiles.filter(folder -> folder.startsWith('assets/'));
