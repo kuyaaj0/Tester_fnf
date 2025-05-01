@@ -561,7 +561,7 @@ class MainMenuState extends MusicBeatState
 
 			http.onData = function (data:String) {
 					var actionJson = Json.parse(data);
-					MainMenuState.NovaFlareGithubAction = actionJson.workflow_runs[0].head_commit.message;
+					MainMenuState.NovaFlareGithubAction = actionJson.workflow_runs[0].display_title;
 					MainMenuState.createTime = actionJson.workflow_runs[0].updated_at + '\nBy ' + actionJson.workflow_runs[0].actor.login;
 					var Sus = actionJson.workflow_runs[0].status;
 					var Con = actionJson.workflow_runs[0].conclusion;
