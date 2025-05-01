@@ -130,7 +130,7 @@ class VideoSprite extends FlxSpriteGroup {
 			}
 			updateSkipAlpha();
 
-			if(holdingTime >= _timeToSkip)
+			if(holdingTime >= _timeToSkip #if android || FlxG.android.justReleased.BACK #end)
 			{
 				if(onSkip != null) onSkip();
 				finishCallback = null;

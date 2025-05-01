@@ -986,6 +986,7 @@ class PlayState extends MusicBeatState
 					canPause = false;
 					inCutscene = false;
 					startAndEnd();
+					remove(videoCutscene);
 				}
 				videoCutscene.finishCallback = onVideoEnd;
 				videoCutscene.onSkip = onVideoEnd;

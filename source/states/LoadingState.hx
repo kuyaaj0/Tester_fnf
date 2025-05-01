@@ -433,6 +433,7 @@ class LoadingState extends MusicBeatState
 					file = Paths.modsImages(image);
 					if (Paths.currentTrackedAssets.exists(file)) {
 						imageMutex.release();
+						Sys.sleep(0.001);	
 						addLoad();
 						return;
 					}
@@ -444,6 +445,7 @@ class LoadingState extends MusicBeatState
 						file = Paths.getPath('images/$image.png', IMAGE);
 						if (Paths.currentTrackedAssets.exists(file)) {
 							imageMutex.release();
+							Sys.sleep(0.001);	
 							addLoad();
 							return;
 						}
@@ -452,11 +454,13 @@ class LoadingState extends MusicBeatState
 						else {
 							trace('no such image $image exists');
 							imageMutex.release();
+							Sys.sleep(0.001);	
 							addLoad();
 							return;
 						}
 					}
 					imageMutex.release();
+					Sys.sleep(0.001);	
 
 					if (bitmap != null) requestedBitmaps.set(file, bitmap);
 					else trace('oh no the image is null NOOOO ($image)');
@@ -476,12 +480,14 @@ class LoadingState extends MusicBeatState
 			try {
 				var ret:Dynamic = func();
 				mutex.release();
+				Sys.sleep(0.001);	
 
 				if (ret != null) trace('finished preloading $traceData');
 				else trace('ERROR! fail on preloading $traceData');
 			}
 			catch(e:Dynamic) {
 				mutex.release();
+				Sys.sleep(0.001);	
 				trace('ERROR! fail on preloading $traceData');
 			}
 			addLoad();
@@ -708,7 +714,7 @@ class LoadingState extends MusicBeatState
 		var thread = Thread.create(() -> {
 			for (section in noteData)
 			{							
-				Sys.sleep(0.001);	
+				Sys.sleep(0.001);		
 				for (songNotes in section.sectionNotes)
 				{
 					var daStrumTime:Float = songNotes[0];
