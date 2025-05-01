@@ -199,7 +199,7 @@ class FreeplayState extends MusicBeatState
 		infoNote = new InfoText(infoBG.x + 15, infoBG.y + 38, Language.get('noteCount', 'fp'), 10);
 		add(infoNote);
 
-		infoRating = new InfoText(infoBG.x + 15, infoBG.y + 70, Language.get('rating', 'fp'), 20);
+		infoRating = new InfoText(infoBG.x + 15, infoBG.y + 70, Language.get('rating', 'fp'), 10);
 		add(infoRating);
 
 		var extraBG:Rect = new Rect(12, FlxG.height * 0.585, FlxG.width * 0.45 - 12, FlxG.height * 0.3, 20, 20, FlxColor.BLACK, 0.5);
@@ -710,7 +710,7 @@ class FreeplayState extends MusicBeatState
 
 			//var rate = DiffCalc.CalculateDiff(Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase())) / 5;
 			//rate = FlxMath.roundDecimal(rate, 2);
-			
+
 			var rate1 = rates.calculateFullDifficulty(Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase()));
 		    var rate = rate1.stars;
 			speed = FlxMath.roundDecimal(speed, 2);
