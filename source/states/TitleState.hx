@@ -631,6 +631,7 @@ class TitleState extends MusicBeatState
 			if(pressedEnter)
 			{
 				video.stop();
+				video.visible = false;
 				videoBool = false;
 				skipVideo.visible = false;
 				startCutscenesOut();
