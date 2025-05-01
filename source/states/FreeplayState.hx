@@ -668,6 +668,8 @@ class FreeplayState extends MusicBeatState
 	function updateRect() {
 		var extraLoad:Bool = false;
         var filesLoad = 'data/' + songs[curSelected].songName + '/background';
+	var previousBG = magenta.clone();
+	add(previousBG);
         if (FileSystem.exists(Paths.modFolders(filesLoad + '.png'))){
             extraLoad = true;
         } else {
@@ -681,7 +683,9 @@ class FreeplayState extends MusicBeatState
 		magenta.screenCenter();
 		magenta.antialiasing = ClientPrefs.data.antialiasing;
 		
-		smallMag.updateRect(magenta.pixels);			
+		smallMag.updateRect(magenta.pixels);
+		FlxTween.tween(previousBG, {alpha: 0}, 0.4, {ease: FlxEase.linear});
+		previousBG.destory();
 	}
 
 	var rateMutex:Mutex = new Mutex();
