@@ -7,10 +7,10 @@ import hxvlc.flixel.FlxVideoSprite;
 #end
 
 #if (VIDEOS_ALLOWED && !ios) 
-#if (hxCodec >= "3.0.0") import hxcodec.flixel.FlxVideo as VideoHandler;
-#elseif (hxCodec >= "2.6.1") import hxcodec.VideoHandler as VideoHandler;
-#elseif (hxCodec == "2.5.0") import VideoHandler;
-#else import vlc.MP4Handler as VideoHandler; #end
+	#if (hxCodec >= "3.0.0") import hxcodec.flixel.FlxVideo as VideoHandler;
+	#elseif (hxCodec >= "2.6.1") import hxcodec.VideoHandler as VideoHandler;
+	#else import VideoHandler;
+	#end
 #end
 //仅仅导入作为hscript使用 -狐月影
 
