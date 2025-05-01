@@ -209,7 +209,7 @@ class MainMenuState extends MusicBeatState
 				updateShit.cameras = [camHUD];
 
 				StatusIcon = new FlxSprite(0, 0);
-				StatusIcon.frames = Paths.getSparrowAtlas('menuExtend/MainMenu/gitAction');
+				StatusIcon.frames = Paths.getSparrowAtlas('menuExtend/MainMenu/gitAction', null, false);
 				StatusIcon.updateHitbox();
 				
 				StatusIcon.animation.addByPrefix('in_progress', "in_progress", 24);

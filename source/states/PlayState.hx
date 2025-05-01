@@ -982,11 +982,12 @@ class PlayState extends MusicBeatState
 						moveCameraSection();
 						FlxG.camera.snapToTarget();
 					}
-					videoCutscene = null;
-					canPause = false;
+					videoCutscene.pause();
+					videoCutscene.videoSprite.visible = false;
+					videoCutscene = null; //不是哥们你这好像没起作用啊，得加点代码吧
+					canPause = true;
 					inCutscene = false;
 					startAndEnd();
-					remove(videoCutscene);
 				}
 				videoCutscene.finishCallback = onVideoEnd;
 				videoCutscene.onSkip = onVideoEnd;
