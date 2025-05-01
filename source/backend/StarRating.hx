@@ -24,7 +24,7 @@ class StarRating {
     private static final WEIGHTS:Map<String, Float> = [
         "density" => 0.35,
         "strain" => 0.35,
-        "pattern" => 0.15,
+        "pattern" => 0.25,
         "sliderComplexity" => 0.12,
         "handBalance" => 0.03
     ];

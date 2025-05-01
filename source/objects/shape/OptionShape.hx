@@ -437,7 +437,7 @@ class StateRect extends FlxSpriteGroup {
     {
         super.update(elapsed);
 
-        if (OptionsState.instance.avgSpeed > 2) return;
+        if (OptionsState.instance.avgSpeed > 0.5) return;
         
         onFocus = FlxG.mouse.overlaps(this);
 
@@ -496,7 +496,7 @@ class ResetRect extends FlxSpriteGroup {
     {
         super.update(elapsed);
 
-        if (OptionsState.instance.avgSpeed > 2) return;
+        if (OptionsState.instance.avgSpeed > 0.5) return;
         
         onFocus = FlxG.mouse.overlaps(this);
 

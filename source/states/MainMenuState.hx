@@ -196,51 +196,53 @@ class MainMenuState extends MusicBeatState
 				ActionStatus = result;
 			});
 
-			var updateShit:FlxText = new FlxText(0, 10, 0, NovaFlareGithubAction + '\n' + createTime, 12);
-			updateShit.text = StringTools.replace(updateShit.text, "T", " ");
-			updateShit.text = StringTools.replace(updateShit.text, "Z", " ");
-			updateShit.setFormat(Paths.font('Lang-ZH.ttf'), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			updateShit.x = FlxG.width - updateShit.width - 10;
-			updateShit.antialiasing = ClientPrefs.data.antialiasing;
-			add(updateShit);
-			updateShit.cameras = [camHUD];
+			try{
+				var updateShit:FlxText = new FlxText(0, 10, 0, NovaFlareGithubAction + '\n' + createTime, 12);
+				updateShit.text = StringTools.replace(updateShit.text, "T", " ");
+				updateShit.text = StringTools.replace(updateShit.text, "Z", " ");
+				updateShit.setFormat(Paths.font('Lang-ZH.ttf'), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+				updateShit.x = FlxG.width - updateShit.width - 10;
+				updateShit.antialiasing = ClientPrefs.data.antialiasing;
+				add(updateShit);
+				updateShit.cameras = [camHUD];
 
-			StatusIcon = new FlxSprite(0, 0);
-			StatusIcon.frames = Paths.getSparrowAtlas('menuExtend/MainMenu/gitAction');
-			StatusIcon.updateHitbox();
-			
-			StatusIcon.animation.addByPrefix('in_progress', "in_progress", 24);
-			StatusIcon.animation.addByPrefix('queued', "queued", 24);
-			StatusIcon.animation.addByPrefix('cancelled', "cancelled", 24);
-			StatusIcon.animation.addByPrefix('failure', "failure", 24);
-			StatusIcon.animation.addByPrefix('success', "success", 24);
-			
-			StatusIcon.cameras = [camHUD];
-			add(StatusIcon);
-			trace(ActionStatus.status);
-			trace(ActionStatus.conclusion);
-			if (ActionStatus.status == 'in_progress') {
-				StatusIcon.animation.play('in_progress');
-			}else if (ActionStatus.status == 'queued') {
-				StatusIcon.animation.play('queued');
-			}else if (ActionStatus.status == 'cancelled') {
-				StatusIcon.animation.play('cancelled');
-			}else if (ActionStatus.status == 'failure') {
-				StatusIcon.animation.play('failure');
-			}else if (ActionStatus.status == 'completed') {
-				//complete只是标记这个工作流有没有完成
-				if (ActionStatus.conclusion == 'success') {
-					StatusIcon.animation.play('success');
-				}else if  (ActionStatus.conclusion == 'cancelled') {
+				StatusIcon = new FlxSprite(0, 0);
+				StatusIcon.frames = Paths.getSparrowAtlas('menuExtend/MainMenu/gitAction');
+				StatusIcon.updateHitbox();
+				
+				StatusIcon.animation.addByPrefix('in_progress', "in_progress", 24);
+				StatusIcon.animation.addByPrefix('queued', "queued", 24);
+				StatusIcon.animation.addByPrefix('cancelled', "cancelled", 24);
+				StatusIcon.animation.addByPrefix('failure', "failure", 24);
+				StatusIcon.animation.addByPrefix('success', "success", 24);
+				
+				StatusIcon.cameras = [camHUD];
+				add(StatusIcon);
+				trace(ActionStatus.status);
+				trace(ActionStatus.conclusion);
+				if (ActionStatus.status == 'in_progress') {
+					StatusIcon.animation.play('in_progress');
+				}else if (ActionStatus.status == 'queued') {
+					StatusIcon.animation.play('queued');
+				}else if (ActionStatus.status == 'cancelled') {
 					StatusIcon.animation.play('cancelled');
-				}else if (ActionStatus.conclusion == 'failure') {
+				}else if (ActionStatus.status == 'failure') {
 					StatusIcon.animation.play('failure');
+				}else if (ActionStatus.status == 'completed') {
+					//complete只是标记这个工作流有没有完成
+					if (ActionStatus.conclusion == 'success') {
+						StatusIcon.animation.play('success');
+					}else if  (ActionStatus.conclusion == 'cancelled') {
+						StatusIcon.animation.play('cancelled');
+					}else if (ActionStatus.conclusion == 'failure') {
+						StatusIcon.animation.play('failure');
+					}
 				}
-			}
 
-			StatusIcon.scale.x = StatusIcon.scale.y = 0.5;
-			StatusIcon.x =  FlxG.width - StatusIcon.width * StatusIcon.scale.x / 2 * 3 - 10;
-			StatusIcon.y =  updateShit.height + 10 - StatusIcon.height * StatusIcon.scale.y / 2;
+				StatusIcon.scale.x = StatusIcon.scale.y = 0.5;
+				StatusIcon.x =  FlxG.width - StatusIcon.width * StatusIcon.scale.x / 2 * 3 - 10;
+				StatusIcon.y =  updateShit.height + 10 - StatusIcon.height * StatusIcon.scale.y / 2;
+			}
 		});	
 			
 			var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 400, Language.get('novaFlareEngine', 'mm') + " v " + novaFlareEngineVersion + ' -HOTFIX', 12);
