@@ -66,7 +66,7 @@ class BoolRect extends FlxSpriteGroup {
     {
         super.update(elapsed);
 
-        if (OptionsState.instance.avgSpeed > 2) return;
+        if (OptionsState.instance.avgSpeed > 0.05) return;
 
         onFocus = FlxG.mouse.overlaps(display);
 
@@ -206,7 +206,7 @@ class FloatRect extends FlxSpriteGroup {
     {
         super.update(elapsed);
 
-        if (OptionsState.instance.avgSpeed > 2) return;
+        if (OptionsState.instance.avgSpeed > 0.05) return;
 
         if (FlxG.mouse.overlaps(rect) && FlxG.mouse.justPressed)
         {
@@ -367,7 +367,7 @@ class StringRect extends FlxSpriteGroup {
     {
         super.update(elapsed);
 
-        if (OptionsState.instance.avgSpeed > 2) return;
+        if (OptionsState.instance.avgSpeed > 0.05) return;
 
         onFocus = FlxG.mouse.overlaps(bg);
 
@@ -437,7 +437,7 @@ class StateRect extends FlxSpriteGroup {
     {
         super.update(elapsed);
 
-        if (OptionsState.instance.avgSpeed > 0.5) return;
+        if (OptionsState.instance.avgSpeed > 0.05) return;
         
         onFocus = FlxG.mouse.overlaps(this);
 
@@ -498,7 +498,7 @@ class ResetRect extends FlxSpriteGroup {
     {
         super.update(elapsed);
 
-        if (OptionsState.instance.avgSpeed > 0.5) return;
+        if (OptionsState.instance.avgSpeed > 0.05) return;
         
         onFocus = FlxG.mouse.overlaps(this);
 

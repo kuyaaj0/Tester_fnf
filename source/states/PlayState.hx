@@ -985,7 +985,7 @@ class PlayState extends MusicBeatState
 					videoCutscene.pause();
 					videoCutscene.videoSprite.visible = false;
 					videoCutscene = null; //不是哥们你这好像没起作用啊，得加点代码吧
-					canPause = true;
+					FlxTimer.wait(0.5, () -> { canPause = true; }); //我日我不到啊但是还是写上吧（我总感觉psych这个是不是缺代码了） -狐月影
 					inCutscene = false;
 					startAndEnd();
 				}
