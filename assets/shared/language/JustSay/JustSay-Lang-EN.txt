@@ -96,6 +96,6 @@ I’ve got a bad feeling about this.
 Look! It’s the loading bar!  
 We meet again... again. :)  
 Crashes? Just part of the experience.  
-Fun fact: *Dead Cells* was written in Haxe.  
+Fun fact: *Dead Cells* was written in Heaps.  
 Yeah, yeah, sure, uh-huh.
 You should thank DeepSeek for letting you see the English tags.
