@@ -685,7 +685,7 @@ class FreeplayState extends MusicBeatState
 		
 		smallMag.updateRect(magenta.pixels);
 		FlxTween.tween(previousBG, {alpha: 0}, 0.4, {ease: FlxEase.linear});
-		previousBG.destory();
+		previousBG.destroy();
 	}
 
 	var rateMutex:Mutex = new Mutex();
