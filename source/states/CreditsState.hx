@@ -227,7 +227,11 @@ class CreditsState extends MusicBeatState
 	var avgSpeed:Float = 0;
 	function mouseMove()
 	{
-		if (FlxG.mouse.justPressed) saveMouseY = FlxG.mouse.y;
+		if (FlxG.mouse.justPressed) 
+		{
+			saveMouseY = FlxG.mouse.y;
+			avgSpeed = 0;
+		}
 		moveData = FlxG.mouse.y - saveMouseY;
 		saveMouseY = FlxG.mouse.y;
 		avgSpeed = avgSpeed * 0.75 + moveData * 0.25;

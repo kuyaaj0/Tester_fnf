@@ -188,10 +188,15 @@ class OptionsState extends MusicBeatState
 	public var avgSpeed:Float = 0;
 	function mouseMove()
 	{
-		if (FlxG.mouse.justPressed) saveMouseY = FlxG.mouse.y;
+		if (FlxG.mouse.justPressed) 
+		{
+			saveMouseY = FlxG.mouse.y;
+			avgSpeed = 0;
+		}
 		moveData = FlxG.mouse.y - saveMouseY;
 		saveMouseY = FlxG.mouse.y;
-		avgSpeed = avgSpeed * 0.75 + moveData * 0.25;
+		avgSpeed = avgSpeed * 0.8 + moveData * 0.2;
+		//trace(avgSpeed);
 	}
 
 	public function moveState(type:Int) {
