@@ -26,6 +26,7 @@
 	<!--define name="DISCORD_ALLOWED" if="desktop" unless="hl"/-->
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE WATERMARKS/DEV NAMES ON TITLE SCREEN -->
 	<define name="VIDEOS_ALLOWED" if="desktop || mobile" unless="32bits || hl || NOVIDEO || rpi"/> <!-- i'll keep this cuz it makes vscode think i don't use videos -->
+	<define name="VIDEOS_ALLOWED_Old" if="desktop || android" unless="32bits || hl || NOVIDEO || rpi"/>
         <define name="CUSTOM_SHADERS_ALLOWED" if="LUA_ALLOWED"/>
 
 	<section if="officialBuild">
@@ -115,7 +116,7 @@
 	<haxelib name="SScript" if="HSCRIPT_ALLOWED"/>
 	<haxelib name="hscript" if="HSCRIPT_ALLOWED"/>
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED"/>
-	<haxelib name="hxCodec" if="VIDEOS_ALLOWED && !ios"/>
+	<haxelib name="hxCodec" if="VIDEOS_ALLOWED_Old"/>
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
 	<haxelib name="flxanimate" unless="html5"/>
 	<haxelib name="tjson"/>
