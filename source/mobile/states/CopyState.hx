@@ -23,6 +23,8 @@ class CopyState extends MusicBeatState
 	public var loadedText:FlxText;
 	public var copyLoop:FlxAsyncLoop;
 
+	public var isOption:Bool = false;
+
 	var loopTimes:Int = 0;
 	var failedFiles:Array<String> = [];
 	var canUpdate:Bool = true;
@@ -30,11 +32,21 @@ class CopyState extends MusicBeatState
 
 	static final textFilesExtensions:Array<String> = ['txt', 'xml', 'lua', 'hx', 'json', 'frag', 'vert'];
 
+	public function new(isOption:Bool = false){
+		this.isOption = isOption;
+		super();
+	}
+
 	override function create()
 	{
 		locatedFiles = [];
 		maxLoopTimes = 0;
-		checkExistingFiles(true);
+		if (isOption){
+			checkExistingFilesNew(true);
+		}else{
+			checkExistingFiles();
+		}
+		
 		if (maxLoopTimes > 0)
 		{
 			shouldCopy = true;
@@ -92,12 +104,22 @@ class CopyState extends MusicBeatState
 						FileSystem.createDirectory('logs');
 					File.saveContent('logs/' + Date.now().toString().replace(' ', '-').replace(':', "'") + '-CopyState' + '.txt', failedFiles.join('\n'));
 				}
-				if (!checkExistingFiles())
+				if (!isOption && !checkExistingFiles())
 				{
 					trace('reloaded CopyState...');
 					FlxG.resetState();
 					return;
 				}
+				if (isOption)
+				{
+					if (!checkExistingFilesNew())
+					{
+					    trace('reloaded CopyState...');
+					    FlxG.resetState();
+					    return;
+					}
+				}
+				
 				canUpdate = false;
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 				var black = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
@@ -193,7 +215,7 @@ class CopyState extends MusicBeatState
 			failedFiles.push('${getFile(file)} ($error)');
 		}
 	}
-	/*
+	
 	public static function checkExistingFiles():Bool
 	{
 		locatedFiles = OpenflAssets.list();
@@ -219,8 +241,8 @@ class CopyState extends MusicBeatState
 
 		return (maxLoopTimes < 0);
 	}
-	*/
-	public static function checkExistingFiles(delete:Bool = false):Bool
+	
+	public static function checkExistingFilesNew(delete:Bool = false):Bool
 	{
 		//delete变量是规定了他是什么状态，是只检查文件有没有问题，还是把有问题的文件换掉。
 		//当delete为true的时候为检查+替换，为false的时候为检查。

@@ -259,15 +259,20 @@ class BackendGroup
             BOOL
         );
         follow.addOption(option);
-        #end
         
-        #if mobile
         var option:Option = new Option(
             Language.get('filesCheck'),
             'filesCheck',
             BOOL
         );
         follow.addOption(option);
+
+	var option:Option = new Option(
+	    Language.get('filesCheckNew'),
+	    'CopyState',
+	    STATE
+	);
+	follow.addOption(option);
         #end
     }
 

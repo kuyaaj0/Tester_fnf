@@ -247,7 +247,7 @@ class MainMenuState extends MusicBeatState
 			}
 		});	
 			
-			var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 400, Language.get('novaFlareEngine', 'mm') + " v " + novaFlareEngineVersion + ' -HOTFIX', 12);
+			var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 400, Language.get('novaFlareEngine', 'mm') + " v " + novaFlareEngineVersion, 12);
 			versionShit.scrollFactor.set();
 			versionShit.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			versionShit.antialiasing = ClientPrefs.data.antialiasing;
