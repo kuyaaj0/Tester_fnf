@@ -23,6 +23,8 @@ class CopyState extends MusicBeatState
 	public var loadedText:FlxText;
 	public var copyLoop:FlxAsyncLoop;
 
+	public var isOption:Bool = false;
+
 	var loopTimes:Int = 0;
 	var failedFiles:Array<String> = [];
 	var canUpdate:Bool = true;
@@ -34,7 +36,12 @@ class CopyState extends MusicBeatState
 	{
 		locatedFiles = [];
 		maxLoopTimes = 0;
-		checkExistingFilesNew(true);
+		if (isOption){
+			checkExistingFilesNew(true);
+		}else{
+			checkExistingFiles();
+		}
+		
 		if (maxLoopTimes > 0)
 		{
 			shouldCopy = true;
