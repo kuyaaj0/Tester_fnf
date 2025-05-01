@@ -464,6 +464,8 @@ class StateRect extends FlxSpriteGroup {
                 data = 4;
             case 'MobileExtraControl':
                 data = 5;
+	    case 'CopyState':
+		data = 6;
         }
         OptionsState.instance.moveState(data);
     }
