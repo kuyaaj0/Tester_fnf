@@ -51,13 +51,6 @@
       "url": "https://github.com/beihu235/hxvlc-1.8.1"
     },
     {
-      "name": "hxCodec",
-      "type": "git",
-      "dir": null,
-      "ref": "main",
-      "url": "https://github.com/beihu235/hxCodec"
-    },
-    {
       "name": "SScript",
       "type": "git",
       "dir": null,
