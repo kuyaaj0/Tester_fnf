@@ -1,7 +1,5 @@
 package options.group;
 
-import mobile.states.CopyState;
-
 class BackendGroup
 {
     static public function add(follow:OptionBG) {
@@ -275,7 +273,6 @@ class BackendGroup
 	    STATE
 	);
 	follow.addOption(option);
-	CopyState.isOption = true;
         #end
     }
 
