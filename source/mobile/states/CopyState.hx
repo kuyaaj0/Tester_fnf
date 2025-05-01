@@ -32,6 +32,10 @@ class CopyState extends MusicBeatState
 
 	static final textFilesExtensions:Array<String> = ['txt', 'xml', 'lua', 'hx', 'json', 'frag', 'vert'];
 
+	function new(option:Bool = false){
+		isOption = option;
+	}
+
 	override function create()
 	{
 		locatedFiles = [];
