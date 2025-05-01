@@ -261,9 +261,7 @@ class BackendGroup
             BOOL
         );
         follow.addOption(option);
-        #end
         
-        #if mobile
         var option:Option = new Option(
             Language.get('filesCheck'),
             'filesCheck',
@@ -271,7 +269,7 @@ class BackendGroup
         );
         follow.addOption(option);
 
-	vat option:Option = new Option(
+	var option:Option = new Option(
 	    Language.get('filesCheckNew'),
 	    'CopyState',
 	    STATE
