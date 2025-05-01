@@ -748,8 +748,10 @@ class SongRect extends FlxSpriteGroup //songs member for freeplay
         } else {
             filesLoad = 'menuDesat';
             extraLoad = false;
-        }			
-
+        }
+	    
+	var previousBG = background.clone();
+	add(previousBG);
         background = new FlxSprite(0, 0).loadGraphic(Paths.image(filesLoad, null, false, extraLoad));
         
         var matrix:Matrix = new Matrix();
@@ -774,7 +776,10 @@ class SongRect extends FlxSpriteGroup //songs member for freeplay
             background.color =  FlxColor.fromRGB(songColor[0], songColor[1], songColor[2]);
         }
         add(background);
-
+	    
+	FlxTween.tween(previousBG, {alpha: 0}, 0.4, {ease: FlxEase.linear});
+	previousBG.destory();
+	    
         icon = new HealthIcon(songChar);
         icon.setGraphicSize(Std.int(background.height * 0.8));
         icon.x += 60 - icon.width / 2;
