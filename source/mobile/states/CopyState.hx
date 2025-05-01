@@ -107,12 +107,12 @@ class CopyState extends MusicBeatState
 				}
 				if (isOption)
 				{
-					if (!checkExistingFilesNew()) 
+					if (!checkExistingFilesNew())
 					{
 					    trace('reloaded CopyState...');
 					    FlxG.resetState();
 					    return;
-					｝
+					}
 				}
 				
 				canUpdate = false;
