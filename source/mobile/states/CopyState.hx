@@ -34,7 +34,7 @@ class CopyState extends MusicBeatState
 	{
 		locatedFiles = [];
 		maxLoopTimes = 0;
-		checkExistingFiles(true);
+		checkExistingFilesNew(true);
 		if (maxLoopTimes > 0)
 		{
 			shouldCopy = true;
@@ -92,7 +92,7 @@ class CopyState extends MusicBeatState
 						FileSystem.createDirectory('logs');
 					File.saveContent('logs/' + Date.now().toString().replace(' ', '-').replace(':', "'") + '-CopyState' + '.txt', failedFiles.join('\n'));
 				}
-				if (!checkExistingFiles())
+				if (!checkExistingFiles() || !checkExistingFilesNew())
 				{
 					trace('reloaded CopyState...');
 					FlxG.resetState();
@@ -193,7 +193,7 @@ class CopyState extends MusicBeatState
 			failedFiles.push('${getFile(file)} ($error)');
 		}
 	}
-	/*
+	
 	public static function checkExistingFiles():Bool
 	{
 		locatedFiles = OpenflAssets.list();
@@ -219,8 +219,8 @@ class CopyState extends MusicBeatState
 
 		return (maxLoopTimes < 0);
 	}
-	*/
-	public static function checkExistingFiles(delete:Bool = false):Bool
+	
+	public static function checkExistingFilesNew(delete:Bool = false):Bool
 	{
 		//delete变量是规定了他是什么状态，是只检查文件有没有问题，还是把有问题的文件换掉。
 		//当delete为true的时候为检查+替换，为false的时候为检查。
