@@ -121,7 +121,7 @@
 	<haxelib name="flxanimate" unless="html5"/>
 	<haxelib name="tjson"/>
 
-        <haxelib name="funkin.vis"/>
+    <haxelib name="funkin.vis"/>
 	<haxelib name="grig.audio" />
 	
 	<!-- Mobile Specific-->

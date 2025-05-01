@@ -52,8 +52,10 @@
     },
     {
       "name": "hxCodec",
-      "type": "haxelib",
-      "version": "2.5.0"
+      "type": "git",
+      "dir": null,
+      "ref": "main",
+      "url": "https://github.com/beihu235/hxCodec"
     },
     {
       "name": "SScript",
