@@ -6,6 +6,7 @@ import states.FreeplayStatePsych;
 
 import mobile.substates.MobileControlSelectSubState;
 import mobile.substates.MobileExtraControl;
+import mobile.states.CopyState;
 
 import backend.ClientPrefs;
 import language.Language;
@@ -210,6 +211,9 @@ class OptionsState extends MusicBeatState
 			case 5: //MobileExtraControl
 				persistentUpdate = false;
 				openSubState(new MobileExtraControl());
+			case 6: //CopyStates
+				LoadingState.loadAndSwitchState(new CopyState());
+				CopyState.isOption = true;
 		}
 	}
 
