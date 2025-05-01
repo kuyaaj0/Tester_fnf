@@ -115,7 +115,7 @@
 	<haxelib name="SScript" if="HSCRIPT_ALLOWED"/>
 	<haxelib name="hscript" if="HSCRIPT_ALLOWED"/>
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED"/>
-	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
+	<haxelib name="hxCodec" if="VIDEOS_ALLOWED" unless="ios"/>
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
 	<haxelib name="flxanimate" unless="html5"/>
 	<haxelib name="tjson"/>
