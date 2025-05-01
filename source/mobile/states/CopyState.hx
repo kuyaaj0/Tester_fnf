@@ -32,7 +32,7 @@ class CopyState extends MusicBeatState
 
 	static final textFilesExtensions:Array<String> = ['txt', 'xml', 'lua', 'hx', 'json', 'frag', 'vert'];
 
-	function new(isOption:Bool = false){
+	public function new(isOption:Bool = false){
 		this.isOption = isOption;
 		super();
 	}
