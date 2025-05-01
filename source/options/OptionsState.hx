@@ -212,8 +212,7 @@ class OptionsState extends MusicBeatState
 				persistentUpdate = false;
 				openSubState(new MobileExtraControl());
 			case 6: //CopyStates
-				LoadingState.loadAndSwitchState(new CopyState());
-				CopyState.isOption = true;
+				LoadingState.loadAndSwitchState(new CopyState(true));
 		}
 	}
 
