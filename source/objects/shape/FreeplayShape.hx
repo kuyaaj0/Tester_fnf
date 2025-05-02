@@ -813,7 +813,7 @@ class SongRect extends FlxSpriteGroup //songs member for freeplay
 
 	function createFilterFrames(sprite:FlxSprite, filter:BitmapFilter)
 	{
-		var filterFrames = FlxFilterFrames.fromFrames(sprite.frames, SIZE_INCREASE, SIZE_INCREASE, [filter]);
+		var filterFrames = FlxFilterFrames.fromFrames(sprite.frames, 50, 50, [filter]);
 		updateFilter(sprite, filterFrames);
 		return filterFrames;
 	}
