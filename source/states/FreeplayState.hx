@@ -678,7 +678,7 @@ class FreeplayState extends MusicBeatState
 		magenta.screenCenter();
 		magenta.antialiasing = ClientPrefs.data.antialiasing;
 		
-		smallMag.updateRect(magenta.pixels)
+		smallMag.updateRect(magenta.pixels);
 	}
 
 	var rateMutex:Mutex = new Mutex();
