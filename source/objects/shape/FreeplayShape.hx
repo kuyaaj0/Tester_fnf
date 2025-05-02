@@ -780,7 +780,7 @@ class SongRect extends FlxSpriteGroup //songs member for freeplay
         }
         add(background);
 
-	var glowFilter = new GlowFilter(FlxColor.fromRGB(songColor[0], songColor[1], songColor[2]);, 0.8, 10, 10, 3, 3, false, false);
+	var glowFilter = new GlowFilter(FlxColor.fromRGB(songColor[0], songColor[1], songColor[2]), 0.8, 10, 10, 3, 3, false, false);
 	background.filters[glowFilter];
 	    
 	FlxTween.tween(previousBG, {alpha: 0}, 0.4, {ease: FlxEase.linear});
