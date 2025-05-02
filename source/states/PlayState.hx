@@ -63,6 +63,7 @@ import psychlua.HScript;
 import tea.SScript;
 #end
 
+@allow:(backend.Replay);
 /**
  * This is where all the Gameplay stuff happens and is managed
  *
@@ -3281,7 +3282,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 	
-	public function keyPressed(key:Int, ?time:Float = -999999)
+	private function keyPressed(key:Int, ?time:Float = -999999)
 	{
 		if(ClientPrefs.data.playOpponent ? cpuControlled_opponent : cpuControlled || paused || key < 0) return;		
 		var char:Character = ClientPrefs.data.playOpponent ? dad : boyfriend;
