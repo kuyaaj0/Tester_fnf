@@ -784,7 +784,7 @@ class SongRect extends FlxSpriteGroup //songs member for freeplay
 	background.filters[glowFilter];
 	    
 	FlxTween.tween(previousBG, {alpha: 0}, 0.4, {ease: FlxEase.linear});
-	previousBG.destory();
+	previousBG.destroy();
 	    
         icon = new HealthIcon(songChar);
         icon.setGraphicSize(Std.int(background.height * 0.8));
