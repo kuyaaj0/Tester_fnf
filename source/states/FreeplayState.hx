@@ -10,9 +10,6 @@ import sys.thread.Thread;
 import sys.thread.Mutex;
 import openfl.system.System;
 
-import openfl.filters.BlurFilter;
-import openfl.filters.GlowFilter;
-
 import backend.WeekData;
 import backend.Highscore;
 import backend.Song;
@@ -667,9 +664,7 @@ class FreeplayState extends MusicBeatState
 	var rectMutex:Mutex = new Mutex();
 	function updateRect() {
 		var extraLoad:Bool = false;
-        var filesLoad = 'data/' + songs[curSelected].songName + '/background';
-	var previousBG = magenta.clone();
-	add(previousBG);
+        var filesLoad = 'data/' + songs[curSelected].songName + '/background'；
         if (FileSystem.exists(Paths.modFolders(filesLoad + '.png'))){
             extraLoad = true;
         } else {
@@ -683,9 +678,7 @@ class FreeplayState extends MusicBeatState
 		magenta.screenCenter();
 		magenta.antialiasing = ClientPrefs.data.antialiasing;
 		
-		smallMag.updateRect(magenta.pixels);
-		FlxTween.tween(previousBG, {alpha: 0}, 0.4, {ease: FlxEase.linear});
-		previousBG.destroy();
+		smallMag.updateRect(magenta.pixels)
 	}
 
 	var rateMutex:Mutex = new Mutex();
