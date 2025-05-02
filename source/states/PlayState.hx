@@ -63,7 +63,7 @@ import psychlua.HScript;
 import tea.SScript;
 #end
 
-@allow:(backend.Replay);
+@:allow(backend.Replay);
 /**
  * This is where all the Gameplay stuff happens and is managed
  *
