@@ -664,7 +664,7 @@ class FreeplayState extends MusicBeatState
 	var rectMutex:Mutex = new Mutex();
 	function updateRect() {
 		var extraLoad:Bool = false;
-        var filesLoad = 'data/' + songs[curSelected].songName + '/background'；
+        var filesLoad = 'data/' + songs[curSelected].songName + '/background';
         if (FileSystem.exists(Paths.modFolders(filesLoad + '.png'))){
             extraLoad = true;
         } else {
