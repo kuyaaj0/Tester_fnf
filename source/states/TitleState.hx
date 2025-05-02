@@ -70,9 +70,7 @@ class TitleState extends MusicBeatState
 	var credTextShit:Alphabet;
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
-	
-	var skipVideo:FlxText;
-	
+
 	var titleTextColors:Array<FlxColor> = [0xFF33FFFF, 0xFF3333CC];
 	var titleTextAlphas:Array<Float> = [1, .64];
 
@@ -88,7 +86,7 @@ class TitleState extends MusicBeatState
 	var easterEggKeysBuffer:String = '';
 	#end
 	
-    var checkOpenFirst:Bool = false;
+	var checkOpenFirst:Bool = false;
 
 	var mustUpdate:Bool = false;
 
@@ -102,11 +100,11 @@ class TitleState extends MusicBeatState
 	{
 		Paths.clearStoredMemory();
 		
-		if(!checkOpenFirst){		
-    		FlxTransitionableState.skipNextTransOut = true;										
-    		checkOpenFirst = true;		
+		if(!checkOpenFirst){
+			FlxTransitionableState.skipNextTransOut = true;
+			checkOpenFirst = true;
 		}
-				
+
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
 		#end
@@ -117,15 +115,15 @@ class TitleState extends MusicBeatState
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
-		super.create();		
+		super.create();
 
 		FlxG.save.bind('funkin', CoolUtil.getSavePath());
 
-		ClientPrefs.loadPrefs();			
+		ClientPrefs.loadPrefs();
 		
 		#if android
 		if (AppData.getVersionName() != Application.current.meta.get('version')
-		    || AppData.getAppName() != Application.current.meta.get('file')
+			|| AppData.getAppName() != Application.current.meta.get('file')
 			|| (AppData.getPackageName() != Application.current.meta.get('packageName') 
 				&& AppData.getPackageName() != Application.current.meta.get('packageName') + 'Backup1' //共存
 				&& AppData.getPackageName() != Application.current.meta.get('packageName') + 'Backup2' //共存
@@ -135,58 +133,70 @@ class TitleState extends MusicBeatState
 			FlxG.switchState(new PirateState());
 		#end
 		
-		#if mobile
-		if(!CopyState.checkExistingFiles() && !ignoreCopy && ClientPrefs.data.filesCheck){
-		    ClientPrefs.data.filesCheck = false;
-		    ClientPrefs.saveSettings();
-			FlxG.switchState(new CopyState());
+		#if mobile //检查assets/version.txt存不存在且里面保存的上一个版本号与当前的版本号一不一致，如果不一致或不存在，强制启动copy。
+		if(!FileSystem.exists(Paths.getSharedPath('version.txt'))){
+			sys.io.File.saveContent(Paths.getSharedPath('version.txt'), 'now version: ' + Std.string(states.MainMenuState.novaFlareEngineVersion));
+			FlxG.switchState(new CopyState(true));
 			return;
+		}else{
+			if(sys.io.File.getContent(Paths.getSharedPath('version.txt')) != 'now version: ' + Std.string(states.MainMenuState.novaFlareEngineVersion)){
+					sys.io.File.saveContent(Paths.getSharedPath('version.txt'), 'now version: ' + Std.string(states.MainMenuState.novaFlareEngineVersion));
+				FlxG.switchState(new CopyState(true));
+					return;
+			}
+		}
+		
+		if (ClientPrefs.data.filesCheck)
+		{
+			if(!CopyState.checkExistingFiles() && !ignoreCopy)
+			{
+				//ClientPrefs.data.filesCheck = false;
+				ClientPrefs.saveSettings();
+				FlxG.switchState(new CopyState());
+				return;
+			}
 		}
 		#end
 
 		#if LUA_ALLOWED
-        	#if (android && EXTERNAL || MEDIA)
-        try {
-        	#end
-		Mods.pushGlobalMods();
-            #if (android && EXTERNAL || MEDIA)
-        } catch (e:Dynamic) {
-            SUtil.showPopUp("permission is not obtained, restart the application", "Error!");
-            Sys.exit(1);
-        }
-            #end
+			#if (android && EXTERNAL || MEDIA)
+			try{
+				Mods.pushGlobalMods();
+			}
+			catch (e:Dynamic)
+			{
+				SUtil.showPopUp("permission is not obtained, restart the application", "Error!");
+				Sys.exit(1);
+			}
+			#else
+				Mods.pushGlobalMods();
+			#end
 		#end
 				
-		Mods.loadTopMod();		
+		Mods.loadTopMod();
 
 		#if CHECK_FOR_UPDATES
 		if(ClientPrefs.data.checkForUpdates && !closedState) {
-		    try{
-    			trace('checking for update');
-    			var http = new haxe.Http("https://raw.githubusercontent.com/beihu235/FNF-NovaFlare-Engine/main/gitVersion.txt");
-    
-    			http.onData = function (data:String)
-    			{
-    				updateVersion = data.split('\n')[0].trim();
-    				var curVersion:Float = MainMenuState.novaFlareEngineDataVersion;
-    				trace('version online: ' + data.split('\n')[0].trim() + ', your version: ' + MainMenuState.novaFlareEngineVersion);
-    				if(Std.parseFloat(updateVersion) > curVersion) {
-    					trace('versions arent matching!');
-    					mustUpdate = true;
-    				}
-    			}
-    
-    			http.onError = function (error) {
-    				trace('error: $error');
-    			}
-    
-    			http.request();
-			}			
+			try{
+				trace('checking for update');
+				var http = new haxe.Http("https://raw.githubusercontent.com/beihu235/FNF-NovaFlare-Engine/main/gitVersion.txt");
+				http.onData = function (data:String)
+				{
+					updateVersion = data.split('\n')[0].trim();
+					var curVersion:Float = MainMenuState.novaFlareEngineDataVersion;
+					trace('version online: ' + data.split('\n')[0].trim() + ', your version: ' + MainMenuState.novaFlareEngineVersion);
+					if(Std.parseFloat(updateVersion) > curVersion) {
+						trace('versions arent matching!');
+						mustUpdate = true;
+					}
+				}
+				http.onError = (error)->trace('error: $error');
+				http.request();
+			}
 		}
-		#end				
+		#end
 
 		Language.resetData();
-
 		Highscore.load();
 
 		// IGNORE THIS!!!
@@ -217,6 +227,7 @@ class TitleState extends MusicBeatState
 				FlxG.fullscreen = FlxG.save.data.fullscreen;
 				//trace('LOADED FULLSCREEN SETTING!!');
 			}
+
 			persistentUpdate = true;
 			persistentDraw = true;
 		}
@@ -224,9 +235,7 @@ class TitleState extends MusicBeatState
 		ColorblindFilter.UpdateColors();
 
 		if (FlxG.save.data.weekCompleted != null)
-		{
 			StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
-		}
 
 		FlxG.mouse.visible = false;
 		#if FREEPLAY
@@ -235,21 +244,14 @@ class TitleState extends MusicBeatState
 		MusicBeatState.switchState(new ChartingState());
 		#else
 		if(!ClientPrefs.data.openedFlash) {
-		    ClientPrefs.data.openedFlash = true;
-		    ClientPrefs.saveSettings();
+			ClientPrefs.data.openedFlash = true;
+			ClientPrefs.saveSettings();
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
 			MusicBeatState.switchState(new FlashingState());
 		} else {
-			if (initialized)
-				startCutscenesIn();
-			else
-			{
-				new FlxTimer().start(1, function(tmr:FlxTimer)
-				{
-					startCutscenesIn();
-				});
-			}
+			if (initialized)startCutscenesIn();
+			else new FlxTimer().start(1, (_)->startCutscenesIn());
 		}
 		#end
 	}
@@ -268,16 +270,16 @@ class TitleState extends MusicBeatState
 		}
 		if (!ClientPrefs.data.skipTitleVideo)
 			#if VIDEOS_ALLOWED 
-			    startVideo('menuExtend/titleIntro');
+				startVideo('menuExtend/titleIntro');
 			#else
-			    startCutscenesOut();
+				startCutscenesOut();
 			#end
 		else
 			startCutscenesOut();
 	}
-	
+
 	function startCutscenesOut()
-	{	    
+	{
 		inGame = true;
 		startIntro();
 	}
@@ -286,15 +288,13 @@ class TitleState extends MusicBeatState
 	{
 		if (!initialized)
 		{
-			if(FlxG.sound.music == null && ClientPrefs.data.mainMusic == "None") {
+			if(FlxG.sound.music == null && ClientPrefs.data.mainMusic == "None")
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-			}else{
-				if(ClientPrefs.data.mainMusic != 'freakyMenu'){
-				    FlxG.sound.playMusic(Paths.music("Main Screen/" + ClientPrefs.data.mainMusic), 0);
-				}else{
-				    FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-				}
-			}
+			else
+				if(ClientPrefs.data.mainMusic != 'freakyMenu')
+					FlxG.sound.playMusic(Paths.music("Main Screen/" + ClientPrefs.data.mainMusic), 0);
+				else
+					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 		}
 
 		Conductor.bpm = titleJSON.bpm;
@@ -303,11 +303,10 @@ class TitleState extends MusicBeatState
 		var bg:FlxSprite = new FlxSprite();
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 
-		if (titleJSON.backgroundSprite != null && titleJSON.backgroundSprite.length > 0 && titleJSON.backgroundSprite != "none"){
+		if (titleJSON.backgroundSprite != null && titleJSON.backgroundSprite.length > 0 && titleJSON.backgroundSprite != "none")
 			bg.loadGraphic(Paths.image(titleJSON.backgroundSprite));
-		}else{
+		else
 			bg.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		}
 
 		// bg.setGraphicSize(Std.int(bg.width * 0.6));
 		// bg.updateHitbox();
@@ -435,8 +434,8 @@ class TitleState extends MusicBeatState
 	}
 	
 	function IsNum(value:Dynamic):Bool { 
-	    if (Std.isOfType(value, Int)) return true;
-	    return Std.isOfType(value, Float); 
+		if (Std.isOfType(value, Int)) return true;
+		return Std.isOfType(value, Float); 
 	}
 
 	function getIntroTextShit():Array<Array<String>>
@@ -447,19 +446,14 @@ class TitleState extends MusicBeatState
 		var fullText:String = Assets.getText(Paths.txt('introText'));
 		var firstArray:Array<String> = fullText.split('\n');
 		#end
-		var swagGoodArray:Array<Array<String>> = [];
 
-		for (i in firstArray)
-		{
-			swagGoodArray.push(i.split('--'));
-		}
-
+		var swagGoodArray:Array<Array<String>> = [for (i in firstArray) i.split('--')];
 		return swagGoodArray;
 	}
 
 	var transitioning:Bool = false;
 	private static var playJingle:Bool = false;
-	
+
 	var newTitle:Bool = false;
 	var titleTimer:Float = 0;
 
@@ -473,21 +467,9 @@ class TitleState extends MusicBeatState
 
 		#if FLX_TOUCH
 		for (touch in FlxG.touches.list)
-		{
 			if (touch.justPressed)
-			{
 				pressedEnter = true;
-			} 
-		}
 		#end
-		
-		#if android
-		if (videoBool){
-			pressedEnter = false;
-			if (FlxG.android.justReleased.BACK) pressedEnter = true;
-		}
-		#end
-		
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
@@ -538,11 +520,10 @@ class TitleState extends MusicBeatState
 
 				new FlxTimer().start(1, function(tmr:FlxTimer)
 				{
-					if (mustUpdate && !OutdatedState.leftState) {					   
+					if (mustUpdate && !OutdatedState.leftState)
 						MusicBeatState.switchState(new OutdatedState());
-					} else {
+					else
 						MusicBeatState.switchState(new MainMenuState());
-					}
 					closedState = true;
 				});
 				// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
@@ -584,12 +565,8 @@ class TitleState extends MusicBeatState
 							});
 							FlxG.sound.music.fadeOut();
 							if(FreeplayState.vocals != null)
-							{
 								FreeplayState.vocals.fadeOut();
-							}
-							closedState = true;
-							transitioning = true;
-							playJingle = true;
+							playJingle = transitioning = closedState = true;
 							easterEggKeysBuffer = '';
 							break;
 						}
@@ -600,9 +577,7 @@ class TitleState extends MusicBeatState
 		}
 
 		if (initialized && pressedEnter && !skippedIntro)
-		{
 			skipIntro();
-		}
 
 		if(swagShader != null)
 		{
@@ -610,16 +585,26 @@ class TitleState extends MusicBeatState
 			if(controls.UI_RIGHT) swagShader.hue += elapsed * 0.1;
 		}
 
-		if (videoBool)
-		{
-			if(pressedEnter)
+		#if VIDEOS_ALLOWED
+			if (videoBool)
 			{
-				video.stop();
-				videoBool = false;
-				skipVideo.visible = false;
-				startCutscenesOut();
+				if(pressedEnter)
+				{
+					video.stop();
+					video.visible = false;
+					videoBool = false;
+					skipVideo.visible = false;
+					startCutscenesOut();
+				}
 			}
-		}
+
+			#if android
+				if (videoBool){
+					pressedEnter = false;
+					if (FlxG.android.justReleased.BACK) pressedEnter = true;
+				}
+			#end
+		#end
 
 		super.update(elapsed);
 	}
@@ -628,14 +613,14 @@ class TitleState extends MusicBeatState
 	{
 		for (i in 0...textArray.length)
 		{
-		    if (textArray[i] != null){
-    			var money:Alphabet = new Alphabet(0, 0, textArray[i], true);
-    			money.screenCenter(X);
-    			money.y += (i * 60) + 200 + offset;
-    			if(credGroup != null && textGroup != null) {
-    				credGroup.add(money);
-    				textGroup.add(money);
-    			}
+			if (textArray[i] != null){
+				var money:Alphabet = new Alphabet(0, 0, textArray[i], true);
+				money.screenCenter(X);
+				money.y += (i * 60) + 200 + offset;
+				if(credGroup != null && textGroup != null) {
+					credGroup.add(money);
+					textGroup.add(money);
+				}
 			}
 		}
 	}
@@ -729,8 +714,6 @@ class TitleState extends MusicBeatState
 			}
 		}
 	}
-	
-	
 
 	var skippedIntro:Bool = false;
 	var increaseVolume:Bool = false;
@@ -804,44 +787,41 @@ class TitleState extends MusicBeatState
 				{
 					FlxG.sound.music.fadeOut();
 					if(FreeplayState.vocals != null)
-					{
 						FreeplayState.vocals.fadeOut();
-					}
 				}
 				#end
 			}
 			skippedIntro = true;
 		}
 	}
-	
+
 	#if VIDEOS_ALLOWED
 	var video:FlxVideoSprite;
+	var skipVideo:FlxText;
 	var videoBool:Bool = false;
 	function startVideo(name:String)
 	{
-	    skipVideo = new FlxText(0, FlxG.height - 26, 0, "Press " + #if android "Back on your Phone " #else "Enter " #end + "to skip", 18);
+		skipVideo = new FlxText(0, FlxG.height - 26, 0, "Press " + #if android "Back on your Phone " #else "Enter " #end + "to skip", 18);
 		skipVideo.setFormat(Assets.getFont("assets/fonts/montserrat.ttf").fontName, 18);
 		skipVideo.alpha = 0;
 		skipVideo.alignment = CENTER;
-        skipVideo.screenCenter(X);
-        skipVideo.scrollFactor.set();
+		skipVideo.screenCenter(X);
+		skipVideo.scrollFactor.set();
 		skipVideo.antialiasing = ClientPrefs.data.antialiasing;
-		
-		
-		#if VIDEOS_ALLOWED
+		add(skipVideo);
+		FlxTween.tween(skipVideo, {alpha: 1}, 1, {ease: FlxEase.quadIn});
+		FlxTween.tween(skipVideo, {alpha: 0}, 1, {ease: FlxEase.quadIn, startDelay: 4});
 
 		var filepath:String = Paths.video(name);
-		#if sys
-		if(!FileSystem.exists(filepath))
-		#else
-		if(!OpenFlAssets.exists(filepath))
-		#end
+		
+		if(#if sys !FileSystem.exists(filepath)#else !OpenFlAssets.exists(filepath))
 		{
 			FlxG.log.warn('Couldnt find video file: ' + name);
 			videoEnd();
 			return;
 		}
-        
+		#end
+
 		video = new FlxVideoSprite(0, 0);
 		video.antialiasing = true;
 		video.bitmap.onFormatSetup.add(function():Void
@@ -856,38 +836,22 @@ class TitleState extends MusicBeatState
 			}
 		});
 		video.bitmap.onEndReached.add(video.destroy);
-		add(video);
+		insert(members.indexOf(skipVideo), video);
 		video.load(filepath);
 		video.play();
 		videoBool = true;
 
-		video.bitmap.onEndReached.add(function() {
-			videoEnd();
-		});
-
-		showText();
-		#else
-		FlxG.log.warn('Platform not supported!');
-		videoEnd();
-		return;
-		#end
+		video.bitmap.onEndReached.add(()->videoEnd());
 	}
 
 	function videoEnd()
 	{
-	    skipVideo.visible = false;
 		if (video != null) video.stop();
-		//video.visible = false;
+		skipVideo.visible = videoBool = video.visible = false;
 		startCutscenesOut();
-		videoBool = false;
-		trace("end");
 	}
-	
-	function showText(){
-	    add(skipVideo);
-		FlxTween.tween(skipVideo, {alpha: 1}, 1, {ease: FlxEase.quadIn});
-		FlxTween.tween(skipVideo, {alpha: 0}, 1, {ease: FlxEase.quadIn, startDelay: 4});
-	
-	}
+
+	#else
+		FlxG.log.warn('Platform not supported!');
 	#end
 }
