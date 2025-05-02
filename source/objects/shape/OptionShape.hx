@@ -206,7 +206,7 @@ class FloatRect extends FlxSpriteGroup {
     {
         super.update(elapsed);
 
-        if (OptionsState.instance.avgSpeed > 0.1) return;
+        //if (OptionsState.instance.avgSpeed > 0.1) return;
 
         if (FlxG.mouse.overlaps(rect) && FlxG.mouse.justPressed)
         {
@@ -498,7 +498,7 @@ class ResetRect extends FlxSpriteGroup {
     {
         super.update(elapsed);
 
-        if (OptionsState.instance.avgSpeed > 0.3) return;
+        if (OptionsState.instance.avgSpeed > 0.1) return;
         
         onFocus = FlxG.mouse.overlaps(this);
 
