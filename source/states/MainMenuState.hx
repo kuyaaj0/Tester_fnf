@@ -191,7 +191,7 @@ class MainMenuState extends MusicBeatState
 			    });
 		}
 		
-		var thread = Thread.create(() -> {	
+		var thread = Thread.create(() -> {
 			updateGitAction(function(result) {
 				ActionStatus = result;
 			});

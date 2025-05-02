@@ -1,8 +1,8 @@
 {
 	"songs": [
-		["Spookeez", "spooky", [34, 51, 68]],
-		["South", "spooky", [34, 51, 68]],
-		["Monster", "monster", [34, 51, 68]]
+		["Spookeez", "spooky", [34, 51, 68], "Funkin Sound Team", ["Funkin Team", "Funkin Team", "Funkin Team"]],
+		["South", "spooky", [34, 51, 68], "Funkin Sound Team", ["Funkin Team", "Funkin Team", "Funkin Team"]],
+		["Monster", "monster", [34, 51, 68], "Funkin Sound Team", ["Funkin Team", "Funkin Team", "Funkin Team"]]
 	],
 
 	"weekCharacters": [

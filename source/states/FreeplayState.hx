@@ -407,9 +407,13 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
+	var startCheck:Bool = false; 
 	function startGame() {
 		if (Math.abs(lerpPosition - position) > 1) return;
 		if (!musicMutex.tryAcquire()) return;
+
+		if (startCheck) return;
+		startCheck = true;
 
 		try
 		{
