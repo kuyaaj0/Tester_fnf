@@ -9,9 +9,6 @@ import openfl.geom.Rectangle;
 import openfl.display.Shape;
 import objects.shape.ShapeEX;
 
-import openfl.filters.GlowFilter;
-import openfl.filters.BitmapFilter;
-
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxStringUtil; 
 import flixel.graphics.frames.FlxFilterFrames;
@@ -754,9 +751,6 @@ class SongRect extends FlxSpriteGroup //songs member for freeplay
             extraLoad = false;
         }
 	    
-	var previousBG = background.clone();
-	add(previousBG);
-
         background = new FlxSprite(0, 0).loadGraphic(Paths.image(filesLoad, null, false, extraLoad));
         
         var matrix:Matrix = new Matrix();
@@ -782,13 +776,6 @@ class SongRect extends FlxSpriteGroup //songs member for freeplay
         }
         add(background);
 
-	var glowFilter = new GlowFilter(FlxColor.fromRGB(songColor[0], songColor[1], songColor[2]), 0.8, 10, 10, 3, 3, false, false);
-
-	var BgFilter = createFilterFrames(background, glowFilter);
-	    
-	FlxTween.tween(previousBG, {alpha: 0}, 0.4, {ease: FlxEase.linear});
-	previousBG.destroy();
-	    
         icon = new HealthIcon(songChar);
         icon.setGraphicSize(Std.int(background.height * 0.8));
         icon.x += 60 - icon.width / 2;
@@ -809,20 +796,6 @@ class SongRect extends FlxSpriteGroup //songs member for freeplay
         add(musican);
 
         this.name = songNameS;
-	}
-
-	function createFilterFrames(sprite:FlxSprite, filter:BitmapFilter)
-	{
-		var filterFrames = FlxFilterFrames.fromFrames(sprite.frames, 50, 50, [filter]);
-		updateFilter(sprite, filterFrames);
-		return filterFrames;
-	}
-
-	function updateFilter(spr:FlxSprite, sprFilter:FlxFilterFrames)
-	{
-		// Reset the offset, it will ballon with each apply call
-		spr.offset.set();
-		sprFilter.applyToSprite(spr, false, true);
 	}
 
     function drawLine(width:Float, height:Float):BitmapData {
