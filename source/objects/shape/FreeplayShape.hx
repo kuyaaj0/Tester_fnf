@@ -13,6 +13,7 @@ import openfl.filters.GlowFilter;
 
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxStringUtil; 
+import flixel.graphics.frames.FlxFilterFrames;
 
 import states.FreeplayState;
 
@@ -781,7 +782,8 @@ class SongRect extends FlxSpriteGroup //songs member for freeplay
         add(background);
 
 	var glowFilter = new GlowFilter(FlxColor.fromRGB(songColor[0], songColor[1], songColor[2]), 0.8, 10, 10, 3, 3, false, false);
-	background.filters[glowFilter];
+
+	var BgFilter = createFilterFrames(background, glowFilter);
 	    
 	FlxTween.tween(previousBG, {alpha: 0}, 0.4, {ease: FlxEase.linear});
 	previousBG.destroy();
@@ -806,6 +808,20 @@ class SongRect extends FlxSpriteGroup //songs member for freeplay
         add(musican);
 
         this.name = songNameS;
+	}
+
+	function createFilterFrames(sprite:FlxSprite, filter:BitmapFilter)
+	{
+		var filterFrames = FlxFilterFrames.fromFrames(sprite.frames, SIZE_INCREASE, SIZE_INCREASE, [filter]);
+		updateFilter(sprite, filterFrames);
+		return filterFrames;
+	}
+
+	function updateFilter(spr:FlxSprite, sprFilter:FlxFilterFrames)
+	{
+		// Reset the offset, it will ballon with each apply call
+		spr.offset.set();
+		sprFilter.applyToSprite(spr, false, true);
 	}
 
     function drawLine(width:Float, height:Float):BitmapData {
