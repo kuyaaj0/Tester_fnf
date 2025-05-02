@@ -42,14 +42,16 @@ import substates.ResultsScreen;
 #if !flash
 import flixel.addons.display.FlxRuntimeShader;
 #end
+
 #if CUSTOM_SHADERS_ALLOWED
-import shaders.openfl.filters.ShaderFilter as CustomShaderFilter;
+//import shaders.openfl.filters.ShaderFilter as CustomShaderFilter;
 import openfl.filters.BitmapFilter;
-import shaders.CustomShaders;
+//import shaders.CustomShaders;
 #end
 
 import objects.Note.EventNote;
 import objects.*;
+import states.stages.*;
 import states.stages.objects.*;
 
 #if LUA_ALLOWED
@@ -118,7 +120,7 @@ class PlayState extends MusicBeatState
 	public var modchartTexts:Map<String, FlxText> = new Map<String, FlxText>();
 	public var modchartSaves:Map<String, FlxSave> = new Map<String, FlxSave>();
 	#if CUSTOM_SHADERS_ALLOWED
-	public var modchartShader:Map<String, Effect> = new Map<String, Effect>();
+	//public var modchartShader:Map<String, Effect> = new Map<String, Effect>();
 	public var shaderUpdates:Array<Float->Void> = [];
 	#end
 	#end
@@ -443,15 +445,17 @@ class PlayState extends MusicBeatState
 
 		switch (curStage)
 		{
-			case 'stage': new states.stages.StageWeek1(); //Week 1
-			case 'spooky': new states.stages.Spooky(); //Week 2
-			case 'philly': new states.stages.Philly(); //Week 3
-			case 'limo': new states.stages.Limo(); //Week 4
-			case 'mall': new states.stages.Mall(); //Week 5 - Cocoa, Eggnog
-			case 'mallEvil': new states.stages.MallEvil(); //Week 5 - Winter Horrorland
-			case 'school': new states.stages.School(); //Week 6 - Senpai, Roses
-			case 'schoolEvil': new states.stages.SchoolEvil(); //Week 6 - Thorns
-			case 'tank': new states.stages.Tank(); //Week 7 - Ugh, Guns, Stress
+			case 'stage': new StageWeek1(); //Week 1
+			case 'spooky': new Spooky(); //Week 2
+			case 'philly': new Philly(); //Week 3
+			case 'limo': new Limo(); //Week 4
+			case 'mall': new Mall(); //Week 5 - Cocoa, Eggnog
+			case 'mallEvil': new MallEvil(); //Week 5 - Winter Horrorland
+			case 'school': new School(); //Week 6 - Senpai, Roses
+			case 'schoolEvil': new SchoolEvil(); //Week 6 - Thorns
+			case 'tank': new Tank(); //Week 7 - Ugh, Guns, Stress
+			case 'phillyStreets': new PhillyStreets(); 	//Weekend 1 - Darnell, Lit Up, 2Hot
+			case 'phillyBlazin': new PhillyBlazin();	//Weekend 1 - Blazin
 		}
 
 		if(isPixelStage) {
@@ -982,9 +986,11 @@ class PlayState extends MusicBeatState
 						moveCameraSection();
 						FlxG.camera.snapToTarget();
 					}
-					videoCutscene.pause();
-					videoCutscene.videoSprite.visible = false;
-					videoCutscene = null; //不是哥们你这好像没起作用啊，得加点代码吧
+					try {
+						videoCutscene.pause();
+						videoCutscene.videoSprite.visible = false;
+						videoCutscene = null; //不是哥们你这好像没起作用啊，得加点代码吧
+					}
 					new FlxTimer().start(0.25, function(tmr:FlxTimer){    		        		                        				
 						canPause = true;
 					}); //我日我不到啊但是还是写上吧（我总感觉psych这个是不是缺代码了） -狐月影
@@ -1383,6 +1389,8 @@ class PlayState extends MusicBeatState
 			};
 		}
 
+		stagesFunc(function(stage:BaseStage) stage.startSong());
+
 		// Song duration in a float, useful for the time left feature
 		songLength = FlxG.sound.music.length;
 		FlxTween.tween(timeBar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
@@ -1659,6 +1667,7 @@ class PlayState extends MusicBeatState
 	}
 
 	#if CUSTOM_SHADERS_ALLOWED
+	/*
 	public function addShaderToObject(obj:String, effect:CustomShaderFilter) {
 		if(obj == '') {
 			@:privateAccess
@@ -1696,6 +1705,7 @@ class PlayState extends MusicBeatState
 			camera.filtersEnabled = ClientPrefs.data.shaders;
 		}
 	}
+	
 
 	public function removeShaderFromCamera(cam:String, effect:Dynamic) {
 		var camera:Dynamic;
@@ -1748,6 +1758,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 	}
+		*/
     #end
 
 	public var skipArrowStartTween:Bool = false; //for lua
@@ -2009,7 +2020,7 @@ class PlayState extends MusicBeatState
 
 		if(replayTxt != null && replayTxt.visible) {
 			txtSine += 180 * elapsed;
-			replayTxt.alpha = 1 - Math.sin((Math.PI * txtSine) / 180);
+			replayTxt.alpha = 1 - Math.cos((Math.PI * txtSine) / 180);
 		}
 
 		if ((controls.PAUSE #if android || FlxG.android.justReleased.BACK #end) && (startedCountdown && canPause))
@@ -2417,6 +2428,7 @@ class PlayState extends MusicBeatState
 
 	public var isDead:Bool = false; //Don't mess with this on Lua!!!
 	function doDeathCheck(?skipHealthCheck:Bool = false) {
+		if (replayMode) return;
 		if (((skipHealthCheck && instakillOnMiss) || health <= 0) && !practiceMode && !isDead)
 		{
 			var ret:Dynamic = callOnScripts('onGameOver', null, true);

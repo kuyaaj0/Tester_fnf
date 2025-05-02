@@ -319,6 +319,8 @@ class StoryMenuState extends MusicBeatState
 			catch(e:Dynamic)
 			{
 				trace('ERROR! $e');
+				selectedWeek = false;
+				FlxG.sound.play(Paths.sound('cancelMenu'));
 				return;
 			}
 			

@@ -20,7 +20,7 @@ import backend.StarRating;
 
 import objects.HealthIcon;
 import objects.shape.ShapeEX;
-import objects.shape.FreeplayShape;
+import objects.shape.freeplayShape.*;
 
 import substates.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
@@ -664,7 +664,7 @@ class FreeplayState extends MusicBeatState
 	var rectMutex:Mutex = new Mutex();
 	function updateRect() {
 		var extraLoad:Bool = false;
-        var filesLoad = 'data/' + songs[curSelected].songName + '/background'；
+        var filesLoad = 'data/' + songs[curSelected].songName + '/background';
         if (FileSystem.exists(Paths.modFolders(filesLoad + '.png'))){
             extraLoad = true;
         } else {
@@ -678,7 +678,7 @@ class FreeplayState extends MusicBeatState
 		magenta.screenCenter();
 		magenta.antialiasing = ClientPrefs.data.antialiasing;
 		
-		smallMag.updateRect(magenta.pixels)
+		smallMag.updateRect(magenta.pixels);
 	}
 
 	var rateMutex:Mutex = new Mutex();

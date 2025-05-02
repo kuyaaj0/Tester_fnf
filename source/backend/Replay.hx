@@ -63,7 +63,8 @@ class Replay
 
     static public function push(time:Float, type:Int, state:Int) 
     {
-        if (!PlayState.replayMode) saveData[state][type].push(time);
+        if (!PlayState.replayMode) 
+            try { saveData[state][type].push(time); }
     }
     
     static var isPaused:Bool = false;
