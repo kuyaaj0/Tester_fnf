@@ -9,6 +9,8 @@ import openfl.geom.Rectangle;
 import openfl.display.Shape;
 import objects.shape.ShapeEX;
 
+import openfl.filters.GlowFilter;
+
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxStringUtil; 
 
@@ -752,6 +754,7 @@ class SongRect extends FlxSpriteGroup //songs member for freeplay
 	    
 	var previousBG = background.clone();
 	add(previousBG);
+
         background = new FlxSprite(0, 0).loadGraphic(Paths.image(filesLoad, null, false, extraLoad));
         
         var matrix:Matrix = new Matrix();
@@ -776,6 +779,9 @@ class SongRect extends FlxSpriteGroup //songs member for freeplay
             background.color =  FlxColor.fromRGB(songColor[0], songColor[1], songColor[2]);
         }
         add(background);
+
+	var glowFilter = new GlowFilter(FlxColor.fromRGB(songColor[0], songColor[1], songColor[2]);, 0.8, 10, 10, 3, 3, false, false);
+	background.filters[glowFilter];
 	    
 	FlxTween.tween(previousBG, {alpha: 0}, 0.4, {ease: FlxEase.linear});
 	previousBG.destory();
