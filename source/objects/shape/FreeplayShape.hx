@@ -10,6 +10,7 @@ import openfl.display.Shape;
 import objects.shape.ShapeEX;
 
 import openfl.filters.GlowFilter;
+import openfl.filters.BitmapFilter;
 
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxStringUtil; 
