@@ -256,6 +256,7 @@ class CopyState extends MusicBeatState
 		for (file in locatedFiles)
 		{
 			var toFile = Path.join([to, file]);
+			#if !ios
 			if (FileSystem.exists(toFile))
 			{
 				var internalBytes:ByteArray = getFileBytes(getFile(file));
@@ -269,6 +270,10 @@ class CopyState extends MusicBeatState
 					}
 				}
 			}
+			#else
+			FileSystem.deleteFile(toFile); //不管有没有问题把整个assets删掉然后再复制，ios莫名闪退只能这样了。
+			#end
+			
 		}
 
 		for (file in filesToRemove)
