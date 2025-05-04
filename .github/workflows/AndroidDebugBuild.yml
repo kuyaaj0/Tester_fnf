@@ -1,4 +1,4 @@
-name: AndroidBuild
+name: MobileBuild
 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
@@ -17,10 +17,10 @@ jobs:
       matrix:
         include:
           - name: Android
-            os: macos-15
-            buildArgs: "android -ONLY_ARMV8"
+            os: macos-14
+            buildArgs: "android -ONLY_ARMV8 -debug"
             artifactName: androidBuild
-            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
+            artifactPath: "export/*.apk"
     uses: ./.github/workflows/build.yml
     with:
         name: ${{ matrix.name }}
