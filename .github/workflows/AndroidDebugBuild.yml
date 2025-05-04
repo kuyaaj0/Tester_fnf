@@ -49,13 +49,6 @@ jobs:
       - name: Compile
         run: haxelib run lime build android -ONLY_ARMV8 -debug
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@main
-        with:
-          name: androidBuild
-          path: export/android/bin/
-          if-no-files-found: error
-          
       - name: Clearing already existing cache
         uses: actions/github-script@v6
         with:
@@ -85,3 +78,11 @@ jobs:
             export/
           restore-keys: |
             cache-build-android-debug
+
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: androidBuild
+          path: export/debug/android/
+          if-no-files-found: error
