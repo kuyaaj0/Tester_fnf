@@ -68,14 +68,7 @@ jobs:
 
       - name: Compile
         run: haxelib run lime build ${{ inputs.buildArgs }}
-
-      - name: Make Android Zip
-        if: inputs.name == 'Android'
-        run: |
-          cd export/release/android/bin/app/build/outputs/apk/release
-          
-          zip -r androidBuild.zip "NovaFlare Engine-release.apk"
-
+      
       - name: Make IPA And iOS Zip
         if: inputs.name == 'iOS'
         run: |
