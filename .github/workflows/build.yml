@@ -36,11 +36,11 @@ jobs:
         with:
           haxe-version: ${{ env.HAXE_VERSION }}
 
-      - name: cache Android
+      - name: cache Build
         uses: actions/cache@v3
         with:
           # not caching the bin folder to prevent asset duplication and stuff like that
-          key: cache-build-android
+          key: cache-build-${{ inputs.name }}
           path: |
             .haxelib/
             export/release/${{ inputs.name }}/haxe/
