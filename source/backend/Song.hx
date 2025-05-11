@@ -128,14 +128,14 @@ class Song
 	
     public static function parseJSONshit(rawData:String):SwagSong {             
         var songJson:SwagSong = cast Json.parse(rawData);
-        isNewVersion = false;
+        isNewVersion = true;
 		if(Reflect.hasField(songJson, 'song'))
 		{
 			var subSong:SwagSong = Reflect.field(songJson, 'song');
 			if(subSong != null && Type.typeof(subSong) == TObject)
 			{
 				songJson = subSong;
-			    isNewVersion = true;
+			    isNewVersion = false;
 			}
 		}
 		
