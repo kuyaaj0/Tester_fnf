@@ -3175,7 +3175,7 @@ class ChartingState extends MusicBeatState
 		//	undos.push(newsong);
 		var noteStrum = getStrumTime(dummyArrow.y * (getSectionBeats() / 4), false) + sectionStartTime();
 		var noteData = 0;
-		if (ClientPrefs.data.needMobileControl) {
+		//if (ClientPrefs.data.needMobileControl) {
 		//for (touch in FlxG.touches.list){noteData = Math.floor((touch.x - GRID_SIZE) / GRID_SIZE);}
 		//} else {
 		noteData = Math.floor((FlxG.mouse.x - GRID_SIZE) / GRID_SIZE);
