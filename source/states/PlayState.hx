@@ -1491,14 +1491,17 @@ class PlayState extends MusicBeatState
             		var gottaHitNote:Bool = section.mustHitSection;            		
             		
             		if (ClientPrefs.data.flipChart) 
-						daNoteData -= Std.int((daNoteData - 1.5) * 2);
-            
-            		if (songNotes[1] > 3)
-            		{
-            			gottaHitNote = !section.mustHitSection;
-            		}
-            		if (Song.isNewVersion) gottaHitNote = true;
-            
+						daNoteData -= Std.int((daNoteData - 1.5) * 2);            
+            		
+            		if (Song.isNewVersion) gottaHitNote = (songNotes[1] < 4);
+                    else    
+                    {
+                        if (songNotes[1] > 3)
+                		{
+                			gottaHitNote = !section.mustHitSection;
+                		}           		
+                    }
+                    
             		var oldNote:Note;
             		if (unspawnNotes.length > 0)
             			oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];

@@ -718,17 +718,20 @@ class LoadingState extends MusicBeatState
 				for (songNotes in section.sectionNotes)
 				{
 					var daStrumTime:Float = songNotes[0];
-					var daNoteData:Int = Std.int(songNotes[1] % 4);
-					var gottaHitNote:Bool = section.mustHitSection;
-					
-					if (ClientPrefs.data.flipChart) 
-						daNoteData -= Std.int((daNoteData - 1.5) * 2);
-			
-					if (songNotes[1] > 3)
-					{
-						gottaHitNote = !section.mustHitSection;
-					}
-					if (Song.isNewVersion) gottaHitNote = true;					
+            		var daNoteData:Int = Std.int(songNotes[1] % 4);
+            		var gottaHitNote:Bool = section.mustHitSection;            		
+            		
+            		if (ClientPrefs.data.flipChart) 
+						daNoteData -= Std.int((daNoteData - 1.5) * 2);            
+            		
+            		if (Song.isNewVersion) gottaHitNote = (songNotes[1] < 4);
+                    else    
+                    {
+                        if (songNotes[1] > 3)
+                		{
+                			gottaHitNote = !section.mustHitSection;
+                		}           		
+                    }
 			
 					var oldNote:Note;
 					if (unspawnNotes.length > 0)
