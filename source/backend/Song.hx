@@ -139,4 +139,20 @@ class Song
         }
         return cast parsedData.song;
     }
+    
+    public static function parseJSONshit(rawJson:String):SwagSong {
+        var parsedData:Dynamic = Json.parse(rawJson);
+        
+        if (parsedData.song != null) {     
+            isNewVersion = false;                             
+        } else {         
+            isNewVersion = true;           
+        }
+        
+        return if (parsedData.song != null) {           
+            cast parsedData.song; //Psych v0.32- v0.73 chart load
+        } else {
+            cast parsedData; //psych1.0+ chart load
+        }
+    }
 }
