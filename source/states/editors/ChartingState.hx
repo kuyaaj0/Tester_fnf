@@ -24,6 +24,7 @@ import openfl.events.IOErrorEvent;
 import openfl.media.Sound;
 import openfl.geom.Rectangle;
 import openfl.net.FileReference;
+import openfl.system.System;
 
 import backend.Song;
 import backend.Section;
@@ -35,6 +36,7 @@ import objects.NoteSplash;
 import objects.HealthIcon;
 import objects.AttachedSprite;
 import objects.Character;
+import objects.screen.Data;
 import substates.Prompt;
 import flixel.util.FlxStringUtil;
 import openfl.media.Sound;
@@ -206,6 +208,10 @@ class ChartingState extends MusicBeatState
 			addSection();
 			PlayState.SONG = _song;
 		}
+		
+		new FlxTimer().start(60, function(tmr:FlxTimer){		  
+		    timeCheck = true;		
+		}, 0);						
 
 		// Paths.clearMemory();
 
@@ -1716,9 +1722,16 @@ class ChartingState extends MusicBeatState
 					
 	var noteMove:Bool = false;
 	var nowMoveNote = null;	
+	var timeCheck:Bool = false;
 	override function update(elapsed:Float)
 	{
 		curStep = recalculateSteps();
+		
+		if (DataGet.getMem() > 3000) 
+		{
+		    System.gc();
+		    timeCheck = false;
+		}
 
 		if(FlxG.sound.music.time < 0) {
 			FlxG.sound.music.pause();
@@ -3162,7 +3175,7 @@ class ChartingState extends MusicBeatState
 		//	undos.push(newsong);
 		var noteStrum = getStrumTime(dummyArrow.y * (getSectionBeats() / 4), false) + sectionStartTime();
 		var noteData = 0;
-		if (controls.mobileC) {
+		if (ClientPrefs.data.needMobileControl) {
 		for (touch in FlxG.touches.list){noteData = Math.floor((touch.x - GRID_SIZE) / GRID_SIZE);}
 		} else {
 		noteData = Math.floor((FlxG.mouse.x - GRID_SIZE) / GRID_SIZE);
