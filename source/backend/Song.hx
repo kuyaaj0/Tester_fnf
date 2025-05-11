@@ -126,7 +126,7 @@ class Song
 		return songJson;
 	}
 	
-    public static function parseJSONshit(rawJson:String):SwagSong {             
+    public static function parseJSONshit(rawData:String):SwagSong {             
         var songJson:SwagSong = cast Json.parse(rawData);
         isNewVersion = false;
 		if(Reflect.hasField(songJson, 'song'))
