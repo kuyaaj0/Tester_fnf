@@ -25,8 +25,8 @@ import sys.thread.Mutex;
 class MainMenuState extends MusicBeatState
 {
 	public static var psychEngineVersion:String = '0.7.3'; //This is also used for Discord RPC
-	public static var novaFlareEngineDataVersion:Float = 2.5;
-	public static var novaFlareEngineVersion:String = '1.1.8';
+	public static var novaFlareEngineDataVersion:Float = 2.6;
+	public static var novaFlareEngineVersion:String = '1.1.8-HOTFIX';
 
 	public static var NovaFlareGithubAction:String = '????';
 	public static var createTime:String = 'Time: ????';
