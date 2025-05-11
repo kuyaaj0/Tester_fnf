@@ -26,25 +26,19 @@ typedef SwagSong =
 	
 	@:optional var disableNoteRGB:Bool;
 
-	@:optional var arrowSkinBF:String;
-	@:optional var arrowSkinDad:String;
-
 	@:optional var arrowSkin:String;
 	@:optional var splashSkin:String;
 }
 
 class Song
 {
-	public var song:String;
+	public var song:String = null;
 	public var notes:Array<SwagSection>;
 	public var events:Array<Dynamic>;
 	public var bpm:Float;
 	public var needsVoices:Bool = true;
 	public var arrowSkin:String;
 
-	public var arrowSkinBF:String = null;	//For https://github.com/beihu235/FNF-NovaFlare-Engine/issues/88
-	public var arrowSkinDad:String = null;  //too
-	
 	public var splashSkin:String;
 	public var gameOverChar:String;
 	public var gameOverSound:String;
@@ -134,7 +128,7 @@ class Song
     {
         var parsedData:Dynamic = Json.parse(rawJson);
         
-        return if (Reflect.hasField(parsedData, "song")) {           
+        return if (parsedData.song != null)) {           
             cast parsedData.song; //Psych v0.32- v0.73 chart load
         } else {         
             cast parsedData; //psych1.0+ chart load
