@@ -37,6 +37,11 @@ class DataGet {
 				
 		wait = number = 0;
     }
+    
+    static public function getMem():Float
+    {
+        return FlxMath.roundDecimal(Gc.memInfo64(ClientPrefs.data.memoryType) / 1000000, 1); //转化为MB
+    }
 }
 
 class Display {
