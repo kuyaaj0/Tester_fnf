@@ -53,6 +53,8 @@ class Song
 
 	public var mapper:String = 'N/A';
 	public var musican:String = 'N/A';
+	
+	static public var isNewVersion:Bool = false;
 
 	private static function onLoadJson(songJson:Dynamic) // Convert old charts to newest format
 	{
@@ -128,9 +130,11 @@ class Song
     {
         var parsedData:Dynamic = Json.parse(rawJson);
         
-        return if (parsedData.song != null) {           
-            cast parsedData.song; //Psych v0.32- v0.73 chart load
+        return if (parsedData.song != null) {     
+            isNewVersion = false;      
+            cast parsedData.song; //Psych v0.32- v0.73 chart load          
         } else {         
+            isNewVersion = true;
             cast parsedData; //psych1.0+ chart load
         }
     }
