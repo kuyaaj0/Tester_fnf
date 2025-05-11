@@ -12,7 +12,7 @@ import states.FreeplayStatePsych;
 
 class GameOverSubstate extends MusicBeatSubstate
 {
-	public var deathDelay:Float;
+	public static var deathDelay:Float;
 	public var boyfriend:Character;
 	var camFollow:FlxObject;
 	var moveCamera:Bool = false;
