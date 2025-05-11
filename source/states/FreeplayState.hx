@@ -426,7 +426,7 @@ class FreeplayState extends MusicBeatState
 		catch(e:Dynamic)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-
+            startCheck = false;
 			return;
 		}
 		LoadingState.prepareToSong();
