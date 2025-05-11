@@ -126,19 +126,19 @@ class Song
 		return songJson;
 	}
 	
-    public static function parseJSONshit(rawJson:String):SwagSong {
-        var parsedData:Dynamic = Json.parse(rawJson);
-        
-        if (parsedData.song != null) {     
-            isNewVersion = false;                             
-        } else {         
-            isNewVersion = true;           
-        }
-        
-        return if (parsedData.song != null) {           
-            cast parsedData.song; //Psych v0.32- v0.73 chart load
-        } else {
-            cast parsedData; //psych1.0+ chart load
-        }
+    public static function parseJSONshit(rawJson:String):SwagSong {             
+        var songJson:SwagSong = cast Json.parse(rawData);
+        isNewVersion = false;
+		if(Reflect.hasField(songJson, 'song'))
+		{
+			var subSong:SwagSong = Reflect.field(songJson, 'song');
+			if(subSong != null && Type.typeof(subSong) == TObject)
+			{
+				songJson = subSong;
+			    isNewVersion = true;
+			}
+		}
+		
+		return cast songJson;
     }
 }
