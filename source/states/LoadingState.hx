@@ -720,7 +720,6 @@ class LoadingState extends MusicBeatState
 					var daStrumTime:Float = songNotes[0];
 					var daNoteData:Int = Std.int(songNotes[1] % 4);
 					var gottaHitNote:Bool = section.mustHitSection;
-					if (Song.isNewVersion) gottaHitNote = true;
 					
 					if (ClientPrefs.data.flipChart) 
 						daNoteData -= Std.int((daNoteData - 1.5) * 2);
@@ -729,6 +728,7 @@ class LoadingState extends MusicBeatState
 					{
 						gottaHitNote = !section.mustHitSection;
 					}
+					if (Song.isNewVersion) gottaHitNote = true;					
 			
 					var oldNote:Note;
 					if (unspawnNotes.length > 0)
