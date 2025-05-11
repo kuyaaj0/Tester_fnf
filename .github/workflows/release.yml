@@ -8,7 +8,7 @@ jobs:
         include:
           - name: Android
             os: macos-14
-            buildArgs: "android -ONLY_ARMV8"
+            buildArgs: "android"
             artifactName: androidBuild
             artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
           - name: iOS
@@ -133,8 +133,8 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-          automatic_release_tag: "V1.1.8"
-          title: "V1.1.8 Update"
+          automatic_release_tag: "V1.1.8-HOTFOX"
+          title: "V1.1.8 HOTFIX"
           files: |
             /home/runner/*.apk
             /home/runner/*.zip
