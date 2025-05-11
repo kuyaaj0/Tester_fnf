@@ -130,12 +130,13 @@ class Song
     {
         var parsedData:Dynamic = Json.parse(rawJson);
         
-        return if (parsedData.song != null) {     
+        if (parsedData.song != null) {     
             isNewVersion = false;      
-            cast parsedData.song; //Psych v0.32- v0.73 chart load          
+            return cast parsedData.song; //Psych v0.32- v0.73 chart load          
         } else {         
             isNewVersion = true;
-            cast parsedData; //psych1.0+ chart load
+            return cast parsedData; //psych1.0+ chart load
         }
+        return cast parsedData.song;
     }
 }
