@@ -126,20 +126,6 @@ class Song
 		return songJson;
 	}
 	
-    public static function parseJSONshit(rawJson:String):SwagSong 
-    {
-        var parsedData:Dynamic = Json.parse(rawJson);
-        
-        if (parsedData.song != null) {     
-            isNewVersion = false;      
-            return cast parsedData.song; //Psych v0.32- v0.73 chart load          
-        } else {         
-            isNewVersion = true;
-            return cast parsedData; //psych1.0+ chart load
-        }
-        return cast parsedData.song;
-    }
-    
     public static function parseJSONshit(rawJson:String):SwagSong {
         var parsedData:Dynamic = Json.parse(rawJson);
         
