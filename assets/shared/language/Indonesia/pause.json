@@ -1,0 +1,10 @@
+{	
+	"restart": "Mulai ulang",
+    "continues": "Lanjutkan",
+    "difficulty": "Kesulitan",
+    "editor": "Penyunting",
+    "options": "Opsi",
+    "exit": "Keluar",
+    "back": "Kembali",
+    "debug": "Debug"
+}
