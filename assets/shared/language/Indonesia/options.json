@@ -1,0 +1,160 @@
+{	
+	"Reset": "Atur ulang",
+
+    "General": "Umum",
+    "framerate": "Mengubah batas FPS Anda",
+    "language": "Ubah bahasa mesin",
+    "colorblindMode": "Filter buta warna lebih dapat dimainkan untuk orang yang buta warna",
+    "lowQuality": "Mematikan beberapa objek pada panggung",
+    "gameQuality": "Mengubah kualitas permainan untuk layar",
+    "antialiasing": "Aktifkan antialiasing, meningkatkan kualitas grafis dengan sedikit penalti kinerja",
+    "flashing": "Mengalihkan lampu berkedip yang dapat menyebabkan kejang dan ketegangan epilepsi",
+    "shaders": "Shader yang digunakan untuk sebagian efek visual",
+    "cacheOnGPU": "Memungkinkan GPU digunakan untuk tekstur caching, mengurangi penggunaan RAM",
+    "autoPause": "Menghentikan permainan, saat tidak fokus",
+    "gcFreeZone": "Menangguhkan sebagian besar pembersihan RAM untuk mengurangi jeda yang tiba-tiba selama bermain permainan\ndan memecahkan masalah kerusakan akibat kebocoran memori yang disebabkan oleh penggunaan RAM yang berlebihan.",
+
+
+
+
+    "Gameplay": "Alur permainan",
+
+    "downScroll": "Catatan turun, bukan naik, cukup sederhana",
+    "middleScroll": "Letakkan lajur Anda di tengah atau di sebelah kanan",
+    "flipChart": "Balik bagan untuk bermain",
+    "ghostTapping": "Beralih menghitung dengan menekan input arah ketika tidak ada panah yang meleset",
+    "guitarHeroSustains": "Tahan Catatan tidak dapat ditekan jika Anda melewatkan",
+    "noReset": "Mengalihkan penekanan R ke permainan berakhir",
+
+
+    "Opponent": "Lawan",
+    
+    "playOpponent": "Bermain sebagai lawan",
+    "opponentCodeFix": "GoodNoteHit dan opponentNoteHit upaya pertukaran fungsi",
+    "botOpponentFix": "Skrip akan berpikir Anda membuka bot",
+    "HealthDrainOPPO": "Pengurasan Kesehatan pada mode lawan",
+    "HealthDrainOPPOMult": "Pengganda penguras kesehatan pada mode lawan",
+
+
+
+    "Backend": "Bagian belakang",
+
+    "Gameplaybackend": "Bagian Belakang Alur Permainan",
+    "replayBot": "Skrip akan berpikir Anda membuka bot saat Anda dalam status replay",
+    "fixLNL": "Mengurangi panjang nada panjang",
+    "mainMusic": "Jenis lagu Layar Utama",
+    "optionMusic": "Jenis lagu Layar Opsi",
+    "pauseMusic": "Jenis lagu Layar Jeda",
+    "hitsoundType": "Jenis suara hits",
+    "hitsoundVolume": "Volume suara hits",
+    "oldHscriptVersion": "Versi yang dikurangi untuk menggunakan pekerjaan hscript untuk runhaxecode",
+    "pauseButton": "Menambahkan pauseButton dalam permainan",
+    "CompulsionPause": "Anda dapat memaksa membuka menu jeda",
+    "CompulsionPauseNumber": "Berapa kali menekan tombol untuk memaksa jeda",
+    "gameOverVibration": "Perangkat akan bergetar saat permainan berakhir",
+    "ratingOffset": "Perubahan nilai offset",
+    "NoteOffsetState": "Mengubah offset musik dan posisi penilaian",
+    "judgement": "Penilaian",
+    "safeFrames": "Mengubah jumlah frame yang Anda miliki untuk menekan nada lebih awal atau terlambat",
+    "marvelousWindow": "Berapa milidetik yang ada di dalam menilai LUAR BIASA",
+    "sickWindow": "Berapa milidetik yang ada di dalam menilai SAKIT",
+    "goodWindow": "Berapa milidetik yang ada di dalam menilai BAIK",
+    "badWindow": "Berapa milidetik yang ada dalam menilai BURUK",
+    "marvelousRating": "Memperluas menilai luar biasa untuk bermain",
+    "marvelousSprite": "Menilai luar biasa juga akan menggunakan \"sakit!\" menilai sprite",
+    "Appbackend": "Aplikasi bagian belakang",
+    "discordRPC": "Tampilkan Aplikasi dari \\\"Bermain\\\" kotak pada Discord",
+    "checkForUpdates": "cekUntukPembaruan",
+    "screensaver": "Ponsel akan tidur setelah tidak aktif selama beberapa detik",
+    "filesCheck": "Periksa permainan apakah ada file yang terlewat",
+    "filesCheckNew": "Periksa permainan apakah file yang dipertanyakan",
+
+
+    
+    "GameUI": "PermainanUI",
+    "GameUITitle": "Permainan UI",
+    
+    "Visble": "Terlihat",
+    "hideHud": "Sembunyikan hud",
+    "showComboNum": "Kemunculan sprite kombo",
+    "showRating": "Kemunculan sprite penilaian",
+    "opponentStrums": "Menampilkan petikan lawan di layar",
+    "judgementCounter": "Tunjukkan penilaian Anda",
+    "keyboardDisplay": "Umpan balik tombol yang Anda tekan",
+    "TimeBar": "BilahWaktu",
+    "timeBarType": "Jenis tampilan",
+    "HealthBar": "BilahKesehatan",
+    "healthBarAlpha": "Alfa",
+    "oldHealthBarVersion": "Versi yang dikurangi menjadi psik 0.63h",
+    "Combo": "Kombo",
+    "comboColor": "Izinkan untuk mendapatkan dan menggunakan warna peringkat",
+    "comboOffsetFix": "Perbaiki offset posisi",
+    "KeyBoard": "PapanKunci",
+    "keyboardAlpha": "Alfa",
+    "keyboardTime": "tekan mempertahankan waktu tampilan",
+    "keyboardTimeDisplay": "mendukung detail tampilan pers",
+    "keyboardBGColor": "papanketikBGWarna",
+    "keyboardTextColor": "papanketikTeksWarna",
+    "Camera": "Kamera",
+    "camZooms": "Mengalihkan zoom kamera dalam permainan",
+    "scoreZoom": "Ketukan skor saat Anda menekan nada",
+
+
+    
+    "Skin": "Kulit",
+    
+    "Note": "Catatan",
+    "noteSkin": "Ubah catatanKulit Anda saat ini",
+    "noteRGB": "RGB untuk Catatan",
+    "NotesSubState": "Catatan warna penyiapan",
+    "Splash": "Percikan",
+    "splashSkin": "Ubah percikanKulit Anda saat ini",
+    "splashRGB": "RGB untuk Percikan",
+    "showSplash": "Tunjukkan pada menilai sakit/luar biasa",
+    "splashAlpha": "Alfa",
+	
+
+   
+    "Input": "Masukan",
+    
+    "ControlsSubState": "Penyiapan kontrol",
+    "TouchMain": "Sentuh-Utama",
+    "needMobileControl": "Dukungan kontrol sentuh",
+    "controlsAlpha": "Kontrol alfa",
+    "TouchGame": "Sentuh-Permainan",
+    "MobileControlSelectSubState": "Jenis kontrol",
+    "dynamicColors": "dinamisWarna",
+    "hitboxLocation": "Lokasi tombol ekstra hitbox",
+    "playControlsAlpha": "Kontrol alfa",
+    "extraKey": "EkstraKunci untuk masukan khusus",
+    "MobileExtraControl": "EkstraKunci penyiapan masukan",
+
+
+
+    
+    "UserInterface": "AntarmukaPengguna",
+    "UserInterfaceTitle": "Antarmuka Pengguna",
+    
+    "CustomFade": "Jenis pudar khusus",
+    "CustomFadeSound": "Volume suara pudar khusus",
+    "CustomFadeText": "Teks pudar khusus terlihat",
+    "skipTitleVideo": "Lewati video pengenalan",
+    "audioDisplayQuality": "Kualitas analisis data musik",
+    "audioDisplayUpdate": "Interval reaksi penganalisis musik",
+    "freeplayOld": "Gunakan permainan bebas psikis",
+    "resultsScreen": "Buka Layar Hasil di akhir lagu",
+    "loadingScreen": "Tambahkan sebuah MemuatLayar untuk StatusMain",
+
+
+
+    "Watermark": "Tanda air",
+    
+    "FPScounter": "Penghitung FPS",
+    "showFPS": "Tampilkan FPS Anda",
+    "showExtra": "Tampilkan lebih banyak data",
+    "rainbowFPS": "Ubah warna dengan FPS",
+    "memoryType": "Data pameran memori",
+    "FPSScale": "Ukuran",
+    "showWatermark": "Terlihat",
+    "WatermarkScale": "Skala"
+}
