@@ -1,5 +1,5 @@
 {	
-	"Reset": "Atur ulang",
+	"Reset": "Atur Ulang",
 
     "General": "Umum",
     "framerate": "Mengubah batas FPS Anda",
@@ -17,7 +17,7 @@
 
 
 
-    "Gameplay": "Alur permainan",
+    "Gameplay": "Alur Permainan",
 
     "downScroll": "Catatan turun, bukan naik, cukup sederhana",
     "middleScroll": "Letakkan lajur Anda di tengah atau di sebelah kanan",
@@ -37,7 +37,7 @@
 
 
 
-    "Backend": "Bagian belakang",
+    "Backend": "Bagian Belakang",
 
     "Gameplaybackend": "Bagian Belakang Alur Permainan",
     "replayBot": "Skrip akan berpikir Anda membuka bot saat Anda dalam status replay",
@@ -147,7 +147,7 @@
 
 
 
-    "Watermark": "Tanda air",
+    "Watermark": "Tanda Air",
     
     "FPScounter": "Penghitung FPS",
     "showFPS": "Tampilkan FPS Anda",
