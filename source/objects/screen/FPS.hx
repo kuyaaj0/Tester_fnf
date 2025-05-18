@@ -42,7 +42,7 @@ class FPS extends Sprite
 
 	if (!ClientPrefs.data.showExtra)
 	{
-		versionShow.y = 7;
+		versionShow.y = 70;
 	}
 	    
 	extraShow.visible = ClientPrefs.data.showExtra;
@@ -56,6 +56,7 @@ class FPS extends Sprite
 	    
 	    fpsShow.update();
 	    extraShow.update();
+	    versionShow.update();
     }
     
     public function change()
@@ -64,8 +65,10 @@ class FPS extends Sprite
 	if (!ClientPrefs.data.showExtra)
 	{
 		versionShow.y = 70;
+		versionShow.scale = 2;
 	}else{
 		versionShow.y = 130;
+		versionShow.scale = 1;
 	}
     }
 }
