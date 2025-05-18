@@ -43,7 +43,7 @@ class VersionCounter extends Sprite
 		}
                 this.EngineName.width = 300;
 
-                this.EngineName.x = x;
+                this.EngineName.x = x - 20;
         }
 	
 	public function update():Void
