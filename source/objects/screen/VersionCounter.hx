@@ -5,6 +5,8 @@ import states.MainMenuState;
 class VersionCounter extends Sprite
 {
         public var EngineName:TextField;
+	public var onlyVersion:TextField;
+	//这调整大小次数多了文本就要跑了
         
         public var bgSprite:FPSBG;
 
@@ -19,8 +21,9 @@ class VersionCounter extends Sprite
 		addChild(bgSprite);
 
                 this.EngineName = new TextField();
+		this.onlyVersion = new TextField();
 
-                for(label in [this.EngineName]) {	
+                for(label in [this.EngineName,this.onlyVersion]) {	
 			label.x = 0;
 			label.y = 0;
 			label.defaultTextFormat = new TextFormat(Assets.getFont("assets/fonts/FPS.ttf").fontName, 15, 0xFFFFFFFF, false, null, null, CENTER, 0, 0);			
@@ -30,24 +33,23 @@ class VersionCounter extends Sprite
 			addChild(label);
 		}
 
-                this.EngineName.y = 20;
+                this.EngineName.y = this.onlyVersion.y = 20;
                 
                 this.EngineName.y -= 18;
+		this.onlyVersion.y -= 18;
+
+		this.EngineName.text = 'Nova Flare' + '\n' + MainMenuState.novaFlareEngineVersion;
+		this.onlyVersion.text = MainMenuState.novaFlareEngineVersion;
 
 		if(ClientPrefs.data.showExtra){
-                        this.EngineName.text = 'Nova Flare' + '\n' + MainMenuState.novaFlareEngineVersion;
-			this.EngineName.scaleX = this.EngineName.scaleY = 1;
+                        this.EngineName.visible = true;
+			this.onlyVersion.visible = false;
 		}else{
-			this.EngineName.text = MainMenuState.novaFlareEngineVersion;
-			this.EngineName.scaleX = this.EngineName.scaleY = 1.5;
+			this.EngineName.visible = true;
+			this.onlyVersion.visible = false;
+			
 		}
                 this.EngineName.width = 140;
-
-                if(ClientPrefs.data.showExtra){
-                        this.EngineName.x = -8;
-		}else{
-			this.EngineName.x = -38;
-		}
         }
 	
 	public function update():Void
@@ -66,11 +68,11 @@ class VersionCounter extends Sprite
 
 	public function change(){
 		if(ClientPrefs.data.showExtra){
-                        this.EngineName.text = 'Nova Flare' + '\n' + MainMenuState.novaFlareEngineVersion;
-			this.EngineName.scaleX = this.EngineName.scaleY = 1;
+                        this.EngineName.visible = true;
+			this.onlyVersion.visible = false;
 		}else{
-			this.EngineName.text = MainMenuState.novaFlareEngineVersion;
-			this.EngineName.scaleX = this.EngineName.scaleY = 1.5;
+			this.EngineName.visible = true;
+			this.onlyVersion.visible = false;
 		}
 	}
 }
