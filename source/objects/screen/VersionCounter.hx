@@ -71,8 +71,8 @@ class VersionCounter extends Sprite
                         this.EngineName.visible = true;
 			this.onlyVersion.visible = false;
 		}else{
-			this.EngineName.visible = true;
-			this.onlyVersion.visible = false;
+			this.EngineName.visible = false;
+			this.onlyVersion.visible = true;
 		}
 	}
 }
