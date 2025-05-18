@@ -35,7 +35,7 @@ class VersionCounter extends Sprite
                 this.EngineName.y -= 18;
 
 		if(ClientPrefs.data.showExtra){
-                        this.EngineName.text = 'NovaFlare' + '\n' + MainMenuState.novaFlareEngineVersion;
+                        this.EngineName.text = 'Nova Flare' + '\n' + MainMenuState.novaFlareEngineVersion;
 		}else{
 			this.EngineName.text = MainMenuState.novaFlareEngineVersion;
 		}
@@ -43,4 +43,21 @@ class VersionCounter extends Sprite
 
                 this.EngineName.x += 6;
         }
+	
+	public function update():Void
+	{
+	    for(label in [this.EngineName]) {                          
+    		if (ClientPrefs.data.rainbowFPS)
+    	        {
+    	            label.textColor = ColorReturn.transfer(DataGet.currentFPS, ClientPrefs.data.framerate);
+    		}
+    		else
+    		{
+    		    label.textColor = 0xFFFFFFFF;		
+    		}                      
+            
+            if (!ClientPrefs.data.rainbowFPS && DataGet.currentFPS <= ClientPrefs.data.framerate / 2){
+    		    label.textColor = 0xFFFF0000;
+    	    }								       
+    	}
 }
