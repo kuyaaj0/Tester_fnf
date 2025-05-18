@@ -5,7 +5,6 @@ import states.MainMenuState;
 class VersionCounter extends Sprite
 {
         public var EngineName:TextField;
-        public var Version:TextField;
         
         public var bgSprite:FPSBG;
 
@@ -20,9 +19,8 @@ class VersionCounter extends Sprite
 		addChild(bgSprite);
 
                 this.EngineName = new TextField();
-                this.Version = new TextField();
 
-                for(label in [this.EngineName, this.Version]) {	
+                for(label in [this.EngineName]) {	
 			label.x = 0;
 			label.y = 0;
 			label.defaultTextFormat = new TextFormat(Assets.getFont("assets/fonts/FPS.ttf").fontName, 15, 0xFFFFFFFF, false, null, null, LEFT, 0, 0);			
@@ -32,18 +30,17 @@ class VersionCounter extends Sprite
 			addChild(label);
 		}
 
-                this.EngineName.y = this.Version.y = 20;
+                this.EngineName.y = 20;
                 
                 this.EngineName.y -= 18;
-		this.Version.y += 2;
 
-                this.EngineName.text = "NovaFlare";
-                this.Version.text = MainMenuState.novaFlareEngineVersion;
-
+		if(ClientPrefs.data.showExtra){
+                        this.EngineName.text = 'NovaFlare' + '\n' + MainMenuState.novaFlareEngineVersion;
+		}else{
+			this.EngineName.text = MainMenuState.novaFlareEngineVersion;
+		}
                 this.EngineName.width = 300;
-		this.Version.width = 300;
 
-                this.EngineName.x += 4;
-		this.Version.x += 4;
+                this.EngineName.x += 6;
         }
 }
