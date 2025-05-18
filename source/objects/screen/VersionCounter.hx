@@ -44,9 +44,9 @@ class VersionCounter extends Sprite
                 this.EngineName.width = 140;
 
                 if(ClientPrefs.data.showExtra){
-                        this.EngineName.x = -10;
+                        this.EngineName.x = -8;
 		}else{
-			this.EngineName.x = -35;
+			this.EngineName.x = -38;
 		}
         }
 	
