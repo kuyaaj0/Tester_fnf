@@ -41,7 +41,7 @@ class VersionCounter extends Sprite
 		}
                 this.EngineName.width = 300;
 
-                this.EngineName.x += 10;
+                this.EngineName.x += 6;
         }
 	
 	public function update():Void
@@ -57,4 +57,14 @@ class VersionCounter extends Sprite
     	    		}
 		}
     	}
+
+	public function change(){
+		if(ClientPrefs.data.showExtra){
+                        this.EngineName.text = 'Nova Flare' + '\n' + MainMenuState.novaFlareEngineVersion;
+			this.EngineName.sacleX = this.EngineName.sacleY = 1;
+		}else{
+			this.EngineName.text = MainMenuState.novaFlareEngineVersion;
+			this.EngineName.sacleX = this.EngineName.sacleY = 1.5;
+		}
+	}
 }
