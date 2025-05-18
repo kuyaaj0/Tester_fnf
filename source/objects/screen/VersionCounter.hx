@@ -46,18 +46,15 @@ class VersionCounter extends Sprite
 	
 	public function update():Void
 	{
-	    for(label in [this.EngineName]) {                          
-    		if (ClientPrefs.data.rainbowFPS)
-    	        {
-    	            label.textColor = ColorReturn.transfer(DataGet.currentFPS, ClientPrefs.data.framerate);
-    		}
-    		else
-    		{
-    		    label.textColor = 0xFFFFFFFF;		
-    		}                      
-            
-            if (!ClientPrefs.data.rainbowFPS && DataGet.currentFPS <= ClientPrefs.data.framerate / 2){
-    		    label.textColor = 0xFFFF0000;
-    	    }								       
+		for(label in [this.EngineName]) {                          
+    			if (ClientPrefs.data.rainbowFPS){
+    	            		label.textColor = ColorReturn.transfer(DataGet.currentFPS, ClientPrefs.data.framerate);
+    			}else{
+    		    		label.textColor = 0xFFFFFFFF;		
+    			}
+            		if (!ClientPrefs.data.rainbowFPS && DataGet.currentFPS <= ClientPrefs.data.framerate / 2){
+    		    		label.textColor = 0xFFFF0000;
+    	    		}
+		}
     	}
 }
