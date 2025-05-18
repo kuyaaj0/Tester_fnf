@@ -25,6 +25,7 @@ class FPS extends Sprite
     
     public static var fpsShow:FPSCounter;
     public static var extraShow:ExtraCounter;    
+    public static var versionShow:VersionCounter;
     
     function create()
     {        
