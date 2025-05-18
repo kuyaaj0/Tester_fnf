@@ -65,10 +65,10 @@ class FPS extends Sprite
 	if (!ClientPrefs.data.showExtra)
 	{
 		versionShow.y = 70;
-		versionShow.scaleX = versionShow.scaleY = 2;
+		versionShow.change();
 	}else{
 		versionShow.y = 130;
-		versionShow.scaleX = versionShow.scaleY = 1;
+		versionShow.change();
 	}
     }
 }
