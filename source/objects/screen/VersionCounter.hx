@@ -2,7 +2,7 @@ package objects.screen;
 
 import states.MainMenuState;
 
-class VersionConter extends Sprite
+class VersionCounter extends Sprite
 {
         public var EngineName:TextField;
         public var Version:TextField;
