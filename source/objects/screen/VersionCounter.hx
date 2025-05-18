@@ -61,10 +61,10 @@ class VersionCounter extends Sprite
 	public function change(){
 		if(ClientPrefs.data.showExtra){
                         this.EngineName.text = 'Nova Flare' + '\n' + MainMenuState.novaFlareEngineVersion;
-			this.EngineName.sacleX = this.EngineName.sacleY = 1;
+			this.EngineName.scaleX = this.EngineName.scaleY = 1;
 		}else{
 			this.EngineName.text = MainMenuState.novaFlareEngineVersion;
-			this.EngineName.sacleX = this.EngineName.sacleY = 1.5;
+			this.EngineName.scaleX = this.EngineName.scaleY = 1.5;
 		}
 	}
 }
