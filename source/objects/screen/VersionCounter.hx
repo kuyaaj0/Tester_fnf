@@ -23,7 +23,7 @@ class VersionCounter extends Sprite
                 for(label in [this.EngineName]) {	
 			label.x = 0;
 			label.y = 0;
-			label.defaultTextFormat = new TextFormat(Assets.getFont("assets/fonts/FPS.ttf").fontName, 15, 0xFFFFFFFF, false, null, null, LEFT, 0, 0);			
+			label.defaultTextFormat = new TextFormat(Assets.getFont("assets/fonts/FPS.ttf").fontName, 15, 0xFFFFFFFF, false, null, null, CENTER, 0, 0);			
 			label.multiline = label.wordWrap = false;
 			label.selectable = false; 
 			label.mouseEnabled = false;
@@ -41,7 +41,7 @@ class VersionCounter extends Sprite
 		}
                 this.EngineName.width = 300;
 
-                this.EngineName.x += 6;
+                this.EngineName.x += 10;
         }
 	
 	public function update():Void
