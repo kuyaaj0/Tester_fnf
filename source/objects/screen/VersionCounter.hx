@@ -34,10 +34,10 @@ class VersionCounter extends Sprite
 
                 this.EngineName.y = this.Version.y = 20;
                 
-                this.EngineName.y += 2;
+                this.EngineName.y -= 18;
 		this.Version.y += 2;
 
-                this.EngineName.text = "NovaFlare Engine";
+                this.EngineName.text = "NovaFlare";
                 this.Version.text = MainMenuState.novaFlareEngineVersion;
 
                 this.EngineName.width = 300;
