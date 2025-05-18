@@ -37,13 +37,12 @@ class FPS extends Sprite
         addChild(extraShow);
 	extraShow.update();
 
-	if (ClientPrefs.data.showExtra)
+	versionShow = new VersionCounter(10, 130);
+	addChild(versionShow);
+
+	if (!ClientPrefs.data.showExtra)
 	{
-		versionShow = new VersionCounter(10, 130);
-        	addChild(versionShow);
-	}else{
-		versionShow = new VersionCounter(10, 70);
-        	addChild(versionShow);
+		versionShow.y = 7;
 	}
 	    
 	extraShow.visible = ClientPrefs.data.showExtra;
@@ -62,5 +61,11 @@ class FPS extends Sprite
     public function change()
     {       
         extraShow.visible = ClientPrefs.data.showExtra;
+	if (!ClientPrefs.data.showExtra)
+	{
+		versionShow.y = 70
+	}else{
+		versionShow.y = 130
+	}
     }
 }
