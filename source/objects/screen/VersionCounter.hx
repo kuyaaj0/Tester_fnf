@@ -41,9 +41,9 @@ class VersionCounter extends Sprite
 			this.EngineName.text = MainMenuState.novaFlareEngineVersion;
 			this.EngineName.scaleX = this.EngineName.scaleY = 1.5;
 		}
-                this.EngineName.width = 300;
+                this.EngineName.width = 140;
 
-                this.EngineName.x = x - 20;
+                this.EngineName.x = x;
         }
 	
 	public function update():Void
