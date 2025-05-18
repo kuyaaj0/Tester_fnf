@@ -63,9 +63,9 @@ class FPS extends Sprite
         extraShow.visible = ClientPrefs.data.showExtra;
 	if (!ClientPrefs.data.showExtra)
 	{
-		versionShow.y = 70
+		versionShow.y = 70;
 	}else{
-		versionShow.y = 130
+		versionShow.y = 130;
 	}
     }
 }
