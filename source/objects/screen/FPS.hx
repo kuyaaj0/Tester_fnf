@@ -35,6 +35,15 @@ class FPS extends Sprite
         extraShow = new ExtraCounter(10, 70);
         addChild(extraShow);
 	extraShow.update();
+
+	if (ClientPrefs.data.showExtra)
+	{
+		versionShow = new VersionCounter(10, 130);
+        	addChild(versionShow);
+	}else{
+		versionShow = new VersionCounter(10, 70);
+        	addChild(versionShow);
+	}
 	    
 	extraShow.visible = ClientPrefs.data.showExtra;
     }
