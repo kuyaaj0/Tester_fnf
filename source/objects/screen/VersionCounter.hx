@@ -43,7 +43,11 @@ class VersionCounter extends Sprite
 		}
                 this.EngineName.width = 140;
 
-                this.EngineName.x = x;
+                if(ClientPrefs.data.showExtra){
+                        this.EngineName.x = -15;
+		}else{
+			this.EngineName.x = -30;
+		}
         }
 	
 	public function update():Void
