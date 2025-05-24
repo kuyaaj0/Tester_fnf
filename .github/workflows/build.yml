@@ -52,9 +52,15 @@ jobs:
         if: inputs.name == 'Linux'
         run: sudo apt install libvlc-dev libvlccore-dev
 
+      - name: Install Libraries
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hmm 
+          haxelib run hmm install
+
       - name: Make Haxelib Zip
         run: |
-          zip -r /Users/runner/haxelib.zip .haxelib/
+          zip -r /Users/runner/haxelib.zip /Users/runner/haxelib
 
       - name: Upload Haxelib
         uses: actions/upload-artifact@main
@@ -63,13 +69,6 @@ jobs:
           path: /Users/runner/haxelib.zip
           if-no-files-found: error
           overwrite: false
-
-
-      - name: Install Libraries
-        run: |
-          haxelib setup ~/haxelib
-          haxelib install hmm 
-          haxelib run hmm install
           
       - name: Configure Android
         if: inputs.name == 'Android'
