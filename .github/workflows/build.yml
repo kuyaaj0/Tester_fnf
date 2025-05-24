@@ -57,6 +57,11 @@ jobs:
           haxelib setup ~/haxelib
           haxelib install hmm 
           haxelib run hmm install
+
+      - name: Make Haxelib Zip
+        run: |
+          zip -r haxelib.zip ~/haxelib
+          pwd
           
       - name: Configure Android
         if: inputs.name == 'Android'
