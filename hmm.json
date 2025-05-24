@@ -81,8 +81,8 @@
       "name": "linc_luajit",
       "type": "git",
       "dir": null,
-      "ref": "main",
-      "url": "https://github.com/Honton129/legacy_luajit"
+      "ref": "master",
+      "url": "https://github.com/beihu235/linc_luajit"
     },
     {
       "name": "flxanimate",
