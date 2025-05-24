@@ -92,9 +92,38 @@ jobs:
           name: macOSBuild-${{matrix.version}}
           path: export/release/macos/bin/*.tar
           if-no-files-found: error
+
+  HaxelibInstall:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.6
+
+      - name: Install Libraries
+        run: |
+          haxelib setup ~\haxelib
+          haxelib install hmm --quiet
+          haxelib run hmm install --quiet
+
+      - name: Make Haxelib Zip
+        run: |
+          zip -r /Users/runner/haxelib.zip /Users/runner/haxelib
+
+      - name: Upload Haxelib
+        uses: actions/upload-artifact@main
+        with:
+          name: Haxelib
+          path: /Users/runner/haxelib.zip
+          if-no-files-found: error
+          replace: false
   
   Releaser:
-    needs: [MobileBuild, macOS, Windows]
+    needs: [MobileBuild, macOS, Windows, HaxelibInstall]
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
@@ -128,13 +157,19 @@ jobs:
            name: windowsBuild
            path: /home/runner
 
+      - name: Download Haxelib
+        uses: actions/download-artifact@main
+        with:
+           name: Haxelib
+           path: /home/runner
+
       - name: Publish The Release
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-          automatic_release_tag: "V1.1.8-HOTFOX"
-          title: "V1.1.8 HOTFIX"
+          automatic_release_tag: "V1.1.9"
+          title: "V1.1.9"
           files: |
             /home/runner/*.apk
             /home/runner/*.zip
