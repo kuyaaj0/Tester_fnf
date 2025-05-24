@@ -66,9 +66,9 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: Haxelib
-          path: /Users/runner/haxelib-${{ inputs.name }}.zip
+          path: /Users/runner/haxelib.zip
           if-no-files-found: error
-          overwrite: false
+          overwrite: true
           
       - name: Configure Android
         if: inputs.name == 'Android'
