@@ -68,6 +68,7 @@ jobs:
           name: Haxelib
           path: /Users/runner/haxelib.zip
           if-no-files-found: error
+          replace: true
           
       - name: Configure Android
         if: inputs.name == 'Android'
