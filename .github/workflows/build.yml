@@ -24,35 +24,6 @@ env:
   PROJECT_NAME: NovaFlareEngine
 
 jobs:
-  HaxelibInstall:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@main
-
-      - name: Setup Haxe
-        uses: krdlab/setup-haxe@master
-        with:
-          haxe-version: 4.3.6
-
-      - name: Install Libraries
-        run: |
-          haxelib setup ~\haxelib
-          haxelib install hmm --quiet
-          haxelib run hmm install --quiet
-
-      - name: Make Haxelib Zip
-        run: |
-          zip -r /Users/runner/haxelib.zip /Users/runner/haxelib
-
-      - name: Upload Haxelib
-        uses: actions/upload-artifact@main
-        with:
-          name: Haxelib
-          path: /Users/runner/haxelib.zip
-          if-no-files-found: error
-          replace: true
-          
   build:
     name: Build
     runs-on: ${{ inputs.os }}
@@ -80,6 +51,19 @@ jobs:
       - name: Install libVLC
         if: inputs.name == 'Linux'
         run: sudo apt install libvlc-dev libvlccore-dev
+
+      - name: Make Haxelib Zip
+        run: |
+          zip -r /Users/runner/haxelib.zip /Users/runner/haxelib
+
+      - name: Upload Haxelib
+        uses: actions/upload-artifact@main
+        with:
+          name: Haxelib
+          path: /Users/runner/haxelib.zip
+          if-no-files-found: error
+          overwrite: false
+
 
       - name: Install Libraries
         run: |
