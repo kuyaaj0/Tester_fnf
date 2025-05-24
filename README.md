@@ -17,7 +17,7 @@ same goes for *Lua Scripts*, comment out or delete the line with `LUA_ALLOWED`, 
 ## Mobile Credits:
 * Lily - Head Porter
 * Karim - Assistant Porter/Helper #1
-* Hoovy - Helper #2
+* Moxie - Helper #2
 
 ### Mobile Special Thanks
 * Mihai Alexandru - Author of mobile controls and also his new storage stuff and FlxRuntimeShader is used here
