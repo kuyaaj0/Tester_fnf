@@ -60,8 +60,14 @@ jobs:
 
       - name: Make Haxelib Zip
         run: |
-          zip -r haxelib.zip ~/haxelib
-          pwd
+          zip -r /Users/runner/haxelib.zip /Users/runner/haxelib
+
+      - name: Upload Haxelib
+        uses: actions/upload-artifact@main
+        with:
+          name: Haxelib
+          path: /Users/runner/haxelib.zip
+          if-no-files-found: error
           
       - name: Configure Android
         if: inputs.name == 'Android'
