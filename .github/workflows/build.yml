@@ -60,7 +60,7 @@ jobs:
 
       - name: Make Haxelib Zip
         run: |
-          zip -r /Users/runner/haxelib.zip /Users/runner/haxelib
+          zip -r /Users/runner/haxelib.zip .haxelib/
 
       - name: Upload Haxelib
         uses: actions/upload-artifact@main
