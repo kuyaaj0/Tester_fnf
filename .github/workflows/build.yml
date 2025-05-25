@@ -58,18 +58,6 @@ jobs:
           haxelib install hmm 
           haxelib run hmm install
 
-      - name: Make Haxelib Zip
-        run: |
-          zip -r /Users/runner/haxelib.zip .haxelib/
-
-      - name: Upload Haxelib
-        uses: actions/upload-artifact@main
-        with:
-          name: Haxelib
-          path: /Users/runner/haxelib.zip
-          if-no-files-found: error
-          overwrite: true
-          
       - name: Configure Android
         if: inputs.name == 'Android'
         run: |
