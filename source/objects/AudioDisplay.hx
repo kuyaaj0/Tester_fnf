@@ -25,7 +25,7 @@ class AudioDisplay extends FlxSpriteGroup
             newLine.x = (Width / line) * i;
             add(newLine);
         }else{
-            var newLine = new FlxSprite(FlxG.width / 2,FlxG.height / 2).makeGraphic(Std.int(Width / line - gap), 1, Color);
+            var newLine = new FlxSprite().makeGraphic(Std.int(Width / line - gap), 1, Color);
             add(newLine);
             var angle = (2 * Math.PI / line) * i;
             newLine.x = this.x + Radius * Math.cos(angle);
