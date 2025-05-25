@@ -11,7 +11,7 @@ class AudioDisplay extends FlxSpriteGroup
     var _height:Int;
     var line:Int;
 
-    public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, Circle:Bool = false, Radius:Float = 30)
+    public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, Circle:Bool = false, Radius:Float = 50)
     {
       super(X, Y);
   
