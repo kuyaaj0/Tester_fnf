@@ -11,7 +11,7 @@ class AudioDisplay extends FlxSpriteGroup
     var _height:Int;
     var line:Int;
 
-    public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor)
+    public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, Circle:Bool = false, Radius:Float = 30)
     {
       super(X, Y);
   
@@ -20,9 +20,18 @@ class AudioDisplay extends FlxSpriteGroup
 
       for (i in 0...line)
       {
-        var newLine = new FlxSprite().makeGraphic(Std.int(Width / line - gap), 1, Color);
-        newLine.x = (Width / line) * i;
-        add(newLine);
+        if(!Circle){
+            var newLine = new FlxSprite().makeGraphic(Std.int(Width / line - gap), 1, Color);
+            newLine.x = (Width / line) * i;
+            add(newLine);
+        }else{
+            var newLine = new FlxSprite().makeGraphic(Std.int(Width / line - gap), 1, Color);
+            add(newLine);
+            var angle = (2 * Math.PI / line) * i;
+            newLine.x = this.x + Radius * Math.cos(angle);
+            newLine.y = this.y + Radius * Math.sin(angle);
+            newLine.angle = -angle * (180 / Math.PI);
+        }
       }
       _height = Height;
 
