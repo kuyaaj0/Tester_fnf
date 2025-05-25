@@ -26,18 +26,12 @@ class AudioDisplay extends FlxSpriteGroup
       }
       _height = Height;
 
-      var displayBars = 3 * Math.ceil(line / 3);
-        @:privateAccess
-        if (snd != null) 
-        {
-            analyzer = new SpectralAnalyzer(
-                snd._channel.__audioSource,
-                displayBars,
-                1,
-                5
-            );
-            analyzer.fftN = 256 * ClientPrefs.data.audioDisplayQuality;
-        }
+      @:privateAccess
+      if (snd != null) 
+      {
+        analyzer = new SpectralAnalyzer(snd._channel.__audioSource, Std.int(line * 1 + Math.abs(0.05 * (4 - ClientPrefs.data.audioDisplayQuality))), 1, 5);
+        analyzer.fftN = 256 * ClientPrefs.data.audioDisplayQuality;  
+      }
     }
 
     public var stopUpdate:Bool = false;
@@ -76,35 +70,15 @@ class AudioDisplay extends FlxSpriteGroup
     function updateLine(elapsed:Float) {
         if (getValues == null) return;
         
-        final totalBars = getValues.length;
-        final third = Math.floor(line / 3);
-        
         for (i in 0...members.length)
         {
-            var dataIndex:Int = i;
-            if (i < third)
-            {
-                dataIndex = Std.int(i * (totalBars / 3) / third);
-            }
-            else if (i < 2 * third)
-            {
-                final highStart = totalBars - Std.int(totalBars / 3);
-                dataIndex = highStart + Std.int((i - third) * (totalBars / 3) / third);
-            }
-            else
-            {
-                final midStart = Std.int(totalBars / 3);
-                dataIndex = midStart + Std.int((i - 2 * third) * (totalBars / 3) / third);
-            }
-
-            dataIndex = Std.int(FlxMath.bound(dataIndex, 0, totalBars - 1));
-            
-            var animFrame:Int = Math.round(getValues[dataIndex].value * _height);
+            var animFrame:Int = Math.round(getValues[i].value * _height);
+        
             animFrame = Math.round(animFrame * FlxG.sound.volume);
-            
+        
             members[i].scale.y = FlxMath.lerp(animFrame, members[i].scale.y, Math.exp(-elapsed * 16));
             if (members[i].scale.y < _height / 40) members[i].scale.y = _height / 40;
-            members[i].y = this.y - members[i].scale.y / 2;
+            members[i].y = this.y -members[i].scale.y / 2;
         }
     }
 
