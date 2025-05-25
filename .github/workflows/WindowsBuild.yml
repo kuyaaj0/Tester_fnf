@@ -1,6 +1,9 @@
 name: WindowsBuild
 on: workflow_dispatch
 jobs:
+  installHaxelib:
+     uses: ./.github/workflows/InstallHaxelib.yml
+     
   Windows:
     runs-on: windows-latest
     steps:
