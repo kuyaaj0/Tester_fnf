@@ -10,7 +10,7 @@ env:
 jobs:
   build:
     name: InstallHaxelib
-    runs-on: ubuntu-latest
+    runs-on: macos-15
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -28,7 +28,7 @@ jobs:
 
       - name: Make Haxelib Zip
         run: |
-          zip -r /Users/runner/haxelib.zip /home/runner/haxelib/
+          zip -r /Users/runner/haxelib.zip ./haxelib
 
       - name: Upload Haxelib
         uses: actions/upload-artifact@main
