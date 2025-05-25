@@ -2,6 +2,7 @@ name: InstallHaxelib
 
 on:
   workflow_dispatch:
+  workflow_call:
 
 env:
   HAXE_VERSION: 4.3.6
