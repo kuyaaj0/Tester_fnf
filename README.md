@@ -11,8 +11,16 @@ to start you off, disabling Videos should be simple, simply Delete the line `"VI
 same goes for *Lua Scripts*, comment out or delete the line with `LUA_ALLOWED`, this and other customization options are all available within the `Project.xml` file
 
 ## NovaFlare Credits:
-* Beihu - Programmer
-* TieGuo - Programmer
+* Beihu - **Main Programmer**
+* MaoPou - **Programmer**
+* Chiny - **Programmer**
+* TieGuo - **Ex-Programmer**
+* Careful_Scarf_487 - **Main Artist**
+* MengQi - **Artist**
+* AZjessica - **Artist**
+* Ben Eyre - **Artist**
+* als - **Animation**
+* blockDDDdark - **Musican**
 
 ## Mobile Credits:
 * Lily - Head Porter
