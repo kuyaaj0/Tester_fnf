@@ -33,3 +33,5 @@ jobs:
         buildArgs: ${{ matrix.buildArgs }}
         artifactName: ${{ matrix.artifactName }}
         artifactPath: ${{ matrix.artifactPath }}
+  installHaxelib:
+     uses: ./.github/workflows/InstallHaxelib.yml
