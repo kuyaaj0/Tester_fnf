@@ -121,7 +121,7 @@ class MainMenuState extends MusicBeatState
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 		
-	    var test:AudioDisplay = new AudioDisplay(FlxG.sound.music, 0, FlxG.height, FlxG.width, Std.int(FlxG.height / 2), 100, 4, FlxColor.WHITE);
+	    var test:AudioDisplay = new AudioDisplay(FlxG.sound.music, 0, FlxG.height, FlxG.width, Std.int(FlxG.height / 2), 100, 4, FlxColor.WHITLE,true);
 		add(test);
 		test.alpha = 0.7;
 
