@@ -1,6 +1,8 @@
 name: Release
 on: workflow_dispatch
 jobs:
+  installHaxelib:
+     uses: ./.github/workflows/InstallHaxelib.yml
   MobileBuild:
     name: ${{ matrix.name }}
     strategy:
@@ -93,37 +95,8 @@ jobs:
           path: export/release/macos/bin/*.tar
           if-no-files-found: error
 
-  HaxelibInstall:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@main
-
-      - name: Setup Haxe
-        uses: krdlab/setup-haxe@master
-        with:
-          haxe-version: 4.3.6
-
-      - name: Install Libraries
-        run: |
-          haxelib setup ~\haxelib
-          haxelib install hmm --quiet
-          haxelib run hmm install --quiet
-
-      - name: Make Haxelib Zip
-        run: |
-          zip -r /Users/runner/haxelib.zip /Users/runner/haxelib
-
-      - name: Upload Haxelib
-        uses: actions/upload-artifact@main
-        with:
-          name: Haxelib
-          path: /Users/runner/haxelib.zip
-          if-no-files-found: error
-          replace: false
-  
   Releaser:
-    needs: [MobileBuild, macOS, Windows, HaxelibInstall]
+    needs: [MobileBuild, macOS, Windows, installHaxelib]
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
