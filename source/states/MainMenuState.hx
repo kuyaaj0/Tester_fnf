@@ -123,12 +123,8 @@ class MainMenuState extends MusicBeatState
 		
 	    var test:AudioDisplay = new AudioDisplay(FlxG.sound.music, 0, FlxG.height, FlxG.width, Std.int(FlxG.height / 2), 100, 4, FlxColor.WHITE);
 		add(test);
-		test.alpha = 0;
-
-	    var test2:AudioDisplay = new AudioDisplay(FlxG.sound.music, 100, 100, 100, 100, 50, 4, FlxColor.WHITE, true);
-		add(test2);
-		test2.alpha = 0.7;
-
+		test.alpha = 0.7;
+		
 		bg.scrollFactor.set(0, 0);
 					
 		logoBl = new FlxSprite(0, 0);
