@@ -125,7 +125,7 @@ class MainMenuState extends MusicBeatState
 		add(test);
 		test.alpha = 0;
 
-	    var test2:AudioDisplay = new AudioDisplay(FlxG.sound.music, 0, FlxG.height / 2, FlxG.width / 2, Std.int(FlxG.height / 2), 100, 4, FlxColor.WHITE,true);
+	    var test2:AudioDisplay = new AudioDisplay(FlxG.sound.music, 0, Std.int(FlxG.height / 2), Std.int(FlxG.width / 2), Std.int(FlxG.height / 2), 100, 4, FlxColor.WHITE,true);
 		add(test2);
 		test2.alpha = 0.7;
 
