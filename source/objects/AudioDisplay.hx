@@ -20,16 +20,14 @@ class AudioDisplay extends FlxSpriteGroup
 
       for (i in 0...line)
       {
+        var newLine = new FlxSprite().makeGraphic(Std.int(Width / line - gap), 1, Color);
         if(!Circle){
-            var newLine = new FlxSprite().makeGraphic(Std.int(Width / line - gap), 1, Color);
             newLine.x = (Width / line) * i;
-            add(newLine);
         }else{
-            var newLine = new FlxSprite().makeGraphic(Std.int(Width / line - gap), 1, Color);
-            add(newLine);
             var angle = 360 / line * i;
             newLine.angle = angle;
         }
+        add(newLine);
       }
       _height = Height;
 
