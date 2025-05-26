@@ -160,7 +160,7 @@ class Song
 
     public static function castVersion(songJson:SwagSong):SwagSong {
 	    for (i in 0...songJson.notes.length){
-		for (ii in i.sectionNotes){
+		for (ii in i.sectionNotes.length){
 			var gottaHitNote:Bool = i.mustHitSection;
 			if(gottaHitNote){
 				if(ii[1] >= 4){
