@@ -188,15 +188,9 @@ class ChartingState extends MusicBeatState
 	public var mouseQuant:Bool = false;
 	override function create()
 	{
-		if (PlayState.SONG != null)
-			if (Song.isNewVersion){
-			        _song = PlayState.SONG;
-			}else{
-				_song = Song.castVersion(PlayState.SONG);
-				//这个真的是最最简便的方法了，我知道很狗屎，后面有空了再优化 --MaoPou
-			}
-		else
-		{
+		if (PlayState.SONG != null){
+			_song = PlayState.SONG;
+	        }else{
 			Difficulty.resetList();
 			_song = {
 				song: 'Test',
