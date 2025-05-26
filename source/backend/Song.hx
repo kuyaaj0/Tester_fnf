@@ -162,7 +162,7 @@ class Song
 	    for (i in 0...songJson.notes.length){
 		for (ii in 0...songJson.notes[i].sectionNotes.length){
 			var gottaHitNote:Bool = songJson.notes[i].mustHitSection;
-			if(gottaHitNote){
+			if(!gottaHitNote){
 				if(songJson.notes[i].sectionNotes[ii][1] >= 4){
 					songJson.notes[i].sectionNotes[ii][1] -= 4;
 				}else if(songJson.notes[i].sectionNotes[ii][1] <= 3){
@@ -171,6 +171,7 @@ class Song
 			}
 		}
 	    }
+	    isNewVersion = false;
 	    return songJson;
     }
 }
