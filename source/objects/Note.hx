@@ -529,6 +529,7 @@ class Note extends FlxSprite
 
 	public function clipToStrumNote(myStrum:StrumNote)
 	{
+		try{
 		var center:Float = myStrum.y + offsetY + Note.swagWidth / 2;
 		if(  (isSustainNote && (mustPress || !ignoreNote) &&
 			(!mustPress || (wasGoodHit || (prevNote.wasGoodHit && !canBeHit)))
@@ -553,6 +554,7 @@ class Note extends FlxSprite
 			swagRect.height = frameHeight;
 
 			clipRect = swagRect;
+		}
 		}
 	}
 
