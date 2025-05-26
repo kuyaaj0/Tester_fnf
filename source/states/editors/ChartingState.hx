@@ -189,7 +189,12 @@ class ChartingState extends MusicBeatState
 	override function create()
 	{
 		if (PlayState.SONG != null)
-			_song = PlayState.SONG;
+			if (Song.parseVersion(PlayState.SONG) == '0.7.x'){
+			        _song = PlayState.SONG;
+			}else if(Song.parseVersion(PlayState.SONG) == '1.0.x'){
+				_song = Song.castVersion(PlayState.SONG);
+				//这个真的是最最简便的方法了，我知道很狗屎，后面有空了再优化 --MaoPou
+			}
 		else
 		{
 			Difficulty.resetList();
