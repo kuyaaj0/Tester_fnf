@@ -157,4 +157,20 @@ class Song
 		return '1.0.x';
 	}
     }
+
+    public static function castVersion(songJson:SwagSong):SwagSong {
+	    for (i in 0...songJson.notes){
+		for (ii in i.sectionNotes){
+			var gottaHitNote:Bool = i.mustHitSection;
+			if(gottaHitNote){
+				if(ii[1] >= 4){
+					songJson.notes[i].sectionNotes[ii][1] -= 4;
+				}else if(ii[1] <= 3){
+					songJson.notes[i].sectionNotes[ii][1] += 4;
+				}
+			}
+		}
+	    }
+	    return songJson;
+    }
 }
