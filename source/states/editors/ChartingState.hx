@@ -189,9 +189,9 @@ class ChartingState extends MusicBeatState
 	override function create()
 	{
 		if (PlayState.SONG != null)
-			if (Song.loadFromJson(PlayState.SONG.song) == '0.7.x'){
+			if (Song.isNewVersion){
 			        _song = PlayState.SONG;
-			}else if(Song.loadFromJson(PlayState.SONG.song) == '1.0.x'){
+			}else{
 				_song = Song.castVersion(PlayState.SONG);
 				//这个真的是最最简便的方法了，我知道很狗屎，后面有空了再优化 --MaoPou
 			}
