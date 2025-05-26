@@ -141,4 +141,20 @@ class Song
 		
 		return cast songJson;
     }
+
+    public static function parseVersion(rawData:String):String {             
+        var songJson:SwagSong = cast Json.parse(rawData);
+	if(Reflect.hasField(songJson, 'song'))
+	{
+		var subSong:SwagSong = Reflect.field(songJson, 'song');
+		if(subSong != null && Type.typeof(subSong) == TObject)
+		{
+			return '0.7.x';
+		}else{
+			return null;
+		}
+	}else{
+		return '1.0.x';
+	}
+    }
 }
