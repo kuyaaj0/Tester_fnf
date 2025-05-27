@@ -530,28 +530,27 @@ class Note extends FlxSprite
 	public function clipToStrumNote(myStrum:StrumNote)
 	{
 		var center:Float = myStrum.y + offsetY + Note.swagWidth / 2;
-		if(  (isSustainNote && (mustPress || !ignoreNote) &&
-			(!mustPress || (wasGoodHit || (prevNote.wasGoodHit && !canBeHit)))
-			&& !ClientPrefs.data.playOpponent)
-			|| 
-			(isSustainNote && (!mustPress || !ignoreNote) &&
-			(mustPress || (wasGoodHit || (prevNote.wasGoodHit && !canBeHit)))
-			&& ClientPrefs.data.playOpponent)
-			)
+		if(isSustainNote && (mustPress || !ignoreNote) &&
+			(!mustPress || (wasGoodHit || (prevNote.wasGoodHit && !canBeHit))))
 		{
-			if (!wasGoodHit) return;
-			
-			updateHitbox();
 			var swagRect:FlxRect = clipRect;
 			if(swagRect == null) swagRect = new FlxRect(0, 0, frameWidth, frameHeight);
-			
-			var time:Float = FlxMath.bound((Conductor.songPosition - strumTime) / (height / (0.45 * FlxMath.roundDecimal(PlayState.instance.songSpeed, 2))), 0, 1);
-			
-			swagRect.x = 0;
-			swagRect.y = time * frameHeight;
-			swagRect.width = frameWidth;
-			swagRect.height = frameHeight;
 
+			if (myStrum.downScroll)
+			{
+				if(y - offset.y * scale.y + height >= center)
+				{
+					swagRect.width = frameWidth;
+					swagRect.height = (center - y) / scale.y;
+					swagRect.y = frameHeight - swagRect.height;
+				}
+			}
+			else if (y + offset.y * scale.y <= center)
+			{
+				swagRect.y = (center - y) / scale.y;
+				swagRect.width = width / scale.x;
+				swagRect.height = (height / scale.y) - swagRect.y;
+			}
 			clipRect = swagRect;
 		}
 	}
