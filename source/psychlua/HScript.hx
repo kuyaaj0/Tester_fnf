@@ -16,7 +16,7 @@ import hscript.Expr;
 #end
 
 import haxe.Exception;
-import Hxsl;
+import hxsl.*;
 
 #if HSCRIPT_ALLOWED
 import tea.SScript;
@@ -123,8 +123,7 @@ class HScript extends SScript
 		#if flxanimate
 		set('FlxAnimate', FlxAnimate);
 		#end
-		set('Hxsl', Hxsl);
-
+		
 		// Functions & Variables
 		set('setVar', function(name:String, value:Dynamic) {
 			PlayState.instance.variables.set(name, value);
