@@ -129,7 +129,8 @@ class TitleState extends MusicBeatState
 			|| (AppData.getPackageName() != Application.current.meta.get('packageName') 
 				&& AppData.getPackageName() != Application.current.meta.get('packageName') + 'Backup1' //共存
 				&& AppData.getPackageName() != Application.current.meta.get('packageName') + 'Backup2' //共存
-				&& AppData.getPackageName() != 'com.antutu.ABenchMark' //超频测试
+				&& AppData.getPackageName() != 'com.antutu.ABenchMark' //超频测试 安兔兔
+			    	&& AppData.getPackageName() != 'com.ludashi.benchmark' //超频测试 鲁大师
 				)
 			)
 			FlxG.switchState(new PirateState());
