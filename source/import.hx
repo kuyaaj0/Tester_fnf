@@ -83,4 +83,7 @@ import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 
 using StringTools;
+
+import hxsl.*;
+
 #end
