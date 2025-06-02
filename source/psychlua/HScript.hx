@@ -16,7 +16,7 @@ import hscript.Expr;
 #end
 
 import haxe.Exception;
-import hxsl.*;
+import hxsl;
 
 #if HSCRIPT_ALLOWED
 import tea.SScript;
