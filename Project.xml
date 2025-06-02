@@ -111,6 +111,8 @@
 	<haxelib name="flixel-ui" />
 	<haxelib name="flixel-addons" />
 
+	<haxelib name="hxsl" />
+
 	<!--Psych stuff needed-->
 	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
 	<haxelib name="SScript" if="HSCRIPT_ALLOWED"/>
