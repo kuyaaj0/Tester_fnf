@@ -122,6 +122,7 @@ class HScript extends SScript
 		#if flxanimate
 		set('FlxAnimate', FlxAnimate);
 		#end
+		set('hxsl', hxsl);
 
 		// Functions & Variables
 		set('setVar', function(name:String, value:Dynamic) {
