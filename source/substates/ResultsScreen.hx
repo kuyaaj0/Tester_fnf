@@ -83,7 +83,7 @@ class ResultsScreen extends MusicBeatSubstate
     var replayRect:PressButton;
 
     
-    static public var camBack:FlxCamera;
+    public var camBack:FlxCamera;
     var filter:ShaderFilter;
     static public var camOther:FlxCamera;        
     //camera
@@ -120,13 +120,17 @@ class ResultsScreen extends MusicBeatSubstate
 
 	    camBack = new FlxCamera();
 	    camBack.bgColor.alpha = 0;
-	    FlxG.cameras.add(camBack, false);	
+	    FlxG.cameras.add(camBack, false);
+
+	    var camerasr = FlxG.cameras.list;
+            camerasr.remove(camBack);
+            camerasr.insert(0, camBack); 
+
+	    loadBackShader();
 	    
 	    camOther = new FlxCamera();
 	    camOther.bgColor.alpha = 0;
 	    FlxG.cameras.add(camOther, false);
-
-	    loadBackShader();
 	    
 	    var extraLoad:Bool = false;
 		var filesLoad = 'data/' + game.songName + '/background';
@@ -326,7 +330,9 @@ class ResultsScreen extends MusicBeatSubstate
 		{
 		    if (choose == 1) backFunction();
 			else replayFunction();
-		}		    
+		}
+	
+	        loadBackShader();
 	}
 
 	var getReadyReplay:Bool = false; 
@@ -886,6 +892,6 @@ class ResultsScreen extends MusicBeatSubstate
                 var shader = new FlxRuntimeShader(frag, null);
     
                 filter = new ShaderFilter(shader);
-		camBack.setFilters([filter]);
+		camBack.filters = [filter];
 	}
 }
