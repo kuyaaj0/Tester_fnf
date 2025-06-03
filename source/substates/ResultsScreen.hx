@@ -39,6 +39,9 @@ import openfl.utils.Assets;
 import openfl.filters.BlurFilter;
 import flixel.graphics.frames.FlxFilterFrames;
 
+import flixel.addons.display.FlxRuntimeShader;
+import openfl.filters.ShaderFilter;
+
 import objects.shape.ShapeEX;
 import objects.shape.ResultShape;
 
@@ -77,9 +80,11 @@ class ResultsScreen extends MusicBeatSubstate
     
     var backRect:PressButton;
 	//back 
-	var replayRect:PressButton;
+    var replayRect:PressButton;
 
-	static public var camOther:FlxCamera;        
+    
+    static public var camBack:FlxCamera;
+    static public var camOther:FlxCamera;        
     //camera
     
     var game:Dynamic = PlayState.instance;
@@ -111,10 +116,16 @@ class ResultsScreen extends MusicBeatSubstate
 		if (PlayState.replayMode) game = backend.Replay;
 	    
 	    cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
+
+	    camBack = new FlxCamera();
+	    camBack.bgColor.alpha = 0;
+	    FlxG.cameras.add(camBack, false);	
 	    
 	    camOther = new FlxCamera();
 	    camOther.bgColor.alpha = 0;
-	    FlxG.cameras.add(camOther, false);		
+	    FlxG.cameras.add(camOther, false);
+
+	    loadBackShader();
 	    
 	    var extraLoad:Bool = false;
 		var filesLoad = 'data/' + game.songName + '/background';
@@ -132,9 +143,10 @@ class ResultsScreen extends MusicBeatSubstate
 		background.antialiasing = ClientPrefs.data.antialiasing;			
 		add(background);		
 		background.screenCenter();
-	    var blurFilter:BlurFilter = new BlurFilter(10, 10, 3);         
-        var filterFrames = FlxFilterFrames.fromFrames(background.frames, Std.int(background.width), Std.int(background.height), [blurFilter]);
-		filterFrames.applyToSprite(background, false, true);
+	        //var blurFilter:BlurFilter = new BlurFilter(10, 10, 3);         
+                //var filterFrames = FlxFilterFrames.fromFrames(background.frames, Std.int(background.width), Std.int(background.height), [blurFilter]);
+		//filterFrames.applyToSprite(background, false, true);
+		background.cameras = [camBack];
 		background.alpha = 0;
 		
 		//--------------------------
@@ -828,5 +840,51 @@ class ResultsScreen extends MusicBeatSubstate
 			EventTextTween.cancel();
 		}
 		super.destroy();
+	}
+
+        function loadBackShader() {
+		var frag:String = "
+		#pragma header
+
+		// by HeiHua
+
+		uniform vec2 blur_size;
+
+		const float sigma = 0.10132118364233777144387946320973;
+		const float q = 1.5;
+
+		void main()
+		{
+			vec2 uv = openfl_TextureCoordv;
+			if (blur_size.x == 0.0 && blur_size.y == 0.0)
+			{
+				gl_FragColor = texture2D(bitmap, uv);
+				return;
+			}
+
+			float kernelRadius = 1.0 / length(blur_size) * q;
+
+			vec2 size = 1.0 / openfl_TextureSize * blur_size;
+			float totalWeight = 0.0;
+			vec4 accumColor = vec4(0.0);
+
+			float twoSigma2 = 2.0 * sigma;
+			float sqrtTwoPiSigma = sqrt(3.1415926 * twoSigma2);
+
+			for (float i = -0.5; i <= 0.5; i += kernelRadius)
+			{
+				float weight = exp(-(i*i) / twoSigma2) / sqrtTwoPiSigma;
+		
+				vec2 offset = size * i;
+				accumColor += texture2D(bitmap, uv + offset) * weight;
+				totalWeight += weight;
+			}
+
+			gl_FragColor = accumColor / totalWeight;
+		}";
+                var shader = new FlxRuntimeShader(frag, null);
+    
+                filter = new ShaderFilter(shader);
+		camBack.set__filters([filter]);
 	}
 }
