@@ -84,7 +84,7 @@ class ResultsScreen extends MusicBeatSubstate
 
     
     static public var camBack:FlxCamera;
-    var filter:ShaderFilter
+    var filter:ShaderFilter;
     static public var camOther:FlxCamera;        
     //camera
     
