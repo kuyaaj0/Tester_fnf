@@ -84,7 +84,7 @@ class ResultsScreen extends MusicBeatSubstate
 
     
     static public var camBack:FlxCamera;
-    var filter:FlxRuntimeShader;
+    var filter:ShaderFilter
     static public var camOther:FlxCamera;        
     //camera
     
@@ -886,6 +886,6 @@ class ResultsScreen extends MusicBeatSubstate
                 var shader = new FlxRuntimeShader(frag, null);
     
                 filter = new ShaderFilter(shader);
-		camBack.filters([filter]);
+		camBack.setFilters([filter]);
 	}
 }
