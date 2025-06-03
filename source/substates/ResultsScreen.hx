@@ -321,8 +321,6 @@ class ResultsScreen extends MusicBeatSubstate
 		    if (choose == 1) backFunction();
 			else replayFunction();
 		}
-	
-	        loadBackShader();
 	}
 
 	var getReadyReplay:Bool = false; 
@@ -845,7 +843,7 @@ class ResultsScreen extends MusicBeatSubstate
 
 		// by HeiHua
 
-		uniform vec2 blur_size;
+		const vec2 blur_size = [100,100];
 
 		const float sigma = 0.10132118364233777144387946320973;
 		const float q = 1.5;
