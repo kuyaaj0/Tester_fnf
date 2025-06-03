@@ -117,16 +117,6 @@ class ResultsScreen extends MusicBeatSubstate
 		if (PlayState.replayMode) game = backend.Replay;
 	    
 	    cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
-
-	    camBack = new FlxCamera();
-	    camBack.bgColor.alpha = 0;
-	    FlxG.cameras.add(camBack, false);
-
-	    var camerasr = FlxG.cameras.list;
-            camerasr.remove(camBack);
-            camerasr.insert(0, camBack); 
-
-	    loadBackShader();
 	    
 	    camOther = new FlxCamera();
 	    camOther.bgColor.alpha = 0;
@@ -148,10 +138,10 @@ class ResultsScreen extends MusicBeatSubstate
 		background.antialiasing = ClientPrefs.data.antialiasing;			
 		add(background);		
 		background.screenCenter();
-	        //var blurFilter:BlurFilter = new BlurFilter(10, 10, 3);         
-                //var filterFrames = FlxFilterFrames.fromFrames(background.frames, Std.int(background.width), Std.int(background.height), [blurFilter]);
-		//filterFrames.applyToSprite(background, false, true);
-		background.cameras = [camBack];
+	        //var blurFilter:BlurFilter = new BlurFilter(10, 10, 3);
+		var blurFilter = loadBackShader();
+                var filterFrames = FlxFilterFrames.fromFrames(background.frames, Std.int(background.width), Std.int(background.height), [blurFilter]);
+		filterFrames.applyToSprite(background, false, true);
 		background.alpha = 0;
 		
 		//--------------------------
@@ -892,6 +882,6 @@ class ResultsScreen extends MusicBeatSubstate
                 var shader = new FlxRuntimeShader(frag, null);
     
                 filter = new ShaderFilter(shader);
-		camBack.filters = [filter];
+		return filter;
 	}
 }
