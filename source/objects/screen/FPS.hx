@@ -11,6 +11,9 @@ package objects.screen;
     github: https://github.com/dmmchh
 */
 
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+
 class FPS extends Sprite
 {
 	public function new(x:Float = 10, y:Float = 10)
@@ -27,7 +30,7 @@ class FPS extends Sprite
     public static var extraShow:ExtraCounter;    
     public static var versionShow:VersionCounter;
 
-    public var isHiding:Bool = true;
+    public var isHiding = true;
     
     function create()
     {        
@@ -37,10 +40,10 @@ class FPS extends Sprite
 	    
         extraShow = new ExtraCounter(10, 70);
         addChild(extraShow);
-	extraShow.update();
+		extraShow.update();
 
-	versionShow = new VersionCounter(10, 130);
-	addChild(versionShow);
+		versionShow = new VersionCounter(10, 130);
+		addChild(versionShow);
 
 	if (!ClientPrefs.data.showExtra)
 	{
@@ -51,7 +54,12 @@ class FPS extends Sprite
     }
     
     private override function __enterFrame(deltaTime:Float):Void
-	{	    	    	    
+	{	    	    	
+		if(isPointInFPSCounter() && FlxG.mouse.justPressed){
+			isHiding = !isHiding;
+			hide();
+		}
+	    
 	    DataGet.update();
 	    
 	    if (DataGet.number != 0) return;
@@ -59,23 +67,6 @@ class FPS extends Sprite
 	    fpsShow.update();
 	    extraShow.update();
 	    versionShow.update();
-
-	    if(isPointInFPSCounter()){
-		    if(FlxG.mouse.justReleased){
-			    if(isHiding){
-				    isHiding = false;
-			    }else{
-				    isHiding = true;
-			    }
-		    }
-	    }
-	    if(isHiding && extraShow.alpha > 0.1 && versionShow.alpha > 0.1){
-			extraShow.alpha -= 0.1;
-		        versionShow.alpha -= 0.1;
-	    }else if(!isHiding && extraShow.alpha < 1 && versionShow.alpha < 1){
-			extraShow.alpha += 0.1;
-		        versionShow.alpha += 0.1;
-	    }
     }
     
     public function change()
@@ -90,13 +81,32 @@ class FPS extends Sprite
 		versionShow.change();
 	}
     }
+
+	var helloAlpha1:FlxTween;
+	var helloAlpha2:FlxTween;
+
+	function hide():Void
+	{
+		if(isHiding){
+			helloAlpha1 = FlxTween.tween(extraShow, {alpha: 0}, 0.2, {ease: FlxEase.quadOut});
+			helloAlpha2 = FlxTween.tween(versionShow, {alpha: 0}, 0.2, {ease: FlxEase.quadOut});
+	    }else{
+			helloAlpha1 = FlxTween.tween(extraShow, {alpha: 1}, 0.2, {ease: FlxEase.quadOut});
+			helloAlpha2 = FlxTween.tween(versionShow, {alpha: 1}, 0.2, {ease: FlxEase.quadOut});
+	    }    
+	}
     private function isPointInFPSCounter():Bool
     {
-	var fpsX = fpsShow.x - (Lib.current.stage.stageWidth - FlxG.width) / 2;
-        var fpsY = fpsShow.y - (Lib.current.stage.stageHeight - FlxG.height) / 2;
-        var fpsWidth = fpsShow.width;
-        var fpsHeight = fpsShow.height;
+		var global = fpsShow.localToGlobal(new openfl.geom.Point(0, 0));
+		var fpsX = global.x;
+		var fpsY = global.y;
+		var fpsWidth = fpsShow.width;
+		var fpsHeight = fpsShow.height;
 
-        return FlxG.mouse.x >= fpsX && FlxG.mouse.x <= fpsX + fpsWidth && FlxG.mouse.y >= fpsY && FlxG.mouse.y <= fpsY + fpsHeight;
+		var mx = Lib.current.stage.mouseX;
+    	var my = Lib.current.stage.mouseY;
+
+    	return mx >= fpsX && mx <= fpsX + fpsWidth
+        	&& my >= fpsY && my <= fpsY + fpsHeight;
     }
 }
