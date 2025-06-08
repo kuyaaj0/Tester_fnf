@@ -1,6 +1,8 @@
 package states;
 
 import states.MainMenuState;
+import flixel.sound.FlxSound;
+
 
 class RelaxState extends MusicBeatState{
     public var camRelax:FlxCamera;
@@ -24,6 +26,8 @@ class RelaxState extends MusicBeatState{
 
 		camRelax.alpha = 0;
 
+        FlxG.sound.playMusic(Paths.music('tea-time'));
+
         addVirtualPad(LEFT_RIGHT, A_B);
         virtualPad.cameras = [camHUD];
 
@@ -37,20 +41,15 @@ class RelaxState extends MusicBeatState{
 		add(bg);
 		bg.cameras = [camRelax];
 
-        var test:AudioDisplay = new AudioDisplay(FlxG.sound.music, 0, FlxG.height, FlxG.width, Std.int(FlxG.height / 2), 100, 4, FlxColor.WHITE);
-		add(test);
-		test.alpha = 0.7;
-        test.cameras = [camRelax];
+        trace(FlxG.sound.music);
+
+        var aa:AudioDisplay = new AudioDisplay(FlxG.sound.music, 100, 100, 1000, 1000, 10, 4, FlxColor.WHITE);
+		add(aa);
+        aa.alpha = 0.7;
+        aa.changeAnalyzer(FlxG.sound.music);
+        aa.cameras = [camRelax];
 
         FlxTween.tween(camRelax, {alpha: 1}, 1, {ease: FlxEase.quadOut});
-
-        if (FlxG.sound.music != null) FlxG.sound.music.stop();
-
-        FlxTimer.wait(3, () -> {
-            FlxG.sound.playMusic(Paths.sound('freakyMenu'));
-        });
-
-        FlxTween.tween(FlxG.sound.music, {volume: 1}, 0.7, {ease: FlxEase.quadOut});
     }
 
     override function update(elapsed:Float) {

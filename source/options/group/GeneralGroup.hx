@@ -22,7 +22,7 @@ class GeneralGroup
             'framerate',
             INT,
             24,
-            500,
+            1000,
 	    'FPS'
         );
         follow.addOption(option);
