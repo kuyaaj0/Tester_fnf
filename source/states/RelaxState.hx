@@ -5,16 +5,24 @@ import flixel.sound.FlxSound;
 
 
 class RelaxState extends MusicBeatState{
+    var camGame:FlxCamera;
+    var camHUD:FlxCamera;
     public function new() {
         super();
+	camGame = initPsychCamera();
     }
 
     override function create(){
-	super.create();
 
+	camHUD = new FlxCamera();
+	camHUD.bgColor.alpha = 0;
+				
+	FlxG.cameras.add(camHUD, false);
+	    
         FlxG.sound.playMusic(Paths.music('tea-time'));
 	    
         addVirtualPad(LEFT_RIGHT, A_B);
+	virtualPad.cameras = [camHUD];
         
 	var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG', null, false));
 	bg.scrollFactor.set(0, 0);
@@ -28,6 +36,8 @@ class RelaxState extends MusicBeatState{
         var aa:AudioDisplay = new AudioDisplay(FlxG.sound.music, 50, FlxG.height, 500, 250, 32, 4, FlxColor.WHITE);
 	add(aa);
 	aa.alpha = 0.7;
+
+	super.create();
     }
 
     override function update(elapsed:Float) {
