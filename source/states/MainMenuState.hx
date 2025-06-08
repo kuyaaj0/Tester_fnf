@@ -22,6 +22,11 @@ import haxe.Json;
 import sys.thread.Thread;
 import sys.thread.Mutex;
 
+import flixel.ui.FlxButton;
+import objects.ui.RoundRectButton;
+
+import flixel.addons.transition.FlxTransitionableState;
+
 class MainMenuState extends MusicBeatState
 {
 	public static var psychEngineVersion:String = '0.7.3'; //This is also used for Discord RPC
@@ -38,6 +43,7 @@ class MainMenuState extends MusicBeatState
 	public var camGame:FlxCamera;
 	public var camHUD:FlxCamera;
 	public var camOther:FlxCamera;
+
 	var optionTween:Array<FlxTween> = [];
 	var selectedTween:Array<FlxTween> = [];
 	var cameraTween:Array<FlxTween> = [];
@@ -101,13 +107,15 @@ class MainMenuState extends MusicBeatState
 		#end		
 
 		camGame = initPsychCamera();
+
 		camHUD = new FlxCamera();
 		camOther = new FlxCamera();
+
 		camOther.bgColor.alpha = 0;
 		camHUD.bgColor.alpha = 0;
 				
 		FlxG.cameras.add(camHUD, false);
-		FlxG.cameras.add(camOther, false);		
+		FlxG.cameras.add(camOther, false);
 
 		persistentUpdate = persistentDraw = true;
 
@@ -281,7 +289,25 @@ class MainMenuState extends MusicBeatState
         
 		addVirtualPad(MainMenuStateC, A_B_E);
 		virtualPad.cameras = [camHUD];
-        
+		var relaxBtn = new RoundRectButton(FlxG.width - 180, FlxG.height - 80, 140, 48, "RELAXING", function() {
+			FlxTween.tween(FlxG.sound.music, {volume: 0}, 0.7, {ease: FlxEase.quadOut});
+			FlxG.sound.music = null;
+        	FlxTween.tween(camGame, {alpha: 0}, 0.7, {ease: FlxEase.quadOut});
+			FlxTween.tween(camHUD, {alpha: 0}, 0.7, {
+				ease: FlxEase.quadOut,
+				onComplete: 
+					function(_){
+						FlxTransitionableState.skipNextTransOut = true;
+						FlxG.switchState(RelaxState.new);
+					}
+				}
+			);
+    	});
+
+    	relaxBtn.members[0].cameras = [camHUD];
+    	relaxBtn.members[1].cameras = [camHUD];
+
+    	add(relaxBtn);
 		super.create();
 	}
 	
@@ -399,7 +425,7 @@ class MainMenuState extends MusicBeatState
 				endCheck = true;
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				MusicBeatState.switchState(new TitleState());
-			}		
+			}
 				
 			else if (controls.justPressed('debug_1') || virtualPad.buttonE.justPressed)
 			{
@@ -583,5 +609,5 @@ class MainMenuState extends MusicBeatState
 			trace('exception: $e');
 			callback({ status: "exception", conclusion: "exception" });
 		}
-}
+	}
 }
