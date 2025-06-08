@@ -92,8 +92,8 @@ class FPS extends Sprite
     }
     private function isPointInFPSCounter():Bool
     {
-        var fpsX = fpsShow.x;
-        var fpsY = fpsShow.y;
+	var fpsX = fpsShow.x - (Lib.current.stage.stageWidth - FlxG.width) / 2 
+        var fpsY = fpsShow.y - (Lib.current.stage.stageHeight - FlxG.height) / 2;
         var fpsWidth = fpsShow.width;
         var fpsHeight = fpsShow.height;
 
