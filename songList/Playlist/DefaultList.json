@@ -1,0 +1,34 @@
+{
+    "list":[
+        {
+            'Name': 'freakyMenu',
+            'Creator': 'Funkin Sound Team',
+            'ActualPath': 'assets/shared/music/freakyMenu.ogg',
+            'Painting': null
+        },
+        {
+            'Name': 'tea-time',
+            'Creator': 'Funkin Sound Team',
+            'ActualPath': 'assets/shared/music/tea-time.ogg',
+            'Painting': null
+        },
+        {
+            'Name': 'breakfast',
+            'Creator': 'Funkin Sound Team',
+            'ActualPath': 'assets/shared/music/breakfast.ogg',
+            'Painting': null
+        },
+        {
+            'Name': 'offsetSong',
+            'Creator': 'Funkin Sound Team',
+            'ActualPath': 'assets/shared/music/offsetSong.ogg',
+            'Painting': null
+        },
+        {
+            'Name': 'gameOver',
+            'Creator': 'Funkin Sound Team',
+            'ActualPath': 'assets/shared/music/gameOver.ogg',
+            'Painting': null
+        }
+    ]
+}
