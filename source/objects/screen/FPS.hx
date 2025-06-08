@@ -61,7 +61,7 @@ class FPS extends Sprite
 	    versionShow.update();
 
 	    if(isPointInFPSCounter()){
-		    if(FlxG.mouse.justPressed){
+		    if(FlxG.mouse.justReleased){
 			    if(isHiding){
 				    isHiding = false;
 			    }else{
