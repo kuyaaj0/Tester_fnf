@@ -10,12 +10,7 @@ class RelaxState extends MusicBeatState{
 
     public function new() {
         super();
-        Paths.clearStoredMemory();
-		Paths.clearUnusedMemory();
-    }
-
-    override function create(){
-        camRelax = new FlxCamera();
+	camRelax = new FlxCamera();
         camHUD = new FlxCamera();
 
         camHUD.bgColor.alpha = 0;
@@ -25,32 +20,33 @@ class RelaxState extends MusicBeatState{
         FlxG.cameras.add(camRelax, false);
 
 	camRelax.alpha = 0;
+    }
+
+    override function create(){
+	super.create();
 
         FlxG.sound.playMusic(Paths.music('tea-time'));
 
         addVirtualPad(LEFT_RIGHT, A_B);
         virtualPad.cameras = [camHUD];
 
-		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG', null, false));
-		bg.scrollFactor.set(0, 0);
-		bg.scale.x = FlxG.width / bg.width;
-		bg.scale.y = FlxG.height / bg.height;
-		bg.updateHitbox();
-		bg.screenCenter();
-		bg.antialiasing = ClientPrefs.data.antialiasing;
-		add(bg);
-		bg.cameras = [camRelax];
-
-        trace(FlxG.sound.music);
+	var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG', null, false));
+	bg.scrollFactor.set(0, 0);
+	bg.scale.x = FlxG.width / bg.width;
+	bg.scale.y = FlxG.height / bg.height;
+	bg.updateHitbox();
+	bg.screenCenter();
+	bg.antialiasing = ClientPrefs.data.antialiasing;
+	add(bg);
+	bg.cameras = [camRelax];
 
         var aa:AudioDisplay = new AudioDisplay(FlxG.sound.music, 100, 100, 1000, 1000, 10, 4, FlxColor.WHITE);
-		add(aa);
+	add(aa);
+	    
         aa.alpha = 0.7;
         aa.cameras = [camRelax];
 
         FlxTween.tween(camRelax, {alpha: 1}, 1, {ease: FlxEase.quadOut});
-
-	super.create();
     }
 
     override function update(elapsed:Float) {
