@@ -25,7 +25,7 @@ class RelaxState extends MusicBeatState{
 	bg.antialiasing = ClientPrefs.data.antialiasing;
 	add(bg);
 
-        var aa:AudioDisplay = new AudioDisplay(FlxG.sound.music, 100, 100, 500, 250, 16, 4, FlxColor.WHITE);
+        var aa:AudioDisplay = new AudioDisplay(FlxG.sound.music, 50, FlxG.height, 500, 250, 32, 4, FlxColor.WHITE);
 	add(aa);
 	aa.alpha = 0.7;
     }
