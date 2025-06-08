@@ -5,20 +5,9 @@ import flixel.sound.FlxSound;
 
 
 class RelaxState extends MusicBeatState{
-    public var camRelaxed:FlxCamera;
-    public var camHUD:FlxCamera;
-    public var camGame:FlxCamera;
     public function new() {
         super();
 	camGame = initPsychCamera();
-	camRelaxed = new FlxCamera();
-        camHUD = new FlxCamera();
-
-        camHUD.bgColor.alpha = 0;
-        camRelaxed.bgColor.alpha = 0;
-
-        FlxG.cameras.add(camHUD, false);
-        FlxG.cameras.add(camRelaxed, false);
     }
 
     override function create(){
@@ -27,8 +16,7 @@ class RelaxState extends MusicBeatState{
         FlxG.sound.playMusic(Paths.music('tea-time'));
 	    
         addVirtualPad(LEFT_RIGHT, A_B);
-        virtualPad.cameras = [camHUD];
-
+        
 	var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG', null, false));
 	bg.scrollFactor.set(0, 0);
 	bg.scale.x = FlxG.width / bg.width;
@@ -37,21 +25,18 @@ class RelaxState extends MusicBeatState{
 	bg.screenCenter();
 	bg.antialiasing = ClientPrefs.data.antialiasing;
 	add(bg);
-	bg.cameras = [camRelaxed];
 
         var aa:AudioDisplay = new AudioDisplay(FlxG.sound.music, 100, 100, 500, 250, 16, 4, FlxColor.WHITE);
 	add(aa);
-	    
-        aa.cameras = [camRelaxed];
 	aa.alpha = 0.7;
     }
 
     override function update(elapsed:Float) {
-	super.update(elapsed);
         if (controls.BACK)
 	{
 		FlxG.sound.play(Paths.sound('cancelMenu'));
 		MusicBeatState.switchState(new MainMenuState());
 	}
+	super.update(elapsed);
     }
 }
