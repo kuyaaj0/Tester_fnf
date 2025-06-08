@@ -1,8 +1,8 @@
-package substates;
+package states;
 
 import states.MainMenuState;
 
-class RelaxState extends MusicBeatSubstate{
+class RelaxState extends MusicBeatState{
     public var camRelax:FlxCamera;
     public var camHUD:FlxCamera;
 
@@ -10,8 +10,9 @@ class RelaxState extends MusicBeatSubstate{
         super();
         Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
-        
+    }
 
+    override function create(){
         camRelax = new FlxCamera();
         camHUD = new FlxCamera();
 
@@ -22,9 +23,7 @@ class RelaxState extends MusicBeatSubstate{
         FlxG.cameras.add(camRelax, false);
 
 		camRelax.alpha = 0;
-    }
 
-    override function create(){
         addVirtualPad(LEFT_RIGHT, A_B);
         virtualPad.cameras = [camHUD];
 
