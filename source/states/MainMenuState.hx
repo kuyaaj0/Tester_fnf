@@ -298,8 +298,7 @@ class MainMenuState extends MusicBeatState
 				ease: FlxEase.quadOut,
 				onComplete: 
 					function(_){
-						FlxTransitionableState.skipNextTransOut = true;
-						FlxG.switchState(RelaxState.new);
+						MusicBeatState.switchState(new RelaxState());
 					}
 				}
 			);
