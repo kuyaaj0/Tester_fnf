@@ -7,7 +7,6 @@ import flixel.sound.FlxSound;
 class RelaxState extends MusicBeatState{
     public function new() {
         super();
-	camGame = initPsychCamera();
     }
 
     override function create(){
