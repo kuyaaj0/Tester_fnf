@@ -24,7 +24,7 @@ class RelaxState extends MusicBeatState{
         FlxG.cameras.add(camHUD, false);
         FlxG.cameras.add(camRelax, false);
 
-		camRelax.alpha = 0;
+	camRelax.alpha = 0;
 
         FlxG.sound.playMusic(Paths.music('tea-time'));
 
@@ -46,13 +46,15 @@ class RelaxState extends MusicBeatState{
         var aa:AudioDisplay = new AudioDisplay(FlxG.sound.music, 100, 100, 1000, 1000, 10, 4, FlxColor.WHITE);
 		add(aa);
         aa.alpha = 0.7;
-        aa.stopUpdate = false;
         aa.cameras = [camRelax];
 
         FlxTween.tween(camRelax, {alpha: 1}, 1, {ease: FlxEase.quadOut});
+
+	super.create();
     }
 
     override function update(elapsed:Float) {
+	    super.update();
         if (controls.BACK)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
