@@ -9,6 +9,8 @@ class ExtraCounter extends Sprite
 	public var memData:TextField;
 
 	public var bgSprite:FPSBG;
+
+	public var isHiding = false;
 	
 	public function new(x:Float = 10, y:Float = 10)
 	{
@@ -69,9 +71,15 @@ class ExtraCounter extends Sprite
     		    label.textColor = 0xFFFFFFFF;		
     		}                      
             
-            if (!ClientPrefs.data.rainbowFPS && DataGet.currentFPS <= ClientPrefs.data.framerate / 2){
+                if (!ClientPrefs.data.rainbowFPS && DataGet.currentFPS <= ClientPrefs.data.framerate / 2){
     		    label.textColor = 0xFFFF0000;
-    		}								       
+    		}
+
+		if(isHiding && this.alpha > 0.1){
+			this.alpha -= 0.1;
+		}else if(!isHiding && this.alpha < 1){
+			this.alpha += 0.1;
+		}
     	}
     	
     	this.delay.text = "Delay          MS ";
