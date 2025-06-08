@@ -60,7 +60,7 @@ class FPS extends Sprite
 	    extraShow.update();
 	    versionShow.update();
 
-	    if(FlxG.mouse.overlaps(fpsShow)){
+	    if(isPointInFPSCounter()){
 		    if(FlxG.mouse.justPressed){
 			    if(isHiding){
 				    isHiding = false;
@@ -89,5 +89,14 @@ class FPS extends Sprite
 		versionShow.y = 130;
 		versionShow.change();
 	}
+    }
+    private function isPointInFPSCounter():Bool
+    {
+        var fpsX = fpsShow.x;
+        var fpsY = fpsShow.y;
+        var fpsWidth = fpsShow.width;
+        var fpsHeight = fpsShow.height;
+
+        return FlxG.mouse.x >= fpsX && FlxG.mouse.x <= fpsX + fpsWidth && FlxG.mouse.y >= fpsY && FlxG.mouse.y <= fpsY + fpsHeight;
     }
 }
