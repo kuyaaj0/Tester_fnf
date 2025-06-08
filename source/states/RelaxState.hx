@@ -46,7 +46,7 @@ class RelaxState extends MusicBeatState{
         var aa:AudioDisplay = new AudioDisplay(FlxG.sound.music, 100, 100, 1000, 1000, 10, 4, FlxColor.WHITE);
 		add(aa);
         aa.alpha = 0.7;
-        aa.changeAnalyzer(FlxG.sound.music);
+        aa.stopUpdate = false;
         aa.cameras = [camRelax];
 
         FlxTween.tween(camRelax, {alpha: 1}, 1, {ease: FlxEase.quadOut});
