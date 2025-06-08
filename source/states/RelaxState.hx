@@ -7,8 +7,6 @@ import flixel.sound.FlxSound;
 class RelaxState extends MusicBeatState{
     public var camRelax:FlxCamera;
     public var camHUD:FlxCamera;
-    //强行锁摄像机的alpha
-    public var lockAlpha:Bool = true;
 
     public function new() {
         super();
@@ -49,7 +47,6 @@ class RelaxState extends MusicBeatState{
 
     override function update(elapsed:Float) {
 	super.update(elapsed);
-	if(camRelax != null && camRelax.alpha < 1 && lockAlpha) camRelax.alpha += 0.1;
         if (controls.BACK)
 	{
 		FlxG.sound.play(Paths.sound('cancelMenu'));
