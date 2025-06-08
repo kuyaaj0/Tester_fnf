@@ -13,6 +13,7 @@ import flixel.input.keyboard.FlxKey;
 
 import objects.AchievementPopup;
 import states.editors.MasterEditorMenu;
+import substates.RelaxSubState;
 
 import options.OptionsState;
 import openfl.Lib;
@@ -291,7 +292,7 @@ class MainMenuState extends MusicBeatState
 		virtualPad.cameras = [camHUD];
 		var relaxBtn = new RoundRectButton(FlxG.width - 180, FlxG.height - 80, 140, 48, "RELAXING", function() {
 			FlxTween.tween(FlxG.sound.music, {volume: 0}, 0.7, {ease: FlxEase.quadOut});
-			FlxG.sound.music = null;
+
         	FlxTween.tween(camGame, {alpha: 0}, 0.7, {ease: FlxEase.quadOut});
 			FlxTween.tween(camHUD, {alpha: 0}, 0.7, {
 				ease: FlxEase.quadOut,

@@ -64,6 +64,7 @@ import states.TitleState;
 	public var fileLoad:String = 'NovaFlare Engine';
 	public var openedFlash:Bool = false;
 	public var screensaver:Bool = false;
+	public var githubCheck:Bool = false;
 	public var filesCheck:Bool = #if ios false #else true #end;
 	
 	//Game UI
