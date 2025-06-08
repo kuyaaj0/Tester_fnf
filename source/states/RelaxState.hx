@@ -54,7 +54,7 @@ class RelaxState extends MusicBeatState{
     }
 
     override function update(elapsed:Float) {
-	    super.update();
+	super.update(elapsed);
         if (controls.BACK)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
