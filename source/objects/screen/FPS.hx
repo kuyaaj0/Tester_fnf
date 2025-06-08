@@ -26,6 +26,8 @@ class FPS extends Sprite
     public static var fpsShow:FPSCounter;
     public static var extraShow:ExtraCounter;    
     public static var versionShow:VersionCounter;
+
+    public var isHiding:Bool = true;
     
     function create()
     {        
@@ -57,6 +59,23 @@ class FPS extends Sprite
 	    fpsShow.update();
 	    extraShow.update();
 	    versionShow.update();
+
+	    if(FlxG.mouse.overlaps(fpsShow)){
+		    if(FlxG.mouse.justPressed){
+			    if(isHiding){
+				    isHiding = false;
+			    }else{
+				    isHiding = true;
+			    }
+		    }
+	    }
+	    if(isHiding && extraShow.alpha > 0.1 && versionShow.alpha > 0.1){
+			extraShow.alpha -= 0.1;
+		        versionShow.alpha -= 0.1;
+	    }else if(!isHiding && extraShow.alpha < 1 && versionShow.alpha < 1){
+			extraShow.alpha += 0.1;
+		        versionShow.alpha += 0.1;
+	    }
     }
     
     public function change()
