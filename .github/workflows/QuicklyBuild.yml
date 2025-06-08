@@ -48,6 +48,16 @@ jobs:
           restore-keys: |
             cache-build-${{ inputs.name }}
 
+      - name: setup Libraries
+        run: |
+          haxelib setup ~/haxelib
+
+      - name: Install Libraries
+        if: inputs.name != 'Android'
+        run: |
+          haxelib install hmm 
+          haxelib run hmm install
+
       - name: Configure Android
         if: inputs.name == 'Android'
         run: |
