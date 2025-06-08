@@ -5,19 +5,19 @@ import flixel.sound.FlxSound;
 
 
 class RelaxState extends MusicBeatState{
-    public var camRelax:FlxCamera;
+    public var camRelaxed:FlxCamera;
     public var camHUD:FlxCamera;
 
     public function new() {
         super();
-	camRelax = new FlxCamera();
+	camRelaxed = new FlxCamera();
         camHUD = new FlxCamera();
 
         camHUD.bgColor.alpha = 0;
-        camRelax.bgColor.alpha = 0;
+        camRelaxed.bgColor.alpha = 0;
 
         FlxG.cameras.add(camHUD, false);
-        FlxG.cameras.add(camRelax, false);
+        FlxG.cameras.add(camRelaxed, false);
     }
 
     override function create(){
@@ -36,12 +36,12 @@ class RelaxState extends MusicBeatState{
 	bg.screenCenter();
 	bg.antialiasing = ClientPrefs.data.antialiasing;
 	add(bg);
-	bg.cameras = [camRelax];
+	bg.cameras = [camRelaxed];
 
         var aa:AudioDisplay = new AudioDisplay(FlxG.sound.music, 100, 100, 500, 250, 16, 4, FlxColor.WHITE);
 	add(aa);
 	    
-        aa.cameras = [camRelax];
+        aa.cameras = [camRelaxed];
 	aa.alpha = 0.7;
     }
 
