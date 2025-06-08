@@ -7,9 +7,10 @@ import flixel.sound.FlxSound;
 class RelaxState extends MusicBeatState{
     public var camRelaxed:FlxCamera;
     public var camHUD:FlxCamera;
-
+    public var camGame:FlxCamera;
     public function new() {
         super();
+	camGame = initPsychCamera();
 	camRelaxed = new FlxCamera();
         camHUD = new FlxCamera();
 
@@ -24,7 +25,7 @@ class RelaxState extends MusicBeatState{
 	super.create();
 
         FlxG.sound.playMusic(Paths.music('tea-time'));
-
+	    
         addVirtualPad(LEFT_RIGHT, A_B);
         virtualPad.cameras = [camHUD];
 
