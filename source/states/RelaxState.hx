@@ -7,6 +7,8 @@ import flixel.sound.FlxSound;
 class RelaxState extends MusicBeatState{
     public var camRelax:FlxCamera;
     public var camHUD:FlxCamera;
+    //强行锁摄像机的alpha
+    public var lockAlpha:Bool = true;
 
     public function new() {
         super();
@@ -18,8 +20,6 @@ class RelaxState extends MusicBeatState{
 
         FlxG.cameras.add(camHUD, false);
         FlxG.cameras.add(camRelax, false);
-
-	camRelax.alpha = 0.000001;
     }
 
     override function create(){
@@ -43,14 +43,13 @@ class RelaxState extends MusicBeatState{
         var aa:AudioDisplay = new AudioDisplay(FlxG.sound.music, 100, 100, 500, 250, 16, 4, FlxColor.WHITE);
 	add(aa);
 	    
-        aa.alpha = 0.7;
         aa.cameras = [camRelax];
-
-	FlxTween.tween(camRelax, {alpha: 1}, 1, {ease: FlxEase.quadOut});
+	aa.alpha = 0.7;
     }
 
     override function update(elapsed:Float) {
 	super.update(elapsed);
+	if(camRelax != null && camRelax < 1 && lockAlpha) camRelax.alpha += 0.1;
         if (controls.BACK)
 	{
 		FlxG.sound.play(Paths.sound('cancelMenu'));
