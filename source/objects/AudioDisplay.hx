@@ -89,8 +89,8 @@ class AudioDisplay extends FlxSpriteGroup
             if(!Circle){
                 members[i].y = this.y -members[i].scale.y / 2;
             }else{
-                members[i].x = this.x + members[i].scale.y / 2 * Math.sin(Math.ads(180 - members[i].angle));
-                members[i].y = this.y - members[i].scale.y / 2 * Math.cos(Math.ads(180 - members[i].angle));
+                members[i].x = this.x + members[i].scale.y / 2 * Math.sin(Math.abs(180 - members[i].angle));
+                members[i].y = this.y - members[i].scale.y / 2 * Math.cos(Math.abs(180 - members[i].angle));
             }
         }
     }
