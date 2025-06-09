@@ -25,7 +25,7 @@ class AudioDisplay extends FlxSpriteGroup
             newLine.x = (Width / line) * i;
         }else{
             var angle = 360 / line * i;
-            newLine.angle = angle;
+            newLine.angle = angle - 180;
         }
         add(newLine);
       }
