@@ -70,8 +70,6 @@
 	<define name="PRELOAD_ALL" unless="web" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
 
-	<assets path="songList"/>
-
 	<!-- Assets -->
 	
 	<assets path="assets/fonts" />
