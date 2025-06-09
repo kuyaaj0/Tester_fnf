@@ -86,8 +86,12 @@ class AudioDisplay extends FlxSpriteGroup
         
             members[i].scale.y = FlxMath.lerp(animFrame, members[i].scale.y, Math.exp(-elapsed * 16));
             if (members[i].scale.y < _height / 40) members[i].scale.y = _height / 40;
-            if(!Circle)
-            members[i].y = this.y -members[i].scale.y / 2;
+            if(!Circle){
+                members[i].y = this.y -members[i].scale.y / 2;
+            }else{
+                members[i].x = this.x + members[i].width / 2;
+                members[i].y = this.y + members[i].height / 2;
+            }
         }
     }
 
