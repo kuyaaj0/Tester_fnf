@@ -89,8 +89,25 @@ class AudioDisplay extends FlxSpriteGroup
             if(!Circle){
                 members[i].y = this.y -members[i].scale.y / 2;
             }else{
-                members[i].x = this.x + members[i].scale.y / 2 * Math.sin(Math.abs(180 - members[i].angle));
-                members[i].y = this.y - members[i].scale.y / 2 * Math.cos(Math.abs(180 - members[i].angle));
+                if(members[i].angle < 90){
+                    members[i].x = this.x + members[i].scale.y / 2 * Math.cos(90 - members[i].angle));
+                    members[i].y = this.y - members[i].scale.y / 2 * Math.sin(90 - members[i].angle));
+                }else if(members[i].angle == 90){
+                    members[i].x = this.x + members[i].scale.y / 2;
+                }else if(members[i].angle > 90 && members[i].angle < 180){
+                    members[i].x = this.x + members[i].scale.y / 2 * Math.cos(members[i].angle - 90));
+                    members[i].y = this.y + members[i].scale.y / 2 * Math.sin(members[i].angle - 90));
+                }else if(members[i].angle == 180){
+                    members[i].y = this.y + members[i].scale.y / 2;
+                }else if(members[i].angle > 180 && members[i].angle < 270){
+                    members[i].x = this.x - members[i].scale.y / 2 * Math.sin(members[i].angle - 180));
+                    members[i].y = this.y + members[i].scale.y / 2 * Math.cos(members[i].angle - 180));
+                }else if(members[i].angle > 270 && members[i].angle < 360){
+                    members[i].x = this.x - members[i].scale.y / 2 * Math.cos(members[i].angle - 270));
+                    members[i].y = this.y - members[i].scale.y / 2 * Math.sin(members[i].angle - 270));
+                }else{
+                    members[i].y = this.y - members[i].scale.y / 2;
+                }
             }
         }
     }
