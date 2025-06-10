@@ -31,14 +31,13 @@ class AudioDisplay extends FlxSpriteGroup
         }else{
             var angle = 360 / line * i;
             newLine.angle = angle;
-            newLine.origin.y = 1;
 
-            var angleRadians = angle * Math.PI / 180;
-
-            var deltaX = Math.cos(angleRadians) * Radius;
-            var deltaY = Math.sin(angleRadians) * Radius;
-            newLine.x += deltaX;
-            newLine.y -= deltaY;
+            var correctedAngle = angle - 90;
+            var radians = correctedAngle * Math.PI / 180;
+            var moveX = Math.cos(radians) * 50;
+            var moveY = Math.sin(radians) * 50;
+            newLine.x += moveX;
+            newLine.y += moveY;
         }
         add(newLine);
       }
