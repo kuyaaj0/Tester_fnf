@@ -12,7 +12,7 @@ class AudioDisplay extends FlxSpriteGroup
     var line:Int;
 
     var Circle:Bool = false;
-    public var Radius:Float = 0:
+    public var Radius:Float = 0;
 
     public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, Circle:Bool = false, Radius:Float = 25)
     {
