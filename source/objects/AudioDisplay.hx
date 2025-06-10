@@ -12,14 +12,16 @@ class AudioDisplay extends FlxSpriteGroup
     var line:Int;
 
     var Circle:Bool = false;
+    public var Radius:Float = 0:
 
-    public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, Circle:Bool = false, Radius:Float = 50)
+    public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, Circle:Bool = false, Radius:Float = 25)
     {
       super(X, Y);
   
       this.snd = snd;
       this.line = line;
       this.Circle = Circle;
+      this.Radius = Radius;
 
       for (i in 0...line)
       {
@@ -27,8 +29,16 @@ class AudioDisplay extends FlxSpriteGroup
         if(!Circle){
             newLine.x = (Width / line) * i;
         }else{
-            var angle = 180 / line * i;
+            var angle = 360 / line * i;
             newLine.angle = angle;
+            newLine.origin.y = 1;
+
+            var angleRadians = angle * Math.PI / 180;
+
+            var deltaX = Math.cos(angleRadians) * Radius;
+            var deltaY = Math.sin(angleRadians) * Radius;
+            newLine.x += deltaX;
+            newLine.y -= deltaY;
         }
         add(newLine);
       }
@@ -88,8 +98,6 @@ class AudioDisplay extends FlxSpriteGroup
             if (members[i].scale.y < _height / 40) members[i].scale.y = _height / 40;
             if(!Circle){
                 members[i].y = this.y -members[i].scale.y / 2;
-            }else{
-                members[i].origin.y = 1;
             }
         }
     }
