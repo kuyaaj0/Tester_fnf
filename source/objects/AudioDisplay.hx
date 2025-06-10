@@ -14,7 +14,7 @@ class AudioDisplay extends FlxSpriteGroup
     var Circle:Bool = false;
     public var Radius:Float = 0;
 
-    public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, Circle:Bool = false, Radius:Float = 25)
+    public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, Circle:Bool = false, Radius:Float = 50)
     {
       super(X, Y);
   
@@ -31,6 +31,7 @@ class AudioDisplay extends FlxSpriteGroup
         }else{
             var angle = 360 / line * i;
             newLine.angle = angle;
+            newLine.origin.y = 1;
 
             var correctedAngle = angle - 90;
             var radians = correctedAngle * Math.PI / 180;
