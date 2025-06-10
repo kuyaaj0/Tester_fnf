@@ -34,8 +34,8 @@ class AudioDisplay extends FlxSpriteGroup
 
             var correctedAngle = angle - 90;
             var radians = correctedAngle * Math.PI / 180;
-            var moveX = Math.cos(radians) * 50;
-            var moveY = Math.sin(radians) * 50;
+            var moveX = Math.cos(radians) * Radius;
+            var moveY = Math.sin(radians) * Radius;
             newLine.x += moveX;
             newLine.y += moveY;
         }
