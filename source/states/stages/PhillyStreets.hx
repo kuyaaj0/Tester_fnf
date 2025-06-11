@@ -182,6 +182,7 @@ class PhillyStreets extends BaseStage
 			}
 			if(!noteTypes.contains(note.noteType)) noteTypes.push(note.noteType);
 		}
+		trace(noteTypes);
 
 		spraycanPile = new BGSprite('SpraycanPile', 920, 1045, 1, 1);
 		precache();

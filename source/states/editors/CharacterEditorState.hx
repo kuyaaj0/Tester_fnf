@@ -813,7 +813,7 @@ class CharacterEditorState extends MusicBeatState
 		var lastAnim:String = character.getAnimationName();
 		var anims:Array<AnimArray> = character.animationsArray.copy();
 
-		#if flxanimate character.destroyAtlas(); #end
+		character.atlas = FlxDestroyUtil.destroy(character.atlas);
 		character.isAnimateAtlas = false;
 		character.color = FlxColor.WHITE;
 		character.alpha = 1;

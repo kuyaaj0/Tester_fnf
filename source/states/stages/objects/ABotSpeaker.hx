@@ -86,10 +86,18 @@ class ABotSpeaker extends FlxSpriteGroup
 	#if funkin.vis
 	var levels:Array<Bar>;
 	var levelMax:Int = 0;
+	var saveTime:Float = 0; 
 	override function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
 		if(analyzer == null) return;
+
+		if (saveTime < 16) { //for 60HZ
+			saveTime += (elapsed * 1000);
+			return;
+		  } else {
+			saveTime = 0;
+		  }
 
 		levels = analyzer.getLevels(levels);
 		var oldLevelMax = levelMax;
@@ -123,11 +131,10 @@ class ABotSpeaker extends FlxSpriteGroup
 		@:privateAccess
 		analyzer = new SpectralAnalyzer(snd._channel.__audioSource, 7, 0.1, 40);
 	
-		#if !web
 		// On native it uses FFT stuff that isn't as optimized as the direct browser stuff we use on HTML5
 		// So we want to manually change it!
 		analyzer.fftN = 256;
-		#end
+	
 	}
 	#end
 

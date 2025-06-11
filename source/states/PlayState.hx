@@ -541,7 +541,6 @@ class PlayState extends MusicBeatState
 			if(gf != null)
 				gf.visible = false;
 		}
-		stagesFunc(function(stage:BaseStage) stage.createPost());
 
 		comboGroup = new FlxSpriteGroup();
 		add(comboGroup);
@@ -762,6 +761,7 @@ class PlayState extends MusicBeatState
 
 		resetRPC();
 
+		stagesFunc(function(stage:BaseStage) stage.createPost());
 		callOnScripts('onCreatePost');
 
 		cacheCountdown();

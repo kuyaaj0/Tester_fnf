@@ -206,7 +206,8 @@ class ChartingState extends MusicBeatState
 				player2: 'dad',
 				gfVersion: 'gf',
 				speed: 1,
-				stage: 'stage'
+				stage: 'stage',
+				format: 'na'
 			};
 			addSection();
 			PlayState.SONG = _song;
@@ -456,7 +457,7 @@ class ChartingState extends MusicBeatState
 
 		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'Load Autosave', function()
 		{
-			PlayState.SONG = Song.parseJSONshit(FlxG.save.data.autosave);
+			PlayState.SONG = Song.parseJSON(FlxG.save.data.autosave);
 			MusicBeatState.resetState();
 		});
 
