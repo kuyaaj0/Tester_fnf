@@ -16,6 +16,8 @@
 
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
 	<set name="SWF_VERSION" value="11.8" />
+
+	<dependency name="format" />
 	
 	<!-- ______________________ PSYCH ENGINE CUSTOMIZATION ______________________ -->
 
@@ -111,11 +113,9 @@
 	<haxelib name="flixel-ui" />
 	<haxelib name="flixel-addons" />
 
-	<haxelib name="hxsl" />
-
 	<!--Psych stuff needed-->
 	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
-	<haxelib name="SScript" if="HSCRIPT_ALLOWED"/>
+	<haxelib name="hscript-iris" if="HSCRIPT_ALLOWED"/>
 	<haxelib name="hscript" if="HSCRIPT_ALLOWED"/>
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED"/>
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED_Old"/>

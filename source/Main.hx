@@ -21,7 +21,10 @@ import lime.app.Application;
 
 import states.TitleState;
 import mobile.backend.Data;
-
+#if HSCRIPT_ALLOWED
+import crowplexus.iris.Iris;
+import psychlua.HScript.HScriptInfos;
+#end
 #if desktop
 import backend.ALSoftConfig;
 #end

@@ -5,7 +5,7 @@ import openfl.filters.ShaderFilter;
 import flixel.addons.display.FlxRuntimeShader;
 #end
 #if CUSTOM_SHADERS_ALLOWED
-//import shaders.CustomShaders;
+import shaders.CustomShaders;
 #end
 
 class ShaderFunctions
@@ -330,7 +330,6 @@ class ShaderFunctions
 
         // SHADER SHIT
         #if CUSTOM_SHADERS_ALLOWED
-		/*
         funk.set("addChromaticEffect", function(tag:String, object:String, globalChromeOffset:Float = 0.005, ?redOffset:Float = 0.0, ?greenOffset:Float = 0.0, ?blueOffset:Float = 0.0) {
 			var shader = new ChromaticAberrationEffect(globalChromeOffset, redOffset, greenOffset, blueOffset);
 			resetShader(shader, tag);
@@ -451,7 +450,6 @@ class ShaderFunctions
 				shader.setInt(intToTween, Std.int(newValue));
 			});
 		});
-		*/
         #end
 	}
 	
@@ -482,7 +480,6 @@ class ShaderFunctions
 	#end
 
 	#if CUSTOM_SHADERS_ALLOWED
-	/*
 	public static function resetShader(shader:Effect, tag:String){
 		if(PlayState.instance.modchartShader.exists(tag)){
 			PlayState.instance.removeShaderFromCamera('', PlayState.instance.modchartShader.get(tag));
@@ -493,6 +490,5 @@ class ShaderFunctions
 		}
 		PlayState.instance.modchartShader.set(tag, shader);
 	}
-	*/
 	#end
 }
