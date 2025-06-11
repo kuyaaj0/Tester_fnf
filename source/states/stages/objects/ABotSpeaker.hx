@@ -86,22 +86,8 @@ class ABotSpeaker extends FlxSpriteGroup
 	#if funkin.vis
 	var levels:Array<Bar>;
 	var levelMax:Int = 0;
-
-	public var stopUpdate:Bool = false;
-    var saveTime:Float = 0;    
-
 	override function update(elapsed:Float):Void
 	{
-		if (stopUpdate) return;
-      
-		if (saveTime < 15) { //平衡帧率导致更新太快问题
-		  saveTime += (elapsed * 1000);
-		  super.update(elapsed);
-		  return;
-		} else {
-		  saveTime = 0;
-		}
-
 		super.update(elapsed);
 		if(analyzer == null) return;
 

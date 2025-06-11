@@ -41,7 +41,7 @@ import lime.graphics.Image;
 #end
 class Main extends Sprite
 {
-	var game = {
+	private static var game = {
 		width: 1280, // WINDOW width
 		height: 720, // WINDOW height
 		initialState: TitleState, // initial game state
@@ -79,15 +79,6 @@ class Main extends Sprite
 		SUtil.doPermissionsShit();
 	        #end
 		mobile.backend.CrashHandler.init();
-
-		#if windows
-		@:functionCode("
-		#include <windows.h>
-		#include <winuser.h>
-		setProcessDPIAware() // allows for more crisp visuals
-		DisableProcessWindowsGhosting() // lets you move the window and such if it's not responding
-		")
-		#end
 		
 		if (stage != null)
 		{
@@ -99,6 +90,11 @@ class Main extends Sprite
 		}
 		#if VIDEOS_ALLOWED
 		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0")  ['--no-lua'] #end);
+		#end
+
+		#if (cpp && windows)		
+		backend.Native.fixScaling();		
+		backend.Native.setWindowDarkMode(true, true);		
 		#end
 	}
 
@@ -197,8 +193,6 @@ class Main extends Sprite
 
 		#if mobile 
 		LimeSystem.allowScreenTimeout = ClientPrefs.data.screensaver; 
-		//Application.current.addEventListener(Event.ACTIVATE, onActivate);
-		//Application.current.addEventListener(Event.DEACTIVATE, onDeactivate);
 		#end
 
 		#if html5
@@ -244,17 +238,6 @@ class Main extends Sprite
 	function toggleFullScreen(event:KeyboardEvent){
 		if(Controls.instance.justReleased('fullscreen'))
 			FlxG.fullscreen = !FlxG.fullscreen;
-	}
-
-	function onDeactivate(e:Event) {
-		//暂时没需要
-	}
-	
-	function onActivate(e:Event) {	
-		// 延迟设置确保系统状态稳定
-		haxe.Timer.delay(() -> {
-			//Application.current.window.displayMode.refreshRate = ClientPrefs.data.framerate;
-		}, 50); // 50ms延迟适配慢速设备
 	}
 
 	static public var type:Bool = ClientPrefs.data.gcFreeZone;

@@ -88,8 +88,8 @@
       "name": "flxanimate",
       "type": "git",
       "dir": null,
-      "ref": "dev",
-      "url": "https://github.com/ShadowMario/flxanimate.git"
+      "ref": "master",
+      "url": "https://github.com/beihu235/flxanimate"
     },
     {
       "name": "extension-androidtools",
@@ -111,13 +111,6 @@
       "dir": "src",
       "ref": "57f5d47f2533fd0c3dcd025a86cb86c0dfa0b6d2",
       "url": "https://gitlab.com/haxe-grig/grig.audio.git"
-    },
-    {
-      "name": "hxsl",
-      "type": "git",
-      "dir": null,
-      "ref": "master",
-      "url": "https://github.com/ncannasse/hxsl.git"
     }
   ]
 }

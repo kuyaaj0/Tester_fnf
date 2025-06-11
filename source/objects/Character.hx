@@ -298,12 +298,10 @@ class Character extends FlxSprite
 	inline public function isAnimationNull():Bool
 		return #if flxanimate !isAnimateAtlas ? #end (animation.curAnim == null) #if flxanimate : (atlas.anim.curSymbol == null) #end;
 
+	var _lastPlayedAnimation:String;
 	inline public function getAnimationName():String
 	{
-		var name:String = '';
-		@:privateAccess
-		if(!isAnimationNull()) name = #if flxanimate !isAnimateAtlas ? #end animation.curAnim.name #if flxanimate : atlas.anim.lastPlayedAnim #end;
-		return (name != null) ? name : '';
+		return _lastPlayedAnimation;
 	}
 
 	public function isAnimationFinished():Bool
@@ -318,6 +316,11 @@ class Character extends FlxSprite
 
 		if(!isAnimateAtlas) animation.curAnim.finish();
 		#if flxanimate else atlas.anim.curFrame = atlas.anim.length - 1; #end
+	}
+
+	public function hasAnimation(anim:String):Bool
+	{
+		return animOffsets.exists(anim);
 	}
 
 	public var animPaused(get, set):Bool;
@@ -370,6 +373,7 @@ class Character extends FlxSprite
 		specialAnim = false;
 		if(!isAnimateAtlas) animation.play(AnimName, Force, Reversed, Frame);
 		#if flxanimate else atlas.anim.play(AnimName, Force, Reversed, Frame); #end
+		_lastPlayedAnimation = AnimName;
 
 		if (animOffsets.exists(AnimName))
 		{

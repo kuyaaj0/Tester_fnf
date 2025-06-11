@@ -12,7 +12,6 @@ import states.stages.objects.*;
 import objects.Note;
 
 import cutscenes.CutsceneHandler;
-import flixel.addons.transition.FlxTransitionableState;
 
 enum NeneState
 {
@@ -219,14 +218,7 @@ class PhillyStreets extends BaseStage
 			game.videoCutscene.finishCallback = game.videoCutscene.onSkip = function()
 			{
 				videoEnded = true;
-				try { 
-					game.videoCutscene.pause();
-					game.videoCutscene.videoSprite.visible = false;
-					game.videoCutscene = null; //不是哥们你这好像没起作用啊，得加点代码吧
-					new FlxTimer().start(0.25, function(tmr:FlxTimer){    		        		                        				
-						game.canPause = true;
-					}); //我日我不到啊但是还是写上吧（我总感觉psych这个是不是缺代码了） -狐月影
-				}
+				game.videoCutscene = null;
 				videoCutscene();
 			};
 
@@ -409,7 +401,6 @@ class PhillyStreets extends BaseStage
 	override function startSong()
 	{
 		abot.snd = FlxG.sound.music;
-		trace(abot.snd);
 		gf.animation.finishCallback = onNeneAnimationFinished;
 	}
 	
