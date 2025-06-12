@@ -2751,8 +2751,9 @@ class PlayState extends MusicBeatState
 	function moveCameraSection(?sec:Null<Int>):Void {
 		if(sec == null) sec = curSection;
 		if(sec < 0) sec = 0;
-
+		
 		if(SONG.notes[sec] == null) return;
+		
 
 		if (gf != null && SONG.notes[sec].gfSection)
 		{
@@ -3531,6 +3532,7 @@ class PlayState extends MusicBeatState
 				invalidateNote(note);
 		});
 
+		stagesFunc(function(stage:BaseStage) stage.noteMiss(daNote));
 		noteMissCommon(daNote.noteData, daNote);		
 	}
 

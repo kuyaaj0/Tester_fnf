@@ -111,6 +111,7 @@ class Song
 		chartPath = chartPath.replace('/', '\\');
 		#end
 		StageData.loadDirectory(PlayState.SONG);
+		trace(chartPath);
 		return PlayState.SONG;
 	}
 
@@ -160,7 +161,7 @@ class Song
 					{
 						trace('converting chart $nameForError with format $fmt to psych_v1 format...');
 						songJson.format = 'psych_v1_convert';
-						convert(songJson);
+						onLoadJson(songJson);
 					}
 			}
 		}
