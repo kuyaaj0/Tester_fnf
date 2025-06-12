@@ -246,6 +246,7 @@ class CopyState extends MusicBeatState
 	{
 		//delete变量是规定了他是什么状态，是只检查文件有没有问题，还是把有问题的文件换掉。
 		//当delete为true的时候为检查+替换，为false的时候为检查。
+	    #if !ios
 		locatedFiles = OpenflAssets.list();
 		// removes unwanted assets
 		var assets = locatedFiles.filter(folder -> folder.startsWith('assets/'));
@@ -256,7 +257,7 @@ class CopyState extends MusicBeatState
 		for (file in locatedFiles)
 		{
 			var toFile = Path.join([to, file]);
-			#if !ios
+			
 			if (FileSystem.exists(toFile))
 			{
 				var internalBytes:ByteArray = getFileBytes(getFile(file));
@@ -270,10 +271,29 @@ class CopyState extends MusicBeatState
 					}
 				}
 			}
-			#else
-			FileSystem.deleteFile(toFile); //不管有没有问题把整个assets删掉然后再复制，ios莫名闪退只能这样了。
-			#end
-			
+		}
+
+		for (file in filesToRemove)
+			locatedFiles.remove(file);
+
+		maxLoopTimes = locatedFiles.length;
+
+		return (maxLoopTimes < 0);
+	    #else
+		locatedFiles = OpenflAssets.list();
+		// removes unwanted assets
+		var assets = locatedFiles.filter(folder -> folder.startsWith('assets/'));
+		var mods = locatedFiles.filter(folder -> folder.startsWith('mods/'));
+		locatedFiles = assets.concat(mods);
+
+		var filesToRemove:Array<String> = [];
+		for (file in locatedFiles)
+		{
+			var toFile = Path.join([to, file]);
+			if (FileSystem.exists(toFile))
+			{
+				filesToRemove.push(file);
+			}
 		}
 
 		for (file in filesToRemove)
