@@ -122,8 +122,7 @@ class Song
 		
 		var formattedFolder:String = Paths.formatToSongPath(folder);
 		var formattedSong:String = Paths.formatToSongPath(jsonInput);
-		_lastPath = Paths.json('$formattedFolder/$formattedSong');
-
+		
 		#if MODS_ALLOWED
 		if(FileSystem.exists(_lastPath))
 			rawData = File.getContent(_lastPath);
@@ -144,7 +143,7 @@ class Song
 			if(subSong != null && Type.typeof(subSong) == TObject)
 			{
 				songJson = subSong;
-			    isNewVersion = false;
+			    if (songJson.format == null) isNewVersion = false; //it build with old 
 			}
 		}
 
@@ -167,22 +166,6 @@ class Song
 		return songJson;
 	}
 
-    public static function parseVersion(rawData:String):String {             
-        var songJson:SwagSong = cast Json.parse(rawData);
-	if(Reflect.hasField(songJson, 'song'))
-	{
-		var subSong:SwagSong = Reflect.field(songJson, 'song');
-		if(subSong != null && Type.typeof(subSong) == TObject)
-		{
-			return '0.7.x';
-		}else{
-			return null;
-		}
-	}else{
-		return '1.0.x';
-	}
-    }
-
     public static function castVersion(songJson:SwagSong):SwagSong {
 	    for (i in 0...songJson.notes.length){
 		for (ii in 0...songJson.notes[i].sectionNotes.length){
@@ -200,7 +183,7 @@ class Song
 	    return songJson;
     }
 
-	public static function convert(songJson:Dynamic) // Convert old charts to psych_v1 format
+	public static function convert(songJson:Dynamic) // 用于0.1到0.3
 	{
 		if(songJson.gfVersion == null)
 		{

@@ -216,12 +216,13 @@ class PhillyStreets extends BaseStage
 		{
 			#if VIDEOS_ALLOWED
 			game.startVideo(videoName);
+			/*
 			game.videoCutscene.finishCallback = game.videoCutscene.onSkip = function()
 			{
 				videoEnded = true;
 				game.videoCutscene = null;
 				videoCutscene();
-			};
+			};*/ //不是哥们代码有问题啊
 
 			#else //Make a timer to prevent it from crashing due to sprites not being ready yet.
 			new FlxTimer().start(0.0, function(tmr:FlxTimer)
@@ -804,7 +805,7 @@ class PhillyStreets extends BaseStage
 					}
 			}
 		}
-
+		//trace(note.noteType);
 		switch(note.noteType)
 		{
 			case 'weekend-1-cockgun': // HE'S PULLING HIS COCK OUT
