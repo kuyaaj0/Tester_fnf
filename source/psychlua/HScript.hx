@@ -18,6 +18,7 @@ import hscript.Expr;
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import crowplexus.iris.IrisConfig;
+import crowplexus.hscript.Interp as IrisInterp;
 import crowplexus.hscript.Expr.Error as IrisError;
 import crowplexus.hscript.Printer;
 
@@ -119,7 +120,7 @@ class HScript extends Iris
 			scriptName = parent.scriptName;
 		#end
 		super(scriptThing, new IrisConfig(scriptName, false, false));
-		var customInterp:CustomInterp = new CustomInterp();
+		var customInterp:IrisInterp = new IrisInterp();
 		customInterp.parentInstance = FlxG.state;
 		customInterp.showPosOnLog = false;
 		this.interp = customInterp;
@@ -150,7 +151,7 @@ class HScript extends Iris
 		super.preset();
 
 		// Some very commonly used classes
-		set('Type', Type);
+		//set('Type', Type);
 		#if sys
 		set('File', File);
 		set('FileSystem', FileSystem);
@@ -183,7 +184,7 @@ class HScript extends Iris
 		set('ErrorHandledRuntimeShader', shaders.ErrorHandledShader.ErrorHandledRuntimeShader);
 		#end
 		set('ShaderFilter', openfl.filters.ShaderFilter);
-		set('StringTools', StringTools);
+		//set('StringTools', StringTools);
 		#if flxanimate
 		set('FlxAnimate', FlxAnimate);
 		#end
@@ -384,7 +385,7 @@ class HScript extends Iris
 		#else
 		set('parentLua', null);
 		#end
-		set('this', this);
+		//set('this', this);
 		set('game', FlxG.state);
 		set('controls', Controls.instance);
 
@@ -573,71 +574,6 @@ class CustomFlxColor {
 
 	public static function fromString(str:String):Int
 		return cast FlxColor.fromString(str);
-}
-
-class CustomInterp extends crowplexus.hscript.Interp
-{
-	public var parentInstance(default, set):Dynamic = [];
-	private var _instanceFields:Array<String>;
-	function set_parentInstance(inst:Dynamic):Dynamic
-	{
-		parentInstance = inst;
-		if(parentInstance == null)
-		{
-			_instanceFields = [];
-			return inst;
-		}
-		_instanceFields = Type.getInstanceFields(Type.getClass(inst));
-		return inst;
-	}
-
-	public function new()
-	{
-		super();
-	}
-
-	override function fcall(o:Dynamic, funcToRun:String, args:Array<Dynamic>):Dynamic {
-		for (_using in usings) {
-			var v = _using.call(o, funcToRun, args);
-			if (v != null)
-				return v;
-		}
-
-		var f = get(o, funcToRun);
-
-		if (f == null) {
-			Iris.error('Tried to call null function $funcToRun', posInfos());
-			return null;
-		}
-
-		return Reflect.callMethod(o, f, args);
-	}
-
-	override function resolve(id: String): Dynamic {
-		if (locals.exists(id)) {
-			var l = locals.get(id);
-			return l.r;
-		}
-
-		if (variables.exists(id)) {
-			var v = variables.get(id);
-			return v;
-		}
-
-		if (imports.exists(id)) {
-			var v = imports.get(id);
-			return v;
-		}
-
-		if(parentInstance != null && _instanceFields.contains(id)) {
-			var v = Reflect.getProperty(parentInstance, id);
-			return v;
-		}
-
-		error(EUnknownVariable(id));
-
-		return null;
-	}
 }
 
 class HScriptBase
