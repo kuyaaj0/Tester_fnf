@@ -61,7 +61,7 @@ jobs:
       - name: for ios lime
         if: inputs.name == 'iOS'
         run: |
-          haxelib install lime 8.2.2
+          yes y | haxelib install lime 8.2.2
 
       - name: Configure Android
         if: inputs.name == 'Android'
