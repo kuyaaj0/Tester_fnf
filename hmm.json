@@ -65,6 +65,11 @@
       "version": "2.5.0"
     },
     {
+      "name": "flxsoundfilters",
+      "type": "haxelib",
+      "version": null
+    },
+    {
       "name": "hxcpp-debug-server",
       "type": "haxelib",
       "version": null
@@ -83,8 +88,8 @@
       "name": "linc_luajit",
       "type": "git",
       "dir": null,
-      "ref": "main",
-      "url": "https://github.com/MaoPou/linc_luajit-rewriten.git"
+      "ref": "master",
+      "url": "https://github.com/th2l-devs/linc_luajit"
     },
     {
       "name": "flxanimate",
