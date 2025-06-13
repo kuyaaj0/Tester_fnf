@@ -67,14 +67,14 @@
     {
       "name": "flxsoundfilters",
       "type": "git",
-      "version": null
-    },
-    {
-      "name": "hxcpp-debug-server",
-      "type": "git",
       "dir": null,
       "ref": "main",
       "url": "https://github.com/beihu235/FlxSoundFilters"
+    },
+    {
+      "name": "hxcpp-debug-server",
+      "type": "haxelib",
+      "version": null
     },
     {
       "name": "tjson",
