@@ -123,6 +123,8 @@
 
     <haxelib name="funkin.vis"/>
 	<haxelib name="grig.audio" />
+
+	<haxelib name="flxsoundfilters" />
 	
 	<!-- Mobile Specific-->
 	<haxelib name="extension-androidtools" if="android" />

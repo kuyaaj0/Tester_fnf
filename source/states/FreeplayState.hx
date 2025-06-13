@@ -19,8 +19,9 @@ import backend.Replay;
 import backend.StarRating;
 
 import objects.HealthIcon;
-import objects.shape.ShapeEX;
-import objects.shape.freeplayShape.*;
+import objects.state.freeplayState.*;
+
+import shapeEx.*;
 
 import substates.GameplayChangersSubstate;
 import substates.ResetScoreSubState;

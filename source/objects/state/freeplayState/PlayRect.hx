@@ -1,6 +1,6 @@
-package objects.shape.freeplayShape;
+package objects.state.freeplayState;
 
-class BackRect extends FlxSpriteGroup //back button
+class PlayRect extends FlxSpriteGroup //back button
 {
     var background:Rect;
     var bg2:FlxSprite;
@@ -14,31 +14,34 @@ class BackRect extends FlxSpriteGroup //back button
 
 	public function new(X:Float, Y:Float, width:Float = 0, height:Float = 0, texts:String = '', color:FlxColor = FlxColor.WHITE, onClick:Void->Void = null)
     {
-        super(X, Y);
+        super(X - width, Y);
 
-        bg2 = new FlxSprite(-60);
+        var touchFix:Rect = new Rect(0, 0, width, height);
+        touchFix.alpha = 0;
+        add(touchFix);
+
+        bg2 = new FlxSprite(50);
         bg2.pixels = drawRect(width, height);
         bg2.color = color;
         bg2.antialiasing = ClientPrefs.data.antialiasing;
         add(bg2);
 
-        background = new Rect(0, 0, height, height);
+        background = new Rect(width - height, 0, height, height);
         background.color = color;
         add(background); 
 
-        var line = new Rect(background.width - 3, 0, 3, height, 0, 0, 0xFFFFFFFF);
+        var line = new Rect(width - height, 0, 3, height, 0, 0, 0xFFFFFFFF);
         line.alpha = 0.75;
         add(line);
 
-        button = new FlxSprite(0,0).loadGraphic(Paths.image('menuExtend/FreePlayState/playButton'));
+        button = new FlxSprite(width - height,0).loadGraphic(Paths.image('menuExtend/FreePlayState/playButton'));
         button.scale.set(0.4, 0.4);
         button.antialiasing = ClientPrefs.data.antialiasing;
         button.x += background.width / 2 - button.width / 2;
         button.y += background.height / 2 - button.height / 2;
-        button.flipX = true;
         add(button);
 
-        text = new FlxText(70, 0, 0, texts, 18);
+        text = new FlxText(60, 0, 0, texts, 18);
 		text.font =  Paths.font(Language.get('fontName', 'ma') + '.ttf'); 	
         text.antialiasing = ClientPrefs.data.antialiasing;	
         add(text);
@@ -93,21 +96,21 @@ class BackRect extends FlxSpriteGroup //back button
             if (!focused){
                 focused = true;
                 if (bgTween != null) bgTween.cancel();
-                bgTween = FlxTween.tween(bg2, {x: 0}, 0.3, {ease: FlxEase.backInOut});
+                bgTween = FlxTween.tween(bg2, {x: FlxG.width - 190}, 0.3, {ease: FlxEase.backInOut});
 
                 if (textTween != null) textTween.cancel();
-                textTween = FlxTween.tween(text, {x: 105}, 0.3, {ease: FlxEase.backInOut});
-          
+                textTween = FlxTween.tween(text, {x: FlxG.width - 160}, 0.3, {ease: FlxEase.backInOut});
+                var color = 
                 background.color = saveColor2;
             }
         } else {
             if (focused){
                 focused = false;
                 if (bgTween != null) bgTween.cancel();
-                bgTween = FlxTween.tween(bg2, {x: -60}, 0.3, {ease: FlxEase.backInOut});
+                bgTween = FlxTween.tween(bg2, {x: FlxG.width - 150}, 0.3, {ease: FlxEase.backInOut});
 
                 if (textTween != null) textTween.cancel();
-                textTween = FlxTween.tween(text, {x: 77}, 0.3, {ease: FlxEase.backInOut});
+                textTween = FlxTween.tween(text, {x: FlxG.width - 130}, 0.3, {ease: FlxEase.backInOut});
                 
                 background.color = saveColor;
             }

@@ -57,7 +57,8 @@ import language.Language;
 import objects.Alphabet;
 import objects.BGSprite;
 import objects.AudioDisplay;
-import objects.shape.ShapeEX;
+
+import shapeEx.*;
 
 import states.PlayState;
 import states.LoadingState;

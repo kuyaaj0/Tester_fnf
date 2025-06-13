@@ -1,4 +1,4 @@
-package objects.shape;
+package objects.state;
 
 import openfl.display.BitmapData;
 import openfl.display.BitmapDataChannel;
@@ -10,6 +10,8 @@ import flixel.util.FlxSpriteUtil;
 import objects.CheckboxThingie;
 
 import substates.ResultsScreen;
+
+import shapeEx.*;
 
 class PressButton extends FlxSpriteGroup 
 {

@@ -13,7 +13,6 @@ import flixel.input.keyboard.FlxKey;
 
 import objects.AchievementPopup;
 import states.editors.MasterEditorMenu;
-import states.RelaxState;
 
 import options.OptionsState;
 import openfl.Lib;
@@ -24,7 +23,6 @@ import sys.thread.Thread;
 import sys.thread.Mutex;
 
 import flixel.ui.FlxButton;
-import objects.ui.RoundRectButton;
 
 import flixel.addons.transition.FlxTransitionableState;
 
@@ -199,6 +197,17 @@ class MainMenuState extends MusicBeatState
 					ease: FlxEase.backInOut
 			    });
 		}
+
+		/*
+		var test = new ExtraRoundRect(200, 200, 300, 100, 20);
+		add(test);
+		new FlxTimer().start(0.6, function(tmr:FlxTimer){
+		test.changeWidth(100, 0.6);
+		});		
+		new FlxTimer().start(1.2, function(tmr:FlxTimer){
+		test.changeWidth(500, 0.6);
+		test.changeHeight(500, 0.6);
+		});		*/
 		
 		var thread = Thread.create(() -> {
 			updateGitAction(function(result) {
@@ -290,24 +299,7 @@ class MainMenuState extends MusicBeatState
         
 		addVirtualPad(MainMenuStateC, A_B_E);
 		virtualPad.cameras = [camHUD];
-		var relaxBtn = new RoundRectButton(FlxG.width - 180, FlxG.height - 160, 140, 48, "RELAXING", function() {
-			FlxTween.tween(FlxG.sound.music, {volume: 0}, 0.7, {ease: FlxEase.quadOut});
 
-        	FlxTween.tween(camGame, {alpha: 0}, 0.7, {ease: FlxEase.quadOut});
-			FlxTween.tween(camHUD, {alpha: 0}, 0.7, {
-				ease: FlxEase.quadOut,
-				onComplete: 
-					function(_){
-						MusicBeatState.switchState(new RelaxState());
-					}
-				}
-			);
-    	});
-
-    	relaxBtn.members[0].cameras = [camHUD];
-    	relaxBtn.members[1].cameras = [camHUD];
-
-    	add(relaxBtn);
 		super.create();
 	}
 	

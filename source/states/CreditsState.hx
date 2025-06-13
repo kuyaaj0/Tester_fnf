@@ -1,8 +1,7 @@
 package states;
 
 import objects.AttachedSprite;
-import objects.shape.ShapeEX;
-import objects.shape.CreditsShape;
+import objects.state.CreditsShape;
 import substates.CreditsSubState;
 import substates.PsychCreditsSubState;
 

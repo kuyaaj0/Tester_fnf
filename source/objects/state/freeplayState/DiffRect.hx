@@ -1,5 +1,4 @@
-package objects.shape.freeplayShape;
-
+package objects.state.freeplayState;
 class DiffRect extends FlxSpriteGroup //songs member for freeplay
 {
     var background:Rect;

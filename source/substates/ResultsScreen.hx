@@ -42,8 +42,7 @@ import flixel.graphics.frames.FlxFilterFrames;
 import flixel.addons.display.FlxRuntimeShader;
 import openfl.filters.ShaderFilter;
 
-import objects.shape.ShapeEX;
-import objects.shape.ResultShape;
+import objects.state.ResultShape;
 
 class ResultsScreen extends MusicBeatSubstate
 {

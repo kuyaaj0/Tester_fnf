@@ -1,6 +1,6 @@
 package options.group;
 
-import objects.shape.OptionShape;
+import objects.state.OptionShape;
 
 import options.Option;
 import options.Option.OptionType;

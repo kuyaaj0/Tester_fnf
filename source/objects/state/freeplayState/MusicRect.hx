@@ -1,4 +1,4 @@
-package objects.shape.freeplayShape;
+package objects.state.freeplayState;
 
 class MusicRect extends FlxSpriteGroup
 {

@@ -120,10 +120,7 @@ class HScript extends Iris
 			scriptName = parent.scriptName;
 		#end
 		super(scriptThing, new IrisConfig(scriptName, false, false));
-		var customInterp:IrisInterp = new IrisInterp();
-		customInterp.parentInstance = FlxG.state;
-		customInterp.showPosOnLog = false;
-		this.interp = customInterp;
+
 		#if LUA_ALLOWED
 		parentLua = parent;
 		if (parent != null)

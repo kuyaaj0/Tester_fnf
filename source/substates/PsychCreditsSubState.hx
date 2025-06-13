@@ -2,6 +2,8 @@ package substates;
 
 import objects.AttachedSprite;
 
+import shapeEx.*;
+
 class PsychCreditsSubState extends MusicBeatSubstate
 {
 	var curSelected:Int = -1;
