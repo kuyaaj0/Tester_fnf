@@ -70,7 +70,7 @@ class Character extends FlxSprite
 	public var healthColorArray:Array<Int> = [255, 0, 0];
 
 	public var missingCharacter:Bool = false;
-	public var missingText:FlxText;
+	//public var missingText:FlxText;
 	public var hasMissAnimations:Bool = false;
 	public var vocalsFile:String = '';
 
@@ -118,8 +118,8 @@ class Character extends FlxSprite
 		{
 			path = Paths.getSharedPath('characters/' + DEFAULT_CHARACTER + '.json'); //If a character couldn't be found, change him to BF just to prevent a crash
 			missingCharacter = true;
-			missingText = new FlxText(0, 0, 300, 'ERROR:\n$character.json', 16);
-			missingText.alignment = CENTER;
+			//missingText = new FlxText(0, 0, 300, 'ERROR:\n$character.json', 16);
+			//missingText.alignment = CENTER;
 		}
 
 		try
@@ -487,12 +487,13 @@ class Character extends FlxSprite
 				atlas.draw();
 				alpha = lastAlpha;
 				color = lastColor;
+				/*
 				if(missingCharacter && visible)
 				{
 					missingText.x = getMidpoint().x - 150;
 					missingText.y = getMidpoint().y - 10;
 					missingText.draw();
-				}
+				}*/
 			}
 			return;
 		}
@@ -501,9 +502,9 @@ class Character extends FlxSprite
 		{
 			alpha = lastAlpha;
 			color = lastColor;
-			missingText.x = getMidpoint().x - 150;
-			missingText.y = getMidpoint().y - 10;
-			missingText.draw();
+			//missingText.x = getMidpoint().x - 150;
+			//missingText.y = getMidpoint().y - 10;
+			//missingText.draw();
 		}
 	}
 
