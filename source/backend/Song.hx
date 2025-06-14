@@ -111,7 +111,6 @@ class Song
 		chartPath = chartPath.replace('/', '\\');
 		#end
 		StageData.loadDirectory(PlayState.SONG);
-		trace(chartPath);
 		return PlayState.SONG;
 	}
 
