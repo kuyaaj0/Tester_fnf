@@ -86,7 +86,6 @@ class ExtraRoundRect extends FlxSpriteGroup
 
 	var widthTweenArray:Array<FlxTween> = [];
 
-<<<<<<< HEAD
     var widthTweenArray:Array<FlxTween> = [];
     public function changeWidth(data:Float, time:Float = 0.6, ease:String = 'backInOut') {
         widthEase = ease;
@@ -145,26 +144,6 @@ class ExtraRoundRect extends FlxSpriteGroup
                 widthTween(leftDownRound, mainX + mainWidth - data, time, widthEase);
         }
     }
-=======
-	public function changeWidth(data:Float, time:Float = 0.6, ease:String = 'backInOut')
-	{
-		widthEase = ease;
-		for (i in 0...widthTweenArray.length)
-		{
-			if (widthTweenArray[i] != null)
-				widthTweenArray[i].cancel();
-		}
-		widthTweenArray = [];
-
-		var output:Float = calcData(mainWidth, data, mainRound);
-		widthTween(midUpRect.scale, output, time, widthEase);
-		widthTween(midUpRect, mainX - (mainWidth - data - mainRound * 2) / 2, time, widthEase);
-		widthTween(rightUpRound, mainX + data - mainRound, time, widthEase);
-
-		var output:Float = calcData(mainWidth, data, 0);
-		widthTween(midRect.scale, output, time, widthEase);
-		widthTween(midRect, mainX - (mainWidth - data) / 2, time, widthEase);
->>>>>>> 01e969737703cafb0550ac98f0a37a931d9078f0
 
 		var output:Float = calcData(mainWidth, data, mainRound);
 		widthTween(midDownRect.scale, output, time, widthEase);
@@ -178,7 +157,6 @@ class ExtraRoundRect extends FlxSpriteGroup
 		widthTweenArray.push(tween);
 	}
 
-<<<<<<< HEAD
         switch(originEase)
         {
             case LEFT_UP, CENTER_UP, RIGHT_UP :
@@ -214,9 +192,6 @@ class ExtraRoundRect extends FlxSpriteGroup
                 heightTween(rightUpRound, mainY + height - data, time, heightEase);
         }
     }
-=======
-	var heightTweenArray:Array<FlxTween> = [];
->>>>>>> 01e969737703cafb0550ac98f0a37a931d9078f0
 
 	public function changeHeight(data:Float, time:Float = 0.6, ease:String = 'backInOut')
 	{

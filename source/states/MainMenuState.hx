@@ -193,21 +193,6 @@ class MainMenuState extends MusicBeatState
 			});
 		}
 
-<<<<<<< HEAD
-		
-		var test = new ExtraRoundRect(500, 400, 300, 100, 20, LEFT_DOWN);
-		//add(test);
-		new FlxTimer().start(0.6, function(tmr:FlxTimer){
-		//test.changeWidth(100, 0.6);
-		});		
-		new FlxTimer().start(1.2, function(tmr:FlxTimer){
-		//test.changeWidth(500, 0.6);
-		//test.changeHeight(300, 0.6);
-		});		
-		
-		var thread = Thread.create(() -> {
-			updateGitAction(function(result) {
-=======
 		/*
 			var test = new ExtraRoundRect(200, 200, 300, 100, 20);
 			add(test);
@@ -223,7 +208,6 @@ class MainMenuState extends MusicBeatState
 		{
 			updateGitAction(function(result)
 			{
->>>>>>> 01e969737703cafb0550ac98f0a37a931d9078f0
 				ActionStatus = result;
 			});
 			trace(NovaFlareGithubAction);
