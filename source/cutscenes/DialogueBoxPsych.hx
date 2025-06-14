@@ -198,7 +198,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			if (bgFade.alpha > 0.5)
 				bgFade.alpha = 0.5;
 
-			#if android
+			
                 var justTouched:Bool = false;
 
 		        for (touch in FlxG.touches.list)
@@ -208,7 +208,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 				        justTouched = true;
 			        }
 		        }
-		        #end
+		        
 
 			if(FlxG.keys.justPressed.ESCAPE #if android || justTouched #end) {
 				// If the current dialogue still going
