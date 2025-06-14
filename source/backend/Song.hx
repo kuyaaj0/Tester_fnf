@@ -160,7 +160,7 @@ class Song
 					{
 						trace('converting chart $nameForError with format $fmt to psych_v1 format...');
 						songJson.format = 'psych_v1_convert';
-						convert(songJson);
+						onLoadJson(songJson);
 					}
 			}
 		}
@@ -184,6 +184,7 @@ class Song
 	    return songJson;
     }
 
+	/*
 	public static function convert(songJson:Dynamic) // 用于0.1到0.3
 	{
 		if(songJson.gfVersion == null)
@@ -237,5 +238,5 @@ class Song
 					note[3] = Note.defaultNoteTypes[note[3]]; //compatibility with Week 7 and 0.1-0.3 psych charts
 			}
 		}
-	}
+	}*/
 }
