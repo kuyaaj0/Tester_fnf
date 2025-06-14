@@ -36,6 +36,8 @@ typedef HScriptInfos = {
 
 class HScript extends Iris
 {
+	public static var originError:(Dynamic, ?haxe.PosInfos)->Void = Iris.error;
+
 	public var filePath:String;
 	public var modFolder:String;
 	public var returnValue:Dynamic;
