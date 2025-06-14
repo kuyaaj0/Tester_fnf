@@ -1179,7 +1179,7 @@ class FunkinLua {
 
 			var pee:ModchartSprite = game.modchartSprites.get(tag);
 			LuaUtils.getTargetInstance().remove(pee, true);
-			game.checkSprites.remove(tag); //虽然没有被销毁但是仍然需要添加
+			if (game.checkSprites.exists(tag)) game.checkSprites.remove(tag); //虽然没有被销毁但是仍然需要添加
 			if(destroy) {
 				pee.kill();
 				pee.destroy();
