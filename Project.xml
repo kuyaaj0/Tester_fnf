@@ -186,7 +186,9 @@
 		<haxedef name="HXCPP_CATCH_SEGV" />
 		<haxedef name="HXCPP_GC_DISABLE" />
 	</section>
- 
+
+	<haxedef name="hscriptPos" if="HSCRIPT_ALLOWED" />
+
 	<section if="desktop">
 		<!--Enable Handle Error-->
 		<haxedef name="openfl_enable_handle_error" if="${openfl &ge; 9.4.0}" />

@@ -480,6 +480,13 @@ class PlayState extends MusicBeatState
 		add(luaDebugGroup);
 		#end
 
+		#if HSCRIPT_ALLOWED
+		Iris.error = function(x, ?pos:haxe.PosInfos) {
+			HScript.originError(x, pos);
+			addTextToDebug('[${pos.fileName}:${pos.lineNumber}]: ${Std.string(x)}', FlxColor.RED);
+		};
+		#end
+
 		// "GLOBAL" SCRIPTS
 		#if ((LUA_ALLOWED || HSCRIPT_ALLOWED) && sys)
 		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'scripts/'))
@@ -3949,6 +3956,8 @@ class PlayState extends MusicBeatState
 
 		while (hscriptArray.length > 0)
 			hscriptArray.pop();
+
+		Iris.error = HScript.originError;
 		#end
 
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
