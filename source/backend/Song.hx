@@ -160,7 +160,7 @@ class Song
 					{
 						trace('converting chart $nameForError with format $fmt to psych_v1 format...');
 						songJson.format = 'psych_v1_convert';
-						onLoadJson(songJson);
+						convert(songJson);
 					}
 			}
 		}
