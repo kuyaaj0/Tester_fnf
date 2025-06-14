@@ -12,6 +12,7 @@ class TextFunctions
 			leText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			leText.cameras = [game.camHUD];
 			leText.scrollFactor.set();
+			leText.allowStop = true;
 			leText.borderSize = 2;
 			game.modchartTexts.set(tag, leText);
 		});

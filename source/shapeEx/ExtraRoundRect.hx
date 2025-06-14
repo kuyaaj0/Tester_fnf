@@ -1,5 +1,20 @@
 package shapeEx;
 
+enum OriginType
+{
+	LEFT_UP;
+    LEFT_CENTER;
+	LEFT_DOWN;
+
+    CENTER_UP;
+    CENTER_CENTER;
+    CENTER_DOWN;
+
+    RIGHT_UP;
+    RIGHT_CENTER;
+    RIGHT_DOWN;
+}
+
 class ExtraRoundRect extends FlxSpriteGroup
 {
     var leftUpRound:FlxSprite;
@@ -21,7 +36,9 @@ class ExtraRoundRect extends FlxSpriteGroup
     var widthEase:String;
     var heightEase:String;
 
-    public function new(X:Float, Y:Float, width:Float = 0, height:Float = 0, round:Float,color:FlxColor = 0xffffff)
+    public var originEase:OriginType;
+
+    public function new(X:Float, Y:Float, width:Float = 0, height:Float = 0, round:Float, ease:OriginType = LEFT_UP, color:FlxColor = 0xffffff)
     {
         super(X, Y);
         this.mainColor = color;
@@ -30,6 +47,7 @@ class ExtraRoundRect extends FlxSpriteGroup
         mainRound = round;
         mainX = X;
         mainY = Y;
+        originEase = ease;
 
         leftUpRound = drawRoundRect(0, 0, round, round, round, 1);
         add(leftUpRound);
@@ -64,19 +82,54 @@ class ExtraRoundRect extends FlxSpriteGroup
         }
         widthTweenArray = [];
         
-        var output:Float = calcData(mainWidth, data, mainRound);
-        widthTween(midUpRect.scale, output, time, widthEase);
-        widthTween(midUpRect, mainX - (mainWidth - data - mainRound * 2) / 2, time, widthEase);
-        widthTween(rightUpRound, mainX + data - mainRound, time, widthEase);
+        switch(originEase)
+        {
+            case LEFT_UP, LEFT_CENTER, LEFT_DOWN:
+                var output:Float = calcData(mainWidth, data, mainRound);
+                widthTween(midUpRect.scale, output, time, widthEase);
+                widthTween(midUpRect, mainX - (mainWidth - data - mainRound * 2) / 2, time, widthEase);
+                widthTween(rightUpRound, mainX + data - mainRound, time, widthEase);
 
-        var output:Float = calcData(mainWidth, data, 0);
-        widthTween(midRect.scale, output, time, widthEase);
-        widthTween(midRect, mainX - (mainWidth - data) / 2, time, widthEase);
+                var output:Float = calcData(mainWidth, data, 0);
+                widthTween(midRect.scale, output, time, widthEase);
+                widthTween(midRect, mainX - (mainWidth - data) / 2, time, widthEase);
 
-        var output:Float = calcData(mainWidth, data, mainRound);
-        widthTween(midDownRect.scale, output, time, widthEase);
-        widthTween(midDownRect, mainX - (mainWidth - data - mainRound * 2) / 2, time, widthEase);
-        widthTween(rightDownRound, mainX + data - mainRound, time, widthEase);
+                var output:Float = calcData(mainWidth, data, mainRound);
+                widthTween(midDownRect.scale, output, time, widthEase);
+                widthTween(midDownRect, mainX - (mainWidth - data - mainRound * 2) / 2, time, widthEase);
+                widthTween(rightDownRound, mainX + data - mainRound, time, widthEase);
+
+
+            case CENTER_UP, CENTER_CENTER, CENTER_DOWN:
+                widthTween(leftUpRound, mainX - (data - mainWidth) / 2, time, widthEase);  
+                var output:Float = calcData(mainWidth, data, mainRound);
+                widthTween(midUpRect.scale, output, time, widthEase);             
+                widthTween(rightUpRound, mainX + (mainWidth + data) / 2 - mainRound, time, widthEase);
+
+                var output:Float = calcData(mainWidth, data, 0);
+                widthTween(midRect.scale, output, time, widthEase);              
+
+                widthTween(leftDownRound, mainX - (data - mainWidth) / 2, time, widthEase);
+                var output:Float = calcData(mainWidth, data, mainRound);
+                widthTween(midDownRect.scale, output, time, widthEase);
+                widthTween(rightDownRound, mainX + (mainWidth + data) / 2 - mainRound, time, widthEase);
+
+
+            case RIGHT_UP, RIGHT_CENTER, RIGHT_DOWN:
+                var output:Float = calcData(mainWidth, data, mainRound);
+                widthTween(midUpRect.scale, output, time, widthEase);
+                widthTween(midUpRect, mainX + (mainWidth - data) / 2 + mainRound, time, widthEase);
+                widthTween(leftUpRound, mainX + mainWidth - data, time, widthEase);
+
+                var output:Float = calcData(mainWidth, data, 0);
+                widthTween(midRect.scale, output, time, widthEase);
+                widthTween(midRect, mainX + (mainWidth - data) / 2, time, widthEase);
+
+                var output:Float = calcData(mainWidth, data, mainRound);
+                widthTween(midDownRect.scale, output, time, widthEase);
+                widthTween(midDownRect, mainX + (mainWidth - data) / 2 + mainRound, time, widthEase);
+                widthTween(leftDownRound, mainX + mainWidth - data, time, widthEase);
+        }
     }
 
     function widthTween(tag:Dynamic, duration:Float, time:Float, easeType:String) {
@@ -98,13 +151,40 @@ class ExtraRoundRect extends FlxSpriteGroup
         }
         heightTweenArray = [];
 
-        var output:Float = calcData(mainHeight, data, mainRound);
-        heightTween(midRect.scale, output, time, heightEase);
-        heightTween(midRect, mainY - (mainHeight - data - mainRound * 2) / 2, time, heightEase);
-        
-        heightTween(leftDownRound, mainY + data - mainRound, time, heightEase);
-        heightTween(midDownRect, mainY + data - mainRound, time, heightEase);  
-        heightTween(rightDownRound, mainY + data - mainRound, time, heightEase);
+        switch(originEase)
+        {
+            case LEFT_UP, CENTER_UP, RIGHT_UP :
+                var output:Float = calcData(mainHeight, data, mainRound);
+                heightTween(midRect.scale, output, time, heightEase);
+                heightTween(midRect, mainY - (mainHeight - data - mainRound * 2) / 2, time, heightEase);
+                
+                heightTween(leftDownRound, mainY + data - mainRound, time, heightEase);
+                heightTween(midDownRect, mainY + data - mainRound, time, heightEase);  
+                heightTween(rightDownRound, mainY + data - mainRound, time, heightEase);
+
+
+            case LEFT_CENTER, CENTER_CENTER, RIGHT_CENTER:
+                var output:Float = calcData(mainHeight, data, mainRound);
+                heightTween(midRect.scale, output, time, heightEase);
+                
+                heightTween(leftUpRound, mainY + (mainHeight - data) / 2, time, heightEase);
+                heightTween(midUpRect, mainY + (mainHeight - data) / 2, time, heightEase);  
+                heightTween(rightUpRound, mainY + (mainHeight - data) / 2, time, heightEase);
+
+                heightTween(leftDownRound, mainY + (mainHeight + data) / 2 - mainRound, time, heightEase);
+                heightTween(midDownRect, mainY + (mainHeight + data) / 2 - mainRound, time, heightEase);  
+                heightTween(rightDownRound, mainY + (mainHeight + data) / 2 - mainRound, time, heightEase);
+
+
+            case LEFT_DOWN, CENTER_DOWN, RIGHT_DOWN:
+                var output:Float = calcData(mainHeight, data, mainRound);
+                heightTween(midRect.scale, output, time, heightEase);
+                heightTween(midRect, mainY + (mainHeight - data) / 2 + mainRound, time, heightEase);
+                
+                heightTween(leftUpRound, mainY + height - data, time, heightEase);
+                heightTween(midUpRect, mainY + height - data, time, heightEase);  
+                heightTween(rightUpRound, mainY + height - data, time, heightEase);
+        }
     }
 
     function heightTween(tag:Dynamic, duration:Float, time:Float, easeType:String) {

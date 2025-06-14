@@ -198,16 +198,16 @@ class MainMenuState extends MusicBeatState
 			    });
 		}
 
-		/*
-		var test = new ExtraRoundRect(200, 200, 300, 100, 20);
-		add(test);
+		
+		var test = new ExtraRoundRect(500, 400, 300, 100, 20, LEFT_DOWN);
+		//add(test);
 		new FlxTimer().start(0.6, function(tmr:FlxTimer){
-		test.changeWidth(100, 0.6);
+		//test.changeWidth(100, 0.6);
 		});		
 		new FlxTimer().start(1.2, function(tmr:FlxTimer){
-		test.changeWidth(500, 0.6);
-		test.changeHeight(500, 0.6);
-		});		*/
+		//test.changeWidth(500, 0.6);
+		//test.changeHeight(300, 0.6);
+		});		
 		
 		var thread = Thread.create(() -> {
 			updateGitAction(function(result) {
