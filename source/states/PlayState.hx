@@ -743,8 +743,6 @@ class PlayState extends MusicBeatState
 		#end
 
 		addMobileControls(false);
-		removeMobileControls();
-		addMobileControls(false);
 
 		startCallback();
 		RecalculateRating();
@@ -2368,7 +2366,6 @@ class PlayState extends MusicBeatState
 		FlxG.camera.followLerp = 0;
 		persistentUpdate = false;
 		persistentDraw = true;
-		if (mobileControls != null) mobileControls.visible = false;
 		paused = true;
 
 		keyboardDisplay.save();

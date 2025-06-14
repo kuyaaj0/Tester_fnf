@@ -72,7 +72,7 @@ class MusicBeatState extends FlxUIState
 	public function removeMobileControls()
 	{
 		if (mobileControls != null)
-			remove(mobileControls);
+			mobileControls = FlxDestroyUtil.destroy(mobileControls);
 	}
 
 	public function addVirtualPadCamera(DefaultDrawTarget:Bool = true):Void
