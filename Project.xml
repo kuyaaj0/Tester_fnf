@@ -187,7 +187,7 @@
 		<haxedef name="HXCPP_GC_DISABLE" />
 	</section>
 
-	<haxedef name="hscriptPos", if="HSCRIPT_ALLOWED" />
+	<haxedef name="hscriptPos" if="HSCRIPT_ALLOWED" />
 
 	<section if="desktop">
 		<!--Enable Handle Error-->
