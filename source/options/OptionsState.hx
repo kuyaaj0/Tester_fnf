@@ -3,14 +3,11 @@ package options;
 import states.MainMenuState;
 import states.FreeplayState;
 import states.FreeplayStatePsych;
-
 import mobile.substates.MobileControlSelectSubState;
 import mobile.substates.MobileExtraControl;
 import mobile.states.CopyState;
-
 import backend.ClientPrefs;
 import language.Language;
-
 import backend.StageData;
 
 class OptionsState extends MusicBeatState
@@ -29,29 +26,31 @@ class OptionsState extends MusicBeatState
 	var bgArray:Array<OptionBG> = [];
 
 	public static var stateType:Int = 0;
-    
+
 	override function create()
 	{
-			optionName = [
-				Language.get('General'), 
-				Language.get('Gameplay'), 
-				Language.get('Backend'), 
-				Language.get('GameUITitle'), 
-				Language.get('Skin'), 
-				Language.get('Input'), 
-				Language.get('UserInterfaceTitle'), 
-				Language.get('Watermark')];
+		optionName = [
+			Language.get('General'),
+			Language.get('Gameplay'),
+			Language.get('Backend'),
+			Language.get('GameUITitle'),
+			Language.get('Skin'),
+			Language.get('Input'),
+			Language.get('UserInterfaceTitle'),
+			Language.get('Watermark')
+		];
 
 		persistentUpdate = persistentDraw = true;
 
 		FlxG.mouse.visible = true;
 
 		Main.fpsVar.visible = false;
-		if(Main.watermark != null) Main.watermark.visible = false;
+		if (Main.watermark != null)
+			Main.watermark.visible = false;
 
 		instance = this;
-		
-		var bg = new Rect(0,0, FlxG.width, FlxG.height, 0, 0, 0x302E3A);
+
+		var bg = new Rect(0, 0, FlxG.width, FlxG.height, 0, 0, 0x302E3A);
 		add(bg);
 
 		var bg = new FlxSprite().loadGraphic(Paths.image(filePath + 'bg'));
@@ -64,7 +63,7 @@ class OptionsState extends MusicBeatState
 		bg.alpha = 0.4;
 		add(bg);
 
-		var bg = new Rect(0,0, 250, FlxG.height, 0, 0, 0x24232C);
+		var bg = new Rect(0, 0, 250, FlxG.height, 0, 0, 0x24232C);
 		add(bg);
 
 		for (i in 0...optionName.length)
@@ -74,7 +73,7 @@ class OptionsState extends MusicBeatState
 			cataArray.push(option);
 		}
 
-		var back = new BackButton(0,0, 250, 75, Language.get('back', 'ma'), 0x53b7ff, backMenu);
+		var back = new BackButton(0, 0, 250, 75, Language.get('back', 'ma'), 0x53b7ff, backMenu);
 		back.y = FlxG.height - 75;
 		add(back);
 
@@ -105,9 +104,12 @@ class OptionsState extends MusicBeatState
 					WatermarkGroup.add(bg);
 			}
 
-			if (i != 0) bg.y = bgArray[bgArray.length - 1].y + bgArray[bgArray.length - 1].saveHeight;
-			if (i != cataArray.length - 1) maxPos += bg.saveHeight;
-			else maxPos += bg.saveHeight - FlxG.height;
+			if (i != 0)
+				bg.y = bgArray[bgArray.length - 1].y + bgArray[bgArray.length - 1].saveHeight;
+			if (i != cataArray.length - 1)
+				maxPos += bg.saveHeight;
+			else
+				maxPos += bg.saveHeight - FlxG.height;
 		}
 
 		mouseMove();
@@ -115,17 +117,19 @@ class OptionsState extends MusicBeatState
 		var checked:Bool = false;
 		for (i in 0...optionName.length)
 		{
-			if (checked) continue;
+			if (checked)
+				continue;
 			if (position <= cataArray[i].y)
 			{
-				//checked = true;
-				//cataArray[i].forceUpdate();
+				// checked = true;
+				// cataArray[i].forceUpdate();
 			}
 		}
 		super.create();
 	}
 
 	public var ignoreCheck:Bool = false;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -135,10 +139,12 @@ class OptionsState extends MusicBeatState
 			if (FlxG.mouse.overlaps(cataArray[i]) && FlxG.mouse.justReleased)
 			{
 				var data:Int = 0;
-				for (num in 0...i) 
+				for (num in 0...i)
 					data += bgArray[num].saveHeight;
 				position = data;
-			} else {
+			}
+			else
+			{
 				cataArray[i].focused = false;
 				cataArray[i].forceUpdate();
 			}
@@ -149,7 +155,7 @@ class OptionsState extends MusicBeatState
 		if (FlxG.mouse.x >= 250 && FlxG.mouse.x <= FlxG.width && !ignoreCheck)
 		{
 			position -= FlxG.mouse.wheel * 120;
-			if (FlxG.mouse.pressed) 
+			if (FlxG.mouse.pressed)
 			{
 				position -= moveData;
 				lerpPosition = position;
@@ -160,35 +166,45 @@ class OptionsState extends MusicBeatState
 			}
 		}
 
-		if (position > maxPos) position = maxPos;
-		if (position < 0) position = 0;
-		if (lerpPosition > maxPos) lerpPosition = maxPos;
-		if (lerpPosition < 0) lerpPosition = 0;
+		if (position > maxPos)
+			position = maxPos;
+		if (position < 0)
+			position = 0;
+		if (lerpPosition > maxPos)
+			lerpPosition = maxPos;
+		if (lerpPosition < 0)
+			lerpPosition = 0;
 
-		if (Math.abs(lerpPosition - position) < 0.1) lerpPosition = position;
-		else lerpPosition = FlxMath.lerp(position, lerpPosition, Math.exp(-elapsed * 15));
+		if (Math.abs(lerpPosition - position) < 0.1)
+			lerpPosition = position;
+		else
+			lerpPosition = FlxMath.lerp(position, lerpPosition, Math.exp(-elapsed * 15));
 
 		for (num in 0...bgArray.length)
 		{
-			if (num == 0) bgArray[num].y = -lerpPosition;
-			else bgArray[num].y = bgArray[num - 1].y + bgArray[num - 1].saveHeight;
+			if (num == 0)
+				bgArray[num].y = -lerpPosition;
+			else
+				bgArray[num].y = bgArray[num - 1].y + bgArray[num - 1].saveHeight;
 		}
 	}
 
 	override function closeSubState()
-	{				
+	{
 		super.closeSubState();
-		
+
 		persistentUpdate = true;
 		FlxG.mouse.visible = true;
 	}
 
 	var saveMouseY:Int = 0;
 	var moveData:Int = 0;
+
 	public var avgSpeed:Float = 0;
+
 	function mouseMove()
 	{
-		if (FlxG.mouse.justPressed) 
+		if (FlxG.mouse.justPressed)
 		{
 			saveMouseY = FlxG.mouse.y;
 			avgSpeed = 0;
@@ -196,53 +212,59 @@ class OptionsState extends MusicBeatState
 		moveData = FlxG.mouse.y - saveMouseY;
 		saveMouseY = FlxG.mouse.y;
 		avgSpeed = avgSpeed * 0.8 + moveData * 0.2;
-		//trace(avgSpeed);
+		// trace(avgSpeed);
 	}
 
-	public function moveState(type:Int) {
-		switch(type)
+	public function moveState(type:Int)
+	{
+		switch (type)
 		{
-			case 1: //NoteOffsetState
+			case 1: // NoteOffsetState
 				LoadingState.loadAndSwitchState(new NoteOffsetState());
-			case 2: //NotesSubState
+			case 2: // NotesSubState
 				persistentUpdate = false;
 				openSubState(new NotesSubState());
-			case 3: //ControlsSubState
+			case 3: // ControlsSubState
 				persistentUpdate = false;
 				openSubState(new ControlsSubState());
-			case 4: //MobileControlSelectSubState
+			case 4: // MobileControlSelectSubState
 				persistentUpdate = false;
 				openSubState(new MobileControlSelectSubState());
-			case 5: //MobileExtraControl
+			case 5: // MobileExtraControl
 				persistentUpdate = false;
 				openSubState(new MobileExtraControl());
-			case 6: //CopyStates
+			case 6: // CopyStates
 				LoadingState.loadAndSwitchState(new CopyState(true));
 		}
 	}
 
 	var pressCheck:Bool = false;
 
-	function backMenu() {
-		if (!pressCheck){
+	function backMenu()
+	{
+		if (!pressCheck)
+		{
 			pressCheck = true;
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			ClientPrefs.saveSettings();
 			Main.fpsVar.visible = ClientPrefs.data.showFPS;
 			Main.fpsVar.scaleX = Main.fpsVar.scaleY = ClientPrefs.data.FPSScale;
 			Main.fpsVar.change();
-			if(Main.watermark != null) {
+			if (Main.watermark != null)
+			{
 				Main.watermark.scaleX = Main.watermark.scaleY = ClientPrefs.data.WatermarkScale;
 				Main.watermark.y += (1 - ClientPrefs.data.WatermarkScale) * Main.watermark.bitmapData.height;
 				Main.watermark.visible = ClientPrefs.data.showWatermark;
-			}			
+			}
 			switch (stateType)
 			{
 				case 0:
 					MusicBeatState.switchState(new MainMenuState());
 				case 1:
-					if (!ClientPrefs.data.freeplayOld) MusicBeatState.switchState(new FreeplayState());
-					else  MusicBeatState.switchState(new FreeplayStatePsych());
+					if (!ClientPrefs.data.freeplayOld)
+						MusicBeatState.switchState(new FreeplayState());
+					else
+						MusicBeatState.switchState(new FreeplayStatePsych());
 				case 2:
 					MusicBeatState.switchState(new PlayState());
 					FlxG.mouse.visible = false;

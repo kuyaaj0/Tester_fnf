@@ -2,7 +2,6 @@ package backend;
 
 import haxe.Json;
 import openfl.utils.Assets;
-
 import backend.Section;
 import objects.Note;
 
@@ -25,7 +24,7 @@ typedef SwagSong =
 	@:optional var gameOverSound:String;
 	@:optional var gameOverLoop:String;
 	@:optional var gameOverEnd:String;
-	
+
 	@:optional var disableNoteRGB:Bool;
 
 	@:optional var arrowSkin:String;
@@ -55,18 +54,18 @@ class Song
 
 	public var mapper:String = 'N/A';
 	public var musican:String = 'N/A';
-	
+
 	static public var isNewVersion:Bool = false;
 
 	private static function onLoadJson(songJson:Dynamic) // Convert old charts to newest format
 	{
-		if(songJson.gfVersion == null)
+		if (songJson.gfVersion == null)
 		{
 			songJson.gfVersion = songJson.player3;
 			songJson.player3 = null;
 		}
 
-		if(songJson.events == null)
+		if (songJson.events == null)
 		{
 			songJson.events = [];
 			for (secNum in 0...songJson.notes.length)
@@ -76,16 +75,17 @@ class Song
 				var i:Int = 0;
 				var notes:Array<Dynamic> = sec.sectionNotes;
 				var len:Int = notes.length;
-				while(i < len)
+				while (i < len)
 				{
 					var note:Array<Dynamic> = notes[i];
-					if(note[1] < 0)
+					if (note[1] < 0)
 					{
 						songJson.events.push([note[0], [[note[2], note[3], note[4]]]]);
 						notes.remove(note);
 						len = notes.length;
 					}
-					else i++;
+					else
+						i++;
 				}
 			}
 		}
@@ -100,9 +100,11 @@ class Song
 
 	public static var chartPath:String;
 	public static var loadedSongName:String;
+
 	public static function loadFromJson(jsonInput:String, ?folder:String):SwagSong
 	{
-		if(folder == null) folder = jsonInput;
+		if (folder == null)
+			folder = jsonInput;
 		PlayState.SONG = getChart(jsonInput, folder);
 		loadedSongName = folder;
 		chartPath = _lastPath;
@@ -115,48 +117,52 @@ class Song
 	}
 
 	static var _lastPath:String;
+
 	public static function getChart(jsonInput:String, ?folder:String):SwagSong
 	{
-		if(folder == null) folder = jsonInput;
+		if (folder == null)
+			folder = jsonInput;
 		var rawData:String = null;
-		
+
 		var formattedFolder:String = Paths.formatToSongPath(folder);
 		var formattedSong:String = Paths.formatToSongPath(jsonInput);
 		_lastPath = Paths.json('$formattedFolder/$formattedSong');
-		
+
 		#if MODS_ALLOWED
-		if(FileSystem.exists(_lastPath))
+		if (FileSystem.exists(_lastPath))
 			rawData = File.getContent(_lastPath);
 		else
 		#end
-			rawData = Assets.getText(_lastPath);
+		rawData = Assets.getText(_lastPath);
 
 		return rawData != null ? parseJSON(rawData, jsonInput) : null;
 	}
-	
-    public static function parseJSON(rawData:String, ?nameForError:String = null, ?convertTo:String = 'psych_v1'):SwagSong
+
+	public static function parseJSON(rawData:String, ?nameForError:String = null, ?convertTo:String = 'psych_v1'):SwagSong
 	{
 		var songJson:SwagSong = cast Json.parse(rawData);
-        isNewVersion = true;
-		if(Reflect.hasField(songJson, 'song'))
+		isNewVersion = true;
+		if (Reflect.hasField(songJson, 'song'))
 		{
 			var subSong:SwagSong = Reflect.field(songJson, 'song');
-			if(subSong != null && Type.typeof(subSong) == TObject)
+			if (subSong != null && Type.typeof(subSong) == TObject)
 			{
 				songJson = subSong;
-			    if (songJson.format == null) isNewVersion = false; //it build with old 
+				if (songJson.format == null)
+					isNewVersion = false; // it build with old
 			}
 		}
 
-		if(convertTo != null && convertTo.length > 0)
+		if (convertTo != null && convertTo.length > 0)
 		{
 			var fmt:String = songJson.format;
-			if(fmt == null) fmt = songJson.format = 'unknown';
+			if (fmt == null)
+				fmt = songJson.format = 'unknown';
 
-			switch(convertTo)
+			switch (convertTo)
 			{
 				case 'psych_v1':
-					if(!fmt.startsWith('psych_v1')) //Convert to Psych 1.0 format
+					if (!fmt.startsWith('psych_v1')) // Convert to Psych 1.0 format
 					{
 						trace('converting chart $nameForError with format $fmt to psych_v1 format...');
 						songJson.format = 'psych_v1_convert';
@@ -167,76 +173,82 @@ class Song
 		return songJson;
 	}
 
-    public static function castVersion(songJson:SwagSong):SwagSong {
-	    for (i in 0...songJson.notes.length){
-		for (ii in 0...songJson.notes[i].sectionNotes.length){
-			var gottaHitNote:Bool = songJson.notes[i].mustHitSection;
-			if(!gottaHitNote){
-				if(songJson.notes[i].sectionNotes[ii][1] >= 4){
-					songJson.notes[i].sectionNotes[ii][1] -= 4;
-				}else if(songJson.notes[i].sectionNotes[ii][1] <= 3){
-					songJson.notes[i].sectionNotes[ii][1] += 4;
-				}
-			}
-		}
-	    }
-	    isNewVersion = false;
-	    return songJson;
-    }
-
-	/*
-	public static function convert(songJson:Dynamic) // 用于0.1到0.3
+	public static function castVersion(songJson:SwagSong):SwagSong
 	{
-		if(songJson.gfVersion == null)
+		for (i in 0...songJson.notes.length)
 		{
-			songJson.gfVersion = songJson.player3;
-			if(Reflect.hasField(songJson, 'player3')) Reflect.deleteField(songJson, 'player3');
-		}
-
-		if(songJson.events == null)
-		{
-			songJson.events = [];
-			for (secNum in 0...songJson.notes.length)
+			for (ii in 0...songJson.notes[i].sectionNotes.length)
 			{
-				var sec:SwagSection = songJson.notes[secNum];
-
-				var i:Int = 0;
-				var notes:Array<Dynamic> = sec.sectionNotes;
-				var len:Int = notes.length;
-				while(i < len)
+				var gottaHitNote:Bool = songJson.notes[i].mustHitSection;
+				if (!gottaHitNote)
 				{
-					var note:Array<Dynamic> = notes[i];
-					if(note[1] < 0)
+					if (songJson.notes[i].sectionNotes[ii][1] >= 4)
 					{
-						songJson.events.push([note[0], [[note[2], note[3], note[4]]]]);
-						notes.remove(note);
-						len = notes.length;
+						songJson.notes[i].sectionNotes[ii][1] -= 4;
 					}
-					else i++;
+					else if (songJson.notes[i].sectionNotes[ii][1] <= 3)
+					{
+						songJson.notes[i].sectionNotes[ii][1] += 4;
+					}
 				}
 			}
 		}
-
-		var sectionsData:Array<SwagSection> = songJson.notes;
-		if(sectionsData == null) return;
-
-		for (section in sectionsData)
+		isNewVersion = false;
+		return songJson;
+	}
+	/*
+		public static function convert(songJson:Dynamic) // 用于0.1到0.3
 		{
-			var beats:Null<Float> = cast section.sectionBeats;
-			if (beats == null || Math.isNaN(beats))
+			if(songJson.gfVersion == null)
 			{
-				section.sectionBeats = 4;
-				if(Reflect.hasField(section, 'lengthInSteps')) Reflect.deleteField(section, 'lengthInSteps');
+				songJson.gfVersion = songJson.player3;
+				if(Reflect.hasField(songJson, 'player3')) Reflect.deleteField(songJson, 'player3');
 			}
 
-			for (note in section.sectionNotes)
+			if(songJson.events == null)
 			{
-				var gottaHitNote:Bool = (note[1] < 4) ? section.mustHitSection : !section.mustHitSection;
-				note[1] = (note[1] % 4) + (gottaHitNote ? 0 : 4);
+				songJson.events = [];
+				for (secNum in 0...songJson.notes.length)
+				{
+					var sec:SwagSection = songJson.notes[secNum];
 
-				if(!Std.isOfType(note[3], String))
-					note[3] = Note.defaultNoteTypes[note[3]]; //compatibility with Week 7 and 0.1-0.3 psych charts
+					var i:Int = 0;
+					var notes:Array<Dynamic> = sec.sectionNotes;
+					var len:Int = notes.length;
+					while(i < len)
+					{
+						var note:Array<Dynamic> = notes[i];
+						if(note[1] < 0)
+						{
+							songJson.events.push([note[0], [[note[2], note[3], note[4]]]]);
+							notes.remove(note);
+							len = notes.length;
+						}
+						else i++;
+					}
+				}
 			}
-		}
+
+			var sectionsData:Array<SwagSection> = songJson.notes;
+			if(sectionsData == null) return;
+
+			for (section in sectionsData)
+			{
+				var beats:Null<Float> = cast section.sectionBeats;
+				if (beats == null || Math.isNaN(beats))
+				{
+					section.sectionBeats = 4;
+					if(Reflect.hasField(section, 'lengthInSteps')) Reflect.deleteField(section, 'lengthInSteps');
+				}
+
+				for (note in section.sectionNotes)
+				{
+					var gottaHitNote:Bool = (note[1] < 4) ? section.mustHitSection : !section.mustHitSection;
+					note[1] = (note[1] % 4) + (gottaHitNote ? 0 : 4);
+
+					if(!Std.isOfType(note[3], String))
+						note[3] = Note.defaultNoteTypes[note[3]]; //compatibility with Week 7 and 0.1-0.3 psych charts
+				}
+			}
 	}*/
 }

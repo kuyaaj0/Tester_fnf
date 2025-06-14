@@ -95,7 +95,7 @@ class MobileFunctions
 		{
 			if (PlayState.instance.luaVirtualPad == null)
 			{
-				//FunkinLua.luaTrace('virtualPadJustPressed: VPAD does not exist.');
+				// FunkinLua.luaTrace('virtualPadJustPressed: VPAD does not exist.');
 				return false;
 			}
 			return PlayState.instance.luaVirtualPadJustPressed(button);
@@ -105,7 +105,7 @@ class MobileFunctions
 		{
 			if (PlayState.instance.luaVirtualPad == null)
 			{
-				//FunkinLua.luaTrace('virtualPadPressed: VPAD does not exist.');
+				// FunkinLua.luaTrace('virtualPadPressed: VPAD does not exist.');
 				return false;
 			}
 			return PlayState.instance.luaVirtualPadPressed(button);
@@ -115,7 +115,7 @@ class MobileFunctions
 		{
 			if (PlayState.instance.luaVirtualPad == null)
 			{
-				//FunkinLua.luaTrace('virtualPadJustReleased: VPAD does not exist.');
+				// FunkinLua.luaTrace('virtualPadJustReleased: VPAD does not exist.');
 				return false;
 			}
 			return PlayState.instance.luaVirtualPadJustReleased(button);

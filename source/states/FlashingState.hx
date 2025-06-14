@@ -1,7 +1,6 @@
 package states;
 
 import flixel.FlxSubState;
-
 import flixel.effects.FlxFlicker;
 import lime.app.Application;
 import flixel.addons.transition.FlxTransitionableState;
@@ -9,8 +8,10 @@ import flixel.addons.transition.FlxTransitionableState;
 class FlashingState extends MusicBeatState
 {
 	public static var leftState:Bool = false;
-    var pressed:Bool = false;
+
+	var pressed:Bool = false;
 	var warnText:FlxText;
+
 	override function create()
 	{
 		super.create();
@@ -23,11 +24,11 @@ class FlashingState extends MusicBeatState
 		Press A/ENTER to disable them now or go to Options Menu.\n
 		Press B/ESCAPE to ignore this message.\n
 		You've been warned!";
-		
+
 		#if desktop
 		guh += "\n\npress Keyboard will Disable touch control\n";
 		#end
-		
+
 		warnText = new FlxText(0, 0, FlxG.width, guh, 32);
 		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
@@ -38,35 +39,45 @@ class FlashingState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-	    if (pressed) return;
-	    
+		if (pressed)
+			return;
+
 		var back:Bool = controls.BACK;
-		if (controls.ACCEPT || back) {
-		    pressed = true;
+		if (controls.ACCEPT || back)
+		{
+			pressed = true;
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
-			if(!back) {
-			    if (!virtualPad.buttonA.justPressed) ClientPrefs.data.needMobileControl = false;
+			if (!back)
+			{
+				if (!virtualPad.buttonA.justPressed)
+					ClientPrefs.data.needMobileControl = false;
 				ClientPrefs.data.flashing = true;
 				ClientPrefs.saveSettings();
 				FlxG.sound.play(Paths.sound('confirmMenu'));
-				FlxFlicker.flicker(warnText, 1, 0.1, false, true, function(flk:FlxFlicker) {
-					new FlxTimer().start(0.5, function (tmr:FlxTimer) {
+				FlxFlicker.flicker(warnText, 1, 0.1, false, true, function(flk:FlxFlicker)
+				{
+					new FlxTimer().start(0.5, function(tmr:FlxTimer)
+					{
 						MusicBeatState.switchState(new TitleState());
 					});
 				});
-			} else {
-			    if (!virtualPad.buttonB.justPressed) ClientPrefs.data.needMobileControl = false;
-			    ClientPrefs.data.flashing = false;
-			    ClientPrefs.saveSettings();
+			}
+			else
+			{
+				if (!virtualPad.buttonB.justPressed)
+					ClientPrefs.data.needMobileControl = false;
+				ClientPrefs.data.flashing = false;
+				ClientPrefs.saveSettings();
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				FlxTween.tween(warnText, {alpha: 0}, 1, {
-					onComplete: function (twn:FlxTween) {
+					onComplete: function(twn:FlxTween)
+					{
 						MusicBeatState.switchState(new TitleState());
 					}
 				});
 			}
-		}		
+		}
 		super.update(elapsed);
 	}
 }

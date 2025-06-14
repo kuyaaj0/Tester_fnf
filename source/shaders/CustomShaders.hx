@@ -18,7 +18,8 @@ class RadialBlurEffect extends Effect
 {
 	public var shader:ShaderFilter = new ShaderFilter(new RadialBlurShader());
 
-	public function new(strength:Float = 10, x:Float = 0.0, y:Float = 0.0, zoom:Float = 1.0){
+	public function new(strength:Float = 10, x:Float = 0.0, y:Float = 0.0, zoom:Float = 1.0)
+	{
 		super();
 		daShader = shader;
 		setStrength(strength);
@@ -33,11 +34,12 @@ class RadialBlurEffect extends Effect
 
 	public function setPos(x:Float = 0.0, y:Float = 0.0)
 	{
-			shader.shader.data.xPos.value = [x];
-			shader.shader.data.yPos.value = [y];
+		shader.shader.data.xPos.value = [x];
+		shader.shader.data.yPos.value = [y];
 	}
 
-	public function setZoom(zoom:Float = 1.0){
+	public function setZoom(zoom:Float = 1.0)
+	{
 		shader.shader.data.zoom.value = [zoom];
 	}
 }
@@ -96,7 +98,8 @@ class BulgeEffect extends Effect
 		shader.shader.data.value.value = [value];
 	}
 
-	public function new(value:Float){
+	public function new(value:Float)
+	{
 		super();
 		daShader = shader;
 		setValue(value);
@@ -139,7 +142,6 @@ class BulgeShader extends FlxShader
 		super();
 	}
 }
-
 
 class BuildingEffect
 {
@@ -214,28 +216,34 @@ class ChromaticAberrationEffect extends Effect
 {
 	public var shader:ShaderFilter = new ShaderFilter(new ChromaticAberrationShader());
 
-
 	public function setChrome(globalChromeOffset:Float, ?redOffset:Float = 0.0, ?greenOffset:Float = 0.0, ?blueOffset:Float = 0.0):Void
 	{
-		if(globalChromeOffset != 0.0){
+		if (globalChromeOffset != 0.0)
+		{
 			shader.shader.data.rOffset.value = [globalChromeOffset];
 			shader.shader.data.gOffset.value = [0.0];
 			shader.shader.data.bOffset.value = [-globalChromeOffset];
-		} else {
+		}
+		else
+		{
 			shader.shader.data.rOffset.value = [redOffset];
 			shader.shader.data.gOffset.value = [greenOffset];
 			shader.shader.data.bOffset.value = [blueOffset];
 		}
 	}
 
-	public function new(globalChromeOffset:Float, ?redOffset:Float = 0.0, ?greenOffset:Float = 0.0, ?blueOffset:Float = 0.0){
+	public function new(globalChromeOffset:Float, ?redOffset:Float = 0.0, ?greenOffset:Float = 0.0, ?blueOffset:Float = 0.0)
+	{
 		super();
 		daShader = shader;
-		if(globalChromeOffset != 0.0){
+		if (globalChromeOffset != 0.0)
+		{
 			shader.shader.data.rOffset.value = [globalChromeOffset];
 			shader.shader.data.gOffset.value = [0.0];
 			shader.shader.data.bOffset.value = [-globalChromeOffset];
-		} else {
+		}
+		else
+		{
 			shader.shader.data.rOffset.value = [redOffset];
 			shader.shader.data.gOffset.value = [greenOffset];
 			shader.shader.data.bOffset.value = [blueOffset];
@@ -247,7 +255,8 @@ class ScanlineEffect extends Effect
 {
 	public var shader:ShaderFilter = new ShaderFilter(new Scanline());
 
-	public function new(lockAlpha:Bool){
+	public function new(lockAlpha:Bool)
+	{
 		super();
 		daShader = shader;
 		shader.shader.data.lockAlpha.value = [lockAlpha];
@@ -282,7 +291,8 @@ class TiltshiftEffect extends Effect
 {
 	public var shader:ShaderFilter = new ShaderFilter(new Tiltshift());
 
-	public function new(blurAmount:Float, center:Float){
+	public function new(blurAmount:Float, center:Float)
+	{
 		super();
 		daShader = shader;
 		shader.shader.data.bluramount.value = [blurAmount];
@@ -347,7 +357,8 @@ class GreyscaleEffect extends Effect
 {
 	public var shader:ShaderFilter = new ShaderFilter(new GreyscaleShader());
 
-	public function new(){
+	public function new()
+	{
 		super();
 		daShader = shader;
 	}
@@ -375,21 +386,22 @@ class BrightEffect extends Effect
 {
 	public var shader:ShaderFilter = new ShaderFilter(new BrightShader());
 
-	public  function setup(){
-		
+	public function setup()
+	{
 	}
 
 	public function setBrightness(brightness:Float):Void
 	{
 		shader.shader.data.brightness.value = [brightness];
 	}
-	
+
 	public function setContrast(contrast:Float):Void
 	{
 		shader.shader.data.contrast.value = [contrast];
 	}
 
-	public function new(brightness:Float, contrast:Float){
+	public function new(brightness:Float, contrast:Float)
+	{
 		super();
 		daShader = shader;
 		setBrightness(brightness);
@@ -419,7 +431,6 @@ class BrightShader extends FlxShader
 	}
 }
 
-
 class GrainEffect extends Effect
 {
 	public var shader:ShaderFilter = new ShaderFilter(new Grain());
@@ -429,7 +440,8 @@ class GrainEffect extends Effect
 		shader.shader.data.uTime.value[0] += elapsed;
 	}
 
-	public function new(grainsize:Float, lumamount:Float, lockAlpha:Bool){
+	public function new(grainsize:Float, lumamount:Float, lockAlpha:Bool)
+	{
 		super();
 		daShader = shader;
 		shader.shader.data.lumamount.value = [lumamount];
@@ -576,7 +588,8 @@ class VCRDistortionEffect extends Effect
 {
 	public var shader:ShaderFilter = new ShaderFilter(new VCRDistortionShader());
 
-	public function new(glitchFactor:Float, distortion:Bool = true, perspectiveOn:Bool = true, vignetteMoving:Bool = true){
+	public function new(glitchFactor:Float, distortion:Bool = true, perspectiveOn:Bool = true, vignetteMoving:Bool = true)
+	{
 		super();
 		daShader = shader;
 		shader.shader.data.iTime.value = [0];
@@ -753,7 +766,8 @@ class ThreeDEffect extends Effect
 {
 	public var shader:ShaderFilter = new ShaderFilter(new ThreeDShader());
 
-	public function new(xrotation:Float = 0, yrotation:Float = 0, zrotation:Float = 0, depth:Float = 0){
+	public function new(xrotation:Float = 0, yrotation:Float = 0, zrotation:Float = 0, depth:Float = 0)
+	{
 		super();
 		daShader = shader;
 		shader.shader.data.xrot.value = [xrotation];
@@ -849,7 +863,8 @@ class FuckingTriangleEffect extends Effect
 {
 	public var shader:ShaderFilter = new ShaderFilter(new FuckingTriangle());
 
-	public function new(rotx:Float, roty:Float){
+	public function new(rotx:Float, roty:Float)
+	{
 		super();
 		daShader = shader;
 		shader.shader.data.rotX.value = [rotx];
@@ -998,7 +1013,8 @@ class BloomEffect extends Effect
 {
 	public var shader:ShaderFilter = new ShaderFilter(new BloomShader());
 
-	public function new(blurSize:Float, intensity:Float){
+	public function new(blurSize:Float, intensity:Float)
+	{
 		super();
 		daShader = shader;
 		shader.shader.data.blurSize.value = [blurSize];
@@ -1067,7 +1083,8 @@ class GlitchEffect extends Effect
 	public var waveFrequency(default, set):Float = 0;
 	public var waveAmplitude(default, set):Float = 0;
 
-	public function new(WaveSpeed:Float, WaveFrequency:Float, WaveAmplitude:Float){
+	public function new(WaveSpeed:Float, WaveFrequency:Float, WaveAmplitude:Float)
+	{
 		super();
 		daShader = shader;
 		shader.shader.data.uTime.value = [0];
@@ -1112,7 +1129,8 @@ class DistortBGEffect extends Effect
 	public var waveFrequency(default, set):Float = 0;
 	public var waveAmplitude(default, set):Float = 0;
 
-	public function new(WaveSpeed:Float, WaveFrequency:Float, WaveAmplitude:Float){
+	public function new(WaveSpeed:Float, WaveFrequency:Float, WaveAmplitude:Float)
+	{
 		super();
 		daShader = shader;
 		waveSpeed = WaveSpeed;
@@ -1157,7 +1175,8 @@ class PulseEffect extends Effect
 	public var waveFrequency(default, set):Float = 0;
 	public var waveAmplitude(default, set):Float = 0;
 
-	public function new(WaveSpeed:Float, WaveFrequency:Float, WaveAmplitude:Float){
+	public function new(WaveSpeed:Float, WaveFrequency:Float, WaveAmplitude:Float)
+	{
 		super();
 		daShader = shader;
 		waveSpeed = WaveSpeed;
@@ -1199,7 +1218,8 @@ class InvertColorsEffect extends Effect
 {
 	public var shader:ShaderFilter = new ShaderFilter(new InvertShader());
 
-	public function new(){
+	public function new()
+	{
 		super();
 		daShader = shader;
 	}
@@ -1383,6 +1403,7 @@ class PulseShader extends FlxShader
 class Effect
 {
 	public var daShader:ShaderFilter;
+
 	// stolen from FlxRuntimeShader-
 
 	/**
@@ -1391,261 +1412,262 @@ class Effect
 	 * @param name The name of the parameter to modify.
 	 * @param value The new value to use.
 	 */
-	 public function setFloat(name:String, value:Float):Void
+	public function setFloat(name:String, value:Float):Void
+	{
+		var prop:ShaderParameter<Float> = Reflect.field(daShader.shader.data, name);
+
+		if (prop == null)
 		{
-			var prop:ShaderParameter<Float> = Reflect.field(daShader.shader.data, name);
-	
-			if (prop == null)
-			{
-				FlxG.log.warn('Shader float property "$name" not found.');
-				return;
-			}
-	
-			prop.value = [value];
-		}
-	
-		/**
-		 * Retrieve a float parameter of the shader.
-		 *
-		 * @param name The name of the parameter to retrieve.
-		 */
-		public function getFloat(name:String):Null<Float>
-		{
-			var prop:ShaderParameter<Float> = Reflect.field(daShader.shader.data, name);
-	
-			if (prop == null)
-			{
-				FlxG.log.warn('Shader float property "$name" not found.');
-				return null;
-			}
-	
-			return prop.value[0];
-		}
-	
-		/**
-		 * Modify a float array parameter of the shader.
-		 *
-		 * @param name The name of the parameter to modify.
-		 * @param value The new value to use.
-		 */
-		public function setFloatArray(name:String, value:Array<Float>):Void
-		{
-			var prop:ShaderParameter<Float> = Reflect.field(daShader.shader.data, name);
-	
-			if (prop == null)
-			{
-				FlxG.log.warn('Shader float[] property "$name" not found.');
-				return;
-			}
-	
-			prop.value = value;
-		}
-	
-		/**
-		 * Retrieve a float array parameter of the shader.
-		 *
-		 * @param name The name of the parameter to retrieve.
-		 */
-		public function getFloatArray(name:String):Null<Array<Float>>
-		{
-			var prop:ShaderParameter<Float> = Reflect.field(daShader.shader.data, name);
-	
-			if (prop == null)
-			{
-				FlxG.log.warn('Shader float[] property "$name" not found.');
-				return null;
-			}
-	
-			return prop.value;
-		}
-	
-		/**
-		 * Modify an integer parameter of the shader.
-		 *
-		 * @param name The name of the parameter to modify.
-		 * @param value The new value to use.
-		 */
-		public function setInt(name:String, value:Int):Void
-		{
-			var prop:ShaderParameter<Int> = Reflect.field(daShader.shader.data, name);
-	
-			if (prop == null)
-			{
-				FlxG.log.warn('Shader int property "$name" not found.');
-				return;
-			}
-	
-			prop.value = [value];
-		}
-	
-		/**
-		 * Retrieve an integer parameter of the shader.
-		 *
-		 * @param name The name of the parameter to retrieve.
-		 */
-		public function getInt(name:String):Null<Int>
-		{
-			var prop:ShaderParameter<Int> = Reflect.field(daShader.shader.data, name);
-	
-			if (prop == null)
-			{
-				FlxG.log.warn('Shader int property "$name" not found.');
-				return null;
-			}
-	
-			return prop.value[0];
-		}
-	
-		/**
-		 * Modify an integer array parameter of the shader.
-		 *
-		 * @param name The name of the parameter to modify.
-		 * @param value The new value to use.
-		 */
-		public function setIntArray(name:String, value:Array<Int>):Void
-		{
-			var prop:ShaderParameter<Int> = Reflect.field(daShader.shader.data, name);
-	
-			if (prop == null)
-			{
-				FlxG.log.warn('Shader int[] property "$name" not found.');
-				return;
-			}
-	
-			prop.value = value;
-		}
-	
-		/**
-		 * Retrieve an integer array parameter of the shader.
-		 *
-		 * @param name The name of the parameter to retrieve.
-		 */
-		public function getIntArray(name:String):Null<Array<Int>>
-		{
-			var prop:ShaderParameter<Int> = Reflect.field(daShader.shader.data, name);
-	
-			if (prop == null)
-			{
-				FlxG.log.warn('Shader int[] property "$name" not found.');
-				return null;
-			}
-	
-			return prop.value;
-		}
-	
-		/**
-		 * Modify a bool parameter of the shader.
-		 *
-		 * @param name The name of the parameter to modify.
-		 * @param value The new value to use.
-		 */
-		public function setBool(name:String, value:Bool):Void
-		{
-			var prop:ShaderParameter<Bool> = Reflect.field(daShader.shader.data, name);
-	
-			if (prop == null)
-			{
-				FlxG.log.warn('Shader bool property "$name" not found.');
-				return;
-			}
-	
-			prop.value = [value];
-		}
-	
-		/**
-		 * Retrieve a bool parameter of the shader.
-		 *
-		 * @param name The name of the parameter to retrieve.
-		 */
-		public function getBool(name:String):Null<Bool>
-		{
-			var prop:ShaderParameter<Bool> = Reflect.field(daShader.shader.data, name);
-	
-			if (prop == null)
-			{
-				FlxG.log.warn('Shader bool property "$name" not found.');
-				return null;
-			}
-	
-			return prop.value[0];
-		}
-	
-		/**
-		 * Modify a bool array parameter of the shader.
-		 *
-		 * @param name The name of the parameter to modify.
-		 * @param value The new value to use.
-		 */
-		public function setBoolArray(name:String, value:Array<Bool>):Void
-		{
-			var prop:ShaderParameter<Bool> = Reflect.field(daShader.shader.data, name);
-	
-			if (prop == null)
-			{
-				FlxG.log.warn('Shader bool[] property "$name" not found.');
-				return;
-			}
-	
-			prop.value = value;
-		}
-	
-		/**
-		 * Retrieve a bool array parameter of the shader.
-		 *
-		 * @param name The name of the parameter to retrieve.
-		 */
-		public function getBoolArray(name:String):Null<Array<Bool>>
-		{
-			var prop:ShaderParameter<Bool> = Reflect.field(daShader.shader.data, name);
-	
-			if (prop == null)
-			{
-				FlxG.log.warn('Shader bool[] property "$name" not found.');
-				return null;
-			}
-	
-			return prop.value;
-		}
-	
-		/**
-		 * Modify a bitmap data parameter of the shader.
-		 *
-		 * @param name The name of the parameter to modify.
-		 * @param value The new value to use.
-		 */
-		public function setSampler2D(name:String, value:BitmapData):Void
-		{
-			var prop:ShaderInput<BitmapData> = Reflect.field(daShader.shader.data, name);
-	
-			if (prop == null)
-			{
-				FlxG.log.warn('Shader sampler2D property "$name" not found.');
-				return;
-			}
-	
-			prop.input = value;
-		}
-	
-		/**
-		 * Retrieve a bitmap data parameter of the shader.
-		 *
-		 * @param name The name of the parameter to retrieve.
-		 * @return The value of the parameter.
-		 */
-		public function getSampler2D(name:String):Null<BitmapData>
-		{
-			var prop:ShaderInput<BitmapData> = Reflect.field(daShader.shader.data, name);
-	
-			if (prop == null)
-			{
-				FlxG.log.warn('Shader sampler2D property "$name" not found.');
-				return null;
-			}
-	
-			return prop.input;
+			FlxG.log.warn('Shader float property "$name" not found.');
+			return;
 		}
 
-	public function new(){}
+		prop.value = [value];
+	}
+
+	/**
+	 * Retrieve a float parameter of the shader.
+	 *
+	 * @param name The name of the parameter to retrieve.
+	 */
+	public function getFloat(name:String):Null<Float>
+	{
+		var prop:ShaderParameter<Float> = Reflect.field(daShader.shader.data, name);
+
+		if (prop == null)
+		{
+			FlxG.log.warn('Shader float property "$name" not found.');
+			return null;
+		}
+
+		return prop.value[0];
+	}
+
+	/**
+	 * Modify a float array parameter of the shader.
+	 *
+	 * @param name The name of the parameter to modify.
+	 * @param value The new value to use.
+	 */
+	public function setFloatArray(name:String, value:Array<Float>):Void
+	{
+		var prop:ShaderParameter<Float> = Reflect.field(daShader.shader.data, name);
+
+		if (prop == null)
+		{
+			FlxG.log.warn('Shader float[] property "$name" not found.');
+			return;
+		}
+
+		prop.value = value;
+	}
+
+	/**
+	 * Retrieve a float array parameter of the shader.
+	 *
+	 * @param name The name of the parameter to retrieve.
+	 */
+	public function getFloatArray(name:String):Null<Array<Float>>
+	{
+		var prop:ShaderParameter<Float> = Reflect.field(daShader.shader.data, name);
+
+		if (prop == null)
+		{
+			FlxG.log.warn('Shader float[] property "$name" not found.');
+			return null;
+		}
+
+		return prop.value;
+	}
+
+	/**
+	 * Modify an integer parameter of the shader.
+	 *
+	 * @param name The name of the parameter to modify.
+	 * @param value The new value to use.
+	 */
+	public function setInt(name:String, value:Int):Void
+	{
+		var prop:ShaderParameter<Int> = Reflect.field(daShader.shader.data, name);
+
+		if (prop == null)
+		{
+			FlxG.log.warn('Shader int property "$name" not found.');
+			return;
+		}
+
+		prop.value = [value];
+	}
+
+	/**
+	 * Retrieve an integer parameter of the shader.
+	 *
+	 * @param name The name of the parameter to retrieve.
+	 */
+	public function getInt(name:String):Null<Int>
+	{
+		var prop:ShaderParameter<Int> = Reflect.field(daShader.shader.data, name);
+
+		if (prop == null)
+		{
+			FlxG.log.warn('Shader int property "$name" not found.');
+			return null;
+		}
+
+		return prop.value[0];
+	}
+
+	/**
+	 * Modify an integer array parameter of the shader.
+	 *
+	 * @param name The name of the parameter to modify.
+	 * @param value The new value to use.
+	 */
+	public function setIntArray(name:String, value:Array<Int>):Void
+	{
+		var prop:ShaderParameter<Int> = Reflect.field(daShader.shader.data, name);
+
+		if (prop == null)
+		{
+			FlxG.log.warn('Shader int[] property "$name" not found.');
+			return;
+		}
+
+		prop.value = value;
+	}
+
+	/**
+	 * Retrieve an integer array parameter of the shader.
+	 *
+	 * @param name The name of the parameter to retrieve.
+	 */
+	public function getIntArray(name:String):Null<Array<Int>>
+	{
+		var prop:ShaderParameter<Int> = Reflect.field(daShader.shader.data, name);
+
+		if (prop == null)
+		{
+			FlxG.log.warn('Shader int[] property "$name" not found.');
+			return null;
+		}
+
+		return prop.value;
+	}
+
+	/**
+	 * Modify a bool parameter of the shader.
+	 *
+	 * @param name The name of the parameter to modify.
+	 * @param value The new value to use.
+	 */
+	public function setBool(name:String, value:Bool):Void
+	{
+		var prop:ShaderParameter<Bool> = Reflect.field(daShader.shader.data, name);
+
+		if (prop == null)
+		{
+			FlxG.log.warn('Shader bool property "$name" not found.');
+			return;
+		}
+
+		prop.value = [value];
+	}
+
+	/**
+	 * Retrieve a bool parameter of the shader.
+	 *
+	 * @param name The name of the parameter to retrieve.
+	 */
+	public function getBool(name:String):Null<Bool>
+	{
+		var prop:ShaderParameter<Bool> = Reflect.field(daShader.shader.data, name);
+
+		if (prop == null)
+		{
+			FlxG.log.warn('Shader bool property "$name" not found.');
+			return null;
+		}
+
+		return prop.value[0];
+	}
+
+	/**
+	 * Modify a bool array parameter of the shader.
+	 *
+	 * @param name The name of the parameter to modify.
+	 * @param value The new value to use.
+	 */
+	public function setBoolArray(name:String, value:Array<Bool>):Void
+	{
+		var prop:ShaderParameter<Bool> = Reflect.field(daShader.shader.data, name);
+
+		if (prop == null)
+		{
+			FlxG.log.warn('Shader bool[] property "$name" not found.');
+			return;
+		}
+
+		prop.value = value;
+	}
+
+	/**
+	 * Retrieve a bool array parameter of the shader.
+	 *
+	 * @param name The name of the parameter to retrieve.
+	 */
+	public function getBoolArray(name:String):Null<Array<Bool>>
+	{
+		var prop:ShaderParameter<Bool> = Reflect.field(daShader.shader.data, name);
+
+		if (prop == null)
+		{
+			FlxG.log.warn('Shader bool[] property "$name" not found.');
+			return null;
+		}
+
+		return prop.value;
+	}
+
+	/**
+	 * Modify a bitmap data parameter of the shader.
+	 *
+	 * @param name The name of the parameter to modify.
+	 * @param value The new value to use.
+	 */
+	public function setSampler2D(name:String, value:BitmapData):Void
+	{
+		var prop:ShaderInput<BitmapData> = Reflect.field(daShader.shader.data, name);
+
+		if (prop == null)
+		{
+			FlxG.log.warn('Shader sampler2D property "$name" not found.');
+			return;
+		}
+
+		prop.input = value;
+	}
+
+	/**
+	 * Retrieve a bitmap data parameter of the shader.
+	 *
+	 * @param name The name of the parameter to retrieve.
+	 * @return The value of the parameter.
+	 */
+	public function getSampler2D(name:String):Null<BitmapData>
+	{
+		var prop:ShaderInput<BitmapData> = Reflect.field(daShader.shader.data, name);
+
+		if (prop == null)
+		{
+			FlxG.log.warn('Shader sampler2D property "$name" not found.');
+			return null;
+		}
+
+		return prop.input;
+	}
+
+	public function new()
+	{
+	}
 }
-
 #end

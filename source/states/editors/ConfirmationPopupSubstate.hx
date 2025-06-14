@@ -4,6 +4,7 @@ class ConfirmationPopupSubstate extends MusicBeatSubstate
 {
 	var bg:FlxSprite;
 	var finishCallback:Void->Void;
+
 	public function new(finishCallback:Void->Void = null)
 	{
 		this.finishCallback = finishCallback;
@@ -11,11 +12,12 @@ class ConfirmationPopupSubstate extends MusicBeatSubstate
 	}
 
 	var blockInput:Float = 0.1;
+
 	override function create()
 	{
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 		bg = new FlxSpriteGroup();
-		
+
 		var bg:FlxSprite = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
 		bg.alpha = 0.6;
 		bg.scale.set(420, 160);
@@ -29,11 +31,13 @@ class ConfirmationPopupSubstate extends MusicBeatSubstate
 		add(txt);
 
 		var btnY = 390;
-		var btn:PsychUIButton = new PsychUIButton(0, btnY, 'Exit', function() {
+		var btn:PsychUIButton = new PsychUIButton(0, btnY, 'Exit', function()
+		{
 			FlxG.mouse.visible = false;
 			MusicBeatState.switchState(new states.editors.MasterEditorMenu());
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-			if(finishCallback != null) finishCallback();
+			if (finishCallback != null)
+				finishCallback();
 		});
 		btn.normalStyle.bgColor = FlxColor.RED;
 		btn.normalStyle.textColor = FlxColor.WHITE;
@@ -51,13 +55,13 @@ class ConfirmationPopupSubstate extends MusicBeatSubstate
 		FlxG.mouse.visible = true;
 		super.create();
 	}
-	
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
 		blockInput = Math.max(0, blockInput - elapsed);
-		if(blockInput <= 0 && FlxG.keys.justPressed.ESCAPE)
+		if (blockInput <= 0 && FlxG.keys.justPressed.ESCAPE)
 			close();
 	}
 }

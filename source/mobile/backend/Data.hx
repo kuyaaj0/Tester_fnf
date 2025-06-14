@@ -13,7 +13,7 @@ class Data
 			dpadMode.set(data.getName(), data);
 
 		for (data in FlxActionMode.createAll())
-			actionMode.set(data.getName(), data);		
+			actionMode.set(data.getName(), data);
 	}
 }
 
@@ -26,7 +26,7 @@ enum FlxDPadMode
 	RIGHT_FULL;
 	BOTH;
 	PauseSubstateC;
-    OptionStateC;    
+	OptionStateC;
 	MainMenuStateC;
 	ChartingStateC;
 	DIALOGUE_PORTRAIT;
@@ -58,5 +58,3 @@ enum FlxActionMode
 	B_C;
 	NONE;
 }
-
-

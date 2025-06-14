@@ -1,7 +1,6 @@
 package backend;
 
 import flixel.FlxSubState;
-
 import shaders.ColorblindFilter;
 
 class MusicBeatSubstate extends FlxSubState
@@ -15,6 +14,7 @@ class MusicBeatSubstate extends FlxSubState
 		ColorblindFilter.UpdateColors();
 		super();
 	}
+
 	private var curSection:Int = 0;
 	private var stepsToDo:Int = 0;
 
@@ -35,7 +35,7 @@ class MusicBeatSubstate extends FlxSubState
 	public var mobileControls:MobileControls;
 
 	public function addMobileControls(DefaultDrawTarget:Bool = true):Void
-	{	    
+	{
 		mobileControls = new MobileControls();
 
 		var camControls = new flixel.FlxCamera();
@@ -45,12 +45,13 @@ class MusicBeatSubstate extends FlxSubState
 		mobileControls.cameras = [camControls];
 		mobileControls.alpha = ClientPrefs.data.playControlsAlpha + 0.000001;
 		add(mobileControls);
-		#if desktop 
-	        if (!ClientPrefs.data.needMobileControl){
-	            mobileControls.alpha = 0;
-	            mobileControls.active = mobileControls.visible = false;	            
-	        }
-	    #end		
+		#if desktop
+		if (!ClientPrefs.data.needMobileControl)
+		{
+			mobileControls.alpha = 0;
+			mobileControls.active = mobileControls.visible = false;
+		}
+		#end
 	}
 
 	public function removeMobileControls()
@@ -64,12 +65,13 @@ class MusicBeatSubstate extends FlxSubState
 		virtualPad = new FlxVirtualPad(DPad, Action);
 		virtualPad.alpha = ClientPrefs.data.controlsAlpha + 0.000001;
 		add(virtualPad);
-		#if desktop 
-	        if (!ClientPrefs.data.needMobileControl){ 
-	            virtualPad.alpha = 0;
-    	        virtualPad.active = virtualPad.visible = false;
-	        }
-	    #end		
+		#if desktop
+		if (!ClientPrefs.data.needMobileControl)
+		{
+			virtualPad.alpha = 0;
+			virtualPad.active = virtualPad.visible = false;
+		}
+		#end
 	}
 
 	public function removeVirtualPad()
@@ -100,12 +102,12 @@ class MusicBeatSubstate extends FlxSubState
 			virtualPad = null;
 		}
 		if (mobileControls != null)
-			{
-				mobileControls = FlxDestroyUtil.destroy(mobileControls);
-				mobileControls = null;
-			}
+		{
+			mobileControls = FlxDestroyUtil.destroy(mobileControls);
+			mobileControls = null;
+		}
 	}
-	
+
 	override function close()
 	{
 		super.close();
@@ -114,8 +116,9 @@ class MusicBeatSubstate extends FlxSubState
 
 	override function update(elapsed:Float)
 	{
-		//everyStep();
-		if(!persistentUpdate) MusicBeatState.timePassedOnState += elapsed;
+		// everyStep();
+		if (!persistentUpdate)
+			MusicBeatState.timePassedOnState += elapsed;
 		var oldStep:Int = curStep;
 
 		updateCurStep();
@@ -123,10 +126,10 @@ class MusicBeatSubstate extends FlxSubState
 
 		if (oldStep != curStep)
 		{
-			if(curStep > 0)
+			if (curStep > 0)
 				stepHit();
 
-			if(PlayState.SONG != null)
+			if (PlayState.SONG != null)
 			{
 				if (oldStep < curStep)
 					updateSection();
@@ -140,8 +143,9 @@ class MusicBeatSubstate extends FlxSubState
 
 	private function updateSection():Void
 	{
-		if(stepsToDo < 1) stepsToDo = Math.round(getBeatsOnSection() * 4);
-		while(curStep >= stepsToDo)
+		if (stepsToDo < 1)
+			stepsToDo = Math.round(getBeatsOnSection() * 4);
+		while (curStep >= stepsToDo)
 		{
 			curSection++;
 			var beats:Float = getBeatsOnSection();
@@ -152,7 +156,8 @@ class MusicBeatSubstate extends FlxSubState
 
 	private function rollbackSection():Void
 	{
-		if(curStep < 0) return;
+		if (curStep < 0)
+			return;
 
 		var lastSection:Int = curSection;
 		curSection = 0;
@@ -162,19 +167,21 @@ class MusicBeatSubstate extends FlxSubState
 			if (PlayState.SONG.notes[i] != null)
 			{
 				stepsToDo += Math.round(getBeatsOnSection() * 4);
-				if(stepsToDo > curStep) break;
-				
+				if (stepsToDo > curStep)
+					break;
+
 				curSection++;
 			}
 		}
 
-		if(curSection > lastSection) sectionHit();
+		if (curSection > lastSection)
+			sectionHit();
 	}
 
 	private function updateBeat():Void
 	{
 		curBeat = Math.floor(curStep / 4);
-		curDecBeat = curDecStep/4;
+		curDecBeat = curDecStep / 4;
 	}
 
 	private function updateCurStep():Void
@@ -194,18 +201,19 @@ class MusicBeatSubstate extends FlxSubState
 
 	public function beatHit():Void
 	{
-		//do literally nothing dumbass
+		// do literally nothing dumbass
 	}
-	
+
 	public function sectionHit():Void
 	{
-		//yep, you guessed it, nothing again, dumbass
+		// yep, you guessed it, nothing again, dumbass
 	}
-	
+
 	function getBeatsOnSection()
 	{
 		var val:Null<Float> = 4;
-		if(PlayState.SONG != null && PlayState.SONG.notes[curSection] != null) val = PlayState.SONG.notes[curSection].sectionBeats;
+		if (PlayState.SONG != null && PlayState.SONG.notes[curSection] != null)
+			val = PlayState.SONG.notes[curSection].sectionBeats;
 		return val == null ? 4 : val;
 	}
 }

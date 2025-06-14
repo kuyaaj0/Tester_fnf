@@ -1,18 +1,17 @@
 package states;
 
 import flixel.FlxSubState;
-
 import flixel.effects.FlxFlicker;
 import lime.app.Application;
 import flixel.addons.transition.FlxTransitionableState;
 import openfl.Lib;
-
 
 class PirateState extends MusicBeatState
 {
 	public static var leftState:Bool = false;
 
 	var warnText:FlxText;
+
 	override function create()
 	{
 		super.create();
@@ -37,9 +36,10 @@ class PirateState extends MusicBeatState
 	}
 
 	override function update(elapsed:Float)
-	{		
-		if (controls.ACCEPT) CoolUtil.browserLoad('https://github.com/beihu235/FNF-NovaFlare-Engine/releases');
-		
+	{
+		if (controls.ACCEPT)
+			CoolUtil.browserLoad('https://github.com/beihu235/FNF-NovaFlare-Engine/releases');
+
 		super.update(elapsed);
 	}
 }

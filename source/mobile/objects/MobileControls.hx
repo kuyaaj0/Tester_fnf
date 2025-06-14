@@ -19,11 +19,12 @@ class MobileControls extends FlxTypedSpriteGroup<FlxMobileInputManager>
 	public function new(?forceType:Int, ?extra:Bool = true)
 	{
 		super();
-		
+
 		if (forceType != null)
 			forcedControl = forceType;
-		else forcedControl = get_mode();
-		
+		else
+			forcedControl = get_mode();
+
 		switch (forcedControl)
 		{
 			case 0: // RIGHT_FULL
@@ -40,7 +41,7 @@ class MobileControls extends FlxTypedSpriteGroup<FlxMobileInputManager>
 		}
 		current = new CurrentManager(this);
 		// Options related stuff
-		//alpha = ClientPrefs.data.controlsAlpha;
+		// alpha = ClientPrefs.data.controlsAlpha;
 		updateButtonsColors();
 	}
 
@@ -49,25 +50,25 @@ class MobileControls extends FlxTypedSpriteGroup<FlxMobileInputManager>
 		switch (virtualPadMode)
 		{
 			case 0:
-				virtualPad = new FlxVirtualPad(RIGHT_FULL, controlExtend);	
-				add(virtualPad);										
+				virtualPad = new FlxVirtualPad(RIGHT_FULL, controlExtend);
+				add(virtualPad);
 				virtualPad = getExtraCustomMode(virtualPad);
 			case 1:
 				virtualPad = new FlxVirtualPad(LEFT_FULL, controlExtend);
-				add(virtualPad);							
+				add(virtualPad);
 				virtualPad = getExtraCustomMode(virtualPad);
 			case 2:
-				virtualPad = new FlxVirtualPad(RIGHT_FULL, controlExtend);				
+				virtualPad = new FlxVirtualPad(RIGHT_FULL, controlExtend);
 				virtualPad = getCustomMode(virtualPad);
 				virtualPad = getExtraCustomMode(virtualPad);
-				add(virtualPad);	
+				add(virtualPad);
 			case 3:
 				virtualPad = new FlxVirtualPad(BOTH, controlExtend);
-				add(virtualPad);						
+				add(virtualPad);
 				virtualPad = getExtraCustomMode(virtualPad);
 			case 4:
-			  hitbox = new FlxHitbox();
-			  add(hitbox);
+				hitbox = new FlxHitbox();
+				add(hitbox);
 		}
 	}
 
@@ -101,7 +102,8 @@ class MobileControls extends FlxTypedSpriteGroup<FlxMobileInputManager>
 
 		for (buttons in virtualPad)
 		{
-			if(FlxG.save.data.buttons[tempCount] != null){
+			if (FlxG.save.data.buttons[tempCount] != null)
+			{
 				buttons.x = FlxG.save.data.buttons[tempCount].x;
 				buttons.y = FlxG.save.data.buttons[tempCount].y;
 			}
@@ -110,19 +112,19 @@ class MobileControls extends FlxTypedSpriteGroup<FlxMobileInputManager>
 
 		return virtualPad;
 	}
-	
+
 	public static function setExtraCustomMode(virtualPad:FlxVirtualPad):Void
 	{
 		if (FlxG.save.data.extraButtons == null)
 		{
 			FlxG.save.data.extraButtons = new Array();
-	        FlxG.save.data.extraButtons[0] = FlxPoint.get(virtualPad.buttonExtra1.x, virtualPad.buttonExtra1.y);
+			FlxG.save.data.extraButtons[0] = FlxPoint.get(virtualPad.buttonExtra1.x, virtualPad.buttonExtra1.y);
 			FlxG.save.data.extraButtons[1] = FlxPoint.get(virtualPad.buttonExtra2.x, virtualPad.buttonExtra2.y);
 			FlxG.save.data.extraButtons[2] = FlxPoint.get(virtualPad.buttonExtra3.x, virtualPad.buttonExtra3.y);
 			FlxG.save.data.extraButtons[3] = FlxPoint.get(virtualPad.buttonExtra4.x, virtualPad.buttonExtra4.y);
 		}
 		else
-		{			
+		{
 			FlxG.save.data.extraButtons[0] = FlxPoint.get(virtualPad.buttonExtra1.x, virtualPad.buttonExtra1.y);
 			FlxG.save.data.extraButtons[1] = FlxPoint.get(virtualPad.buttonExtra2.x, virtualPad.buttonExtra2.y);
 			FlxG.save.data.extraButtons[2] = FlxPoint.get(virtualPad.buttonExtra3.x, virtualPad.buttonExtra3.y);
@@ -137,22 +139,26 @@ class MobileControls extends FlxTypedSpriteGroup<FlxMobileInputManager>
 		if (FlxG.save.data.extraButtons == null)
 			return virtualPad;
 
-		if (virtualPad.buttonExtra1 != null && FlxG.save.data.extraButtons[0] != null){
-	        virtualPad.buttonExtra1.x = FlxG.save.data.extraButtons[0].x;
-		    virtualPad.buttonExtra1.y = FlxG.save.data.extraButtons[0].y;
-	    }
-		if (virtualPad.buttonExtra2 != null && FlxG.save.data.extraButtons[1] != null){
-		    virtualPad.buttonExtra2.x = FlxG.save.data.extraButtons[1].x;
-		    virtualPad.buttonExtra2.y = FlxG.save.data.extraButtons[1].y;
-        }
-        if (virtualPad.buttonExtra3 != null && FlxG.save.data.extraButtons[2] != null){
-	        virtualPad.buttonExtra3.x = FlxG.save.data.extraButtons[2].x;
-		    virtualPad.buttonExtra3.y = FlxG.save.data.extraButtons[2].y;
-	    }
-		if (virtualPad.buttonExtra4 != null && FlxG.save.data.extraButtons[3] != null){
-		    virtualPad.buttonExtra4.x = FlxG.save.data.extraButtons[3].x;
-		    virtualPad.buttonExtra4.y = FlxG.save.data.extraButtons[3].y;
-        }
+		if (virtualPad.buttonExtra1 != null && FlxG.save.data.extraButtons[0] != null)
+		{
+			virtualPad.buttonExtra1.x = FlxG.save.data.extraButtons[0].x;
+			virtualPad.buttonExtra1.y = FlxG.save.data.extraButtons[0].y;
+		}
+		if (virtualPad.buttonExtra2 != null && FlxG.save.data.extraButtons[1] != null)
+		{
+			virtualPad.buttonExtra2.x = FlxG.save.data.extraButtons[1].x;
+			virtualPad.buttonExtra2.y = FlxG.save.data.extraButtons[1].y;
+		}
+		if (virtualPad.buttonExtra3 != null && FlxG.save.data.extraButtons[2] != null)
+		{
+			virtualPad.buttonExtra3.x = FlxG.save.data.extraButtons[2].x;
+			virtualPad.buttonExtra3.y = FlxG.save.data.extraButtons[2].y;
+		}
+		if (virtualPad.buttonExtra4 != null && FlxG.save.data.extraButtons[3] != null)
+		{
+			virtualPad.buttonExtra4.x = FlxG.save.data.extraButtons[3].x;
+			virtualPad.buttonExtra4.y = FlxG.save.data.extraButtons[3].y;
+		}
 		return virtualPad;
 	}
 
@@ -191,7 +197,8 @@ class MobileControls extends FlxTypedSpriteGroup<FlxMobileInputManager>
 		return FlxG.save.data.mobileControlsMode;
 	}
 
-	public function updateButtonsColors() {
+	public function updateButtonsColors()
+	{
 		// Dynamic Controls Color
 		var buttonsColors:Array<FlxColor> = [];
 		var data:Dynamic;
@@ -215,22 +222,23 @@ class MobileControls extends FlxTypedSpriteGroup<FlxMobileInputManager>
 		current.buttonDown.color = buttonsColors[1];
 		current.buttonUp.color = buttonsColors[2];
 		current.buttonRight.color = buttonsColors[3];
-		
+
 		/*if(mode == 4){
-			hitbox.buttonLeft.color = buttonsColors[0];
-			hitbox.buttonDown.color = buttonsColors[1];
-			hitbox.buttonUp.color = buttonsColors[2];
-			hitbox.buttonRight.color = buttonsColors[3];
-		} else {
-			virtualPad.buttonLeft.color = buttonsColors[0];
-			virtualPad.buttonDown.color = buttonsColors[1];
-			virtualPad.buttonUp.color = buttonsColors[2];
-			virtualPad.buttonRight.color = buttonsColors[3];
+				hitbox.buttonLeft.color = buttonsColors[0];
+				hitbox.buttonDown.color = buttonsColors[1];
+				hitbox.buttonUp.color = buttonsColors[2];
+				hitbox.buttonRight.color = buttonsColors[3];
+			} else {
+				virtualPad.buttonLeft.color = buttonsColors[0];
+				virtualPad.buttonDown.color = buttonsColors[1];
+				virtualPad.buttonUp.color = buttonsColors[2];
+				virtualPad.buttonRight.color = buttonsColors[3];
 		}*/
 	}
 }
 
-class CurrentManager {
+class CurrentManager
+{
 	public var buttonLeft:FlxButton;
 	public var buttonDown:FlxButton;
 	public var buttonUp:FlxButton;
@@ -241,8 +249,10 @@ class CurrentManager {
 	public var buttonExtra4:FlxButton;
 	public var target:FlxMobileInputManager;
 
-	public function new(control:MobileControls){
-		if(MobileControls.mode == 4) {
+	public function new(control:MobileControls)
+	{
+		if (MobileControls.mode == 4)
+		{
 			target = control.hitbox;
 			buttonLeft = control.hitbox.buttonLeft;
 			buttonDown = control.hitbox.buttonDown;
@@ -252,7 +262,9 @@ class CurrentManager {
 			buttonExtra2 = control.hitbox.buttonExtra2;
 			buttonExtra3 = control.hitbox.buttonExtra3;
 			buttonExtra4 = control.hitbox.buttonExtra4;
-		} else {
+		}
+		else
+		{
 			target = control.virtualPad;
 			buttonLeft = control.virtualPad.buttonLeft;
 			buttonDown = control.virtualPad.buttonDown;
