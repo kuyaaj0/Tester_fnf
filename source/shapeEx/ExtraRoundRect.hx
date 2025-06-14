@@ -2,199 +2,235 @@ package shapeEx;
 
 class ExtraRoundRect extends FlxSpriteGroup
 {
-    var leftUpRound:FlxSprite;
-    var midUpRect:FlxSprite;
-    var rightUpRound:FlxSprite;
+	var leftUpRound:FlxSprite;
+	var midUpRect:FlxSprite;
+	var rightUpRound:FlxSprite;
 
-    var midRect:FlxSprite;
+	var midRect:FlxSprite;
 
-    var leftDownRound:FlxSprite;
-    var midDownRect:FlxSprite;
-    var rightDownRound:FlxSprite;
+	var leftDownRound:FlxSprite;
+	var midDownRect:FlxSprite;
+	var rightDownRound:FlxSprite;
 
-    var mainColor:FlxColor;
-    var mainWidth:Float;
-    var mainHeight:Float;
-    var mainRound:Float;
-    var mainX:Float;
-    var mainY:Float;
-    var widthEase:String;
-    var heightEase:String;
+	var mainColor:FlxColor;
+	var mainWidth:Float;
+	var mainHeight:Float;
+	var mainRound:Float;
+	var mainX:Float;
+	var mainY:Float;
+	var widthEase:String;
+	var heightEase:String;
 
-    public function new(X:Float, Y:Float, width:Float = 0, height:Float = 0, round:Float,color:FlxColor = 0xffffff)
-    {
-        super(X, Y);
-        this.mainColor = color;
-        mainWidth = width;
-        mainHeight = height;
-        mainRound = round;
-        mainX = X;
-        mainY = Y;
+	public function new(X:Float, Y:Float, width:Float = 0, height:Float = 0, round:Float, color:FlxColor = 0xffffff)
+	{
+		super(X, Y);
+		this.mainColor = color;
+		mainWidth = width;
+		mainHeight = height;
+		mainRound = round;
+		mainX = X;
+		mainY = Y;
 
-        leftUpRound = drawRoundRect(0, 0, round, round, round, 1);
-        add(leftUpRound);
-        midUpRect = drawRect(round, 0, width - round * 2, round);
-        add(midUpRect);
-        rightUpRound = drawRoundRect(width - round, 0, round, round, round, 2);
-        add(rightUpRound);
+		leftUpRound = drawRoundRect(0, 0, round, round, round, 1);
+		add(leftUpRound);
+		midUpRect = drawRect(round, 0, width - round * 2, round);
+		add(midUpRect);
+		rightUpRound = drawRoundRect(width - round, 0, round, round, round, 2);
+		add(rightUpRound);
 
-        midRect = drawRect(0, round, width, height - round * 2);
-        add(midRect);
+		midRect = drawRect(0, round, width, height - round * 2);
+		add(midRect);
 
-        leftDownRound = drawRoundRect(0, height - round, round, round, round, 3);
-        add(leftDownRound);
-        midDownRect = drawRect(round, height - round, width - round * 2, round);
-        add(midDownRect);
-        rightDownRound = drawRoundRect(width - round, height - round, round, round, round, 4);
-        add(rightDownRound);
-    }
+		leftDownRound = drawRoundRect(0, height - round, round, round, round, 3);
+		add(leftDownRound);
+		midDownRect = drawRect(round, height - round, width - round * 2, round);
+		add(midDownRect);
+		rightDownRound = drawRoundRect(width - round, height - round, round, round, round, 4);
+		add(rightDownRound);
+	}
 
-    override function update(elapsed:Float)
-    {
-        super.update(elapsed);
-    }
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+	}
 
+	var widthTweenArray:Array<FlxTween> = [];
 
-    var widthTweenArray:Array<FlxTween> = [];
-    public function changeWidth(data:Float, time:Float = 0.6, ease:String = 'backInOut') {
-        widthEase = ease;
-        for (i in 0...widthTweenArray.length)
-        {
-            if (widthTweenArray[i] != null) widthTweenArray[i].cancel();
-        }
-        widthTweenArray = [];
-        
-        var output:Float = calcData(mainWidth, data, mainRound);
-        widthTween(midUpRect.scale, output, time, widthEase);
-        widthTween(midUpRect, mainX - (mainWidth - data - mainRound * 2) / 2, time, widthEase);
-        widthTween(rightUpRound, mainX + data - mainRound, time, widthEase);
+	public function changeWidth(data:Float, time:Float = 0.6, ease:String = 'backInOut')
+	{
+		widthEase = ease;
+		for (i in 0...widthTweenArray.length)
+		{
+			if (widthTweenArray[i] != null)
+				widthTweenArray[i].cancel();
+		}
+		widthTweenArray = [];
 
-        var output:Float = calcData(mainWidth, data, 0);
-        widthTween(midRect.scale, output, time, widthEase);
-        widthTween(midRect, mainX - (mainWidth - data) / 2, time, widthEase);
+		var output:Float = calcData(mainWidth, data, mainRound);
+		widthTween(midUpRect.scale, output, time, widthEase);
+		widthTween(midUpRect, mainX - (mainWidth - data - mainRound * 2) / 2, time, widthEase);
+		widthTween(rightUpRound, mainX + data - mainRound, time, widthEase);
 
-        var output:Float = calcData(mainWidth, data, mainRound);
-        widthTween(midDownRect.scale, output, time, widthEase);
-        widthTween(midDownRect, mainX - (mainWidth - data - mainRound * 2) / 2, time, widthEase);
-        widthTween(rightDownRound, mainX + data - mainRound, time, widthEase);
-    }
+		var output:Float = calcData(mainWidth, data, 0);
+		widthTween(midRect.scale, output, time, widthEase);
+		widthTween(midRect, mainX - (mainWidth - data) / 2, time, widthEase);
 
-    function widthTween(tag:Dynamic, duration:Float, time:Float, easeType:String) {
-        var tween = FlxTween.tween(
-            tag, 
-            {x: duration},
-            time, 
-            {ease: getTweenEaseByString(easeType)}
-        );
-        widthTweenArray.push(tween);
-    }
+		var output:Float = calcData(mainWidth, data, mainRound);
+		widthTween(midDownRect.scale, output, time, widthEase);
+		widthTween(midDownRect, mainX - (mainWidth - data - mainRound * 2) / 2, time, widthEase);
+		widthTween(rightDownRound, mainX + data - mainRound, time, widthEase);
+	}
 
-    var heightTweenArray:Array<FlxTween> = [];
-    public function changeHeight(data:Float, time:Float = 0.6, ease:String = 'backInOut') {
-        heightEase = ease;
-        for (i in 0...heightTweenArray.length)
-        {
-            if (heightTweenArray[i] != null) heightTweenArray[i].cancel();
-        }
-        heightTweenArray = [];
+	function widthTween(tag:Dynamic, duration:Float, time:Float, easeType:String)
+	{
+		var tween = FlxTween.tween(tag, {x: duration}, time, {ease: getTweenEaseByString(easeType)});
+		widthTweenArray.push(tween);
+	}
 
-        var output:Float = calcData(mainHeight, data, mainRound);
-        heightTween(midRect.scale, output, time, heightEase);
-        heightTween(midRect, mainY - (mainHeight - data - mainRound * 2) / 2, time, heightEase);
-        
-        heightTween(leftDownRound, mainY + data - mainRound, time, heightEase);
-        heightTween(midDownRect, mainY + data - mainRound, time, heightEase);  
-        heightTween(rightDownRound, mainY + data - mainRound, time, heightEase);
-    }
+	var heightTweenArray:Array<FlxTween> = [];
 
-    function heightTween(tag:Dynamic, duration:Float, time:Float, easeType:String) {
-        var tween = FlxTween.tween(
-            tag, 
-            {y: duration},
-            time, 
-            {ease: getTweenEaseByString(easeType)}
-        );
-        heightTweenArray.push(tween);
-    }
+	public function changeHeight(data:Float, time:Float = 0.6, ease:String = 'backInOut')
+	{
+		heightEase = ease;
+		for (i in 0...heightTweenArray.length)
+		{
+			if (heightTweenArray[i] != null)
+				heightTweenArray[i].cancel();
+		}
+		heightTweenArray = [];
 
-    function calcData(init:Float, target:Float, assist:Float):Float {
-        return (target - assist * 2) / (init - assist * 2);
-    }
+		var output:Float = calcData(mainHeight, data, mainRound);
+		heightTween(midRect.scale, output, time, heightEase);
+		heightTween(midRect, mainY - (mainHeight - data - mainRound * 2) / 2, time, heightEase);
 
+		heightTween(leftDownRound, mainY + data - mainRound, time, heightEase);
+		heightTween(midDownRect, mainY + data - mainRound, time, heightEase);
+		heightTween(rightDownRound, mainY + data - mainRound, time, heightEase);
+	}
 
-    function drawRoundRect(x:Float, y:Float, width:Float = 0, height:Float = 0, round:Float = 0, type:Int):FlxSprite {  
-        var dataArray:Array<Float> = [0, 0, 0, 0];
-        dataArray[type - 1] = round; //选择哪个角，（左上，右上，左下，右下）
+	function heightTween(tag:Dynamic, duration:Float, time:Float, easeType:String)
+	{
+		var tween = FlxTween.tween(tag, {y: duration}, time, {ease: getTweenEaseByString(easeType)});
+		heightTweenArray.push(tween);
+	}
 
-        var shape:Shape = new Shape();
-        shape.graphics.beginFill(mainColor);
-        shape.graphics.drawRoundRectComplex(0, 0, width, height, dataArray[0], dataArray[1], dataArray[2], dataArray[3]);
-        shape.graphics.endFill();
+	function calcData(init:Float, target:Float, assist:Float):Float
+	{
+		return (target - assist * 2) / (init - assist * 2);
+	}
 
-        var bitmap:BitmapData = new BitmapData(Std.int(width), Std.int(height), true, 0);
-        bitmap.draw(shape);
+	function drawRoundRect(x:Float, y:Float, width:Float = 0, height:Float = 0, round:Float = 0, type:Int):FlxSprite
+	{
+		var dataArray:Array<Float> = [0, 0, 0, 0];
+		dataArray[type - 1] = round; // 选择哪个角，（左上，右上，左下，右下）
 
-        var sprite:FlxSprite = new FlxSprite(x, y);
-        sprite.loadGraphic(bitmap);
-        sprite.antialiasing = ClientPrefs.data.antialiasing;
-        sprite.origin.set(0, 0);
-        sprite.updateHitbox();
-        return sprite;
-    }
+		var shape:Shape = new Shape();
+		shape.graphics.beginFill(mainColor);
+		shape.graphics.drawRoundRectComplex(0, 0, width, height, dataArray[0], dataArray[1], dataArray[2], dataArray[3]);
+		shape.graphics.endFill();
 
-    function drawRect(x:Float, y:Float, width:Float = 0, height:Float = 0):FlxSprite {  
-        var shape:Shape = new Shape();
-        shape.graphics.beginFill(mainColor);
-        shape.graphics.drawRect(0, 0, width, height);
-        shape.graphics.endFill();
+		var bitmap:BitmapData = new BitmapData(Std.int(width), Std.int(height), true, 0);
+		bitmap.draw(shape);
 
-        var bitmap:BitmapData = new BitmapData(Std.int(width), Std.int(height), true, 0);
-        bitmap.draw(shape);
+		var sprite:FlxSprite = new FlxSprite(x, y);
+		sprite.loadGraphic(bitmap);
+		sprite.antialiasing = ClientPrefs.data.antialiasing;
+		sprite.origin.set(0, 0);
+		sprite.updateHitbox();
+		return sprite;
+	}
 
-        var sprite:FlxSprite = new FlxSprite(x, y);
-        sprite.loadGraphic(bitmap);
-        return sprite;
-    }
+	function drawRect(x:Float, y:Float, width:Float = 0, height:Float = 0):FlxSprite
+	{
+		var shape:Shape = new Shape();
+		shape.graphics.beginFill(mainColor);
+		shape.graphics.drawRect(0, 0, width, height);
+		shape.graphics.endFill();
 
-    
-    public static function getTweenEaseByString(?ease:String = '') {
-		switch(ease.toLowerCase().trim()) {
-			case 'backin': return FlxEase.backIn;
-			case 'backinout': return FlxEase.backInOut;
-			case 'backout': return FlxEase.backOut;
-			case 'bouncein': return FlxEase.bounceIn;
-			case 'bounceinout': return FlxEase.bounceInOut;
-			case 'bounceout': return FlxEase.bounceOut;
-			case 'circin': return FlxEase.circIn;
-			case 'circinout': return FlxEase.circInOut;
-			case 'circout': return FlxEase.circOut;
-			case 'cubein': return FlxEase.cubeIn;
-			case 'cubeinout': return FlxEase.cubeInOut;
-			case 'cubeout': return FlxEase.cubeOut;
-			case 'elasticin': return FlxEase.elasticIn;
-			case 'elasticinout': return FlxEase.elasticInOut;
-			case 'elasticout': return FlxEase.elasticOut;
-			case 'expoin': return FlxEase.expoIn;
-			case 'expoinout': return FlxEase.expoInOut;
-			case 'expoout': return FlxEase.expoOut;
-			case 'quadin': return FlxEase.quadIn;
-			case 'quadinout': return FlxEase.quadInOut;
-			case 'quadout': return FlxEase.quadOut;
-			case 'quartin': return FlxEase.quartIn;
-			case 'quartinout': return FlxEase.quartInOut;
-			case 'quartout': return FlxEase.quartOut;
-			case 'quintin': return FlxEase.quintIn;
-			case 'quintinout': return FlxEase.quintInOut;
-			case 'quintout': return FlxEase.quintOut;
-			case 'sinein': return FlxEase.sineIn;
-			case 'sineinout': return FlxEase.sineInOut;
-			case 'sineout': return FlxEase.sineOut;
-			case 'smoothstepin': return FlxEase.smoothStepIn;
-			case 'smoothstepinout': return FlxEase.smoothStepInOut;
-			case 'smoothstepout': return FlxEase.smoothStepInOut;
-			case 'smootherstepin': return FlxEase.smootherStepIn;
-			case 'smootherstepinout': return FlxEase.smootherStepInOut;
-			case 'smootherstepout': return FlxEase.smootherStepOut;
+		var bitmap:BitmapData = new BitmapData(Std.int(width), Std.int(height), true, 0);
+		bitmap.draw(shape);
+
+		var sprite:FlxSprite = new FlxSprite(x, y);
+		sprite.loadGraphic(bitmap);
+		return sprite;
+	}
+
+	public static function getTweenEaseByString(?ease:String = '')
+	{
+		switch (ease.toLowerCase().trim())
+		{
+			case 'backin':
+				return FlxEase.backIn;
+			case 'backinout':
+				return FlxEase.backInOut;
+			case 'backout':
+				return FlxEase.backOut;
+			case 'bouncein':
+				return FlxEase.bounceIn;
+			case 'bounceinout':
+				return FlxEase.bounceInOut;
+			case 'bounceout':
+				return FlxEase.bounceOut;
+			case 'circin':
+				return FlxEase.circIn;
+			case 'circinout':
+				return FlxEase.circInOut;
+			case 'circout':
+				return FlxEase.circOut;
+			case 'cubein':
+				return FlxEase.cubeIn;
+			case 'cubeinout':
+				return FlxEase.cubeInOut;
+			case 'cubeout':
+				return FlxEase.cubeOut;
+			case 'elasticin':
+				return FlxEase.elasticIn;
+			case 'elasticinout':
+				return FlxEase.elasticInOut;
+			case 'elasticout':
+				return FlxEase.elasticOut;
+			case 'expoin':
+				return FlxEase.expoIn;
+			case 'expoinout':
+				return FlxEase.expoInOut;
+			case 'expoout':
+				return FlxEase.expoOut;
+			case 'quadin':
+				return FlxEase.quadIn;
+			case 'quadinout':
+				return FlxEase.quadInOut;
+			case 'quadout':
+				return FlxEase.quadOut;
+			case 'quartin':
+				return FlxEase.quartIn;
+			case 'quartinout':
+				return FlxEase.quartInOut;
+			case 'quartout':
+				return FlxEase.quartOut;
+			case 'quintin':
+				return FlxEase.quintIn;
+			case 'quintinout':
+				return FlxEase.quintInOut;
+			case 'quintout':
+				return FlxEase.quintOut;
+			case 'sinein':
+				return FlxEase.sineIn;
+			case 'sineinout':
+				return FlxEase.sineInOut;
+			case 'sineout':
+				return FlxEase.sineOut;
+			case 'smoothstepin':
+				return FlxEase.smoothStepIn;
+			case 'smoothstepinout':
+				return FlxEase.smoothStepInOut;
+			case 'smoothstepout':
+				return FlxEase.smoothStepInOut;
+			case 'smootherstepin':
+				return FlxEase.smootherStepIn;
+			case 'smootherstepinout':
+				return FlxEase.smootherStepInOut;
+			case 'smootherstepout':
+				return FlxEase.smootherStepOut;
 		}
 		return FlxEase.linear;
 	}

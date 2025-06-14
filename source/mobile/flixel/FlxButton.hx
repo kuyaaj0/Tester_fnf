@@ -40,10 +40,12 @@ class FlxButton extends FlxTypedButton<FlxText>
 		A simple tag that returns the button's graphic name in upper case.
 	**/
 	public var tag:String;
+
 	/**
 		The `FlxMobileInputID` that are assigned to this button.
 	**/
 	public var IDs:Array<FlxMobileInputID> = [];
+
 	/**
 		A Small invisible bounds used for colision
 	**/
@@ -65,7 +67,6 @@ class FlxButton extends FlxTypedButton<FlxText>
 
 		for (point in labelOffsets)
 			point.set(point.x - 1, point.y + 3);
-
 
 		initLabel(Text);
 		this.IDs = IDs == null ? [] : IDs;

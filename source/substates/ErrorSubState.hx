@@ -15,7 +15,7 @@ class ErrorSubState extends MusicBeatSubstate
 	var error:String = "Oh Shit!";
 	var bg:FlxSprite;
 	var subcameras:FlxCamera;
-	
+
 	var saveMouseY:Int = 0;
 	var moveData:Int = 0;
 	var avgSpeed:Float = 0;
@@ -32,10 +32,10 @@ class ErrorSubState extends MusicBeatSubstate
 	override function create()
 	{
 		super.create();
-		FlxG.state.persistentUpdate = false; //停止更新state
+		FlxG.state.persistentUpdate = false; // 停止更新state
 
 		subcameras = new FlxCamera();
-		
+
 		bg = new FlxSprite().loadGraphic(Paths.image('egg'));
 		bg.width = FlxG.width;
 		bg.height = FlxG.height;
@@ -51,7 +51,7 @@ class ErrorSubState extends MusicBeatSubstate
 		tips.x = FlxG.width - tips.width;
 		tips.alignment = FlxTextAlign.RIGHT;
 		add(tips);
-		
+
 		bg.cameras = [subcameras];
 		errorText.cameras = [subcameras];
 		tips.cameras = [subcameras];
@@ -59,47 +59,59 @@ class ErrorSubState extends MusicBeatSubstate
 		FlxG.cameras.add(subcameras, false);
 		subcameras.bgColor.alpha = 0;
 
-		new FlxTimer().start(10, function(tmr:FlxTimer){
-		   close();
-		});			
+		new FlxTimer().start(10, function(tmr:FlxTimer)
+		{
+			close();
+		});
 	}
-	
+
 	override function update(elapsed:Float)
 	{
 		bg.alpha += elapsed * 1.5;
-		if(bg.alpha > 0.6) bg.alpha = 0.6;
-                if(FlxG.keys.justPressed.ENTER #if android || FlxG.android.justReleased.BACK #end){
+		if (bg.alpha > 0.6)
+			bg.alpha = 0.6;
+		if (FlxG.keys.justPressed.ENTER #if android || FlxG.android.justReleased.BACK #end)
+		{
 			pressas++;
 		}
 
-		if(pressas >= 1) {
-			FlxG.state.persistentUpdate = true; //恢复更新
-			if (Type.getClass(FlxG.state) == PlayState) MusicBeatState.switchState(new FreeplayState());
-			else MusicBeatState.switchState(new MainMenuState());
+		if (pressas >= 1)
+		{
+			FlxG.state.persistentUpdate = true; // 恢复更新
+			if (Type.getClass(FlxG.state) == PlayState)
+				MusicBeatState.switchState(new FreeplayState());
+			else
+				MusicBeatState.switchState(new MainMenuState());
 
 			close();
 		}
 
-		if(FlxG.mouse.pressed){
+		if (FlxG.mouse.pressed)
+		{
 			if (errorText.height > FlxG.height)
 			{
-				if (FlxG.mouse.justPressed) saveMouseY = FlxG.mouse.y;
+				if (FlxG.mouse.justPressed)
+					saveMouseY = FlxG.mouse.y;
 				moveData = FlxG.mouse.y - saveMouseY;
 				saveMouseY = FlxG.mouse.y;
 
 				errorText.y += moveData;
 			}
-			if (errorText.y < (FlxG.height - errorText.height)) errorText.y = FlxG.height - errorText.height;
-			if (errorText.y > 0) errorText.y = 0;
-			//限制错误信息可以滑动的范围
+			if (errorText.y < (FlxG.height - errorText.height))
+				errorText.y = FlxG.height - errorText.height;
+			if (errorText.y > 0)
+				errorText.y = 0;
+			// 限制错误信息可以滑动的范围
 		}
 		super.update(elapsed);
 	}
-	override function destroy(){
+
+	override function destroy()
+	{
 		bg = FlxDestroyUtil.destroy(bg);
 		errorText = FlxDestroyUtil.destroy(errorText);
 		#if mobile
-			FlxG.mouse.visible = false;
+		FlxG.mouse.visible = false;
 		#end
 		super.destroy();
 	}

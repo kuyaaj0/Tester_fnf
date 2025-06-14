@@ -2,7 +2,8 @@ package options;
 
 import language.Language;
 
-enum OptionType {
+enum OptionType
+{
 	BOOL;
 	INT;
 	FLOAT;
@@ -15,7 +16,7 @@ enum OptionType {
 
 class Option extends FlxSpriteGroup
 {
-	public var variable:String = null; //Variable from ClientPrefs.hx
+	public var variable:String = null; // Variable from ClientPrefs.hx
 	public var defaultValue:Dynamic = null;
 	public var description:String = '';
 	public var display:String = '';
@@ -32,7 +33,8 @@ class Option extends FlxSpriteGroup
 
 	public var saveHeight:Int = 0;
 
-	public function new(description:String = '', variable:String = '', type:OptionType = BOOL, ?minValue:Float = 0, ?maxValue:Float = 0, ?decimals:Int = 0, ?options:Array<String> = null, ?display:String = '')
+	public function new(description:String = '', variable:String = '', type:OptionType = BOOL, ?minValue:Float = 0, ?maxValue:Float = 0, ?decimals:Int = 0,
+			?options:Array<String> = null, ?display:String = '')
 	{
 		super();
 
@@ -45,36 +47,41 @@ class Option extends FlxSpriteGroup
 		this.maxValue = maxValue;
 		this.decimals = decimals;
 
-		if(this.type != STATE && variable != '') this.defaultValue = Reflect.getProperty(ClientPrefs.data, variable);
+		if (this.type != STATE && variable != '')
+			this.defaultValue = Reflect.getProperty(ClientPrefs.data, variable);
 
-		switch(type)
+		switch (type)
 		{
 			case BOOL:
-				if(defaultValue == null) defaultValue = false;
+				if (defaultValue == null)
+					defaultValue = false;
 			case INT, FLOAT:
-				if(defaultValue == null) defaultValue = 0;
+				if (defaultValue == null)
+					defaultValue = 0;
 			case PERCENT:
-				if(defaultValue == null) defaultValue = 1;
+				if (defaultValue == null)
+					defaultValue = 1;
 			case STRING:
-				if(options.length > 0)
+				if (options.length > 0)
 					defaultValue = options[0];
-				if(defaultValue == null)
+				if (defaultValue == null)
 					defaultValue = '';
 			default:
 		}
 
-		if(getValue() == null && variable != '' && type != STATE)
+		if (getValue() == null && variable != '' && type != STATE)
 			setValue(defaultValue);
 
-		switch(type)
+		switch (type)
 		{
 			case STRING:
 				var num:Int = options.indexOf(getValue());
-				if(num > -1) curOption = num;
+				if (num > -1)
+					curOption = num;
 			default:
 		}
 
-		switch(type)
+		switch (type)
 		{
 			case BOOL:
 				addBool();
@@ -93,13 +100,15 @@ class Option extends FlxSpriteGroup
 	}
 
 	public var boolRect:BoolRect;
-	function addBool() {
+
+	function addBool()
+	{
 		saveHeight = 80;
 		var text = new FlxText(40, 0, 0, description, 20);
-		text.font = Paths.font(Language.get('fontName', 'ma') + '.ttf'); 	
-        text.antialiasing = ClientPrefs.data.antialiasing;	
-        text.y += saveHeight / 2 - text.height / 2;
-        add(text);
+		text.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
+		text.antialiasing = ClientPrefs.data.antialiasing;
+		text.y += saveHeight / 2 - text.height / 2;
+		add(text);
 
 		boolRect = new BoolRect(0, 0, 1030, saveHeight, this);
 		add(boolRect);
@@ -107,19 +116,21 @@ class Option extends FlxSpriteGroup
 
 	public var valueText:FlxText;
 	public var dataRect:FloatRect;
-	function addData() {
+
+	function addData()
+	{
 		saveHeight = 110;
 
 		var text = new FlxText(40, 25, 0, description, 20);
-		text.font = Paths.font(Language.get('fontName', 'ma') + '.ttf'); 	
-        text.antialiasing = ClientPrefs.data.antialiasing;	
-        add(text);
+		text.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
+		text.antialiasing = ClientPrefs.data.antialiasing;
+		add(text);
 
 		valueText = new FlxText(40, 25, 200, defaultValue + display, 20);
-		valueText.font = Paths.font(Language.get('fontName', 'ma') + '.ttf'); 	
-        valueText.antialiasing = ClientPrefs.data.antialiasing;	
+		valueText.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
+		valueText.antialiasing = ClientPrefs.data.antialiasing;
 		valueText.x += 950 - valueText.width;
-        add(valueText);
+		add(valueText);
 		valueText.alignment = RIGHT;
 
 		dataRect = new FloatRect(40, 65, minValue, maxValue, this);
@@ -127,51 +138,56 @@ class Option extends FlxSpriteGroup
 	}
 
 	public var strRect:StringRect;
-	function addString() {
+
+	function addString()
+	{
 		saveHeight = 140;
 
 		var text = new FlxText(40, 20, 0, description, 20);
-		text.font = Paths.font(Language.get('fontName', 'ma') + '.ttf'); 	
-        text.antialiasing = ClientPrefs.data.antialiasing;	
-        add(text);
+		text.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
+		text.antialiasing = ClientPrefs.data.antialiasing;
+		add(text);
 
 		strRect = new StringRect(40, 60, this);
 		add(strRect);
 	}
 
-	function addText() {
+	function addText()
+	{
 		saveHeight = 70;
 
 		var text = new FlxText(40, 0, 0, description, 30);
-		text.font = Paths.font(Language.get('fontName', 'ma') + '.ttf'); 	
-        text.antialiasing = ClientPrefs.data.antialiasing;	
-        text.y += saveHeight / 2 - text.height / 2;
+		text.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
+		text.antialiasing = ClientPrefs.data.antialiasing;
+		text.y += saveHeight / 2 - text.height / 2;
 		text.color = 0xff00e5ff;
-        add(text);
+		add(text);
 	}
 
-	function addTitle() {
+	function addTitle()
+	{
 		saveHeight = 90;
 
 		var text = new FlxText(40, 0, 0, description, 50);
-		text.font = Paths.font(Language.get('fontName', 'ma') + '.ttf'); 	
-        text.antialiasing = ClientPrefs.data.antialiasing;	
-        text.y += saveHeight / 2 - text.height / 2;
+		text.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
+		text.antialiasing = ClientPrefs.data.antialiasing;
+		text.y += saveHeight / 2 - text.height / 2;
 		text.color = 0xff0400ff;
-        add(text);
+		add(text);
 	}
 
-	function addState() {
-		saveHeight = 130;   
+	function addState()
+	{
+		saveHeight = 130;
 
 		var rect:StateRect = new StateRect(40, 0, this);
-		rect.y += saveHeight / 2 - rect.height / 2; 
+		rect.y += saveHeight / 2 - rect.height / 2;
 		add(rect);
 	}
 
 	public function change()
 	{
-		if(onChange != null)
+		if (onChange != null)
 			onChange();
 	}
 
@@ -186,11 +202,13 @@ class Option extends FlxSpriteGroup
 		return Reflect.setProperty(ClientPrefs.data, variable, value);
 	}
 
-	public function resetData() {
-		if (variable == '' || type == STATE) return;
+	public function resetData()
+	{
+		if (variable == '' || type == STATE)
+			return;
 		Reflect.setProperty(ClientPrefs.data, variable, Reflect.getProperty(ClientPrefs.defaultData, variable));
 		defaultValue = Reflect.getProperty(ClientPrefs.defaultData, variable);
-		switch(type)
+		switch (type)
 		{
 			case BOOL:
 				boolRect.resetUpdate();

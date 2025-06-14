@@ -1,30 +1,27 @@
 package cutscenes;
 
 import flixel.addons.text.FlxTypeText;
-
 #if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
-
 import tjson.TJSON as Json;
 import openfl.utils.Assets;
-//import backend.Controls;
+// import backend.Controls;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
-
 import objects.TypedAlphabet;
-
 import cutscenes.DialogueCharacter;
 
-
-typedef DialogueFile = {
+typedef DialogueFile =
+{
 	var dialogue:Array<DialogueLine>;
 }
 
-typedef DialogueLine = {
+typedef DialogueLine =
+{
 	var portrait:Null<String>;
 	var expression:Null<String>;
 	var text:Null<String>;
@@ -32,14 +29,14 @@ typedef DialogueLine = {
 	var speed:Null<Float>;
 	var sound:Null<String>;
 }
-    /*
-        这些源码初版由弗雷泽(fraze)所写
-        他的b站链接: https://b23.tv/y40j1RC
-        我把它从0.63h搬到了0.73h并进行了一些扩展
-        实际上可以进行些更多的扩展比如说每段都能换颜色和font文件，但是为了兼容模组我就没有整了
-        --北狐丶逐梦
-    */
-    
+
+/*
+	这些源码初版由弗雷泽(fraze)所写
+	他的b站链接: https://b23.tv/y40j1RC
+	我把它从0.63h搬到了0.73h并进行了一些扩展
+	实际上可以进行些更多的扩展比如说每段都能换颜色和font文件，但是为了兼容模组我就没有整了
+	--北狐丶逐梦
+ */
 class DialogueBoxPsych extends FlxSpriteGroup
 {
 	var dialogue:FlxTypeText;
@@ -48,7 +45,6 @@ class DialogueBoxPsych extends FlxSpriteGroup
 	public var finishThing:Void->Void;
 	public var nextDialogueThing:Void->Void = null;
 	public var skipDialogueThing:Void->Void = null;
-
 
 	public static var DEFAULT_TEXT_X = 220;
 	public static var DEFAULT_TEXT_Y = 475;
@@ -107,8 +103,8 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		box.updateHitbox();
 		add(box);
 
-		daText = initializeText(DEFAULT_TEXT_X , DEFAULT_TEXT_Y, DEFAULT_TEXT_WIDTH, DEFAULT_TEXT_SIZE, '');
-		add(daText);		
+		daText = initializeText(DEFAULT_TEXT_X, DEFAULT_TEXT_Y, DEFAULT_TEXT_WIDTH, DEFAULT_TEXT_SIZE, '');
+		add(daText);
 
 		startNextDialog();
 	}
@@ -198,25 +194,24 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			if (bgFade.alpha > 0.5)
 				bgFade.alpha = 0.5;
 
-			
-                var justTouched:Bool = false;
+			var justTouched:Bool = false;
 
-		        for (touch in FlxG.touches.list)
-		        {
-			        if (touch.justPressed)
-			        {
-				        justTouched = true;
-			        }
-		        }
-		        
+			for (touch in FlxG.touches.list)
+			{
+				if (touch.justPressed)
+				{
+					justTouched = true;
+				}
+			}
 
-			if(FlxG.keys.justPressed.ESCAPE #if android || justTouched #end) {
+			if (FlxG.keys.justPressed.ESCAPE #if android || justTouched #end)
+			{
 				// If the current dialogue still going
 				if (!finishedText)
 				{
 					// Complete the dialog
 					daText.skip();
-					
+
 					// Do the callback
 					if (skipDialogueThing != null)
 					{
@@ -248,7 +243,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 						remove(daText);
 						daText.destroy();
 					}
-					
+
 					FlxG.sound.music.fadeOut(1, 0);
 				}
 				else
@@ -475,7 +470,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		lastBoxType = boxType;
 
 		startFlxText(daText, curDialogue);
-       
+
 		// daText.y = DEFAULT_TEXT_Y;
 
 		var char:DialogueCharacter = arrayCharacters[character];
@@ -531,8 +526,8 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		if (!box.flipX)
 			box.offset.y += 10;
 	}
-	
-    var fontName:String;
+
+	var fontName:String;
 	var textSounds = FlxG.sound.load(Paths.sound('dialogue'));
 
 	function initializeText(x:Float, y:Float, width:Int, size:Int, content:String):FlxTypeText
@@ -543,11 +538,11 @@ class DialogueBoxPsych extends FlxSpriteGroup
 
 		daText.autoErase = false;
 		fontName = 'dialogueFont.ttf';
-	    var font = Paths.font(fontName);
+		var font = Paths.font(fontName);
 		daText.setFormat(font, size);
 		daText.delay = 0.05;
 		daText.showCursor = false;
-		//daText.setShadow(3, 2, "#818181");
+		// daText.setShadow(3, 2, "#818181");
 		daText.skipKeys = null;
 		daText.sounds = [textSounds];
 		daText.color = FlxColor.BLACK;
@@ -555,14 +550,14 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		daText.prefix = "";
 
 		return daText;
-	}		
+	}
 
 	function resetText(daText:FlxTypeText, content:String)
 	{
 		// trace('reset text');
 		daText.resetText(content);
 		finishedText = false;
-	}	
+	}
 
 	function startFlxText(daText:FlxTypeText, currentDialogue:DialogueLine)
 	{
@@ -578,5 +573,5 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			// trace('finish playing text: ' + currentDialogue.text);
 		});
 		// trace('start playing text: ' + currentDialogue.text);
-	}	
+	}
 }

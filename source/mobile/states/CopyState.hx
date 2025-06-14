@@ -32,7 +32,8 @@ class CopyState extends MusicBeatState
 
 	static final textFilesExtensions:Array<String> = ['txt', 'xml', 'lua', 'hx', 'json', 'frag', 'vert'];
 
-	public function new(isOption:Bool = false){
+	public function new(isOption:Bool = false)
+	{
 		this.isOption = isOption;
 		super();
 	}
@@ -41,16 +42,20 @@ class CopyState extends MusicBeatState
 	{
 		locatedFiles = [];
 		maxLoopTimes = 0;
-		if (isOption){
+		if (isOption)
+		{
 			checkExistingFilesNew(true);
-		}else{
+		}
+		else
+		{
 			checkExistingFiles();
 		}
-		
+
 		if (maxLoopTimes > 0)
 		{
 			shouldCopy = true;
-			SUtil.showPopUp("Seems like you have some missing files that are necessary to run the game\nPress OK to begin the copy process\nyou can close it at option\n", "Notice!");
+			SUtil.showPopUp("Seems like you have some missing files that are necessary to run the game\nPress OK to begin the copy process\nyou can close it at option\n",
+				"Notice!");
 
 			add(new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xffcaff4d));
 
@@ -114,12 +119,12 @@ class CopyState extends MusicBeatState
 				{
 					if (!checkExistingFilesNew())
 					{
-					    trace('reloaded CopyState...');
-					    FlxG.resetState();
-					    return;
+						trace('reloaded CopyState...');
+						FlxG.resetState();
+						return;
 					}
 				}
-				
+
 				canUpdate = false;
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 				var black = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
@@ -190,8 +195,9 @@ class CopyState extends MusicBeatState
 	public static function getFile(file:String):String
 	{
 		@:privateAccess
-		for(library in LimeAssets.libraries.keys()){
-			if(OpenflAssets.exists('$library:$file') && library != 'default')
+		for (library in LimeAssets.libraries.keys())
+		{
+			if (OpenflAssets.exists('$library:$file') && library != 'default')
 				return '$library:$file';
 		}
 		return file;
@@ -215,7 +221,7 @@ class CopyState extends MusicBeatState
 			failedFiles.push('${getFile(file)} ($error)');
 		}
 	}
-	
+
 	public static function checkExistingFiles():Bool
 	{
 		locatedFiles = OpenflAssets.list();
@@ -241,12 +247,12 @@ class CopyState extends MusicBeatState
 
 		return (maxLoopTimes < 0);
 	}
-	
+
 	public static function checkExistingFilesNew(delete:Bool = false):Bool
 	{
-		//delete变量是规定了他是什么状态，是只检查文件有没有问题，还是把有问题的文件换掉。
-		//当delete为true的时候为检查+替换，为false的时候为检查。
-	    #if !ios
+		// delete变量是规定了他是什么状态，是只检查文件有没有问题，还是把有问题的文件换掉。
+		// 当delete为true的时候为检查+替换，为false的时候为检查。
+		#if !ios
 		locatedFiles = OpenflAssets.list();
 		// removes unwanted assets
 		var assets = locatedFiles.filter(folder -> folder.startsWith('assets/'));
@@ -257,16 +263,19 @@ class CopyState extends MusicBeatState
 		for (file in locatedFiles)
 		{
 			var toFile = Path.join([to, file]);
-			
+
 			if (FileSystem.exists(toFile))
 			{
 				var internalBytes:ByteArray = getFileBytes(getFile(file));
-                		var externalBytes:ByteArray = File.getBytes(toFile);
-                		if (internalBytes.length == externalBytes.length)
-                		{
-                    			filesToRemove.push(file);
-                		}else{
-					if (delete) {
+				var externalBytes:ByteArray = File.getBytes(toFile);
+				if (internalBytes.length == externalBytes.length)
+				{
+					filesToRemove.push(file);
+				}
+				else
+				{
+					if (delete)
+					{
 						FileSystem.deleteFile(toFile);
 					}
 				}
@@ -279,7 +288,7 @@ class CopyState extends MusicBeatState
 		maxLoopTimes = locatedFiles.length;
 
 		return (maxLoopTimes < 0);
-	    #else
+		#else
 		locatedFiles = OpenflAssets.list();
 		// removes unwanted assets
 		var assets = locatedFiles.filter(folder -> folder.startsWith('assets/'));
@@ -302,6 +311,6 @@ class CopyState extends MusicBeatState
 		maxLoopTimes = locatedFiles.length;
 
 		return (maxLoopTimes < 0);
-	    #end
+		#end
 	}
 }

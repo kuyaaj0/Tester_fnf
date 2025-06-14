@@ -1,5 +1,4 @@
 // WHY CAN'T I USE SHADERFILTER.SHADER FOR A FLXSHADER ARGUMENT GUH
-
 package shaders.openfl.filters;
 
 import openfl.display.BitmapData;

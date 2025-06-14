@@ -7,6 +7,7 @@ class OutdatedState extends MusicBeatState
 	public static var leftState:Bool = false;
 
 	var warnText:FlxText;
+
 	override function create()
 	{
 		super.create();
@@ -16,17 +17,28 @@ class OutdatedState extends MusicBeatState
 
 		var guh:String;
 
-		if (controls.mobileC) {
+		if (controls.mobileC)
+		{
 			guh = "Sup kiddo, looks like you're running an   \n
-			outdated version of NovaFlare Engine (" + MainMenuState.novaFlareEngineVersion + "),\n
-			please update to " + TitleState.updateVersion + "!\n
+			outdated version of NovaFlare Engine ("
+				+ MainMenuState.novaFlareEngineVersion
+				+ "),\n
+			please update to "
+				+ TitleState.updateVersion
+				+ "!\n
 			Press B to proceed anyway.\n
 			\n
 			Thank you for using the Port!";
-		} else {
+		}
+		else
+		{
 			guh = "Sup bro, looks like you're running an   \n
-			outdated version of NovaFlare Engine (" + MainMenuState.novaFlareEngineVersion + "),\n
-			please update to " + TitleState.updateVersion + "!\n
+			outdated version of NovaFlare Engine ("
+				+ MainMenuState.novaFlareEngineVersion
+				+ "),\n
+			please update to "
+				+ TitleState.updateVersion
+				+ "!\n
 			Press ESCAPE to proceed anyway.\n
 			\n
 			Thank you for using the Port!";
@@ -42,20 +54,24 @@ class OutdatedState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		if(!leftState) {
-			if (controls.ACCEPT) {
+		if (!leftState)
+		{
+			if (controls.ACCEPT)
+			{
 				leftState = true;
 				CoolUtil.browserLoad("https://github.com/beihu235/FNF-NovaFlare-Engine/releases");
 			}
-			else if(controls.BACK) {
+			else if (controls.BACK)
+			{
 				leftState = true;
 			}
 
-			if(leftState)
+			if (leftState)
 			{
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				FlxTween.tween(warnText, {alpha: 0}, 1, {
-					onComplete: function (twn:FlxTween) {
+					onComplete: function(twn:FlxTween)
+					{
 						MusicBeatState.switchState(new MainMenuState());
 					}
 				});
