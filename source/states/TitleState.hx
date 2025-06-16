@@ -81,21 +81,9 @@ class TitleState extends MusicBeatState
 			checkOpenFirst = true;
 		}
 
-		#if android
-		FlxG.android.preventDefaultKeys = [BACK];
-		#end
-
-		FlxG.fixedTimestep = false;
-		FlxG.game.focusLostFramerate = 60;
-		FlxG.keys.preventDefaultKeys = [TAB];
-
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
 		super.create();
-
-		FlxG.save.bind('funkin', CoolUtil.getSavePath());
-
-		ClientPrefs.loadPrefs();
 
 
 		// IGNORE THIS!!!

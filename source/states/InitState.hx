@@ -42,6 +42,33 @@ class InitState extends MusicBeatState {
 			checkOpenFirst = true;
 		}
 
+		#if android
+		FlxG.android.preventDefaultKeys = [BACK];
+		#end
+
+		FlxG.fixedTimestep = false;
+		FlxG.game.focusLostFramerate = 60;
+		FlxG.keys.preventDefaultKeys = [TAB];
+
+		super.create();
+
+		FlxG.save.bind('funkin', CoolUtil.getSavePath());
+
+		ClientPrefs.loadPrefs();
+
+		ColorblindFilter.UpdateColors();
+
+		if (!initialized)
+		{
+			if (FlxG.save.data != null && FlxG.save.data.fullscreen)
+			{
+				FlxG.fullscreen = FlxG.save.data.fullscreen;
+				// trace('LOADED FULLSCREEN SETTING!!');
+			}
+			persistentUpdate = true;
+			persistentDraw = true;
+		}
+
         #if android
 		if (AppData.getVersionName() != Application.current.meta.get('version')
 			|| AppData.getAppName() != Application.current.meta.get('file')
@@ -187,6 +214,8 @@ class InitState extends MusicBeatState {
         if(pressedEnter){
             startIntro();
         }
+
+		super.update(elapsed);
     }
 
     function startCutscenesIn()
