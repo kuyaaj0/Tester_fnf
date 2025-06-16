@@ -24,7 +24,7 @@ class OutdatedState extends MusicBeatState
 				+ MainMenuState.novaFlareEngineVersion
 				+ "),\n
 			please update to "
-				+ TitleState.updateVersion
+				+ InitState.updateVersion
 				+ "!\n
 			Press B to proceed anyway.\n
 			\n
@@ -37,7 +37,7 @@ class OutdatedState extends MusicBeatState
 				+ MainMenuState.novaFlareEngineVersion
 				+ "),\n
 			please update to "
-				+ TitleState.updateVersion
+				+ InitState.updateVersion
 				+ "!\n
 			Press ESCAPE to proceed anyway.\n
 			\n
