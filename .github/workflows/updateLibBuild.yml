@@ -28,5 +28,5 @@ jobs:
         artifactName: ${{ matrix.artifactName }}
         artifactPath: ${{ matrix.artifactPath }}
 
-    installHaxelib:
+    reinstallHaxelib:
      uses: ./.github/workflows/reInstallHaxelib.yml
