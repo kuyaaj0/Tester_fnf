@@ -33,7 +33,7 @@ class InitState extends MusicBeatState {
 	{
 		Paths.clearStoredMemory();
 
-        #if mobile
+        #if android
 		if (AppData.getVersionName() != Application.current.meta.get('version')
 			|| AppData.getAppName() != Application.current.meta.get('file')
 			|| (AppData.getPackageName() != Application.current.meta.get('packageName')
@@ -43,8 +43,9 @@ class InitState extends MusicBeatState {
 				&& AppData.getPackageName() != 'com.ludashi.benchmark' // 超频测试 鲁大师
 			))
 			FlxG.switchState(new PirateState());
-		
+		#end
 
+        #if mobile
 		// 检查assets/version.txt存不存在且里面保存的上一个版本号与当前的版本号一不一致，如果不一致或不存在，强制启动copy。
 		if (!FileSystem.exists(Paths.getSharedPath('version.txt')))
 		{
