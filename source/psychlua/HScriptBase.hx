@@ -1,5 +1,12 @@
 package psychlua;
 
+import flixel.FlxBasic;
+import objects.Character;
+import psychlua.LuaUtils;
+import psychlua.CustomSubstate;
+#if LUA_ALLOWED
+import psychlua.FunkinLua;
+#end
 #if HSCRIPT_ALLOWED
 import hscript.Interp;
 import hscript.Expr;

@@ -8,6 +8,7 @@ import psychlua.CustomSubstate;
 import psychlua.FunkinLua;
 #end
 #if HSCRIPT_ALLOWED
+import crowplexus.iris.Iris;
 import crowplexus.hscript.Expr;
 import crowplexus.hscript.Parser;
 import crowplexus.hscript.Interp;
