@@ -28,6 +28,7 @@ class HScript {
 	public static var originError:(Dynamic, ?haxe.PosInfos) -> Void = Iris.error;
 
 	public var active:Bool;
+	public var loaded:Bool;
 
 	public var filePath(default, null):String;
 	public var modFolder:String;
@@ -54,6 +55,8 @@ class HScript {
 		interp = new Interp();
 		parser = new Parser();
 		parser.allowTypes = parser.allowMetadata = parser.allowJSON = true;
+		if(FlxG.state is PlayState)
+			preset();
 
 		loadFile();
 		if(manualRun)
@@ -62,8 +65,21 @@ class HScript {
 
 	public function execute():Dynamic {
 		var ret:Dynamic = null;
-		if(active && expr != null) {
-			ret = interp.execute(expr);
+		if(active && expr != null && !loaded) {
+			try {
+				ret = interp.execute(expr);
+				loaded = true;
+			}
+			#if hscriptPos
+			catch(e:Error) {
+				Iris.error(Printer.errorToString(e, false), cast {fileName: e.origin, lineNumber: e.line});
+				active = false;
+			}
+			#end
+			catch(e) {
+				Iris.error(Std.string(e), cast this.interp.posInfos());
+				active = false;
+			}
 		}
 		return ret;
 	}
@@ -163,6 +179,7 @@ class HScript {
 	function preset() {
 			// Some very commonly used classes
 			// set('Type', Type);
+			interp.parentInstance = FlxG.state;
 			#if sys
 			set('File', File);
 			set('FileSystem', FileSystem);
