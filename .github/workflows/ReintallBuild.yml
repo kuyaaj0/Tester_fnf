@@ -55,7 +55,7 @@ jobs:
       - name: Install Libraries
         run: |
           haxelib setup ~/haxelib
-          haxelib reinstall hmm 
+          haxelib install hmm 
           haxelib run hmm reinstall
           
       - name: Configure Android
