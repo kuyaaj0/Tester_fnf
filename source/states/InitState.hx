@@ -27,11 +27,14 @@ import lime.app.Application;
 class InitState extends MusicBeatState {
     var skipVideo:FlxText;
     public static var updateVersion:String = '';
-    public static var ignoreCopy:Bool = false;
-
+    
     override public function create():Void
 	{
 		Paths.clearStoredMemory();
+
+		#if mobile
+			SUtil.showPopUp("Please wait a few seconds and press ok to prevent crashing.\n请等待几秒按下ok键防止崩溃","hey!");
+		#end
 
         #if android
 		if (AppData.getVersionName() != Application.current.meta.get('version')
@@ -49,7 +52,9 @@ class InitState extends MusicBeatState {
 		// 检查assets/version.txt存不存在且里面保存的上一个版本号与当前的版本号一不一致，如果不一致或不存在，强制启动copy。
 		if (!FileSystem.exists(Paths.getSharedPath('version.txt')))
 		{
-			try sys.io.File.saveContent(Paths.getSharedPath('version.txt'), 'now version: ' + Std.string(states.MainMenuState.novaFlareEngineVersion));
+			try{
+				sys.io.File.saveContent(Paths.getSharedPath('version.txt'), 'now version: ' + Std.string(states.MainMenuState.novaFlareEngineVersion));
+			}
             #if !ios
 			FlxG.switchState(new CopyState(true));
             #else
@@ -59,7 +64,9 @@ class InitState extends MusicBeatState {
 		}else{
 			if (sys.io.File.getContent(Paths.getSharedPath('version.txt')) != 'now version: ' + Std.string(states.MainMenuState.novaFlareEngineVersion))
 			{
-				try sys.io.File.saveContent(Paths.getSharedPath('version.txt'), 'now version: ' + Std.string(states.MainMenuState.novaFlareEngineVersion));
+				try{
+					sys.io.File.saveContent(Paths.getSharedPath('version.txt'), 'now version: ' + Std.string(states.MainMenuState.novaFlareEngineVersion));
+				}
 				#if !ios
 			    FlxG.switchState(new CopyState(true));
                 #else
@@ -71,11 +78,14 @@ class InitState extends MusicBeatState {
 
         if (ClientPrefs.data.filesCheck)
 		{
-			if (!CopyState.checkExistingFiles() && !ignoreCopy)
+			if (!CopyState.checkExistingFiles())
 			{
 				// ClientPrefs.data.filesCheck = false;
-				ClientPrefs.saveSettings();
-				FlxG.switchState(new CopyState());
+				#if !ios
+			    FlxG.switchState(new CopyState());
+                #else
+                SUtil.showPopUp("Please manually extract Assets to 'My iPhone/NovaFlare Engine'\n请手动把Assets解压到“我的IPhone/NovaFlare Engine”","hey!");
+                #end
 				return;
 			}
 		}
