@@ -60,11 +60,6 @@
       "url": "https://github.com/NovaFlare-Engine-Concentration/hscript-iris-improved"
     },
     {
-      "name": "hscript",
-      "type": "haxelib",
-      "version": "2.5.0"
-    },
-    {
       "name": "flxsoundfilters",
       "type": "git",
       "dir": null,

@@ -1801,7 +1801,6 @@ class FunkinLua
 
 		#if DISCORD_ALLOWED DiscordClient.addLuaCallbacks(this); #end
 		#if HSCRIPT_ALLOWED
-		HScript.implement(this);
 		HScriptBase.implement(this);
 		#end
 		#if ACHIEVEMENTS_ALLOWED Achievements.addLuaCallbacks(this); #end
