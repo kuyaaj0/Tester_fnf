@@ -4647,6 +4647,7 @@ class PlayState extends MusicBeatState
 	public function initHScript(file:String)
 	{
 		var newScript:HScript = new HScript(file);
+		newScript.execute();
 		newScript.call('onCreate');
 		trace('initialized hscript interp successfully: $file');
 		hscriptArray.push(newScript);
