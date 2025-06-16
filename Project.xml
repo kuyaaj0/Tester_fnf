@@ -127,7 +127,7 @@
 	<haxelib name="flxsoundfilters" />
 	
 	<!-- Mobile Specific-->
-	<!--<haxelib name="extension-androidtools" if="android" />-->
+	<haxelib name="extension-androidtools" if="android" />
 	<!--<haxelib name="hx-ios-uikit" if="ios" />-->
 	<haxedef name="SHARE_MOBILE_FILES" if="ios" />
 
