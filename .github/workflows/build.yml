@@ -58,6 +58,11 @@ jobs:
           haxelib install hmm 
           haxelib run hmm install
 
+      - name: Install Ios Lime
+        if: inputs.name == 'iOS'
+        run: |
+          haxelib install lime https://github.com/NovaFlare-Engine-Concentration/lime.git
+
       - name: Configure Android
         if: inputs.name == 'Android'
         run: |
