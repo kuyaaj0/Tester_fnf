@@ -27,14 +27,19 @@ import lime.app.Application;
 class InitState extends MusicBeatState {
     var skipVideo:FlxText;
     public static var updateVersion:String = '';
+
+	var checkOpenFirst:Bool = false;
     
     override public function create():Void
 	{
 		Paths.clearStoredMemory();
 
-		#if mobile
-			SUtil.showPopUp("Please wait a few seconds and press ok to prevent crashing.\n请等待几秒按下ok键防止崩溃","hey!");
-		#end
+		if (!checkOpenFirst)
+		{
+			FlxTransitionableState.skipNextTransOut = true;
+			FlxTransitionableState.skipNextTransIn = true;
+			checkOpenFirst = true;
+		}
 
         #if android
 		if (AppData.getVersionName() != Application.current.meta.get('version')
