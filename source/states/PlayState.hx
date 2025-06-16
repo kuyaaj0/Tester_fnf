@@ -4646,23 +4646,11 @@ class PlayState extends MusicBeatState
 
 	public function initHScript(file:String)
 	{
-		var newScript:HScript = null;
-		try
-		{
-			newScript = new HScript(null, file);
-			if (newScript.exists('onCreate'))
-				newScript.call('onCreate');
-			trace('initialized hscript interp successfully: $file');
-			hscriptArray.push(newScript);
-		}
-		catch (e:IrisError)
-		{
-			var pos:HScriptInfos = cast {fileName: file, showLine: false};
-			Iris.error(Printer.errorToString(e, false), pos);
-			var newScript:HScript = cast(Iris.instances.get(file), HScript);
-			if (newScript != null)
-				newScript.destroy();
-		}
+		var newScript:HScript = new HScript(file, this);
+		newScript.execute();
+		newScript.call('onCreate');
+		trace('initialized hscript interp successfully: $file');
+		hscriptArray.push(newScript);
 	}
 	#end
 
@@ -4749,13 +4737,11 @@ class PlayState extends MusicBeatState
 		for (script in hscriptArray)
 		{
 			@:privateAccess
-			if (script == null || !script.exists(funcToCall) || exclusions.contains(script.origin))
+			if (script == null || exclusions.contains(script.origin))
 				continue;
 
-			var callValue = script.call(funcToCall, args);
-			if (callValue != null)
+			var myValue = script.call(funcToCall, args);
 			{
-				var myValue:Dynamic = callValue.returnValue;
 
 				if ((myValue == LuaUtils.Function_StopHScript || myValue == LuaUtils.Function_StopAll)
 					&& !excludeValues.contains(myValue)
