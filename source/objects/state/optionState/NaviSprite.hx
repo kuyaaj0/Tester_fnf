@@ -20,7 +20,7 @@ class NaviSprite extends FlxSpriteGroup
         background = new ExtraRoundRect(0, 0, width, height, LEFT_CENTER, EenginSet.mainColor);
         add(background);
 
-        icon = new FlxSprite = new FlxSprite().loadGraphic(Paths.image(filePath));
+        icon = new FlxSprite().loadGraphic(Paths.image(filePath));
         //icon.
 
     }

@@ -29,6 +29,7 @@ class InitState extends MusicBeatState {
     public static var updateVersion:String = '';
 
 	var checkOpenFirst:Bool = false;
+    public static var ignoreCopy:Bool = false;
     
     override public function create():Void
 	{
@@ -83,7 +84,7 @@ class InitState extends MusicBeatState {
 
         if (ClientPrefs.data.filesCheck)
 		{
-			if (!CopyState.checkExistingFiles())
+			if (!CopyState.checkExistingFiles() && !ignoreCopy )
 			{
 				// ClientPrefs.data.filesCheck = false;
 				#if !ios
