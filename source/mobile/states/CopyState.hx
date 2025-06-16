@@ -6,7 +6,7 @@ import openfl.utils.Assets as OpenflAssets;
 import flixel.addons.util.FlxAsyncLoop;
 import openfl.utils.ByteArray;
 import openfl.system.System;
-import states.TitleState;
+import states.InitState;
 import haxe.io.Path;
 #if (target.threaded)
 import sys.thread.Thread;
@@ -88,7 +88,7 @@ class CopyState extends MusicBeatState
 		}
 		else
 		{
-			TitleState.ignoreCopy = true;
+			InitState.ignoreCopy = true;
 			FlxTransitionableState.skipNextTransIn = FlxTransitionableState.skipNextTransOut = true;
 			MusicBeatState.switchState(new TitleState());
 		}
@@ -134,7 +134,7 @@ class CopyState extends MusicBeatState
 					onComplete: function(twn:FlxTween)
 					{
 						System.gc();
-						TitleState.ignoreCopy = true;
+						InitState.ignoreCopy = true;
 						FlxTransitionableState.skipNextTransIn = FlxTransitionableState.skipNextTransOut = true;
 						MusicBeatState.switchState(new TitleState());
 					},

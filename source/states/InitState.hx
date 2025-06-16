@@ -27,6 +27,7 @@ import lime.app.Application;
 class InitState extends MusicBeatState {
     var skipVideo:FlxText;
     public static var updateVersion:String = '';
+    public static var ignoreCopy:Bool = false;
 
     override public function create():Void
 	{

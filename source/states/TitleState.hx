@@ -408,15 +408,6 @@ class TitleState extends MusicBeatState
 		}
 		#end
 
-		#if android
-		if (videoBool)
-		{
-			pressedEnter = false;
-			if (FlxG.android.justReleased.BACK)
-				pressedEnter = true;
-		}
-		#end
-
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
 		if (gamepad != null)
