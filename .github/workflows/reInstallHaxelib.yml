@@ -34,7 +34,7 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hmm 
-          haxelib run hmm reinstall
+          haxelib run hmm reinstall -f
 
       - name: Make Haxelib Zip
         run: |
