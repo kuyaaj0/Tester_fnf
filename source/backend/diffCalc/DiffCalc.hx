@@ -1,4 +1,4 @@
-package backend;
+package backend.diffCalc;
 
 import openfl.system.System;
 import flixel.math.FlxMath;

@@ -1,4 +1,4 @@
-package backend;
+package backend.device;
 
 // make Sscript can check those data
 #if android

@@ -26,7 +26,7 @@ import lime.app.Application;
 import hxvlc.flixel.FlxVideoSprite;
 #end
 #if android
-import backend.AppData;
+import backend.device.AppData;
 import states.PirateState;
 #end
 

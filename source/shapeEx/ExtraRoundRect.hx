@@ -36,7 +36,6 @@ class ExtraRoundRect extends FlxSpriteGroup
 	var widthEase:String;
 	var heightEase:String;
 
-<<<<<<< HEAD
     public var originEase:OriginType;
 
     public function new(X:Float, Y:Float, width:Float = 0, height:Float = 0, round:Float, ease:OriginType = LEFT_UP, color:FlxColor = 0xffffff)
@@ -49,17 +48,6 @@ class ExtraRoundRect extends FlxSpriteGroup
         mainX = X;
         mainY = Y;
         originEase = ease;
-=======
-	public function new(X:Float, Y:Float, width:Float = 0, height:Float = 0, round:Float, color:FlxColor = 0xffffff)
-	{
-		super(X, Y);
-		this.mainColor = color;
-		mainWidth = width;
-		mainHeight = height;
-		mainRound = round;
-		mainX = X;
-		mainY = Y;
->>>>>>> 01e969737703cafb0550ac98f0a37a931d9078f0
 
 		leftUpRound = drawRoundRect(0, 0, round, round, round, 1);
 		add(leftUpRound);

@@ -22,7 +22,7 @@ import states.MainMenuState;
 import backend.Conductor;
 import backend.Mods;
 import backend.Highscore;
-import backend.DiffCalc;
+import backend.diffCalc.DiffCalc;
 import backend.Song;
 import flixel.math.FlxRect;
 import flixel.util.FlxSpriteUtil;

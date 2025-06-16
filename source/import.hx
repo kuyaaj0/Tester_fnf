@@ -3,13 +3,16 @@
 #if DISCORD_ALLOWED
 import backend.Discord;
 #end
+
 // Psych
 #if ACHIEVEMENTS_ALLOWED
 import backend.Achievements;
 #end
+
 #if hxvlc
 import backend.VideoSprite;
 #end
+
 // Android
 #if android
 import android.content.Context as AndroidContext;
@@ -20,6 +23,7 @@ import android.Settings as AndroidSettings;
 import android.Tools as AndroidTools;
 import android.os.BatteryManager as AndroidBatteryManager;
 #end
+
 // Mobile Controls
 import mobile.objects.MobileControls;
 import mobile.flixel.FlxHitbox;
@@ -27,12 +31,16 @@ import mobile.flixel.FlxVirtualPad;
 import mobile.flixel.input.FlxMobileInputID;
 import mobile.backend.Data;
 import mobile.backend.SUtil;
+
 #if sys
 import sys.*;
 import sys.io.*;
 #elseif js
 import js.html.*;
 #end
+
+import language.Language;
+
 import backend.Paths;
 import backend.Controls;
 import backend.CoolUtil;
@@ -45,17 +53,23 @@ import backend.BaseStage;
 import backend.Difficulty;
 import backend.Mods;
 import backend.ui.*; // Psych-UI
-import language.Language;
+import backend.data.*;
+
 import objects.Alphabet;
 import objects.BGSprite;
 import objects.AudioDisplay;
+
 import shapeEx.*;
+import objects.state.general.*;
+
 import states.PlayState;
 import states.LoadingState;
+
 #if flxanimate
 import flxanimate.*;
 import flxanimate.PsychFlxAnimate as FlxAnimate;
 #end
+
 // Flixel
 import flixel.sound.FlxSound;
 import flixel.FlxG;

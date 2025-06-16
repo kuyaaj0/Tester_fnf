@@ -1,4 +1,4 @@
-package backend;
+package backend.device;
 
 import haxe.io.Path;
 

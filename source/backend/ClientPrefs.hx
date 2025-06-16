@@ -119,6 +119,7 @@ import states.TitleState;
 	public var extraKeyReturn4:String = 'SHIFT';
 
 	// User Interface
+	public var uiScale:Float = 1;
 	public var CustomFade:String = 'Move';
 	public var CustomFadeSound:Float = 0.5;
 	public var CustomFadeText:Bool = true;

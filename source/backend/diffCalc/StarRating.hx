@@ -1,4 +1,4 @@
-package backend;
+package backend.diffCalc;
 
 import backend.Song;
 import haxe.ds.Map;

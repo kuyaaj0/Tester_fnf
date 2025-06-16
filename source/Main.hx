@@ -22,7 +22,7 @@ import crowplexus.iris.Iris;
 import psychlua.HScript.HScriptInfos;
 #end
 #if desktop
-import backend.ALSoftConfig;
+import backend.device.ALSoftConfig;
 #end
 #if hl
 import hl.Api;
@@ -88,8 +88,8 @@ class Main extends Sprite
 		#end
 
 		#if (cpp && windows)
-		backend.Native.fixScaling();
-		backend.Native.setWindowDarkMode(true, true);
+		backend.device.Native.fixScaling();
+		backend.device.Native.setWindowDarkMode(true, true);
 		#end
 	}
 
