@@ -4,8 +4,8 @@
       "name": "lime",
       "type": "git",
       "dir": null,
-      "ref": "develop",
-      "url": "https://github.com/beihu235/lime"
+      "ref": "main",
+      "url": "https://github.com/MaoPou/lime"
     },
     {
       "name": "openfl",
@@ -43,7 +43,7 @@
       "type": "git",
       "dir": null,
       "ref": "master",
-      "url": "https://github.com/beihu235/hxcpp"
+      "url": "https://github.com/MaoPou/hxcpp"
     },
     {
       "name": "hxvlc",
