@@ -41,7 +41,7 @@ class HScript {
 	var interp:Interp;
 	var parser:Parser;
 
-	public function new(file:String, ?manualRun:Bool = false) {
+	public function new(file:String, ?parent:Dynamic, ?manualRun:Bool = false, ?experimental:Bool = false) {
 		active = true;
 
 		filePath = file;
@@ -55,8 +55,8 @@ class HScript {
 		interp = new Interp();
 		parser = new Parser();
 		parser.allowTypes = parser.allowMetadata = parser.allowJSON = true;
-		if(FlxG.state is PlayState)
-			preset();
+		parser.allowInterpolation = experimental;
+		preset(parent);
 
 		loadFile();
 		if(manualRun)
@@ -176,10 +176,10 @@ class HScript {
 		}
 	}
 
-	function preset() {
+	function preset(parent:Dynamic) {
 			// Some very commonly used classes
 			// set('Type', Type);
-			interp.parentInstance = FlxG.state;
+			if(parent != null) this.interp.parentInstance = parent;
 			#if sys
 			set('File', File);
 			set('FileSystem', FileSystem);
@@ -216,35 +216,175 @@ class HScript {
 			#if flxanimate
 			set('FlxAnimate', FlxAnimate);
 			#end
-	
-			// Functions & Variables
-			set('setVar', function(name:String, value:Dynamic)
-			{
-				MusicBeatState.getVariables().set(name, value);
-				return value;
-			});
-			set('getVar', function(name:String)
-			{
-				var result:Dynamic = null;
-				if (MusicBeatState.getVariables().exists(name))
-					result = MusicBeatState.getVariables().get(name);
-				return result;
-			});
-			set('removeVar', function(name:String)
-			{
-				if (MusicBeatState.getVariables().exists(name))
+			if(parent is MusicBeatState) {
+				set('setVar', function(name:String, value:Dynamic)
 				{
-					MusicBeatState.getVariables().remove(name);
-					return true;
+					MusicBeatState.getVariables().set(name, value);
+					return value;
+				});
+				set('getVar', function(name:String)
+				{
+					var result:Dynamic = null;
+					if (MusicBeatState.getVariables().exists(name))
+						result = MusicBeatState.getVariables().get(name);
+					return result;
+				});
+				set('removeVar', function(name:String)
+				{
+					if (MusicBeatState.getVariables().exists(name))
+					{
+						MusicBeatState.getVariables().remove(name);
+						return true;
+					}
+					return false;
+				});
+
+				if(parent is PlayState) {
+					set('debugPrint', function(text:String, ?color:FlxColor = null)
+					{
+						if (color == null)
+							color = FlxColor.WHITE;
+						PlayState.instance.addTextToDebug(text, color);
+					});
+
+					set('keyJustPressed', function(name:String = '')
+					{
+						name = name.toLowerCase();
+						switch (name)
+						{
+							case 'left':
+								return Controls.instance.NOTE_LEFT_P;
+							case 'down':
+								return Controls.instance.NOTE_DOWN_P;
+							case 'up':
+								return Controls.instance.NOTE_UP_P;
+							case 'right':
+								return Controls.instance.NOTE_RIGHT_P;
+							default:
+								return Controls.instance.justPressed(name);
+						}
+						return false;
+					});
+
+					set('keyPressed', function(name:String = '')
+					{
+						name = name.toLowerCase();
+						switch (name)
+						{
+							case 'left':
+								return Controls.instance.NOTE_LEFT;
+							case 'down':
+								return Controls.instance.NOTE_DOWN;
+							case 'up':
+								return Controls.instance.NOTE_UP;
+							case 'right':
+								return Controls.instance.NOTE_RIGHT;
+							default:
+								return Controls.instance.pressed(name);
+						}
+						return false;
+					});
+
+					set('keyReleased', function(name:String = '')
+					{
+						name = name.toLowerCase();
+						switch (name)
+						{
+							case 'left':
+								return Controls.instance.NOTE_LEFT_R;
+							case 'down':
+								return Controls.instance.NOTE_DOWN_R;
+							case 'up':
+								return Controls.instance.NOTE_UP_R;
+							case 'right':
+								return Controls.instance.NOTE_RIGHT_R;
+							default:
+								return Controls.instance.justReleased(name);
+						}
+						return false;
+					});
+					#if LUA_ALLOWED
+					set('createGlobalCallback', function(name:String, func:Dynamic)
+					{
+						for (script in PlayState.instance.luaArray)
+							if (script != null && script.lua != null && !script.closed)
+								Lua_helper.add_callback(script.lua, name, func);
+
+						FunkinLua.customFunctions.set(name, func);
+					});
+
+					// this one was tested
+					set('createCallback', function(name:String, func:Dynamic, ?funk:FunkinLua = null)
+					{
+						if (funk == null)
+							return;
+
+						if (funk != null)
+							funk.addLocalCallback(name, func);
+						else
+							Iris.error('createCallback ($name): 3rd argument is null', this.interp.posInfos());
+					});
+					#end
+
+					#if LUA_ALLOWED
+					set("addVirtualPad", (DPadMode:String, ActionMode:String) ->
+					{
+						PlayState.instance.makeLuaVirtualPad(DPadMode, ActionMode);
+						PlayState.instance.addLuaVirtualPad();
+					});
+
+					set("removeVirtualPad", () ->
+					{
+						PlayState.instance.removeLuaVirtualPad();
+					});
+
+					set("addVirtualPadCamera", () ->
+					{
+						if (PlayState.instance.luaVirtualPad == null)
+						{
+							Iris.error('addVirtualPadCamera: TPAD does not exist.', cast this.interp.posInfos());
+							return;
+						}
+						PlayState.instance.addLuaVirtualPadCamera();
+					});
+
+					set("virtualPadJustPressed", function(button:Dynamic):Bool
+					{
+						if (PlayState.instance.luaVirtualPad == null)
+						{
+							// FunkinLua.luaTrace('virtualPadJustPressed: TPAD does not exist.');
+							return false;
+						}
+						return PlayState.instance.luaVirtualPadJustPressed(button);
+					});
+
+					set("virtualPadPressed", function(button:Dynamic):Bool
+					{
+						if (PlayState.instance.luaVirtualPad == null)
+						{
+							// FunkinLua.luaTrace('virtualPadPressed: TPAD does not exist.');
+							return false;
+						}
+						return PlayState.instance.luaVirtualPadPressed(button);
+					});
+
+					set("virtualPadJustReleased", function(button:Dynamic):Bool
+					{
+						if (PlayState.instance.luaVirtualPad == null)
+						{
+							// FunkinLua.luaTrace('virtualPadJustReleased: TPAD does not exist.');
+							return false;
+						}
+						return PlayState.instance.luaVirtualPadJustReleased(button);
+					});
+					#end
+
+					set('game', FlxG.state);
+					set('controls', Controls.instance);
 				}
-				return false;
-			});
-			set('debugPrint', function(text:String, ?color:FlxColor = null)
-			{
-				if (color == null)
-					color = FlxColor.WHITE;
-				PlayState.instance.addTextToDebug(text, color);
-			});
+			}
+
+			// Functions & Variables
 			set('getModSetting', function(saveTag:String, ?modName:String = null)
 			{
 				if (modName == null)
@@ -258,16 +398,16 @@ class HScript {
 				}
 				return LuaUtils.getModSetting(saveTag, modName);
 			});
-	
+
 			// Keyboard & Gamepads
 			set('keyboardJustPressed', function(name:String) return Reflect.getProperty(FlxG.keys.justPressed, name));
 			set('keyboardPressed', function(name:String) return Reflect.getProperty(FlxG.keys.pressed, name));
 			set('keyboardReleased', function(name:String) return Reflect.getProperty(FlxG.keys.justReleased, name));
-	
+
 			set('anyGamepadJustPressed', function(name:String) return FlxG.gamepads.anyJustPressed(name));
 			set('anyGamepadPressed', function(name:String) FlxG.gamepads.anyPressed(name));
 			set('anyGamepadReleased', function(name:String) return FlxG.gamepads.anyJustReleased(name));
-	
+
 			set('gamepadAnalogX', function(id:Int, ?leftStick:Bool = true)
 			{
 				var controller = FlxG.gamepads.getByID(id);
@@ -308,142 +448,11 @@ class HScript {
 	
 				return Reflect.getProperty(controller.justReleased, name) == true;
 			});
-	
-			set('keyJustPressed', function(name:String = '')
-			{
-				name = name.toLowerCase();
-				switch (name)
-				{
-					case 'left':
-						return Controls.instance.NOTE_LEFT_P;
-					case 'down':
-						return Controls.instance.NOTE_DOWN_P;
-					case 'up':
-						return Controls.instance.NOTE_UP_P;
-					case 'right':
-						return Controls.instance.NOTE_RIGHT_P;
-					default:
-						return Controls.instance.justPressed(name);
-				}
-				return false;
-			});
-			set('keyPressed', function(name:String = '')
-			{
-				name = name.toLowerCase();
-				switch (name)
-				{
-					case 'left':
-						return Controls.instance.NOTE_LEFT;
-					case 'down':
-						return Controls.instance.NOTE_DOWN;
-					case 'up':
-						return Controls.instance.NOTE_UP;
-					case 'right':
-						return Controls.instance.NOTE_RIGHT;
-					default:
-						return Controls.instance.pressed(name);
-				}
-				return false;
-			});
-			set('keyReleased', function(name:String = '')
-			{
-				name = name.toLowerCase();
-				switch (name)
-				{
-					case 'left':
-						return Controls.instance.NOTE_LEFT_R;
-					case 'down':
-						return Controls.instance.NOTE_DOWN_R;
-					case 'up':
-						return Controls.instance.NOTE_UP_R;
-					case 'right':
-						return Controls.instance.NOTE_RIGHT_R;
-					default:
-						return Controls.instance.justReleased(name);
-				}
-				return false;
-			});
-	
+
 			// For adding your own callbacks
 			// not very tested but should work
-			#if LUA_ALLOWED
-			set('createGlobalCallback', function(name:String, func:Dynamic)
-			{
-				for (script in PlayState.instance.luaArray)
-					if (script != null && script.lua != null && !script.closed)
-						Lua_helper.add_callback(script.lua, name, func);
-	
-				FunkinLua.customFunctions.set(name, func);
-			});
-	
-			// this one was tested
-			set('createCallback', function(name:String, func:Dynamic, ?funk:FunkinLua = null)
-			{
-				if (funk == null)
-					return;
-	
-				if (funk != null)
-					funk.addLocalCallback(name, func);
-				else
-					Iris.error('createCallback ($name): 3rd argument is null', this.interp.posInfos());
-			});
-			#end
 
-		#if mobile
-		set("addVirtualPad", (DPadMode:String, ActionMode:String) ->
-		{
-			PlayState.instance.makeLuaVirtualPad(DPadMode, ActionMode);
-			PlayState.instance.addLuaVirtualPad();
-		});
-
-		set("removeVirtualPad", () ->
-		{
-			PlayState.instance.removeLuaVirtualPad();
-		});
-
-		set("addVirtualPadCamera", () ->
-		{
-			if (PlayState.instance.luaVirtualPad == null)
-			{
-				Iris.error('addVirtualPadCamera: TPAD does not exist.', cast this.interp.posInfos());
-				return;
-			}
-			PlayState.instance.addLuaVirtualPadCamera();
-		});
-
-		set("virtualPadJustPressed", function(button:Dynamic):Bool
-		{
-			if (PlayState.instance.luaVirtualPad == null)
-			{
-				// FunkinLua.luaTrace('virtualPadJustPressed: TPAD does not exist.');
-				return false;
-			}
-			return PlayState.instance.luaVirtualPadJustPressed(button);
-		});
-
-		set("virtualPadPressed", function(button:Dynamic):Bool
-		{
-			if (PlayState.instance.luaVirtualPad == null)
-			{
-				// FunkinLua.luaTrace('virtualPadPressed: TPAD does not exist.');
-				return false;
-			}
-			return PlayState.instance.luaVirtualPadPressed(button);
-		});
-
-		set("virtualPadJustReleased", function(button:Dynamic):Bool
-		{
-			if (PlayState.instance.luaVirtualPad == null)
-			{
-				// FunkinLua.luaTrace('virtualPadJustReleased: TPAD does not exist.');
-				return false;
-			}
-			return PlayState.instance.luaVirtualPadJustReleased(button);
-		});
-		#end
 		// set('this', this);
-		set('game', FlxG.state);
-		set('controls', Controls.instance);
 
 		set('buildTarget', LuaUtils.getBuildTarget());
 		set('customSubstate', CustomSubstate.instance);

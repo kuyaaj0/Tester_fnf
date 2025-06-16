@@ -8,9 +8,9 @@ import psychlua.CustomSubstate;
 import psychlua.FunkinLua;
 #end
 #if HSCRIPT_ALLOWED
-import hscript.Interp;
-import hscript.Expr;
-import hscript.Parser;
+import crowplexus.hscript.origin.Interp;
+import crowplexus.hscript.origin.Expr;
+import crowplexus.hscript.origin.Parser;
 import haxe.Exception;
 import haxe.ValueException;
 
