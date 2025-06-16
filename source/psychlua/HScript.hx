@@ -124,22 +124,22 @@ class HScript {
 			scriptCode = try {
 				File.getContent(filePath);
 			} catch(e) {
-				Iris.warm('Invalid Expected File Path -> "$filePath"', cast {fileName: filePath, lineNumber: 0});
+				Iris.warn('Invalid Expected File Path -> "$filePath"', cast {fileName: filePath, lineNumber: 0});
 				null;
 			}
 		} else {
-			Iris.warm('This File Path Was Not Exist -> "$filePath"', cast {fileName: filePath, lineNumber: 0});
+			Iris.warn('This File Path Was Not Exist -> "$filePath"', cast {fileName: filePath, lineNumber: 0});
 		}
 		#else
 		if(openfl.Assets.exists(filePath)) {
 			scriptCode = try {
 				openfl.Assets.getText(filePath);
 			} catch(e) {
-				Iris.warm('Invalid Expected This File Path -> "$filePath"', cast {fileName: filePath, lineNumber: 0});
+				Iris.warn('Invalid Expected This File Path -> "$filePath"', cast {fileName: filePath, lineNumber: 0});
 				null;
 			}
 		} else {
-			Iris.warm('This File Path Was Not Exist -> "$filePath"', cast {fileName: filePath, lineNumber: 0});
+			Iris.warn('This File Path Was Not Exist -> "$filePath"', cast {fileName: filePath, lineNumber: 0});
 		}
 		#end
 
@@ -160,10 +160,7 @@ class HScript {
 		}
 	}
 
-	function preset()
-		{
-			super.preset();
-	
+	function preset() {
 			// Some very commonly used classes
 			// set('Type', Type);
 			#if sys
@@ -366,7 +363,7 @@ class HScript {
 			set('createCallback', function(name:String, func:Dynamic, ?funk:FunkinLua = null)
 			{
 				if (funk == null)
-					funk = parentLua;
+					return;
 	
 				if (funk != null)
 					funk.addLocalCallback(name, func);
@@ -374,25 +371,8 @@ class HScript {
 					Iris.error('createCallback ($name): 3rd argument is null', this.interp.posInfos());
 			});
 			#end
-	
-			set('addHaxeLibrary', function(libName:String, ?libPackage:String = '')
-			{
-				try
-				{
-					var str:String = '';
-					if (libPackage.length > 0)
-						str = libPackage + '.';
-	
-					set(libName, Type.resolveClass(str + libName));
-				}
-				catch (e:IrisError)
-				{
-				Iris.error(Printer.errorToString(e, false), this.interp.posInfos());
-			}
-		});
-		#if LUA_ALLOWED
-		set('parentLua', parentLua);
 
+		#if mobile
 		set("addVirtualPad", (DPadMode:String, ActionMode:String) ->
 		{
 			PlayState.instance.makeLuaVirtualPad(DPadMode, ActionMode);
@@ -408,7 +388,7 @@ class HScript {
 		{
 			if (PlayState.instance.luaVirtualPad == null)
 			{
-				FunkinLua.luaTrace('addVirtualPadCamera: TPAD does not exist.');
+				Iris.error('addVirtualPadCamera: TPAD does not exist.', cast this.interp.posInfos());
 				return;
 			}
 			PlayState.instance.addLuaVirtualPadCamera();
@@ -443,8 +423,6 @@ class HScript {
 			}
 			return PlayState.instance.luaVirtualPadJustReleased(button);
 		});
-		#else
-		set('parentLua', null);
 		#end
 		// set('this', this);
 		set('game', FlxG.state);
@@ -492,7 +470,7 @@ class HScript {
 			{
 				parent.hscript = new HScript(parent, code, varsToBring);
 			}
-			catch (e:IrisError)
+			catch (e:Error)
 			{
 				var pos:HScriptInfos = cast {fileName: parent.scriptName, isLua: true};
 				if (parent.lastCalledFunction != '')
@@ -511,7 +489,7 @@ class HScript {
 				var ret:Dynamic = hs.execute();
 				hs.returnValue = ret;
 			}
-			catch (e:IrisError)
+			catch (e:Error)
 			{
 				var pos:HScriptInfos = cast hs.interp.posInfos();
 				pos.isLua = true;
@@ -576,7 +554,7 @@ class HScript {
 				var ret:Dynamic = execute();
 				returnValue = ret;
 			}
-			catch (e:IrisError)
+			catch (e:Error)
 			{
 				returnValue = null;
 				this.destroy();
@@ -812,7 +790,7 @@ class HScript {
 	
 					set(libName, Type.resolveClass(str + libName));
 				}
-				catch (e:IrisError)
+				catch (e:Error)
 				{
 				Iris.error(Printer.errorToString(e, false), this.interp.posInfos());
 			}
@@ -955,7 +933,7 @@ class HScript {
 				if (c != null)
 					funk.hscript.set(libName, c);
 			}
-			catch (e:IrisError)
+			catch (e:Error)
 			{
 				Iris.error(Printer.errorToString(e, false), pos);
 			}
@@ -983,7 +961,7 @@ class HScript {
 			final ret = Reflect.callMethod(null, func, args ?? []);
 			return {funName: funcToRun, signature: func, returnValue: ret};
 		}
-		catch (e:IrisError)
+		catch (e:Error)
 		{
 			var pos:HScriptInfos = cast this.interp.posInfos();
 			pos.funcName = funcToRun;
