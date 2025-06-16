@@ -24,6 +24,8 @@ import openfl.Assets;
 
 import lime.app.Application;
 
+import shaders.ColorblindFilter;
+
 class InitState extends MusicBeatState {
     var skipVideo:FlxText;
     public static var updateVersion:String = '';
@@ -58,16 +60,14 @@ class InitState extends MusicBeatState {
 
 		ColorblindFilter.UpdateColors();
 
-		if (!initialized)
+		if (FlxG.save.data != null && FlxG.save.data.fullscreen)
 		{
-			if (FlxG.save.data != null && FlxG.save.data.fullscreen)
-			{
-				FlxG.fullscreen = FlxG.save.data.fullscreen;
-				// trace('LOADED FULLSCREEN SETTING!!');
-			}
-			persistentUpdate = true;
-			persistentDraw = true;
+			FlxG.fullscreen = FlxG.save.data.fullscreen;
+			// trace('LOADED FULLSCREEN SETTING!!');
 		}
+		persistentUpdate = true;
+		persistentDraw = true;
+		
 
         #if android
 		if (AppData.getVersionName() != Application.current.meta.get('version')
