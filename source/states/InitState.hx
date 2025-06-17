@@ -29,9 +29,6 @@ import states.PirateState;
 
 class InitState extends MusicBeatState
 {
-	public static var initialized:Bool = false;
-	public static var inGame:Bool = false;
-
 	public static var ignoreCopy:Bool = false;
 
 	var skipVideo:FlxText;
@@ -47,7 +44,6 @@ class InitState extends MusicBeatState
 		FlxTransitionableState.skipNextTransOut = true;
 		FlxTransitionableState.skipNextTransIn = true;
 		
-
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
 		#end
@@ -207,16 +203,14 @@ class InitState extends MusicBeatState
 	
 		Highscore.load();
 	
-		if (!initialized)
+		if (FlxG.save.data != null && FlxG.save.data.fullscreen)
 		{
-			if (FlxG.save.data != null && FlxG.save.data.fullscreen)
-			{
-				FlxG.fullscreen = FlxG.save.data.fullscreen;
-				// trace('LOADED FULLSCREEN SETTING!!');
-			}
-			persistentUpdate = true;
-			persistentDraw = true;
+			FlxG.fullscreen = FlxG.save.data.fullscreen;
+			// trace('LOADED FULLSCREEN SETTING!!');
 		}
+		persistentUpdate = true;
+		persistentDraw = true;
+		
 	
 		ColorblindFilter.UpdateColors();
 	
@@ -252,31 +246,17 @@ class InitState extends MusicBeatState
 			#if VIDEOS_ALLOWED
 			startVideo('menuExtend/titleIntro');
 			#else
-			startCutscenesOut();
+			
 			#end
-		else
-			startCutscenesOut();
-	}
-	
-	function startCutscenesOut()
-	{
-		inGame = true;
-		startIntro();
-	}
-	
-	function startIntro()
-	{
-		persistentUpdate = true;
-		Paths.clearUnusedMemory();
+		else {
+		
+		}
 	}
 	
 	private static var playJingle:Bool = false;
 	
 	override function update(elapsed:Float)
 	{
-		if (FlxG.sound.music != null)
-			Conductor.songPosition = FlxG.sound.music.time;
-			
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
 	
 		#if FLX_TOUCH
@@ -313,23 +293,15 @@ class InitState extends MusicBeatState
 		
 		if (pressedEnter)
 		{
-			new FlxTimer().start(1, function(tmr:FlxTimer)
+			if (mustUpdate && !OutdatedState.leftState)
 			{
-				if (mustUpdate && !OutdatedState.leftState)
-				{
-					MusicBeatState.switchState(new OutdatedState());
-				}
-				else
-				{
-					MusicBeatState.switchState(new TitleState());
-				}
-				closedState = true;
-			});
-		}
-	
-		if (initialized && pressedEnter && !skippedIntro)
-		{
-			skipIntro();
+				MusicBeatState.switchState(new OutdatedState());
+			}
+			else
+			{
+				//MusicBeatState.switchState(new TitleState());
+			}
+			closedState = true;
 		}
 	
 		if (videoBool)
@@ -339,8 +311,7 @@ class InitState extends MusicBeatState
 				video.stop();
 				video.visible = false;
 				videoBool = false;
-				skipVideo.visible = false;
-				startCutscenesOut();
+				skipVideo.visible = false;			
 			}
 		}
 	
@@ -348,20 +319,6 @@ class InitState extends MusicBeatState
 	}
 	
 	public static var closedState:Bool = false;
-	
-	var skippedIntro:Bool = false;
-	
-	function skipIntro():Void
-	{
-		if (!skippedIntro)
-		{
-			if (playJingle)
-			{
-				playJingle = false;
-			}
-			skippedIntro = true;
-		}
-	}
 	
 	#if VIDEOS_ALLOWED
 	var video:FlxVideoSprite;
@@ -428,7 +385,7 @@ class InitState extends MusicBeatState
 		if (video != null)
 			video.stop();
 		video.visible = false;
-		startCutscenesOut();
+		
 		videoBool = false;
 		trace("end");
 	}
