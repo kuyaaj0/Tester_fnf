@@ -30,6 +30,21 @@ import backend.device.AppData;
 import states.PirateState;
 #end
 
+typedef TitleData =
+{
+	titlex:Float,
+	titley:Float,
+	titlescalex:Float,
+	titlescaley:Float,
+	startx:Float,
+	starty:Float,
+	startscalex:Float,
+	startscaley:Float,
+	gfx:Float,
+	gfy:Float,
+	backgroundSprite:String,
+}
+
 class InitState extends MusicBeatState
 {
 	public static var muteKeys:Array<FlxKey> = [FlxKey.ZERO];
