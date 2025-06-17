@@ -92,6 +92,8 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
+		FlxG.save.bind('funkin', CoolUtil.getSavePath());
+	
 		// IGNORE THIS!!!
 		titleJSON = Json.parse(Paths.getTextFromFile('images/gfDanceTitle.json'));
 	
