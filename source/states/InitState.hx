@@ -241,26 +241,13 @@ class InitState extends MusicBeatState
 		}
 		else
 		{
-			if (initialized)
-				startCutscenesIn();
-			else
-			{
-				new FlxTimer().start(1, function(tmr:FlxTimer)
-				{
-					startCutscenesIn();
-				});
-			}
+			startCutscenesIn();		
 		}
 		#end
 	}
 	
 	function startCutscenesIn()
 	{
-		if (inGame)
-		{
-			startIntro();
-			return;
-		}
 		if (!ClientPrefs.data.skipTitleVideo)
 			#if VIDEOS_ALLOWED
 			startVideo('menuExtend/titleIntro');
