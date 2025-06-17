@@ -15,7 +15,7 @@ import openfl.display.StageScaleMode;
 import openfl.events.KeyboardEvent;
 import lime.system.System as LimeSystem;
 import lime.app.Application;
-import states.TitleState;
+import states.InitState;
 import mobile.backend.Data;
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
@@ -40,7 +40,7 @@ class Main extends Sprite
 	private static var game = {
 		width: 1280, // WINDOW width
 		height: 720, // WINDOW height
-		initialState: TitleState, // initial game state
+		initialState: InitState, // initial game state
 		zoom: -1.0, // game state bounds
 		framerate: 60, // default framerate
 		skipSplash: true, // if the default flixel splash screen should be skipped
