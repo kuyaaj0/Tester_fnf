@@ -14,7 +14,6 @@ import shaders.ColorblindFilter;
 import states.StoryMenuState;
 import states.OutdatedState;
 import states.MainMenuState;
-import states.TitleState;
 #if mobile
 import mobile.states.CopyState;
 #end
