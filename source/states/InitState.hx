@@ -295,7 +295,7 @@ class InitState extends MusicBeatState
 		#if FLX_TOUCH
 		for (touch in FlxG.touches.list)
 		{
-			if (touch.justPressed)
+			if (touch.justPressed && videoBool)
 			{
 				pressedEnter = true;
 			}
