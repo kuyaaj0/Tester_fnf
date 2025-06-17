@@ -2,18 +2,14 @@ package states;
 
 import backend.WeekData;
 import backend.Highscore;
-import flixel.input.keyboard.FlxKey;
+
 import flixel.addons.transition.FlxTransitionableState;
-import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.graphics.frames.FlxFrame;
-import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
-import haxe.Json;
+
 import openfl.Assets;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
-import openfl.Lib;
-import shaders.ColorSwap;
+
 import shaders.ColorblindFilter;
 import states.StoryMenuState;
 import states.OutdatedState;
@@ -32,35 +28,12 @@ import states.PirateState;
 
 class InitState extends MusicBeatState
 {
-	public static var muteKeys:Array<FlxKey> = [FlxKey.ZERO];
-	public static var volumeDownKeys:Array<FlxKey> = [FlxKey.NUMPADMINUS, FlxKey.MINUS];
-	public static var volumeUpKeys:Array<FlxKey> = [FlxKey.NUMPADPLUS, FlxKey.PLUS];
-
 	public static var initialized:Bool = false;
 	public static var inGame:Bool = false;
 
 	public static var ignoreCopy:Bool = false;
 
-	var blackScreen:FlxSprite;
-	var credGroup:FlxGroup;
-	var credTextShit:Alphabet;
-	var textGroup:FlxGroup;
-	var ngSpr:FlxSprite;
-
 	var skipVideo:FlxText;
-
-	var titleTextColors:Array<FlxColor> = [0xFF33FFFF, 0xFF3333CC];
-	var titleTextAlphas:Array<Float> = [1, .64];
-
-	var curWacky:Array<String> = [];
-
-	var wackyImage:FlxSprite;
-
-	#if TITLE_SCREEN_EASTER_EGG
-	var easterEggKeys:Array<String> = ['SHADOW', 'RIVER', 'BBPANZU'];
-	var allowedKeys:String = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	var easterEggKeysBuffer:String = '';
-	#end
 
 	var checkOpenFirst:Bool = false;
 
@@ -232,12 +205,6 @@ class InitState extends MusicBeatState
 		#end
 	}
 	
-	var logoBl:FlxSprite;
-	var gfDance:FlxSprite;
-	var danceLeft:Bool = false;
-	var titleText:FlxSprite;
-	var swagShader:ColorSwap = null;
-	
 	function startCutscenesIn()
 	{
 		if (inGame)
@@ -267,12 +234,7 @@ class InitState extends MusicBeatState
 		Paths.clearUnusedMemory();
 	}
 	
-	var transitioning:Bool = false;
-	
 	private static var playJingle:Bool = false;
-	
-	var newTitle:Bool = false;
-	var titleTimer:Float = 0;
 	
 	override function update(elapsed:Float)
 	{
@@ -349,12 +311,9 @@ class InitState extends MusicBeatState
 		super.update(elapsed);
 	}
 	
-	private var sickBeats:Int = 0; // Basically curBeat but won't be skipped if you hold the tab or resize the screen
-	
 	public static var closedState:Bool = false;
 	
 	var skippedIntro:Bool = false;
-	var increaseVolume:Bool = false;
 	
 	function skipIntro():Void
 	{
