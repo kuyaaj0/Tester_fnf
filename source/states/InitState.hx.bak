@@ -36,6 +36,8 @@ class InitState extends MusicBeatState
 
 	var skipVideo:FlxText;
 
+	var checkOpenFirst:Bool = false;
+
 	var mustUpdate:Bool = false;
 
 	public static var updateVersion:String = '';
@@ -44,9 +46,11 @@ class InitState extends MusicBeatState
 	{
 		Paths.clearStoredMemory();
 
-		FlxTransitionableState.skipNextTransOut = true;
-		FlxTransitionableState.skipNextTransIn = true;
-		
+		if (!checkOpenFirst)
+		{
+			FlxTransitionableState.skipNextTransOut = true;
+			checkOpenFirst = true;
+		}
 
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
@@ -59,8 +63,6 @@ class InitState extends MusicBeatState
 		super.create();
 
 		FlxG.save.bind('funkin', CoolUtil.getSavePath());
-		
-		ClientPrefs.loadPrefs();
 		
 		#if LUA_ALLOWED
 		#if (android && EXTERNAL || MEDIA)

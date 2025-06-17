@@ -133,8 +133,8 @@ class ResultsScreen extends MusicBeatSubstate
 		background.antialiasing = ClientPrefs.data.antialiasing;
 		add(background);
 		background.screenCenter();
-		
-		var blurFilter:BlurFilter = new BlurFilter(10, 10, 3);
+		// var blurFilter:BlurFilter = new BlurFilter(10, 10, 3);
+		var blurFilter = loadBackShader();
 		var filterFrames = FlxFilterFrames.fromFrames(background.frames, Std.int(background.width), Std.int(background.height), [blurFilter]);
 		filterFrames.applyToSprite(background, false, true);
 		background.alpha = 0;
@@ -974,7 +974,7 @@ class ResultsScreen extends MusicBeatSubstate
 		super.destroy();
 	}
 
-	/*function loadBackShader()
+	function loadBackShader()
 	{
 		var frag:String = "
 		#pragma header
@@ -1020,5 +1020,4 @@ class ResultsScreen extends MusicBeatSubstate
 		filter = new ShaderFilter(shader);
 		return filter;
 	}
-		*/
 }

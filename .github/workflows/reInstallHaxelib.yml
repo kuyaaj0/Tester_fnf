@@ -5,11 +5,19 @@ on:
   workflow_call:
 
 env:
+<<<<<<< HEAD
   HAXE_VERSION: 4.3.6
 
 jobs:
   build:
     name: reInstallHaxelib
+=======
+  HAXE_VERSION: 4.3.7
+
+jobs:
+  build:
+    name: InstallHaxelib
+>>>>>>> 72cc83bc13ea79a41aeb6570ceb3f28406f4bc5a
     runs-on: macos-15
     steps:
       - name: Checkout

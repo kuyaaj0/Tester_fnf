@@ -16,18 +16,14 @@ class OptionsState extends MusicBeatState
 
 	var filePath:String = 'menuExtend/OptionsState/';
 
-	var optionCate:Array<String> = [];
-
 	
 	
 	override function create()
 	{
 		persistentUpdate = persistentDraw = true;
+
+
 		instance = this;
-
-		optionCate = ['General', 'User InterFace', 'Gameplay', 'Game UI', 'Skin', 'Input', 'Audio', 'Graphics', 'Maintenance'];
-
-		////////////////////////////////////////////////////////////////////////
 
 		var bg = new Rect(0, 0, FlxG.width, FlxG.height, 0, 0, 0x302E3A);
 		add(bg);

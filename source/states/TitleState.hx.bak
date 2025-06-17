@@ -90,14 +90,10 @@ class TitleState extends MusicBeatState
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
-		if (!checkOpenFirst)
-		{
-			FlxTransitionableState.skipNextTransOut = true;
-			checkOpenFirst = true;
-		}
-
 		super.create();
 
+		FlxG.save.bind('funkin', CoolUtil.getSavePath());
+	
 		// IGNORE THIS!!!
 		titleJSON = Json.parse(Paths.getTextFromFile('images/gfDanceTitle.json'));
 	
