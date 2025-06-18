@@ -90,12 +90,6 @@ class TitleState extends MusicBeatState
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
-		if (!checkOpenFirst)
-		{
-			FlxTransitionableState.skipNextTransOut = true;
-			checkOpenFirst = true;
-		}
-
 		super.create();
 
 		// IGNORE THIS!!!
@@ -144,14 +138,25 @@ class TitleState extends MusicBeatState
 		#elseif CHARTING
 		MusicBeatState.switchState(new ChartingState());
 		#else
-		if (initialized)
-			startCutscenesIn();
+		if (!ClientPrefs.data.openedFlash)
+		{
+			ClientPrefs.data.openedFlash = true;
+			ClientPrefs.saveSettings();
+			FlxTransitionableState.skipNextTransIn = true;
+			FlxTransitionableState.skipNextTransOut = true;
+			MusicBeatState.switchState(new FlashingState());
+		}
 		else
 		{
-			new FlxTimer().start(1, function(tmr:FlxTimer)
-			{
+			if (initialized)
 				startCutscenesIn();
-			});
+			else
+			{
+				new FlxTimer().start(1, function(tmr:FlxTimer)
+				{
+					startCutscenesIn();
+				});
+			}
 		}
 		#end
 	}
