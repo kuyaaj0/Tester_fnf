@@ -39,14 +39,11 @@ class InitState extends MusicBeatState
 
 	override public function create():Void
 	{
-			Paths.clearStoredMemory();
+		Paths.clearStoredMemory();
 
-		if (!checkOpenFirst)
-		{
-			FlxTransitionableState.skipNextTransOut = true;
-			checkOpenFirst = true;
-		}
-
+		
+		FlxTransitionableState.skipNextTransOut = true;
+		
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
 		#end
@@ -54,8 +51,6 @@ class InitState extends MusicBeatState
 		FlxG.fixedTimestep = false;
 		FlxG.game.focusLostFramerate = 60;
 		FlxG.keys.preventDefaultKeys = [TAB];
-
-		curWacky = FlxG.random.getObject(getIntroTextShit());
 
 		super.create();
 
@@ -123,7 +118,7 @@ class InitState extends MusicBeatState
 		Mods.loadTopMod();
 
 		#if CHECK_FOR_UPDATES
-		if (ClientPrefs.data.checkForUpdates && !closedState)
+		if (ClientPrefs.data.checkForUpdates)
 		{
 			try
 			{
