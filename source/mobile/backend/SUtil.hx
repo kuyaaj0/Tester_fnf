@@ -36,6 +36,8 @@ class SUtil
 		daPath = haxe.io.Path.addTrailingSlash(daPath);
 		#elseif ios
 		daPath = LimeSystem.documentsDirectory;
+		#else
+		daPath = Sys.getCwd();
 		#end
 
 		return daPath;

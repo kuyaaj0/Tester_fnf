@@ -15,7 +15,6 @@ import openfl.display.StageScaleMode;
 import openfl.events.KeyboardEvent;
 import lime.system.System as LimeSystem;
 import lime.app.Application;
-import states.InitState;
 import states.TitleState;
 import mobile.backend.Data;
 #if HSCRIPT_ALLOWED
