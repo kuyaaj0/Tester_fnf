@@ -56,27 +56,9 @@ class InitState extends MusicBeatState
 		FlxG.save.bind('funkin', CoolUtil.getSavePath());
 		
 		ClientPrefs.loadPrefs();
-		
-		#if LUA_ALLOWED
-		#if (android && EXTERNAL || MEDIA)
-		try
-		{
-		#end
-			Mods.pushGlobalMods();
-		#if (android && EXTERNAL || MEDIA)
-		}
-		catch (e:Dynamic)
-		{
-			SUtil.showPopUp("permission is not obtained, restart the application", "Error!");
-			Sys.exit(1);
-		}
-		#end
-		#end
-	
-		Mods.loadTopMod();
 	
 		#if CHECK_FOR_UPDATES
-		if (ClientPrefs.data.checkForUpdates && !closedState)
+		if (ClientPrefs.data.checkForUpdates)
 		{
 			try
 			{
@@ -272,9 +254,8 @@ class InitState extends MusicBeatState
 			{
 				FlxTransitionableState.skipNextTransIn = true;
 				FlxTransitionableState.skipNextTransOut = true;
-				MusicBeatState.switchState(new TitleState());
+				//MusicBeatState.switchState(new TitleState());
 			}
-			closedState = true;
 		}
 	
 		if (videoBool)
@@ -290,8 +271,6 @@ class InitState extends MusicBeatState
 	
 		super.update(elapsed);
 	}
-	
-	public static var closedState:Bool = false;
 	
 	#if VIDEOS_ALLOWED
 	var video:FlxVideoSprite;

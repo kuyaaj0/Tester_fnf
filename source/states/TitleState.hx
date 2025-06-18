@@ -144,25 +144,14 @@ class TitleState extends MusicBeatState
 		#elseif CHARTING
 		MusicBeatState.switchState(new ChartingState());
 		#else
-		if (!ClientPrefs.data.openedFlash)
-		{
-			ClientPrefs.data.openedFlash = true;
-			ClientPrefs.saveSettings();
-			FlxTransitionableState.skipNextTransIn = true;
-			FlxTransitionableState.skipNextTransOut = true;
-			MusicBeatState.switchState(new FlashingState());
-		}
+		if (initialized)
+			startCutscenesIn();
 		else
 		{
-			if (initialized)
-				startCutscenesIn();
-			else
+			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
-				new FlxTimer().start(1, function(tmr:FlxTimer)
-				{
-					startCutscenesIn();
-				});
-			}
+				startCutscenesIn();
+			});
 		}
 		#end
 	}
