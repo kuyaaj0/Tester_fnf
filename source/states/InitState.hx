@@ -145,7 +145,6 @@ class InitState extends MusicBeatState
 		catch (e:Dynamic)
 		{
 			SUtil.showPopUp("permission is not obtained, restart the application", "Error!");
-			Sys.exit(1);
 		}
 		#end
 		#end
