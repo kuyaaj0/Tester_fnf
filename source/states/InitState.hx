@@ -131,6 +131,8 @@ class InitState extends MusicBeatState
 			}
 		}
 		#end
+
+		Sys.sleep(0.1);
 		
 		#if LUA_ALLOWED
 		#if (android && EXTERNAL || MEDIA)
@@ -162,7 +164,7 @@ class InitState extends MusicBeatState
 		persistentUpdate = true;
 		persistentDraw = true;
 
-		Sys.sleep(0.1);
+		
 		
 	
 		ColorblindFilter.UpdateColors();
