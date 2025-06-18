@@ -42,7 +42,6 @@ class InitState extends MusicBeatState
 		Paths.clearStoredMemory();
 
 		FlxTransitionableState.skipNextTransOut = true;
-		FlxTransitionableState.skipNextTransIn = true;
 		
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
@@ -299,7 +298,9 @@ class InitState extends MusicBeatState
 			}
 			else
 			{
-				//MusicBeatState.switchState(new TitleState());
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				MusicBeatState.switchState(new TitleState());
 			}
 			closedState = true;
 		}
