@@ -27,12 +27,6 @@ jobs:
         buildArgs: ${{ matrix.buildArgs }}
         artifactName: ${{ matrix.artifactName }}
         artifactPath: ${{ matrix.artifactPath }}
-<<<<<<< HEAD
-
-  reinstallHaxelib:
-     uses: ./.github/workflows/reInstallHaxelib.yml
-=======
         
   reInstallHaxelib:
     uses: ./.github/workflows/reInstallHaxelib.yml
->>>>>>> 72cc83bc13ea79a41aeb6570ceb3f28406f4bc5a
