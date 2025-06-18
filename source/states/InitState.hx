@@ -168,36 +168,6 @@ class InitState extends MusicBeatState
 	
 		Mods.loadTopMod();
 	
-		#if CHECK_FOR_UPDATES
-		if (ClientPrefs.data.checkForUpdates && !closedState)
-		{
-			try
-			{
-				trace('checking for update');
-				var http = new haxe.Http("https://raw.githubusercontent.com/beihu235/FNF-NovaFlare-Engine/main/gitVersion.txt");
-	
-				http.onData = function(data:String)
-				{
-					updateVersion = data.split('\n')[0].trim();
-					var curVersion:Float = MainMenuState.novaFlareEngineDataVersion;
-					trace('version online: ' + data.split('\n')[0].trim() + ', your version: ' + MainMenuState.novaFlareEngineVersion);
-					if (Std.parseFloat(updateVersion) > curVersion)
-					{
-						trace('versions arent matching!');
-						mustUpdate = true;
-					}
-				}
-	
-				http.onError = function(error)
-				{
-					trace('error: $error');
-				}
-	
-				http.request();
-			}
-		}
-		#end
-	
 		Language.resetData();
 	
 		Highscore.load();
@@ -209,6 +179,8 @@ class InitState extends MusicBeatState
 		}
 		persistentUpdate = true;
 		persistentDraw = true;
+
+		Sys.sleep(0.1);
 		
 	
 		ColorblindFilter.UpdateColors();
