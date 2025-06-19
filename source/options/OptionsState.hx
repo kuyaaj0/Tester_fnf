@@ -28,6 +28,9 @@ class OptionsState extends MusicBeatState
 		var bg = new Rect(0, 0, FlxG.width, FlxG.height, 0, 0, 0x302E3A);
 		add(bg);
 
+		var naviBG = new Rect(0, 0, FlxG.width, UIScale.adjust(FlxG.height * 0.1), 0, 0, 0x24232C);
+		add(naviBG);
+
 		var backShape = new GeneralBack(0, 720 - 75, 250, 75, Language.get('back', 'ma'), EngineSet.mainColor, backMenu);
 		add(backShape);
 		
