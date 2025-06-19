@@ -1,6 +1,6 @@
 package objects.state.general;
 
-class BackButton extends FlxSpriteGroup
+class GeneralBack extends FlxSpriteGroup
 {
 	var background:Rect;
 	var button:FlxSprite;
