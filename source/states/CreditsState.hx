@@ -325,7 +325,7 @@ class CreditsState extends MusicBeatState
 		add(bg);
 		bg.screenCenter();
 
-		var back = new BackButton(0, 0, 250, 75, Language.get('back', 'ma'), 0x53b7ff, backMenu);
+		var back = new GeneralBack(0, 0, 250, 75, Language.get('back', 'ma'), 0x53b7ff, backMenu);
 		back.y = FlxG.height - 75;
 		add(back);
 

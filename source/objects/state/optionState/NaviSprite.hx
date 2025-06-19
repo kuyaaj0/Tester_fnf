@@ -37,5 +37,7 @@ class NaviSprite extends FlxSpriteGroup
         textDis.x += height * (0.8 + 0.1);
         textDis.y += height * 0.5 - textDis * 0.5;
 		add(textDis);
+
+        
     }
 }

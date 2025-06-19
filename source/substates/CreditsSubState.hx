@@ -33,7 +33,7 @@ class CreditsSubState extends MusicBeatSubstate
 	var bigIconRect:Rect;
 	var descRect:Rect;
 
-	var backShape:BackButton;
+	var backShape:GeneralBack;
 
 	var offsetThing:Float = -75;
 
@@ -127,7 +127,7 @@ class CreditsSubState extends MusicBeatSubstate
 			RectPos(i);
 		}
 
-		backShape = new BackButton(0, 570, 230, 150, Language.get('back', 'ma'), 0x53b7ff, backMenu);
+		backShape = new GeneralBack(0, 570, 230, 150, Language.get('back', 'ma'), 0x53b7ff, backMenu);
 		add(backShape);
 
 		var BG:Rect = new Rect(0, FlxG.height - 150, bgwidth, 5, 0, 0, FlxColor.BLACK, 1);
