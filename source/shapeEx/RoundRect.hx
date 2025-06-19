@@ -31,8 +31,8 @@ class RoundRect extends FlxSpriteGroup
 	var mainWidth:Float;
 	var mainHeight:Float;
 	var mainRound:Float;
-	var mainX:Float;
-	var mainY:Float;
+	public var mainX:Float;
+	public var mainY:Float;
 	var widthEase:String;
 	var heightEase:String;
 
@@ -51,19 +51,19 @@ class RoundRect extends FlxSpriteGroup
 
 		leftUpRound = drawRoundRect(0, 0, round, round, round, 1);
 		add(leftUpRound);
-		midUpRect = drawRect(round, 0, width - round * 2, round);
+		midUpRect = drawRect(leftUpRound.width, 0, width - round * 2, round);
 		add(midUpRect);
-		rightUpRound = drawRoundRect(width - round, 0, round, round, round, 2);
+		rightUpRound = drawRoundRect(leftUpRound.width + midUpRect.width, 0, round, round, round, 2);
 		add(rightUpRound);
 
-		midRect = drawRect(0, round, width, height - round * 2);
+		midRect = drawRect(0, leftUpRound.height, leftUpRound.width + midUpRect.width + rightUpRound.width, height - round * 2);
 		add(midRect);
 
-		leftDownRound = drawRoundRect(0, height - round, round, round, round, 3);
+		leftDownRound = drawRoundRect(0, leftUpRound.height + midRect.height, round, round, round, 3);
 		add(leftDownRound);
-		midDownRect = drawRect(round, height - round, width - round * 2, round);
+		midDownRect = drawRect(leftDownRound.width, leftUpRound.height + midRect.height, width - round * 2, round);
 		add(midDownRect);
-		rightDownRound = drawRoundRect(width - round, height - round, round, round, round, 4);
+		rightDownRound = drawRoundRect(leftDownRound.width + midDownRect.width, leftUpRound.height + midRect.height, round, round, round, 4);
 		add(rightDownRound);
 	}
 

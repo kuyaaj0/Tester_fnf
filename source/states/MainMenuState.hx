@@ -193,8 +193,9 @@ class MainMenuState extends MusicBeatState
 			});
 		}
 
-		/*
-			var test = new ExtraRoundRect(200, 200, 300, 100, 20);
+			/*
+			var test = new RoundRect(200, 300, 300, 100, 20, LEFT_UP);
+			test.alpha = 0.3;
 			add(test);
 			new FlxTimer().start(0.6, function(tmr:FlxTimer){
 			test.changeWidth(100, 0.6);
@@ -202,8 +203,9 @@ class MainMenuState extends MusicBeatState
 			new FlxTimer().start(1.2, function(tmr:FlxTimer){
 			test.changeWidth(500, 0.6);
 			test.changeHeight(500, 0.6);
-		});*/
-
+			});
+			*/
+		/*
 		var thread = Thread.create(() ->
 		{
 			updateGitAction(function(result)
@@ -275,7 +277,7 @@ class MainMenuState extends MusicBeatState
 				StatusIcon.x = FlxG.width - StatusIcon.width * StatusIcon.scale.x / 2 * 3 - 10;
 				StatusIcon.y = updateShit.height + 10 - StatusIcon.height * StatusIcon.scale.y / 2;
 			}
-		});
+		}); */
 
 		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 400, Language.get('novaFlareEngine', 'mm') + " v " + novaFlareEngineVersion, 12);
 		versionShit.scrollFactor.set();

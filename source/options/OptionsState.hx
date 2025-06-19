@@ -17,6 +17,10 @@ class OptionsState extends MusicBeatState
 	var filePath:String = 'menuExtend/OptionsState/';
 
 	var naviArray = [];
+
+	var extraBG:Rect;
+
+	var specButton:SpecButton;
 	
 	override function create()
 	{
@@ -33,7 +37,7 @@ class OptionsState extends MusicBeatState
 			'Audio',
 			'Graphics',
 			'Maintenance'	
-		]
+		];
 
 		var bg = new Rect(0, 0, FlxG.width, FlxG.height, 0, 0, 0x302E3A);
 		add(bg);
@@ -41,7 +45,25 @@ class OptionsState extends MusicBeatState
 		var naviBG = new RoundRect(0, 0, UIScale.adjust(FlxG.width * 0.2), FlxG.height, 0, LEFT_CENTER,  0x24232C);
 		add(naviBG);
 
-		var backShape = new GeneralBack(0, 720 - 75, UIScale.adjust(FlxG.width * 0.2), 75, Language.get('back', 'ma'), EngineSet.mainColor, backMenu);
+		var downBG = new Rect(0, FlxG.height - Std.int(UIScale.adjust(FlxG.height * 0.1)), FlxG.width, Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, 0x24232C);
+		add(downBG);
+
+		specButton = new SpecButton(
+			FlxG.width - Std.int(UIScale.adjust(FlxG.width * 0.15)) - Std.int(UIScale.adjust(FlxG.height * 0.01)), 
+			downBG.y + Std.int(UIScale.adjust(FlxG.height * 0.01)),
+			Std.int(UIScale.adjust(FlxG.width * 0.15)), 
+			Std.int(UIScale.adjust(FlxG.height * 0.08))
+		);
+		add(specButton);
+		
+		for (i in 0...naviArray.length)
+		{
+			var naviSprite = new NaviSprite(UIScale.adjust(FlxG.width * 0.005), UIScale.adjust(FlxG.height * 0.005) + i * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.width * 0.19), UIScale.adjust(FlxG.height * 0.09), naviArray[i], i, false);
+			naviSprite.antialiasing = ClientPrefs.data.antialiasing;
+			add(naviSprite);
+		}
+
+		var backShape = new GeneralBack(0, 720 - 72, UIScale.adjust(FlxG.width * 0.2), UIScale.adjust(FlxG.height * 0.1), Language.get('back', 'ma'), EngineSet.mainColor, backMenu);
 		add(backShape);
 		
 
