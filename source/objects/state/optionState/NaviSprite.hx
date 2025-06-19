@@ -8,7 +8,7 @@ class NaviSprite extends FlxSpriteGroup
     public var isModsAdd:Bool = false;
     public var onForce:Bool = false;
 
-    public var background:ExtraRoundRect;
+    public var background:RoundRect;
     public var icon:FlxSprite;
     public var textDis:FlxText;
 
@@ -18,7 +18,8 @@ class NaviSprite extends FlxSpriteGroup
         super(X, Y);
         optionSort = sort;
 
-        background = new ExtraRoundRect(0, 0, width, height, LEFT_CENTER);
+        background = new RoundRect(0, 0, width, height, LEFT_CENTER);
+        background.alpha = 0.000001;
         add(background);
 
         icon = new FlxSprite().loadGraphic(Paths.image(filePath + name));
@@ -37,7 +38,5 @@ class NaviSprite extends FlxSpriteGroup
         textDis.x += height * (0.8 + 0.1);
         textDis.y += height * 0.5 - textDis * 0.5;
 		add(textDis);
-
-        
     }
 }

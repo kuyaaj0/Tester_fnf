@@ -15,7 +15,7 @@ enum OriginType
     RIGHT_DOWN;
 }
 
-class ExtraRoundRect extends FlxSpriteGroup
+class RoundRect extends FlxSpriteGroup
 {
 	var leftUpRound:FlxSprite;
 	var midUpRect:FlxSprite;
@@ -72,7 +72,7 @@ class ExtraRoundRect extends FlxSpriteGroup
 		super.update(elapsed);
 	}
 
-	var widthTweenArray:Array<FlxTween> = [];
+	//////////////////////////////////////////////////////
 
     var widthTweenArray:Array<FlxTween> = [];
     public function changeWidth(data:Float, time:Float = 0.6, ease:String = 'backInOut') {
@@ -133,18 +133,24 @@ class ExtraRoundRect extends FlxSpriteGroup
         }
     }
 
-		var output:Float = calcData(mainWidth, data, mainRound);
-		widthTween(midDownRect.scale, output, time, widthEase);
-		widthTween(midDownRect, mainX - (mainWidth - data - mainRound * 2) / 2, time, widthEase);
-		widthTween(rightDownRound, mainX + data - mainRound, time, widthEase);
-	}
-
 	function widthTween(tag:Dynamic, duration:Float, time:Float, easeType:String)
 	{
 		var tween = FlxTween.tween(tag, {x: duration}, time, {ease: getTweenEaseByString(easeType)});
 		widthTweenArray.push(tween);
 	}
 
+	//////////////////////////////////////////////////////////////
+
+	var heightTweenArray:Array<FlxTween> = [];
+	public function changeHeight(data:Float, time:Float = 0.6, ease:String = 'backInOut')
+	{
+		heightEase = ease;
+		for (i in 0...heightTweenArray.length)
+		{
+			if (heightTweenArray[i] != null)
+				heightTweenArray[i].cancel();
+		}
+		heightTweenArray = [];
         switch(originEase)
         {
             case LEFT_UP, CENTER_UP, RIGHT_UP :
@@ -181,30 +187,13 @@ class ExtraRoundRect extends FlxSpriteGroup
         }
     }
 
-	public function changeHeight(data:Float, time:Float = 0.6, ease:String = 'backInOut')
-	{
-		heightEase = ease;
-		for (i in 0...heightTweenArray.length)
-		{
-			if (heightTweenArray[i] != null)
-				heightTweenArray[i].cancel();
-		}
-		heightTweenArray = [];
-
-		var output:Float = calcData(mainHeight, data, mainRound);
-		heightTween(midRect.scale, output, time, heightEase);
-		heightTween(midRect, mainY - (mainHeight - data - mainRound * 2) / 2, time, heightEase);
-
-		heightTween(leftDownRound, mainY + data - mainRound, time, heightEase);
-		heightTween(midDownRect, mainY + data - mainRound, time, heightEase);
-		heightTween(rightDownRound, mainY + data - mainRound, time, heightEase);
-	}
-
 	function heightTween(tag:Dynamic, duration:Float, time:Float, easeType:String)
 	{
 		var tween = FlxTween.tween(tag, {y: duration}, time, {ease: getTweenEaseByString(easeType)});
 		heightTweenArray.push(tween);
 	}
+
+	//////////////////////////////////////////////////////////
 
 	function calcData(init:Float, target:Float, assist:Float):Float
 	{
