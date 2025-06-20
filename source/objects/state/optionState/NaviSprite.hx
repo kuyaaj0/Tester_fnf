@@ -66,7 +66,7 @@ class NaviSprite extends FlxSpriteGroup
 		onFocus = FlxG.mouse.overlaps(this);
 
 		if (onFocus) {
-            if (background.alpha < 0.1) background.alpha += EngineSet.FPSfix(0.015 * elapsed);
+            if (background.alpha < 0.2) background.alpha += EngineSet.FPSfix(0.015 * elapsed);
 
             if (FlxG.mouse.justPressed) {
                 

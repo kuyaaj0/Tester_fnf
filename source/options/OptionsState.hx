@@ -20,6 +20,7 @@ class OptionsState extends MusicBeatState
 
 	var extraBG:Rect;
 
+	var tipButton:TipButton;
 	var specButton:SpecButton;
 	
 	override function create()
@@ -45,8 +46,20 @@ class OptionsState extends MusicBeatState
 		var naviBG = new RoundRect(0, 0, UIScale.adjust(FlxG.width * 0.2), FlxG.height, 0, LEFT_CENTER,  0x24232C);
 		add(naviBG);
 
-		var downBG = new Rect(0, FlxG.height - Std.int(UIScale.adjust(FlxG.height * 0.1)), FlxG.width, Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, 0x24232C);
+		var downBG = new Rect(0, FlxG.height - Std.int(UIScale.adjust(FlxG.height * 0.1)), FlxG.width, Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, 0x24232C, 0.5);
 		add(downBG);
+
+		tipButton = new TipButton(
+			UIScale.adjust(FlxG.width * 0.2) + UIScale.adjust(FlxG.height * 0.01), 
+			downBG.y + Std.int(UIScale.adjust(FlxG.height * 0.01)),
+			FlxG.width - UIScale.adjust(FlxG.width * 0.2) - UIScale.adjust(FlxG.height * 0.01) - Std.int(UIScale.adjust(FlxG.width * 0.15)) - Std.int(UIScale.adjust(FlxG.height * 0.01) * 2), 
+			Std.int(UIScale.adjust(FlxG.height * 0.08))
+		);
+		add(tipButton);
+		tipButton.changeText('text', 0.6);
+		new FlxTimer().start(1.2, function(tmr:FlxTimer){
+			tipButton.changeText('textsssssssssssss', 0.6);
+		});
 
 		specButton = new SpecButton(
 			FlxG.width - Std.int(UIScale.adjust(FlxG.width * 0.15)) - Std.int(UIScale.adjust(FlxG.height * 0.01)), 
@@ -54,7 +67,11 @@ class OptionsState extends MusicBeatState
 			Std.int(UIScale.adjust(FlxG.width * 0.15)), 
 			Std.int(UIScale.adjust(FlxG.height * 0.08))
 		);
+		specButton.alpha = 0.5;
 		add(specButton);
+
+		var extraBG = new Rect(UIScale.adjust(FlxG.width * 0.2), 0, FlxG.width - UIScale.adjust(FlxG.width * 0.2), Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, 0x24232C, 0.5);
+		add(extraBG);
 		
 		for (i in 0...naviArray.length)
 		{

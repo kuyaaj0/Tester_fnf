@@ -42,9 +42,6 @@ class RoundRect extends FlxSpriteGroup
     {
         super(X, Y);
         this.mainColor = color;
-        mainWidth = width;
-        mainHeight = height;
-        mainRound = round;
         mainX = X;
         mainY = Y;
         originEase = ease;
@@ -65,6 +62,10 @@ class RoundRect extends FlxSpriteGroup
 		add(midDownRect);
 		rightDownRound = drawRoundRect(leftDownRound.width + midDownRect.width, leftUpRound.height + midRect.height, round, round, round, 4);
 		add(rightDownRound);
+
+		mainWidth = midRect.width;
+        mainHeight = leftUpRound.height + midRect.height + leftDownRound.height;
+		mainRound = Std.int(round);
 	}
 
 	override function update(elapsed:Float)

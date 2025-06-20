@@ -41,7 +41,7 @@ class SpecButton extends FlxSpriteGroup
 		textDis.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(height * 0.25), EngineSet.mainColor, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         textDis.borderStyle = NONE;
 		textDis.antialiasing = ClientPrefs.data.antialiasing;
-        textDis.x += width - icon.width;
+        textDis.x += height * 0.1 + icon.width + (width - height * 0.1 - icon.width) / 2 - textDis.width / 2 ;
         textDis.y += height * 0.5 - textDis.height * 0.5;
 		add(textDis);
     }
