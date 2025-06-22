@@ -9,7 +9,7 @@ import openfl.geom.Point;
 import openfl.Lib;
 import openfl.geom.ColorTransform;
 
-
+import objects.screen.Data.DataGet;
 
 class MouseEffect extends Sprite {
     // 点击特效配置
@@ -21,7 +21,7 @@ class MouseEffect extends Sprite {
     public static var clickEndAlpha:Float = 0.0;
     public static var clickStartScale:Float = 0.7;
     public static var clickEndScale:Float = 0.2;
-    public static var clickDuration:Float = 0.8; // 秒
+    public static var clickDuration:Float = 0.3; // 秒
     public static var clickColor:Int = EngineSet.minorColor;
     
     // 第二个点击贴图(circle)配置
@@ -29,7 +29,7 @@ class MouseEffect extends Sprite {
     public static var circleEndAlpha:Float = 0.0;
     public static var circleStartScale:Float = 0.2;
     public static var circleEndScale:Float = 1.0;
-    public static var circleDuration:Float = 0.8; // 秒
+    public static var circleDuration:Float = 0.3; // 秒
     public static var circleColor:Int = EngineSet.mainColor;
     
     // 路径特效配置
@@ -40,7 +40,6 @@ class MouseEffect extends Sprite {
     public static var trailStartScale:Float = 0.4;
     public static var trailEndScale:Float = 0.2;
     public static var trailMaxCount:Int = 50; // 最大路径贴图数量
-    public static var trailColorChangeInterval:Float = 0.1; // 颜色变化间隔(秒)
     public static var trailMinRotation:Float = -30; // 最小旋转角度
     public static var trailMaxRotation:Float = 30; // 最大旋转角度
     public static var trailColors:Array<Int> =  [
@@ -55,7 +54,7 @@ class MouseEffect extends Sprite {
     0xD4A5A5, // 低饱和棕红 (灰粉调)
     0xA5D4FF  // 低饱和天蓝 (柔和蓝)
     ];
-    public static var trailDuration:Float = 1; // 路径贴图动画持续时间(秒)
+    public static var trailDuration:Float = 0.3; // 路径贴图动画持续时间(秒)
     
     // 对象池
     private var clickEffects:Array<ClickEffect> = [];
@@ -141,13 +140,11 @@ class MouseEffect extends Sprite {
     }
     
     private function update(e:Event):Void {
-        var delta:Float = 1/60; // 假设60fps
-        
         // 更新点击特效
         var i = activeClickEffects.length;
         while (i-- > 0) {
             var effect = activeClickEffects[i];
-            effect.update(delta);
+            effect.update();
             
             if (effect.isComplete) {
                 activeClickEffects.splice(i, 1);
@@ -160,7 +157,7 @@ class MouseEffect extends Sprite {
         i = activeTrailEffects.length;
         while (i-- > 0) {
             var effect = activeTrailEffects[i];
-            effect.update(delta);
+            effect.update();
             
             if (effect.isComplete) {
                 activeTrailEffects.splice(i, 1);
@@ -229,8 +226,8 @@ class ClickEffect extends Sprite {
     
     public function init(x:Float, y:Float):Void {
         isComplete = false;
-        clickTimer = 0;
-        circleTimer = 0;
+        clickTimer = haxe.Timer.stamp();
+        circleTimer = haxe.Timer.stamp();
         xPos = x;
         yPos = y;
         
@@ -247,11 +244,12 @@ class ClickEffect extends Sprite {
         circleBitmap.visible = true;
     }
     
-    public function update(delta:Float):Void {
+    public function update():Void {
         // 更新click动画
-        if (clickTimer < MouseEffect.clickDuration) {
-            clickTimer += delta;
-            var progress = clickTimer / MouseEffect.clickDuration;
+        var time = haxe.Timer.stamp() - clickTimer;
+
+        if (time < MouseEffect.clickDuration) {
+            var progress = time / MouseEffect.clickDuration;
             
             clickBitmap.alpha = MouseEffect.clickStartAlpha + (MouseEffect.clickEndAlpha - MouseEffect.clickStartAlpha) * progress;
             var scale = MouseEffect.clickStartScale + (MouseEffect.clickEndScale - MouseEffect.clickStartScale) * progress;
@@ -265,9 +263,10 @@ class ClickEffect extends Sprite {
         }
         
         // 更新circle动画
-        if (circleTimer < MouseEffect.circleDuration) {
-            circleTimer += delta;
-            var progress = circleTimer / MouseEffect.circleDuration;
+        var time = haxe.Timer.stamp() - circleTimer;
+
+        if (time < MouseEffect.circleDuration) {
+            var progress = time / MouseEffect.circleDuration;
             
             circleBitmap.alpha = MouseEffect.circleStartAlpha + (MouseEffect.circleEndAlpha - MouseEffect.circleStartAlpha) * progress;
             var scale = MouseEffect.circleStartScale + (MouseEffect.circleEndScale - MouseEffect.circleStartScale) * progress;
@@ -316,7 +315,7 @@ class TrailEffect extends Sprite {
     
     public function init(x:Float, y:Float, color:Int, rotation:Float):Void {
         isComplete = false;
-        timer = 0;
+        timer = haxe.Timer.stamp();
         
         this.x = x;
         this.y = y;
@@ -337,11 +336,11 @@ class TrailEffect extends Sprite {
         applyColor(bitmap, color);
     }
     
-    public function update(delta:Float):Void {
-        timer += delta;
+    public function update():Void {
+        var time = haxe.Timer.stamp() - timer;
         
-        if (timer < MouseEffect.trailDuration) {
-            var progress = timer / MouseEffect.trailDuration;
+        if (time < MouseEffect.trailDuration) {
+            var progress = time / MouseEffect.trailDuration;
             
             bitmap.alpha = startAlpha + (endAlpha - startAlpha) * progress;
             var scale = startScale + (endScale - startScale) * progress;

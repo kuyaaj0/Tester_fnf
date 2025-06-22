@@ -60,6 +60,7 @@ import objects.BGSprite;
 import objects.AudioDisplay;
 
 import objects.screen.mouseEvent.*;
+import objects.screen.*;
 
 import shapeEx.*;
 import objects.state.general.*;
