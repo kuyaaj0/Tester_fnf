@@ -59,6 +59,8 @@ import objects.Alphabet;
 import objects.BGSprite;
 import objects.AudioDisplay;
 
+import objects.screen.mouseEvent.*;
+
 import shapeEx.*;
 import objects.state.general.*;
 

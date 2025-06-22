@@ -179,6 +179,9 @@ class Main extends Sprite
 			watermark.visible = ClientPrefs.data.showWatermark;
 		}
 
+		var effect = new MouseEffect();
+		addChild(effect);
+
 		#if linux
 		var icon = Image.fromFile("icon.png");
 		Lib.current.stage.window.setIcon(icon);
