@@ -34,7 +34,7 @@ class MouseEffect extends Sprite {
     
     // 路径特效配置
     public static var trailImagePath:String = 'images/menuExtend/Others/star.png';
-    public static var trailMinDistance:Float = 30; // 生成新贴图的最小移动距离
+    public static var trailMinDistance:Float = 40; // 生成新贴图的最小移动距离
     public static var trailStartAlpha:Float = 0.8;
     public static var trailEndAlpha:Float = 0.0;
     public static var trailStartScale:Float = 0.4;
