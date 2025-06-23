@@ -1,6 +1,6 @@
 package objects.state.optionState;
 
-class SpecButton extends FlxSpriteGroup
+class FuncButton extends FlxSpriteGroup
 {
     var filePath:String = 'menuExtend/OptionsState/icons/';
 

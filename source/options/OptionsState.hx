@@ -21,7 +21,7 @@ class OptionsState extends MusicBeatState
 	var extraBG:Rect;
 
 	var tipButton:TipButton;
-	var specButton:SpecButton;
+	var specButton:FuncButton;
 	
 	override function create()
 	{
@@ -61,7 +61,7 @@ class OptionsState extends MusicBeatState
 			tipButton.changeText('textsssssssssssss', 0.6);
 		});
 
-		specButton = new SpecButton(
+		specButton = new FuncButton(
 			FlxG.width - Std.int(UIScale.adjust(FlxG.width * 0.15)) - Std.int(UIScale.adjust(FlxG.height * 0.01)), 
 			downBG.y + Std.int(UIScale.adjust(FlxG.height * 0.01)),
 			Std.int(UIScale.adjust(FlxG.width * 0.15)), 

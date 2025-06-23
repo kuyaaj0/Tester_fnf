@@ -11,6 +11,9 @@ import openfl.geom.ColorTransform;
 
 import objects.screen.Data.DataGet;
 
+import sys.thread.Thread;
+import sys.thread.Mutex;
+
 class MouseEffect extends Sprite {
     // 点击特效配置
     public static var clickImagePath:String = 'images/menuExtend/Others/click.png';
@@ -65,27 +68,35 @@ class MouseEffect extends Sprite {
     // 路径记录
     private var lastTrailPosition:Point = new Point();
 
+    static var mutex:Mutex = new Mutex();
+
     public function new() {
         super();
-        
-        // 预加载资源
-        var clickBitmapData = BitmapData.fromFile(Paths.modFolders(clickImagePath));
-        var circleBitmapData = BitmapData.fromFile(Paths.modFolders(circleImagePath));
-        var trailBitmapData = BitmapData.fromFile(Paths.modFolders(trailImagePath));
-        
-        // 初始化对象池
-        for (i in 0...10) {
-            clickEffects.push(new ClickEffect(clickBitmapData, circleBitmapData));
-        }
-        
-        for (i in 0...trailMaxCount) {
-            trailEffects.push(new TrailEffect(trailBitmapData));
-        }
-        
-        // 添加事件监听
-        Lib.current.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-        Lib.current.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-        Lib.current.stage.addEventListener(Event.ENTER_FRAME, update);
+
+        var thread = Thread.create(() ->
+        {
+            mutex.acquire();
+            // 预加载资源
+            var clickBitmapData = BitmapData.fromFile(Paths.modFolders(clickImagePath));
+            var circleBitmapData = BitmapData.fromFile(Paths.modFolders(circleImagePath));
+            var trailBitmapData = BitmapData.fromFile(Paths.modFolders(trailImagePath));
+            
+            // 初始化对象池
+            for (i in 0...10) {
+                clickEffects.push(new ClickEffect(clickBitmapData, circleBitmapData));
+            }
+            
+            for (i in 0...trailMaxCount) {
+                trailEffects.push(new TrailEffect(trailBitmapData));
+            }
+            
+            // 添加事件监听
+            Lib.current.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+            Lib.current.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+            Lib.current.stage.addEventListener(Event.ENTER_FRAME, update);
+
+            mutex.release();
+        });
     }
     
     private function onMouseDown(e:MouseEvent):Void {
