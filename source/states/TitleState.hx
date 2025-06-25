@@ -68,6 +68,8 @@ class TitleState extends MusicBeatState
 
 	public static var updateVersion:String = '';
 
+	public static var bpm:Float = 0;
+
 	override public function create():Void
 	{
 		Paths.clearStoredMemory();
@@ -117,6 +119,8 @@ class TitleState extends MusicBeatState
 
 		// IGNORE THIS!!!
 		titleJSON = tjson.TJSON.parse(Paths.getTextFromFile('images/gfDanceTitle.json'));
+
+		bpm = titleJSON.bpm;
 
 		#if TITLE_SCREEN_EASTER_EGG
 		if (FlxG.save.data.psychDevsEasterEgg == null) FlxG.save.data.psychDevsEasterEgg = ''; //Crash prevention
