@@ -11,7 +11,7 @@
 | ------ | -------- | ----------- | 
 | ![](https://avatars.githubusercontent.com/u/105789304?v=4) | [NF Beihu](https://youtube.com/@beihu235?si=BI2efmEcI8_mZoUp) | Creator and programmer for NF (NovaFlare) Engine.
 | ![](https://avatars.githubusercontent.com/u/166735337?s=400&u=90192fb223fa071ae4cfcfec0853ea7593f9d13d&v=4) |[MaoPou](https://github.com/MaoPou) | Helper and programmer for NF (NovaFlare) Engine.
-| ![]([//i2.hdslb.com/bfs/face/15ef26e5ca2abeb6ef5689371ee259d10db88e46.jpg"](https://raw.githubusercontent.com/NovaFlare-Engine-Concentration/FNF-NovaFlare-Engine/refs/heads/main/assets/shared/images/credits/bigIcon/chiny.png)><) |[Chiny](https://space.bilibili.com/3493288327777064) | Programmer for NF (NovaFlare) Engine and Touhou player.
+| ![](https://raw.githubusercontent.com/NovaFlare-Engine-Concentration/FNF-NovaFlare-Engine/refs/heads/main/assets/shared/images/credits/bigIcon/chiny.png) |[Chiny](https://space.bilibili.com/3493288327777064) | Programmer for NF (NovaFlare) Engine and Touhou player.
 | ![](https://raw.githubusercontent.com/NovaFlare-Engine-Concentration/FNF-NovaFlare-Engine/refs/heads/main/assets/shared/images/credits/bigIcon/tieguo.png) |[TieGou](https://b23.tv/7OVWzAO) | Pause menu redesigner for NF (NovaFlare) Engine.
 | ![](https://raw.githubusercontent.com/NovaFlare-Engine-Concentration/FNF-NovaFlare-Engine/refs/heads/main/assets/shared/images/credits/bigIcon/Careful_Scarf_487.png) |[Careful_Scarf_487](https://b23.tv/DQ1a0jO) | Main artist for NF (NovaFlare) Engine.
 | ![](https://raw.githubusercontent.com/NovaFlare-Engine-Concentration/FNF-NovaFlare-Engine/refs/heads/main/assets/shared/images/credits/bigIcon/mengqi.png) |[MengQi](https://space.bilibili.com/2130239542) | Artist for NF's pause menu.
