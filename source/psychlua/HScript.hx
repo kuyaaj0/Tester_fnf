@@ -421,7 +421,7 @@ class HScript {
 						return Controls.instance.justPressed(name);
 				}
 				return false;
-			)}
+			});
 			set('keyboardPressed', function(name:String) {
 			    //return Reflect.getProperty(FlxG.keys.pressed, name);
 			    
@@ -439,7 +439,7 @@ class HScript {
 						return Controls.instance.pressed(name);
 				}
 				return false;
-			)}
+			});
 			set('keyboardReleased', function(name:String) {
 			    //return Reflect.getProperty(FlxG.keys.justReleased, name);
 			    
@@ -457,7 +457,7 @@ class HScript {
 					    return Controls.instance.justReleased(name);
 					}
 				return false;
-			)}
+			});
 
 			set('anyGamepadJustPressed', function(name:String) return FlxG.gamepads.anyJustPressed(name));
 			set('anyGamepadPressed', function(name:String) FlxG.gamepads.anyPressed(name));
