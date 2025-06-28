@@ -403,9 +403,61 @@ class HScript {
 			});
 
 			// Keyboard & Gamepads
-			set('keyboardJustPressed', function(name:String) return Reflect.getProperty(FlxG.keys.justPressed, name));
-			set('keyboardPressed', function(name:String) return Reflect.getProperty(FlxG.keys.pressed, name));
-			set('keyboardReleased', function(name:String) return Reflect.getProperty(FlxG.keys.justReleased, name));
+			set('keyboardJustPressed', function(name:String) {
+			    //return Reflect.getProperty(FlxG.keys.justPressed, name);
+			    
+			    name = name.toLowerCase();
+				switch (name)
+				{
+					case 'left':
+						return Controls.instance.NOTE_LEFT_P;
+					case 'down':
+						return Controls.instance.NOTE_DOWN_P;
+					case 'up':
+						return Controls.instance.NOTE_UP_P;
+					case 'right':
+						return Controls.instance.NOTE_RIGHT_P;
+					default:
+						return Controls.instance.justPressed(name);
+				}
+				return false;
+			)}
+			set('keyboardPressed', function(name:String) {
+			    //return Reflect.getProperty(FlxG.keys.pressed, name);
+			    
+			    switch (name)
+				{
+					case 'left':
+						return Controls.instance.NOTE_LEFT;
+					case 'down':
+						return Controls.instance.NOTE_DOWN;
+					case 'up':
+						return Controls.instance.NOTE_UP;
+					case 'right':
+						return Controls.instance.NOTE_RIGHT;
+					default:
+						return Controls.instance.pressed(name);
+				}
+				return false;
+			)}
+			set('keyboardReleased', function(name:String) {
+			    //return Reflect.getProperty(FlxG.keys.justReleased, name);
+			    
+			    switch (name)
+				{
+					case 'left':
+						return Controls.instance.NOTE_LEFT_R;
+					case 'down':
+						return Controls.instance.NOTE_DOWN_R;
+					case 'up':
+						return Controls.instance.NOTE_UP_R;
+					case 'right':
+						return Controls.instance.NOTE_RIGHT_R;
+					default:
+					    return Controls.instance.justReleased(name);
+					}
+				return false;
+			)}
 
 			set('anyGamepadJustPressed', function(name:String) return FlxG.gamepads.anyJustPressed(name));
 			set('anyGamepadPressed', function(name:String) FlxG.gamepads.anyPressed(name));
