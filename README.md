@@ -2,7 +2,8 @@
   <img src="https://raw.githubusercontent.com/NovaFlare-Engine-Concentration/NovaFlare-Engine.github.io/refs/heads/main/images/logo.png" width="380" alt="NovaFlare Icon"></img>
   <br/>
   <h1 align="center">Friday Night Funkin' - NovaFlare Engine</h1>
-  <p align="center">Engine based on Psych originally used on VS Camellia fanmade and focused on optimisation and perfomance to give players best possible experience. It was later moved to support modules</p>
+  <p align="center">Engine based on Psych originally used on VS Camellia fanmade and focused on optimisation and perfomance to give players best possible experience. It was later moved to support modules.</p>
+  <p align="center">[Look our new website!!!!!!](https://novaflare-engine-concentration.github.io/NovaFlare-Engine.github.io/)</p>
 </div>
 <br />
 
