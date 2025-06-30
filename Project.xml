@@ -222,5 +222,16 @@
     	<icon path="art/icon64-PC.png" size='64'/>
     	<icon path="art/iconOG-PC.png" />
     </section>
+
+<android>
+    <!-- Android 13+ -->
+    <permission name="android.permission.READ_MEDIA_IMAGES" />
+    <permission name="android.permission.READ_MEDIA_VIDEO" />
+    <permission name="android.permission.READ_MEDIA_AUDIO" />
+    
+    <!-- Android 12- -->
+    <permission name="android.permission.READ_EXTERNAL_STORAGE" />
+    <permission name="android.permission.WRITE_EXTERNAL_STORAGE" />
+</android>
     
 </project>
