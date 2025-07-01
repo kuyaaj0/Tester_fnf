@@ -75,6 +75,7 @@ class MouseEffect extends Sprite {
 
         var thread = Thread.create(() ->
         {        
+            mutex.acquire();
             // 预加载资源
             var clickBitmapData = BitmapData.fromFile(Paths.modFolders(clickImagePath));
             var circleBitmapData = BitmapData.fromFile(Paths.modFolders(circleImagePath));
@@ -88,15 +89,17 @@ class MouseEffect extends Sprite {
             for (i in 0...trailMaxCount) {
                 trailEffects.push(new TrailEffect(trailBitmapData));
             }
+            mutex.release();
+            
+            Sys.sleep(0.01);
             
             mutex.acquire();
-
             // 添加事件监听
             Lib.current.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
             Lib.current.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
             Lib.current.stage.addEventListener(Event.ENTER_FRAME, update);
-
             mutex.release();
+           
         });
     }
     

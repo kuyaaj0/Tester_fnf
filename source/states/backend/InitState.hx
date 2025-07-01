@@ -78,7 +78,7 @@ class InitState extends MusicBeatState
 		Mods.loadTopMod();
 	
 		#if CHECK_FOR_UPDATES
-		if (!ClientPrefs.data.checkForUpdates)
+		if (ClientPrefs.data.checkForUpdates)
 		{
 			var thread = Thread.create(() ->
         	{
