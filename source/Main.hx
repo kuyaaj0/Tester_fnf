@@ -212,7 +212,13 @@ class Main extends Sprite
 
 		if (ClientPrefs.data.gcFreeZone)
 			cpp.NativeGc.enterGCFreeZone;
-		// GcZoneChange();
+		
+		// 1. 设置极高的空闲阈值（抑制自动 GC）
+		cpp.NativeGc.setMinimumFreeSpace(1024 * 1024 * 1024); 
+
+		// 2. 预分配足够工作内存（可选）
+		cpp.NativeGc.setMinimumWorkingMemory(256 * 1024 * 1024);
+
 
 		// shader coords fix
 		FlxG.signals.gameResized.add(function(w, h)

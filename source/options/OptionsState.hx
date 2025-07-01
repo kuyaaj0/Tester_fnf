@@ -113,11 +113,18 @@ class OptionsState extends MusicBeatState
 		var time = 0.6;
 		if (!specOpen) {
 			specOpen = true;
-			var tween = FlxTween.tween(specBG, {x: FlxG.width}, time, {ease: FlxEase.expoInOut});
+			var newPoint = FlxG.width;
+			var tween = FlxTween.tween(specBG, {x: newPoint}, time, {ease: FlxEase.expoInOut});
 			specTween.push(tween);
+			var tween = FlxTween.tween(searchButton, {x: newPoint + specBG.height * 0.2}, time, {ease: FlxEase.expoInOut});
+			specTween.push(tween);
+			
 		} else {
 			specOpen = false;
-			var tween = FlxTween.tween(specBG, {x: UIScale.adjust(FlxG.width * 0.2)}, time, {ease: FlxEase.expoInOut});
+			var newPoint = UIScale.adjust(FlxG.width * 0.2);
+			var tween = FlxTween.tween(specBG, {x: newPoint}, time, {ease: FlxEase.expoInOut});
+			specTween.push(tween);
+			var tween = FlxTween.tween(searchButton, {x: newPoint + specBG.height * 0.2}, time, {ease: FlxEase.expoInOut});
 			specTween.push(tween);
 		}
 	}
