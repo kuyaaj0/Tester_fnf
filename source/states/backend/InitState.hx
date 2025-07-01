@@ -51,11 +51,13 @@ class InitState extends MusicBeatState
 		#end
 
 		#if mobile
-		#if android
-		if (!FileSystem.exists(AndroidEnvironment.getExternalStorageDirectory() + '/.' + Application.current.meta.get('file')))
-			FileSystem.createDirectory(AndroidEnvironment.getExternalStorageDirectory() + '/.' + Application.current.meta.get('file'));
-		#end
-		Sys.setCwd(SUtil.getStorageDirectory());
+		try{
+			#if android
+			if (!FileSystem.exists(AndroidEnvironment.getExternalStorageDirectory() + '/.' + Application.current.meta.get('file')))
+				FileSystem.createDirectory(AndroidEnvironment.getExternalStorageDirectory() + '/.' + Application.current.meta.get('file'));
+			#end
+			Sys.setCwd(SUtil.getStorageDirectory());
+		}
 		#end
 
 		FlxG.fixedTimestep = false;
