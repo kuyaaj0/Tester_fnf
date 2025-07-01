@@ -19,8 +19,10 @@ class DataGet
 			return;
 
 		/////////////////// →更新
-
-		displayedFrameTime = displayedFrameTime * 0.9 + wait / number * 0.1;
+		if (Math.abs(Math.floor(1000 / displayedFrameTime + 0.5) - Math.floor(1000 / (wait / number) + 0.5)) > (ClientPrefs.data.framerate / 5)) 
+			displayedFrameTime = wait / number;
+		else
+			displayedFrameTime = displayedFrameTime * 0.9 + wait / number * 0.1;
 		currentFPS = Math.floor(1000 / displayedFrameTime + 0.5);
 		if (currentFPS > ClientPrefs.data.framerate)
 			currentFPS = ClientPrefs.data.framerate;

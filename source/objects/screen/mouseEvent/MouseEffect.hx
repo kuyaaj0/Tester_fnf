@@ -73,41 +73,11 @@ class MouseEffect extends Sprite {
     public function new() {
         super();
 
-        var thread = Thread.create(() ->
-        {   
-            try {     
-                loadBitmap();
-                mutex.release();
-            } catch (e:Dynamic) {
-                mutex.release();
-                Sys.sleep(0.01);
-                loadBitmap();
-                trace(e);
-            }
-            
-            Sys.sleep(0.01);
-
-            mutex.acquire();
-            // 添加事件监听
-            Lib.current.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-            Lib.current.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-            Lib.current.stage.addEventListener(Event.ENTER_FRAME, update);
-            mutex.release();
-        });
-    }
-
-    private function loadBitmap() {
-        mutex.acquire();
         // 预加载资源
+        var clickBitmapData = BitmapData.fromFile(Paths.modFolders(clickImagePath));
+        var circleBitmapData = BitmapData.fromFile(Paths.modFolders(circleImagePath));
+        var trailBitmapData = BitmapData.fromFile(Paths.modFolders(trailImagePath));
 
-        var clickBitmapData = null;
-        var circleBitmapData = null;
-        var trailBitmapData = null;
-
-        while (clickBitmapData == null) trailBitmapData = BitmapData.fromFile(Paths.modFolders(clickImagePath));
-        while (circleBitmapData == null) circleBitmapData = BitmapData.fromFile(Paths.modFolders(circleImagePath));
-        while (trailBitmapData == null) trailBitmapData = BitmapData.fromFile(Paths.modFolders(trailImagePath));
-        
         // 初始化对象池
         for (i in 0...10) {
             clickEffects.push(new ClickEffect(clickBitmapData, circleBitmapData));
@@ -116,8 +86,13 @@ class MouseEffect extends Sprite {
         for (i in 0...trailMaxCount) {
             trailEffects.push(new TrailEffect(trailBitmapData));
         }
+
+        // 添加事件监听
+        Lib.current.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+        Lib.current.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+        Lib.current.stage.addEventListener(Event.ENTER_FRAME, update);
     }
-    
+
     private function onMouseDown(e:MouseEvent):Void {
         // 从对象池获取点击特效
         var effect:ClickEffect = null;
