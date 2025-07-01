@@ -228,11 +228,11 @@ class CreditsState extends MusicBeatState
 				'FFB4F0'
 			],
 			[
-				'MemeHoovy',
-				'hoovy',
+				'Moxie',
+				'moxie',
 				'Helper #2 of Psych Engine Mobile',
-				'https://twitter.com/meme_hoovy',
-				'F592C4'
+				'https://x.com/moxie_specalist',
+				'37a8af'
 			],
 			[
 				'MAJigsaw77',
