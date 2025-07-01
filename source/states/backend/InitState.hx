@@ -50,6 +50,14 @@ class InitState extends MusicBeatState
 		FlxG.android.preventDefaultKeys = [BACK];
 		#end
 
+		#if mobile
+		#if android
+		if (!FileSystem.exists(AndroidEnvironment.getExternalStorageDirectory() + '/.' + Application.current.meta.get('file')))
+			FileSystem.createDirectory(AndroidEnvironment.getExternalStorageDirectory() + '/.' + Application.current.meta.get('file'));
+		#end
+		Sys.setCwd(SUtil.getStorageDirectory());
+		#end
+
 		FlxG.fixedTimestep = false;
 		FlxG.game.focusLostFramerate = 60;
 		FlxG.keys.preventDefaultKeys = [TAB];
@@ -146,7 +154,7 @@ class InitState extends MusicBeatState
 
 		if (ClientPrefs.data.filesCheck)
 		{
-			if (CopyState.checkExistingFiles() && !ignoreCopy)
+			if (!CopyState.checkExistingFiles() && !ignoreCopy)
 			{
 				// ClientPrefs.data.filesCheck = false;
 				ClientPrefs.saveSettings();
