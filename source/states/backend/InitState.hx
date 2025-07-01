@@ -31,8 +31,6 @@ import sys.thread.Thread;
 
 class InitState extends MusicBeatState
 {
-	public static var ignoreCopy:Bool = false;
-
 	var skipVideo:FlxText;
 
 	var mustUpdate:Bool = false;
@@ -137,6 +135,18 @@ class InitState extends MusicBeatState
 			FlxG.switchState(new PirateState());
 		#end
 
+		if (ClientPrefs.data.filesCheck)
+		{
+			if (CopyState.checkExistingFiles())
+			{
+				// ClientPrefs.data.filesCheck = false;
+				ClientPrefs.saveSettings();
+				FlxG.switchState(new CopyState());
+				return;
+			}
+		}
+		#end
+
 		#if mobile // 检查assets/version.txt存不存在且里面保存的上一个版本号与当前的版本号一不一致，如果不一致或不存在，强制启动copy。
 		if (!FileSystem.exists(Paths.getSharedPath('version.txt')))
 		{
@@ -154,18 +164,6 @@ class InitState extends MusicBeatState
 			}
 		}
 
-		if (ClientPrefs.data.filesCheck)
-		{
-			if (CopyState.checkExistingFiles() && !ignoreCopy)
-			{
-				// ClientPrefs.data.filesCheck = false;
-				ClientPrefs.saveSettings();
-				FlxG.switchState(new CopyState());
-				return;
-			}
-		}
-		#end
-		
 		#if LUA_ALLOWED
 		#if (android && EXTERNAL || MEDIA)
 		try
