@@ -71,12 +71,12 @@ class InitState extends MusicBeatState
 		ClientPrefs.loadPrefs();
 		
 		#if LUA_ALLOWED
-		#if (android && EXTERNAL || MEDIA)
+		#if (android && EXTERNAL)
 		try
 		{
 		#end
 			Mods.pushGlobalMods();
-		#if (android && EXTERNAL || MEDIA)
+		#if (android && EXTERNAL)
 		}
 		catch (e:Dynamic)
 		{
