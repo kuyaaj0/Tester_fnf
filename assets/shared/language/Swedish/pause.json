@@ -1,0 +1,10 @@
+{	
+	"restart": "Omstart",
+    "continues": "Fortsätt",
+    "difficulty": "Svårighetsgrad",
+    "editor": "Redaktör",
+    "options": "Valmöjligheter",
+    "exit": "Avsluta",
+    "back": "Baksidan",
+    "debug": "Felsökning"
+}
