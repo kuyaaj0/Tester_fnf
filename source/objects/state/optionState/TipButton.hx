@@ -25,13 +25,13 @@ class TipButton extends FlxSpriteGroup
 
         textDis.mainText.fieldWidth = width - background.mainRound * 2;
         textDis.minorText.fieldWidth = width - background.mainRound * 2;
-		
-        textDis.changeText('init', 0);
+		changeText('initsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss', 0.1);
     }
 
     public function changeText(newText:String, ?time = 0.4) {
         textDis.changeText(newText, time * 1.2);
         var newWidth = textDis.minorText.textField.textWidth + background.mainRound * 2;
+        trace(newWidth);
         background.changeWidth(newWidth, time, 'expoInOut');
         var newHeight = textDis.minorText.textField.textHeight + background.mainRound;
         background.changeHeight(newHeight, time, 'expoInOut');

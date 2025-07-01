@@ -18,7 +18,10 @@ class OptionsState extends MusicBeatState
 
 	var naviArray = [];
 
+	////////////////////////////////////////////////////////////////////////////////////////////
+
 	var specBG:Rect;
+	var searchButton:SearchButton;
 
 	var tipButton:TipButton;
 	var specButton:FuncButton;
@@ -56,10 +59,6 @@ class OptionsState extends MusicBeatState
 			Std.int(UIScale.adjust(FlxG.height * 0.08))
 		);
 		add(tipButton);
-		tipButton.changeText('text', 0.6);
-		new FlxTimer().start(1.2, function(tmr:FlxTimer){
-			tipButton.changeText('textsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss');
-		});
 
 		specButton = new FuncButton(
 			FlxG.width - Std.int(UIScale.adjust(FlxG.width * 0.15)) - Std.int(UIScale.adjust(FlxG.height * 0.01)), 
@@ -73,6 +72,9 @@ class OptionsState extends MusicBeatState
 
 		specBG = new Rect(UIScale.adjust(FlxG.width * 0.2), 0, FlxG.width - UIScale.adjust(FlxG.width * 0.2), Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, 0x24232C, 0.5);
 		add(specBG);
+
+		searchButton = new SearchButton(specBG.x + specBG.height * 0.2, specBG.height * 0.2, specBG.width * 0.5, specBG.height * 0.6);
+		add(searchButton);
 		
 		for (i in 0...naviArray.length)
 		{
