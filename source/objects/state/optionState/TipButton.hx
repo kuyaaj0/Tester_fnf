@@ -14,8 +14,8 @@ class TipButton extends FlxSpriteGroup
         background.mainY = Y;
         add(background);
 
-        textDis = new AlphaText(0, 0, 0, 'text', Std.int(height * 0.3));
-		textDis.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(height * 0.3), EngineSet.mainColor, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        textDis = new AlphaText(0, 0, 0, 'text', Std.int(height * 0.32));
+		textDis.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(height * 0.32), EngineSet.mainColor, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
 		textDis.antialiasing = ClientPrefs.data.antialiasing;
         add(textDis);
         var fixX = (textDis.minorText.textField.textWidth - textDis.width) + background.mainRound;

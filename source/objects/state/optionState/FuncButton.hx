@@ -1,5 +1,7 @@
 package objects.state.optionState;
 
+//右下角的特殊功能摁键
+
 class FuncButton extends FlxSpriteGroup
 {
     var filePath:String = 'menuExtend/OptionsState/icons/';
@@ -16,8 +18,12 @@ class FuncButton extends FlxSpriteGroup
 
     ///////////////////////////////////////////////////////////////////////////////
 
-    public function new(X:Float, Y:Float, width:Float, height:Float) {
+    public var event:Void->Void = null;
+
+    public function new(X:Float, Y:Float, width:Float, height:Float, onClick:Void->Void = null) {
         super(X, Y);
+
+        this.event = onClick;
 
         mainWidth = width;
         mainHeight = height;
@@ -48,24 +54,29 @@ class FuncButton extends FlxSpriteGroup
 
     public var onFocus:Bool = false;
     public var onPress:Bool = false;
-    public var onChoose:Bool = false;
     override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
 		onFocus = FlxG.mouse.overlaps(this);
 
-		if (onFocus) {
-            if (background.alpha < 0.1) background.alpha += EngineSet.FPSfix(0.015 * elapsed);
+		if (onFocus) 
+            if (background.alpha < 0.1) background.alpha += EngineSet.FPSfix(0.015);
+        else 
+            if (background.alpha > 0) background.alpha -= EngineSet.FPSfix(0.015);
 
+        if (onFocus) {
             if (FlxG.mouse.justPressed) {
                 
             }
+
             if (FlxG.mouse.pressed) {
-                onChoose = true;
+
             }
-        } else {
-            if (background.alpha > 0) background.alpha -= EngineSet.FPSfix(0.015 * elapsed);
+
+            if (FlxG.mouse.justReleased) {
+                event();
+            }
         }
 	}
 }

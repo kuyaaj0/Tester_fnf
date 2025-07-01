@@ -18,7 +18,7 @@ class OptionsState extends MusicBeatState
 
 	var naviArray = [];
 
-	var extraBG:Rect;
+	var specBG:Rect;
 
 	var tipButton:TipButton;
 	var specButton:FuncButton;
@@ -65,13 +65,14 @@ class OptionsState extends MusicBeatState
 			FlxG.width - Std.int(UIScale.adjust(FlxG.width * 0.15)) - Std.int(UIScale.adjust(FlxG.height * 0.01)), 
 			downBG.y + Std.int(UIScale.adjust(FlxG.height * 0.01)),
 			Std.int(UIScale.adjust(FlxG.width * 0.15)), 
-			Std.int(UIScale.adjust(FlxG.height * 0.08))
+			Std.int(UIScale.adjust(FlxG.height * 0.08)),
+			specChange
 		);
 		specButton.alpha = 0.5;
 		add(specButton);
 
-		var extraBG = new Rect(UIScale.adjust(FlxG.width * 0.2), 0, FlxG.width - UIScale.adjust(FlxG.width * 0.2), Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, 0x24232C, 0.5);
-		add(extraBG);
+		specBG = new Rect(UIScale.adjust(FlxG.width * 0.2), 0, FlxG.width - UIScale.adjust(FlxG.width * 0.2), Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, 0x24232C, 0.5);
+		add(specBG);
 		
 		for (i in 0...naviArray.length)
 		{
@@ -98,6 +99,25 @@ class OptionsState extends MusicBeatState
 	override function closeSubState()
 	{
 		super.closeSubState();
+	}
+
+	var specOpen:Bool = false;
+	var specTween:Array<FlxTween> = [];
+	public function specChange() {
+		for (tween in specTween) {
+			if (tween != null) tween.cancel();
+		}
+
+		var time = 0.6;
+		if (!specOpen) {
+			specOpen = true;
+			var tween = FlxTween.tween(specBG, {x: FlxG.width}, time, {ease: FlxEase.expoInOut});
+			specTween.push(tween);
+		} else {
+			specOpen = false;
+			var tween = FlxTween.tween(specBG, {x: UIScale.adjust(FlxG.width * 0.2)}, time, {ease: FlxEase.expoInOut});
+			specTween.push(tween);
+		}
 	}
 
 	public function moveState(type:Int)

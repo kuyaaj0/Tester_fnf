@@ -47,24 +47,24 @@ class AlphaText extends FlxSpriteGroup
         minorText.y = mainY;
         
         mainTween = FlxTween.tween(mainText, {alpha: 0}, time / 2, {
-					ease: FlxEase.expoIn,
-					onComplete: function(twn:FlxTween)
-					{
-                        minorTween = FlxTween.tween(minorText, {alpha: 1}, time / 2, {
-                                    ease: FlxEase.expoOut,
-                                    onComplete: function(twn:FlxTween)
-                                        {
-                                            minorText.alpha = 0.00001;
+            ease: FlxEase.expoIn,
+            onComplete: function(twn:FlxTween)
+            {
+                minorTween = FlxTween.tween(minorText, {alpha: 1}, time / 2, {
+                    ease: FlxEase.expoOut,
+                    onComplete: function(twn:FlxTween)
+                        {
+                            minorText.alpha = 0.00001;
 
-                                            mainText.alpha = 1;
-                                            mainText.text = newText;
-                            
-                                            mainText.scale.x = mainText.scale.y = 1;
-                                            mainText.x = mainX;
-                                            mainText.y = mainY;
-                                        }
-                        });
-					}
+                            mainText.alpha = 1;
+                            mainText.text = newText;
+            
+                            mainText.scale.x = mainText.scale.y = 1;
+                            mainText.x = mainX;
+                            mainText.y = mainY;
+                        }
+                });
+            }
 		});
     }
 } 

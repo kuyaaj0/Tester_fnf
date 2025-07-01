@@ -1,5 +1,7 @@
 package objects.state.optionState;
 
+//左边的导航摁键
+
 class NaviSprite extends FlxSpriteGroup
 {
     var filePath:String = 'menuExtend/OptionsState/icons/';

@@ -99,9 +99,14 @@ class MouseEffect extends Sprite {
     private function loadBitmap() {
         mutex.acquire();
         // 预加载资源
-        var clickBitmapData = BitmapData.fromFile(Paths.modFolders(clickImagePath));
-        var circleBitmapData = BitmapData.fromFile(Paths.modFolders(circleImagePath));
-        var trailBitmapData = BitmapData.fromFile(Paths.modFolders(trailImagePath));
+
+        var clickBitmapData = null;
+        var circleBitmapData = null;
+        var trailBitmapData = null;
+
+        while (clickBitmapData == null) trailBitmapData = BitmapData.fromFile(Paths.modFolders(clickImagePath));
+        while (circleBitmapData == null) circleBitmapData = BitmapData.fromFile(Paths.modFolders(circleImagePath));
+        while (trailBitmapData == null) trailBitmapData = BitmapData.fromFile(Paths.modFolders(trailImagePath));
         
         // 初始化对象池
         for (i in 0...10) {

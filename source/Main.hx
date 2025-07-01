@@ -61,6 +61,11 @@ class Main extends Sprite
 
 	public static function main():Void
 	{
+		#if (cpp && windows)
+		backend.device.Native.fixScaling();
+		backend.device.Native.setWindowDarkMode(true, true);
+		#end
+		
 		Lib.current.addChild(new Main());
 		#if cpp
 		cpp.NativeGc.enable(true);
@@ -86,11 +91,6 @@ class Main extends Sprite
 		}
 		#if VIDEOS_ALLOWED
 		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0") ['--no-lua'] #end);
-		#end
-
-		#if (cpp && windows)
-		backend.device.Native.fixScaling();
-		backend.device.Native.setWindowDarkMode(true, true);
 		#end
 	}
 
