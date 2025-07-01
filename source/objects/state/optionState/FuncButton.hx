@@ -60,11 +60,12 @@ class FuncButton extends FlxSpriteGroup
 
 		onFocus = FlxG.mouse.overlaps(this);
 
-		if (onFocus) 
+		if (onFocus) {
             if (background.alpha < 0.1) background.alpha += EngineSet.FPSfix(0.015);
-        else 
+        } else {
             if (background.alpha > 0) background.alpha -= EngineSet.FPSfix(0.015);
-
+        }
+        
         if (onFocus) {
             if (FlxG.mouse.justPressed) {
                 
