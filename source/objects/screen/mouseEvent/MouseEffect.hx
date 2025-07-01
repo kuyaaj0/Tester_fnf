@@ -74,33 +74,43 @@ class MouseEffect extends Sprite {
         super();
 
         var thread = Thread.create(() ->
-        {        
-            mutex.acquire();
-            // 预加载资源
-            var clickBitmapData = BitmapData.fromFile(Paths.modFolders(clickImagePath));
-            var circleBitmapData = BitmapData.fromFile(Paths.modFolders(circleImagePath));
-            var trailBitmapData = BitmapData.fromFile(Paths.modFolders(trailImagePath));
-            
-            // 初始化对象池
-            for (i in 0...10) {
-                clickEffects.push(new ClickEffect(clickBitmapData, circleBitmapData));
+        {   
+            try {     
+                loadBitmap();
+                mutex.release();
+            } catch (e:Dynamic) {
+                mutex.release();
+                Sys.sleep(0.01);
+                loadBitmap();
+                trace(e);
             }
-            
-            for (i in 0...trailMaxCount) {
-                trailEffects.push(new TrailEffect(trailBitmapData));
-            }
-            mutex.release();
             
             Sys.sleep(0.01);
-            
+
             mutex.acquire();
             // 添加事件监听
             Lib.current.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
             Lib.current.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
             Lib.current.stage.addEventListener(Event.ENTER_FRAME, update);
             mutex.release();
-           
         });
+    }
+
+    private function loadBitmap() {
+        mutex.acquire();
+        // 预加载资源
+        var clickBitmapData = BitmapData.fromFile(Paths.modFolders(clickImagePath));
+        var circleBitmapData = BitmapData.fromFile(Paths.modFolders(circleImagePath));
+        var trailBitmapData = BitmapData.fromFile(Paths.modFolders(trailImagePath));
+        
+        // 初始化对象池
+        for (i in 0...10) {
+            clickEffects.push(new ClickEffect(clickBitmapData, circleBitmapData));
+        }
+        
+        for (i in 0...trailMaxCount) {
+            trailEffects.push(new TrailEffect(trailBitmapData));
+        }
     }
     
     private function onMouseDown(e:MouseEvent):Void {
