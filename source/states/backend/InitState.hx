@@ -43,6 +43,7 @@ class InitState extends MusicBeatState
 	{
 		Paths.clearStoredMemory();
 
+		FlxTransitionableState.skipNextTransIn = true;
 		FlxTransitionableState.skipNextTransOut = true;
 
 		#if android
@@ -145,7 +146,7 @@ class InitState extends MusicBeatState
 
 		if (ClientPrefs.data.filesCheck)
 		{
-			if (!CopyState.checkExistingFiles() && !ignoreCopy)
+			if (CopyState.checkExistingFiles() && !ignoreCopy)
 			{
 				// ClientPrefs.data.filesCheck = false;
 				ClientPrefs.saveSettings();
