@@ -88,25 +88,6 @@ class SUtil
 			trace('File couldn\'t be saved. (${e.message})');
 	}
 
-	// 按版本请求权限
-function requestStoragePermissions() {
-    var permsToRequest:Array<String> = [];
-
-    if (AndroidVersion.SDK_INT >= AndroidVersionCode.TIRAMISU) { // Android 13+
-        permsToRequest = ["READ_MEDIA_IMAGES", "READ_MEDIA_VIDEO"];
-    } 
-    else if (AndroidVersion.SDK_INT >= AndroidVersionCode.Q) { // Android 10-12
-        permsToRequest = ["READ_EXTERNAL_STORAGE"];
-    } 
-    else { // Android 9 及以下
-        permsToRequest = ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"];
-    }
-
-    if (permsToRequest.length > 0) {
-        AndroidPermissions.requestPermissions(permsToRequest);
-    }
-}
-
 	#if android
 	public static function doPermissionsShit():Void
 	{
