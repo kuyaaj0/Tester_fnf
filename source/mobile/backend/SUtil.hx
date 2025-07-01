@@ -98,7 +98,8 @@ class SUtil
 		} 
 		else { // Android 9 及以下
 			AndroidPermissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']);
-
+		}
+		
 		if (!AndroidEnvironment.isExternalStorageManager())
 		{
 			if (AndroidVersion.SDK_INT >= AndroidVersionCode.S)
