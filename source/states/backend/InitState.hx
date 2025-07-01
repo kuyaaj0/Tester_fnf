@@ -248,7 +248,7 @@ class InitState extends MusicBeatState
 			
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
 	
-		#if FLX_TOUCH
+		#if ios
 		for (touch in FlxG.touches.list)
 		{
 			if (touch.justPressed)
