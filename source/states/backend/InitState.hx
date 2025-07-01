@@ -1,4 +1,4 @@
-package states;
+package states.backend;
 
 import backend.WeekData;
 import backend.Highscore;
@@ -27,16 +27,13 @@ import backend.device.AppData;
 import states.PirateState;
 #end
 
+import sys.thread.Thread;
+
 class InitState extends MusicBeatState
 {
-	public static var initialized:Bool = false;
-	public static var inGame:Bool = false;
-
 	public static var ignoreCopy:Bool = false;
 
 	var skipVideo:FlxText;
-
-	var checkOpenFirst:Bool = false;
 
 	var mustUpdate:Bool = false;
 
@@ -46,11 +43,7 @@ class InitState extends MusicBeatState
 	{
 		Paths.clearStoredMemory();
 
-		if (!checkOpenFirst)
-		{
-			FlxTransitionableState.skipNextTransOut = true;
-			checkOpenFirst = true;
-		}
+		FlxTransitionableState.skipNextTransOut = true;
 
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
@@ -85,32 +78,35 @@ class InitState extends MusicBeatState
 		Mods.loadTopMod();
 	
 		#if CHECK_FOR_UPDATES
-		if (ClientPrefs.data.checkForUpdates && !closedState)
+		if (!ClientPrefs.data.checkForUpdates)
 		{
-			try
-			{
-				trace('checking for update');
-				var http = new haxe.Http("https://raw.githubusercontent.com/beihu235/FNF-NovaFlare-Engine/main/gitVersion.txt");
-	
-				http.onData = function(data:String)
+			var thread = Thread.create(() ->
+        	{
+				try
 				{
-					updateVersion = data.split('\n')[0].trim();
-					var curVersion:Float = MainMenuState.novaFlareEngineDataVersion;
-					trace('version online: ' + data.split('\n')[0].trim() + ', your version: ' + MainMenuState.novaFlareEngineVersion);
-					if (Std.parseFloat(updateVersion) > curVersion)
+					trace('checking for update');
+					var http = new haxe.Http("https://raw.githubusercontent.com/beihu235/FNF-NovaFlare-Engine/main/gitVersion.txt");
+		
+					http.onData = function(data:String)
 					{
-						trace('versions arent matching!');
-						mustUpdate = true;
+						updateVersion = data.split('\n')[0].trim();
+						var curVersion:Float = MainMenuState.novaFlareEngineDataVersion;
+						trace('version online: ' + data.split('\n')[0].trim() + ', your version: ' + MainMenuState.novaFlareEngineVersion);
+						if (Std.parseFloat(updateVersion) > curVersion)
+						{
+							trace('versions arent matching!');
+							mustUpdate = true;
+						}
 					}
+		
+					http.onError = function(error)
+					{
+						trace('error: $error');
+					}
+		
+					http.request();
 				}
-	
-				http.onError = function(error)
-				{
-					trace('error: $error');
-				}
-	
-				http.request();
-			}
+			});
 		}
 		#end
 	
@@ -177,50 +173,16 @@ class InitState extends MusicBeatState
 	
 		Mods.loadTopMod();
 	
-		#if CHECK_FOR_UPDATES
-		if (ClientPrefs.data.checkForUpdates && !closedState)
-		{
-			try
-			{
-				trace('checking for update');
-				var http = new haxe.Http("https://raw.githubusercontent.com/beihu235/FNF-NovaFlare-Engine/main/gitVersion.txt");
-	
-				http.onData = function(data:String)
-				{
-					updateVersion = data.split('\n')[0].trim();
-					var curVersion:Float = MainMenuState.novaFlareEngineDataVersion;
-					trace('version online: ' + data.split('\n')[0].trim() + ', your version: ' + MainMenuState.novaFlareEngineVersion);
-					if (Std.parseFloat(updateVersion) > curVersion)
-					{
-						trace('versions arent matching!');
-						mustUpdate = true;
-					}
-				}
-	
-				http.onError = function(error)
-				{
-					trace('error: $error');
-				}
-	
-				http.request();
-			}
-		}
-		#end
-	
 		Language.resetData();
 	
-		Highscore.load();
-	
-		if (!initialized)
+		if (FlxG.save.data != null && FlxG.save.data.fullscreen)
 		{
-			if (FlxG.save.data != null && FlxG.save.data.fullscreen)
-			{
-				FlxG.fullscreen = FlxG.save.data.fullscreen;
-				// trace('LOADED FULLSCREEN SETTING!!');
-			}
-			persistentUpdate = true;
-			persistentDraw = true;
+			FlxG.fullscreen = FlxG.save.data.fullscreen;
+			// trace('LOADED FULLSCREEN SETTING!!');
 		}
+		persistentUpdate = true;
+		persistentDraw = true;
+		
 	
 		ColorblindFilter.UpdateColors();
 	
@@ -245,49 +207,28 @@ class InitState extends MusicBeatState
 		}
 		else
 		{
-			if (initialized)
-				startCutscenesIn();
-			else
-			{
-				new FlxTimer().start(1, function(tmr:FlxTimer)
-				{
-					startCutscenesIn();
-				});
-			}
+			startCutscenesIn();
 		}
 		#end
 	}
 	
 	function startCutscenesIn()
 	{
-		if (inGame)
-		{
-			startIntro();
-			return;
-		}
 		if (!ClientPrefs.data.skipTitleVideo)
 			#if VIDEOS_ALLOWED
 			startVideo('menuExtend/titleIntro');
 			#else
-			startCutscenesOut();
+			startIntro();
 			#end
 		else
-			startCutscenesOut();
-	}
-	
-	function startCutscenesOut()
-	{
-		inGame = true;
-		startIntro();
+			startIntro();
 	}
 	
 	function startIntro()
 	{
 		persistentUpdate = true;
-		Paths.clearUnusedMemory();
+		changeState();
 	}
-	
-	private static var playJingle:Bool = false;
 	
 	override function update(elapsed:Float)
 	{
@@ -307,12 +248,8 @@ class InitState extends MusicBeatState
 		#end
 	
 		#if android
-		if (videoBool)
-		{
-			pressedEnter = false;
-			if (FlxG.android.justReleased.BACK)
-				pressedEnter = true;
-		}
+		if (FlxG.android.justReleased.BACK)
+			pressedEnter = true;
 		#end
 	
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
@@ -330,60 +267,15 @@ class InitState extends MusicBeatState
 		
 		if (pressedEnter)
 		{
-			new FlxTimer().start(1, function(tmr:FlxTimer)
-			{
-				if (mustUpdate && !OutdatedState.leftState)
-				{
-					MusicBeatState.switchState(new OutdatedState());
-				}
-				else
-				{
-					FlxTransitionableState.skipNextTransIn = true;
-					MusicBeatState.switchState(new TitleState());
-				}
-				closedState = true;
-			});
-		}
-	
-		if (initialized && pressedEnter && !skippedIntro)
-		{
-			skipIntro();
-		}
-	
-		if (videoBool)
-		{
-			if (pressedEnter)
-			{
-				video.stop();
-				video.visible = false;
-				videoBool = false;
-				skipVideo.visible = false;
-				startCutscenesOut();
-			}
+			changeState();
+			return;
 		}
 	
 		super.update(elapsed);
 	}
 	
-	public static var closedState:Bool = false;
-	
-	var skippedIntro:Bool = false;
-	
-	function skipIntro():Void
-	{
-		if (!skippedIntro)
-		{
-			if (playJingle)
-			{
-				playJingle = false;
-			}
-			skippedIntro = true;
-		}
-	}
-	
 	#if VIDEOS_ALLOWED
 	var video:FlxVideoSprite;
-	var videoBool:Bool = false;
 	
 	function startVideo(name:String)
 	{
@@ -425,7 +317,6 @@ class InitState extends MusicBeatState
 		add(video);
 		video.load(filepath);
 		video.play();
-		videoBool = true;
 	
 		video.bitmap.onEndReached.add(function()
 		{
@@ -446,8 +337,7 @@ class InitState extends MusicBeatState
 		if (video != null)
 			video.stop();
 		video.visible = false;
-		startCutscenesOut();
-		videoBool = false;
+		startIntro();
 		trace("end");
 	}
 	
@@ -458,4 +348,19 @@ class InitState extends MusicBeatState
 		FlxTween.tween(skipVideo, {alpha: 0}, 1, {ease: FlxEase.quadIn, startDelay: 4});
 	}
 	#end
+
+	function changeState() {
+		if (mustUpdate && !OutdatedState.leftState)
+		{
+			FlxTransitionableState.skipNextTransIn = true;
+			FlxTransitionableState.skipNextTransOut = true;
+			MusicBeatState.switchState(new OutdatedState());
+		}
+		else
+		{
+			FlxTransitionableState.skipNextTransIn = true;
+			FlxTransitionableState.skipNextTransOut = true;
+			MusicBeatState.switchState(new TitleState());
+		}
+	}
 }

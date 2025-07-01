@@ -1,27 +1,27 @@
-package objects.state.general;
+package objects.state.optionState;
 
 class AlphaText extends FlxSpriteGroup
 {
     public var mainText:FlxText;
     public var minorText:FlxText;
 
-    var bound:Float;
     public var mainX:Float;
 	public var mainY:Float;
+    public var mainSize:Float;
 
-    public function new(X:Float, Y:Float, boud:Float, text:String, size:Int, ?bound:Float = 0) {
+    public function new(X:Float, Y:Float, boud:Float, text:String, size:Int) {
         super(X, Y);
 
-        if (bound != null) this.bound = bound;
+        mainSize = size;
 
         mainText = new FlxText(0, 0, boud, text, size);
         mainText.antialiasing = ClientPrefs.data.antialiasing;
-        
 		add(mainText);
 
         minorText = new FlxText(0, 0, boud, text, size);
         minorText.alpha = 0.0000001;
         minorText.antialiasing = ClientPrefs.data.antialiasing;
+        
 		add(minorText);
     }
 
@@ -45,11 +45,6 @@ class AlphaText extends FlxSpriteGroup
         minorText.scale.x = minorText.scale.y = 1;
         minorText.x = mainX;
         minorText.y = mainY;
-        if (bound != 0) {
-            if (minorText.width > bound) minorText.scale.x = minorText.scale.y = bound / minorText.width;
-            minorText.x -= minorText.width * (1 - minorText.scale.x);
-            minorText.y -= minorText.height * (1 - minorText.scale.y);
-        }
         
         mainTween = FlxTween.tween(mainText, {alpha: 0}, time / 2, {
 					ease: FlxEase.expoIn,
@@ -63,14 +58,10 @@ class AlphaText extends FlxSpriteGroup
 
                                             mainText.alpha = 1;
                                             mainText.text = newText;
+                            
                                             mainText.scale.x = mainText.scale.y = 1;
                                             mainText.x = mainX;
                                             mainText.y = mainY;
-                                            if (bound != 0) {
-                                                if (mainText.width > bound) mainText.scale.x = mainText.scale.y = bound / mainText.width;
-                                                mainText.x -= mainText.width * (1 - mainText.scale.x);
-                                                mainText.y -= mainText.height * (1 - mainText.scale.y);
-                                            }
                                         }
                         });
 					}

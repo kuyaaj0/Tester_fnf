@@ -58,7 +58,7 @@ class OptionsState extends MusicBeatState
 		add(tipButton);
 		tipButton.changeText('text', 0.6);
 		new FlxTimer().start(1.2, function(tmr:FlxTimer){
-			tipButton.changeText('textsssssssssssss', 0.6);
+			tipButton.changeText('textsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss');
 		});
 
 		specButton = new FuncButton(

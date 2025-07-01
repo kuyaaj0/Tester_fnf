@@ -16,7 +16,7 @@ import openfl.events.KeyboardEvent;
 import lime.system.System as LimeSystem;
 import lime.app.Application;
 import states.TitleState;
-import states.InitState;
+import states.backend.InitState;
 import mobile.backend.Data;
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;

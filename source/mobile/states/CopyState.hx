@@ -7,7 +7,7 @@ import flixel.addons.util.FlxAsyncLoop;
 import openfl.utils.ByteArray;
 import openfl.system.System;
 import states.TitleState;
-import states.InitState;
+import states.backend.InitState;
 import haxe.io.Path;
 #if (target.threaded)
 import sys.thread.Thread;

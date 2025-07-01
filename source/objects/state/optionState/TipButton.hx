@@ -14,20 +14,26 @@ class TipButton extends FlxSpriteGroup
         background.mainY = Y;
         add(background);
 
-        textDis = new AlphaText(0, 0, width, 'text', Std.int(height * 0.3), width);
-		textDis.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(height * 0.4), EngineSet.mainColor, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        textDis = new AlphaText(0, 0, 0, 'text', Std.int(height * 0.3));
+		textDis.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(height * 0.3), EngineSet.mainColor, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
 		textDis.antialiasing = ClientPrefs.data.antialiasing;
-        textDis.x += background.mainRound;
-        textDis.mainX = X + background.mainRound;
-        textDis.mainY = Y;
-		add(textDis);
+        add(textDis);
+        var fixX = (textDis.minorText.textField.textWidth - textDis.width) + background.mainRound;
+        var fixY = (textDis.minorText.textField.textHeight - textDis.height) + background.mainRound;
+        textDis.mainX = X + fixX;
+        textDis.mainY = Y + fixY;
+
+        textDis.mainText.fieldWidth = width - background.mainRound * 2;
+        textDis.minorText.fieldWidth = width - background.mainRound * 2;
+		
+        textDis.changeText('init', 0);
     }
 
-    public function changeText(newText:String, ?time = 0.6) {
-        textDis.changeText(newText, time * 1.25);
+    public function changeText(newText:String, ?time = 0.4) {
+        textDis.changeText(newText, time * 1.2);
         var newWidth = textDis.minorText.textField.textWidth + background.mainRound * 2;
         background.changeWidth(newWidth, time, 'expoInOut');
-        var newHeight = textDis.minorText.textField.textHeight;
+        var newHeight = textDis.minorText.textField.textHeight + background.mainRound;
         background.changeHeight(newHeight, time, 'expoInOut');
     }
 }

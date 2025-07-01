@@ -74,8 +74,7 @@ class MouseEffect extends Sprite {
         super();
 
         var thread = Thread.create(() ->
-        {
-            mutex.acquire();
+        {        
             // 预加载资源
             var clickBitmapData = BitmapData.fromFile(Paths.modFolders(clickImagePath));
             var circleBitmapData = BitmapData.fromFile(Paths.modFolders(circleImagePath));
@@ -90,6 +89,8 @@ class MouseEffect extends Sprite {
                 trailEffects.push(new TrailEffect(trailBitmapData));
             }
             
+            mutex.acquire();
+
             // 添加事件监听
             Lib.current.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
             Lib.current.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
