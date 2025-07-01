@@ -37,6 +37,8 @@ class InitState extends MusicBeatState
 
 	public static var updateVersion:String = '';
 
+	public static var ignoreCopy = false; //用于copystate，别删
+
 	override public function create():Void
 	{
 		Paths.clearStoredMemory();
