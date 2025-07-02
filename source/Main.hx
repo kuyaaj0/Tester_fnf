@@ -245,7 +245,6 @@ class Main extends Sprite
 	}
 
 	static public var type:Bool = ClientPrefs.data.gcFreeZone;
-
 	static public function GcZoneChange()
 	{
 		if (type == true)

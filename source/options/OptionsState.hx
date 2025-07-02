@@ -20,11 +20,16 @@ class OptionsState extends MusicBeatState
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 
-	var specBG:Rect;
-	var searchButton:SearchButton;
+	var naviBG:RoundRect;
+	var naviSpriteGroup:Array<NaviSprite> = [];
+	var naviMove:MouseMove;
 
+	var downBG:Rect;
 	var tipButton:TipButton;
 	var specButton:FuncButton;
+
+	var specBG:Rect;
+	var searchButton:SearchButton;
 	
 	override function create()
 	{
@@ -46,10 +51,22 @@ class OptionsState extends MusicBeatState
 		var bg = new Rect(0, 0, FlxG.width, FlxG.height, 0, 0, 0x302E3A);
 		add(bg);
 
-		var naviBG = new RoundRect(0, 0, UIScale.adjust(FlxG.width * 0.2), FlxG.height, 0, LEFT_CENTER,  0x24232C);
+		naviBG = new RoundRect(0, 0, UIScale.adjust(FlxG.width * 0.2), FlxG.height, 0, LEFT_CENTER,  0x24232C);
 		add(naviBG);
 
-		var downBG = new Rect(0, FlxG.height - Std.int(UIScale.adjust(FlxG.height * 0.1)), FlxG.width, Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, 0x24232C, 0.5);
+		for (i in 0...naviArray.length)
+		{
+			var naviSprite = new NaviSprite(UIScale.adjust(FlxG.width * 0.005), UIScale.adjust(FlxG.height * 0.005) + i * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.width * 0.19), UIScale.adjust(FlxG.height * 0.09), naviArray[i], i, false);
+			naviSprite.antialiasing = ClientPrefs.data.antialiasing;
+			add(naviSprite);
+			naviSpriteGroup.push(naviSprite);
+		}
+		naviMoveEvent(true);
+
+		naviMove = new MouseMove(naviPosiData, -1 * naviSpriteGroup.length * 2 * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.height * 0.005), naviMoveEvent);
+		add(naviMove);
+
+		downBG = new Rect(0, FlxG.height - Std.int(UIScale.adjust(FlxG.height * 0.1)), FlxG.width, Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, 0x24232C, 0.5);
 		add(downBG);
 
 		tipButton = new TipButton(
@@ -76,12 +93,7 @@ class OptionsState extends MusicBeatState
 		searchButton = new SearchButton(specBG.x + specBG.height * 0.2, specBG.height * 0.2, specBG.width * 0.5, specBG.height * 0.6);
 		add(searchButton);
 		
-		for (i in 0...naviArray.length)
-		{
-			var naviSprite = new NaviSprite(UIScale.adjust(FlxG.width * 0.005), UIScale.adjust(FlxG.height * 0.005) + i * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.width * 0.19), UIScale.adjust(FlxG.height * 0.09), naviArray[i], i, false);
-			naviSprite.antialiasing = ClientPrefs.data.antialiasing;
-			add(naviSprite);
-		}
+		
 
 		var backShape = new GeneralBack(0, 720 - 72, UIScale.adjust(FlxG.width * 0.2), UIScale.adjust(FlxG.height * 0.1), Language.get('back', 'ma'), EngineSet.mainColor, backMenu);
 		add(backShape);
@@ -101,6 +113,14 @@ class OptionsState extends MusicBeatState
 	override function closeSubState()
 	{
 		super.closeSubState();
+	}
+
+	static public var naviPosiData:Float = 0;
+	public function naviMoveEvent(init:Bool = false){
+		if (!init) naviPosiData = naviMove.target;
+		for (i in 0...naviSpriteGroup.length) {
+			naviSpriteGroup[i].y = naviPosiData + i * UIScale.adjust(FlxG.height * 0.1);
+		}
 	}
 
 	var specOpen:Bool = false;

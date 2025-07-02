@@ -68,7 +68,7 @@ class NaviSprite extends FlxSpriteGroup
 		onFocus = FlxG.mouse.overlaps(this);
 
 		if (onFocus) {
-            if (background.alpha < 0.2) background.alpha += EngineSet.FPSfix(0.015 * elapsed);
+            if (background.alpha < 0.2) background.alpha += EngineSet.FPSfix(0.015);
 
             if (FlxG.mouse.justPressed) {
                 
@@ -77,7 +77,7 @@ class NaviSprite extends FlxSpriteGroup
                 onChoose = true;
             }
         } else {
-            if (background.alpha > 0) background.alpha -= EngineSet.FPSfix(0.015 * elapsed);
+            if (background.alpha > 0) background.alpha -= EngineSet.FPSfix(0.015);
         }
 	}
 }
