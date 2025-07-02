@@ -63,7 +63,10 @@ class OptionsState extends MusicBeatState
 		}
 		naviMoveEvent(true);
 
-		naviMove = new MouseMove(naviPosiData, -1 * naviSpriteGroup.length * 2 * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.height * 0.005), naviMoveEvent);
+		naviMove = new MouseMove(naviPosiData, 
+								[-1 * naviSpriteGroup.length * 2 * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.height * 0.005)],
+								[[UIScale.adjust(FlxG.width * 0.005), UIScale.adjust(FlxG.width * 0.19)], [0, FlxG.height]],
+								naviMoveEvent);
 		add(naviMove);
 
 		downBG = new Rect(0, FlxG.height - Std.int(UIScale.adjust(FlxG.height * 0.1)), FlxG.width, Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, 0x24232C, 0.5);
