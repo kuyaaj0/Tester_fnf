@@ -18,6 +18,7 @@ class MouseMove extends FlxBasic
     private var isDragging:Bool = false;
     private var lastMouseY:Float = 0;
     private var velocity:Float = 0;
+    private var velocityArray:Array<Float> = [];
     
     // 物理参数
     public var dragSensitivity:Float = 1.0;   // 拖动灵敏度
@@ -33,7 +34,7 @@ class MouseMove extends FlxBasic
         super();
         this.allowUpdate = needUpdate;
         
-        this.target = tar;
+        this.target = tar; //好像确实没啥用，但是可以用来初始化数据 --狐月影
         this.moveLimit = moveData;
         this.mouseLimit = mouseData;
         
@@ -105,14 +106,57 @@ class MouseMove extends FlxBasic
         velocity = deltaY * dragSensitivity;
         target += velocity;
         lastMouseY = currentY;
+
+        velocUpdate(velocity);
     }
     
     private function endDrag() {
         isDragging = false;
+        velocityChange();
     }
     
     private function applyInertia(elapsed:Float) {
         velocity *= Math.pow(deceleration, elapsed * 60);
         target += velocity * elapsed * 60;
+    }
+
+    var dataCheck:Bool = true; //正数检测
+    private function velocUpdate(data:Float) {
+        if (dataCheck) { //之前是正数
+            if (data > 0) { //正数
+                velocityArray.push(velocity);
+                if (velocityArray.length > 11) velocityArray.shift();
+            } else { //负数
+                velocityArray = [];
+                velocityArray.push(velocity);
+                dataCheck = false;
+            }
+        } else { //之前是负数
+            if (data < 0) { //负数
+                velocityArray.push(velocity);
+                if (velocityArray.length > 11) velocityArray.shift();
+            } else { //正数
+                velocityArray = [];
+                velocityArray.push(velocity);
+                dataCheck = true;
+            }
+        } 
+    }
+
+    private function velocityChange() {
+        var arr = velocityArray;
+        arr.sort(Reflect.compare);
+
+        var delete:Int = Std.int(arr.length / 4);
+        arr.splice(0, delete);
+        arr.splice(arr.length - delete - 1, delete);
+
+        var sum:Float = 0;
+        for (num in arr) {
+            sum += num;
+        }
+        sum = sum / arr.length;
+
+        velocity = sum;
     }
 }

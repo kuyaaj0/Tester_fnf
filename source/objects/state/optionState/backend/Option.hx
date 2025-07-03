@@ -43,6 +43,8 @@ class Option extends FlxSpriteGroup
 	public var decimals:Int = 0;
 	public var exatraDisplay:String = '';
 
+	public var follow:OptionCata;
+
 	/////////////////////////////////////////////
 
 	public function new(variable:String = '', type:OptionType = BOOL, description:String, tips:String, ?data:Dynamic)

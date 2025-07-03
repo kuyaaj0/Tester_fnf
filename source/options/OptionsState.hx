@@ -24,6 +24,9 @@ class OptionsState extends MusicBeatState
 	var naviSpriteGroup:Array<NaviSprite> = [];
 	var naviMove:MouseMove;
 
+	var cataGroup:Array<OptionCata> = [];
+	var cataMove:MouseMove;
+
 	var downBG:Rect;
 	var tipButton:TipButton;
 	var specButton:FuncButton;
@@ -65,9 +68,28 @@ class OptionsState extends MusicBeatState
 
 		naviMove = new MouseMove(naviPosiData, 
 								[-1 * naviSpriteGroup.length * 2 * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.height * 0.005)],
-								[[UIScale.adjust(FlxG.width * 0.005), UIScale.adjust(FlxG.width * 0.19)], [0, FlxG.height]],
+								[	
+									[UIScale.adjust(FlxG.width * 0.005), 
+									UIScale.adjust(FlxG.width * 0.19)], [0, FlxG.height]
+								],
 								naviMoveEvent);
 		add(naviMove);
+
+		/////////////////////////////////////////////////////////////////
+
+		for (i in 0...naviArray.length) {
+			addOptionCata(naviArray[i]);
+		}
+		cataMove = new MouseMove(cataPosiData, 
+								[-1 * naviSpriteGroup.length * 2 * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.height * 0.005)],
+								[ 
+									[UIScale.adjust(FlxG.width * 0.2), FlxG.width], 
+									[0, FlxG.height - Std.int(UIScale.adjust(FlxG.height * 0.1))]
+								],
+								cataMoveEvent);
+		add(cataMove);
+			
+		/////////////////////////////////////////////////////////////
 
 		downBG = new Rect(0, FlxG.height - Std.int(UIScale.adjust(FlxG.height * 0.1)), FlxG.width, Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, 0x24232C, 0.5);
 		add(downBG);
@@ -89,6 +111,8 @@ class OptionsState extends MusicBeatState
 		);
 		specButton.alpha = 0.5;
 		add(specButton);
+
+		//////////////////////////////////////////////////////////////////////
 
 		specBG = new Rect(UIScale.adjust(FlxG.width * 0.2), 0, FlxG.width - UIScale.adjust(FlxG.width * 0.2), Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, 0x24232C, 0.5);
 		add(specBG);
@@ -118,6 +142,43 @@ class OptionsState extends MusicBeatState
 		super.closeSubState();
 	}
 
+	public function addOptionCata(type:String) {
+		//var obj:Dynamic;
+		switch (type) 
+		{
+			case 'General':
+				
+			case 'User Interface':
+
+			case 'GamePlay':
+
+			case 'Game UI':
+
+			case 'Skin':
+
+			case 'Input':
+
+			case 'Audio':
+
+			case 'Graphics':
+
+			case 'Maintenance':
+			
+			default:
+
+		}
+		//cataGroup.push(obj);
+		//add(obj);
+	}
+
+	static public var cataPosiData:Float = 0;
+	public function cataMoveEvent(init:Bool = false){
+		if (!init) cataPosiData = cataMove.target;
+		for (i in 0...cataGroup.length) {
+			cataGroup[i].y = cataPosiData + i * UIScale.adjust(FlxG.height * 0.1);
+		}
+	}
+
 	static public var naviPosiData:Float = 0;
 	public function naviMoveEvent(init:Bool = false){
 		if (!init) naviPosiData = naviMove.target;
@@ -128,26 +189,27 @@ class OptionsState extends MusicBeatState
 
 	var specOpen:Bool = false;
 	var specTween:Array<FlxTween> = [];
+	var specTime = 0.6;
 	public function specChange() {
 		for (tween in specTween) {
 			if (tween != null) tween.cancel();
 		}
 
-		var time = 0.6;
+		
 		if (!specOpen) {
 			specOpen = true;
 			var newPoint = FlxG.width;
-			var tween = FlxTween.tween(specBG, {x: newPoint}, time, {ease: FlxEase.expoInOut});
+			var tween = FlxTween.tween(specBG, {x: newPoint}, specTime, {ease: FlxEase.expoInOut});
 			specTween.push(tween);
-			var tween = FlxTween.tween(searchButton, {x: newPoint + specBG.height * 0.2}, time, {ease: FlxEase.expoInOut});
+			var tween = FlxTween.tween(searchButton, {x: newPoint + specBG.height * 0.2}, specTime, {ease: FlxEase.expoInOut});
 			specTween.push(tween);
 			
 		} else {
 			specOpen = false;
 			var newPoint = UIScale.adjust(FlxG.width * 0.2);
-			var tween = FlxTween.tween(specBG, {x: newPoint}, time, {ease: FlxEase.expoInOut});
+			var tween = FlxTween.tween(specBG, {x: newPoint}, specTime, {ease: FlxEase.expoInOut});
 			specTween.push(tween);
-			var tween = FlxTween.tween(searchButton, {x: newPoint + specBG.height * 0.2}, time, {ease: FlxEase.expoInOut});
+			var tween = FlxTween.tween(searchButton, {x: newPoint + specBG.height * 0.2}, specTime, {ease: FlxEase.expoInOut});
 			specTween.push(tween);
 		}
 	}
