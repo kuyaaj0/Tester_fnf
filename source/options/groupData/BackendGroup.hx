@@ -1,6 +1,7 @@
 package options.groupData;
 
-class BackendGroup extends OptionCata {
+class BackendGroup extends OptionCata
+{
     public function new(X:Float, Y:Float, width:Float, height:Float)
 	{
         super(X, Y, width, height);
@@ -88,5 +89,71 @@ class BackendGroup extends OptionCata {
 
         var option:Option = new Option(this, 'oldHscriptVersion', BOOL, Language.get('oldHscriptVersion', 'op'), Language.get('oldHscriptVersion', 'opSub'));
         addOption(option);
+        
+        var option:Option = new Option(this, 'pauseButton', BOOL, Language.get('pauseButton', 'op'),Language.get('pauseButton', 'opSub'));
+		addOption(option);
+
+		var option:Option = new Option(this, 'CompulsionPause', BOOL, Language.get('CompulsionPause', 'op'), Language.get('CompulsionPause', 'opSub'));
+		addOption(option);
+
+		var option:Option = new Option(this, 'CompulsionPauseN', INT, Language.get('CompulsionPauseN', 'op'), Language.get('CompulsionPauseN', 'opSub'), [1, 10]);
+		addOption(option);
+
+		#if android
+		var option:Option = new Option(this, 'gameOverVibration', BOOL, Language.get('gameOverVibration', 'op'), Language.get('gameOverVibration', 'opSub'));
+		addOption(option);
+		#end
+		
+		/////--judgement--\\\\\
+		
+		var option:Option = new Option(this, TEXT, Language.get('judgement', 'op'), Language.get('judgement', 'opSub'));
+		addOption(option);
+
+		var option:Option = new Option(this, 'ratingOffset', INT, Language.get('ratingOffset', 'op'), Language.get('ratingOffset', 'opSub'), [-500, 500, 'MS']);
+		addOption(option);
+
+		var option:Option = new Option(this, 'safeFrames', FLOAT, Language.get('safeFrames', 'op'), Language.get('safeFrames', 'opSub'), [0, 10, 1]);
+		addOption(option);
+
+		var option:Option = new Option(this, 'marvelousWindow', INT, Language.get('marvelousWindow', 'op'), Language.get('marvelousWindow', 'opSub'), [0, 166, 'MS']);
+		addOption(option);
+
+	    var option:Option = new Option(this, 'sickWindow', INT, Language.get('sickWindow', 'op'), Language.get('sickWindow', 'opSub'), [0, 166, 'MS']);
+		addOption(option);
+
+	    var option:Option = new Option(this, 'goodWindow', INT, Language.get('goodWindow', 'op'), Language.get('goodWindow', 'opSub'), [0, 166, 'MS']);
+		addOption(option);
+
+	    var option:Option = new Option(this, 'badWindow', INT, Language.get('badWindow', 'op'), Language.get('badWindow', 'opSub'), [0, 166, 'MS']);
+		addOption(option);
+
+		var option:Option = new Option(Language.get('marvelousRating'), 'marvelousRating', BOOL);
+		var option:Option = new Option(this, 'marvelousRating', BOOL, Language.get('marvelousRating', 'op'), Language.get('marvelousRating', 'opSub'));
+		addOption(option);
+
+		var option:Option = new Option(this, 'marvelousSprite', BOOL, Language.get('marvelousSprite', 'op'), Language.get('marvelousSprite', 'opSub'));
+		addOption(option);
+
+		/////--Appbackend--\\\\\
+
+		var option:Option = new Option(this, TEXT, Language.get('Appbackend', 'op'), Language.get('Appbackend', 'opSub'));
+		addOption(option);
+
+		var option:Option = new Option(this, 'discordRPC', BOOL, Language.get('discordRPC', 'op'), Language.get('discordRPC', 'opSub'));
+		addOption(option);
+
+		var option:Option = new Option(this, 'checkForUpdates', BOOL, Language.get('checkForUpdates', 'op'), Language.get('checkForUpdates', 'opSub'));
+		addOption(option);
+
+		#if mobile
+		var option:Option = new Option(this, 'screensaver', BOOL, Language.get('screensaver', 'op'), Language.get('screensaver', 'opSub'));
+		addOption(option);
+
+		var option:Option = new Option(this, 'filesCheck', BOOL, Language.get('filesCheck', 'op'), Language.get('filesCheck', 'opSub'));
+		addOption(option);
+
+		var option:Option = new Option(this, 'filesCheckNew', STATE, Language.get('filesCheckNew', 'op'), Language.get('filesCheckNew', 'opSub'), 'CopyState');
+		addOption(option);
+		#end
     }
 }
