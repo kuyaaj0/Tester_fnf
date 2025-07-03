@@ -16,6 +16,8 @@ class Language
 				return FreePlayLang.get(value);
 			case 'op':
 				return OptionsLang.get(value);
+			case 'opSub':
+				return OptionsSubLang.get(value);
 			case 'pa':
 				return PauseLang.get(value);
 		}
@@ -29,6 +31,7 @@ class Language
 		MainLang.updateLang();
 		FreePlayLang.updateLang();
 		OptionsLang.updateLang();
+		OptionsSubLang.updateLang();
 		PauseLang.updateLang();
 	}
 

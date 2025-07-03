@@ -80,14 +80,14 @@ class OptionsState extends MusicBeatState
 		for (i in 0...naviArray.length) {
 			addOptionCata(naviArray[i]);
 		}
-		cataMove = new MouseMove(cataPosiData, 
+		/*cataMove = new MouseMove(cataPosiData, 
 								[-1 * naviSpriteGroup.length * 2 * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.height * 0.005)],
 								[ 
 									[UIScale.adjust(FlxG.width * 0.2), FlxG.width], 
 									[0, FlxG.height - Std.int(UIScale.adjust(FlxG.height * 0.1))]
 								],
 								cataMoveEvent);
-		add(cataMove);
+		add(cataMove);*/
 			
 		/////////////////////////////////////////////////////////////
 
