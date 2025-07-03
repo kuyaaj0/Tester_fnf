@@ -143,7 +143,7 @@ class OptionsState extends MusicBeatState
 	}
 
 	public function addOptionCata(type:String) {
-		//var obj:Dynamic;
+		var obj:OptionCata = null;
 		switch (type) 
 		{
 			case 'General':
@@ -167,8 +167,8 @@ class OptionsState extends MusicBeatState
 			default:
 
 		}
-		//cataGroup.push(obj);
-		//add(obj);
+		cataGroup.push(obj);
+		add(obj);
 	}
 
 	static public var cataPosiData:Float = 0;

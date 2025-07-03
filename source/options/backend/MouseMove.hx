@@ -23,7 +23,7 @@ class MouseMove extends FlxBasic
     // 物理参数
     public var dragSensitivity:Float = 1.0;   // 拖动灵敏度
     public var deceleration:Float = 0.9;      // 减速系数 (0.9 - 0.99 效果较好)
-    public var minVelocity:Float = 0.5;       // 最小速度阈值
+    public var minVelocity:Float = 0.001;       // 最小速度阈值
     
     // 鼠标滚轮相关参数
     public var mouseWheelSensitivity:Float = 20.0; // 鼠标滚轮更改量的控制变量
@@ -80,7 +80,7 @@ class MouseMove extends FlxBasic
         }
         
         // 惯性滑动
-        if (Math.abs(velocity) > minVelocity) {
+        if (!isDragging && Math.abs(velocity) > minVelocity) {
             applyInertia(elapsed);
         }
         
@@ -157,6 +157,6 @@ class MouseMove extends FlxBasic
         }
         sum = sum / arr.length;
 
-        velocity = sum;
+        velocity = EngineSet.FPSfix(sum, true); //帧数平衡修复
     }
 }

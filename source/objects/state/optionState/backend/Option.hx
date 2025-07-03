@@ -47,14 +47,18 @@ class Option extends FlxSpriteGroup
 
 	/////////////////////////////////////////////
 
-	public function new(variable:String = '', type:OptionType = BOOL, description:String, tips:String, ?data:Dynamic)
+	public function new(follow:OptionCata, variable:String = '', type:OptionType = BOOL, description:String = '', tips:String = '', ?data:Dynamic)
 	{
 		super();
+
+		this.follow = follow;
 
 		this.variable = variable;
 		this.type = type;
 		this.description = description;
 		this.tips = tips;
+
+
 		if (this.type != STATE && variable != '')
 			this.defaultValue = Reflect.getProperty(ClientPrefs.data, variable);
 
@@ -100,9 +104,6 @@ class Option extends FlxSpriteGroup
 			default:
 		}
 
-		//if (getValue() == null && variable != '' && type != STATE)
-		//	setValue(defaultValue);
-
 		switch (type)
 		{
 			case STRING:
@@ -130,14 +131,12 @@ class Option extends FlxSpriteGroup
 		}
 	}
 
-
+	////////////////////////////////////////////////////////
 
 	function addBool()
 	{
 		
 	}
-
-
 
 	function addData()
 	{
@@ -163,6 +162,8 @@ class Option extends FlxSpriteGroup
 	{
 		
 	}
+
+	///////////////////////////////////////////////
 
 	public function change()
 	{
@@ -192,5 +193,31 @@ class Option extends FlxSpriteGroup
 			
 			default:
 		}
+	}
+
+	////////////////////////////////////////////////
+
+	var mainX:Float = 0;
+	var xOff:Float = 0;
+	var xTween:FlxTween = null;
+	public function changeX(data:Float, isMain:Bool = true, time:Float = 0.6) {
+		var output = isMain ? mainX : xOff;
+		output += data;
+
+		if (xTween != null) xTween.cancel();
+		var tween = FlxTween.tween(this, {x: mainX + xOff}, time, {ease: FlxEase.expoInOut});
+		xTween = (tween);
+	}
+
+	var mainY:Float = 0;
+	var yOff:Float = 0;
+	var yTween:FlxTween = null;
+	public function changeY(data:Float, isMain:Bool = true, time:Float = 0.6) {
+		var output = isMain ? mainY : xOff;
+		output += data;
+
+		if (yTween != null) yTween.cancel();
+		var tween = FlxTween.tween(this, {y: mainY + yOff}, time, {ease: FlxEase.expoInOut});
+		yTween = (tween);
 	}
 }
