@@ -197,6 +197,7 @@ class TextFunctions
 			}
 
 			var pee:FlxText = game.modchartTexts.get(tag);
+			FlxTween.cancelTweensOf(pee);
 			LuaUtils.getTargetInstance().remove(pee, true);
 			if (destroy)
 			{
