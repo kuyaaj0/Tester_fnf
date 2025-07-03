@@ -1,5 +1,7 @@
 {
+    "haxelib.executable": "D:/FNF-NovaFlare-Engine/.haxelib",
     "github-actions.workflows.pinned.workflows": [
+        
         ".github/workflows/android.yml"
     ]
 }

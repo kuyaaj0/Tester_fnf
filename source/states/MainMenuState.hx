@@ -355,6 +355,10 @@ class MainMenuState extends MusicBeatState
 		if (FlxG.mouse.justPressed)
 			usingMouse = true;
 
+		if (FlxG.mouse.justPressedRight)
+			openSubState(new substates.RelaxSubState());
+		
+
 		if (!endCheck)
 		{
 			if (controls.UI_UP_P)
