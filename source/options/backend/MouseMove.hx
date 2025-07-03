@@ -83,7 +83,6 @@ class MouseMove extends FlxBasic
         if (!isDragging && Math.abs(velocity) > minVelocity) {
             applyInertia(elapsed);
         }
-        //trace(velocity);
         
         if (target < moveLimit[0]) target = FlxMath.lerp(moveLimit[0], target, Math.exp(-elapsed * 30));
         if (target > moveLimit[1]) target = FlxMath.lerp(moveLimit[1], target, Math.exp(-elapsed * 30));

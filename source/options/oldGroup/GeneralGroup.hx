@@ -1,19 +1,22 @@
-package options.groupData;
+package options.group;
 
 import shaders.ColorblindFilter;
+import options.OptionsState;
+import flixel.addons.transition.FlxTransitionableState;
 
-class GeneralGroup extends OptionCata
+class GeneralGroup
 {
-	public function new(X:Float, Y:Float, width:Float, height:Float)
+	static public function add(follow:OptionBG)
 	{
-		super(X, Y, width, height);
+		var option:Option = new Option(Language.get('General'), TITLE);
+		follow.addOption(option);
 
-		var option:Option = new Option(this, TITLE, Language.get('General', 'op'));
-		addOption(option);
+		var reset:ResetRect = new ResetRect(450, 20, follow);
+		follow.add(reset);
 
-		var option:Option = new Option(this, 'framerate', INT, Language.get('framerate', 'op'), Language.get('framerate', 'op')/*暂时先复制描述，tips没写还咱们*/, [24, 1000, 'FPS']);
-		addOption(option);
-		option.onChange = onChangeFramerate; //打样
+		var option:Option = new Option(Language.get('framerate'), 'framerate', INT, 24, 1000, 'FPS');
+		follow.addOption(option);
+		option.onChange = onChangeFramerate;
 
 		var langArray:Array<String> = [];
 		var contents:Array<String> = FileSystem.readDirectory(Paths.getPath('language'));
@@ -28,14 +31,9 @@ class GeneralGroup extends OptionCata
 			}
 		}
 		Language.check();
-		var option:Option = new Option(this, 'language', STRING, Language.get('language'), langArray);
-		addOption(option);
-		option.onChange = onChangeLanguage; //打样
-
-		//假设这里是加到最后了加上
-		changeHeight(0.0000001); //初始化真正的height
-
-		//就这么多
+		var option:Option = new Option(Language.get('language'), 'language', STRING, langArray);
+		follow.addOption(option);
+		option.onChange = onChangeLanguage;
 
 		var colorblindFilterArray:Array<String> = [
 			'None',
