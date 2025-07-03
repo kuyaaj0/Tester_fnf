@@ -1392,6 +1392,7 @@ class FunkinLua
 			}
 
 			var pee:ModchartSprite = game.modchartSprites.get(tag);
+			FlxTween.cancelTweensOf(pee);
 			LuaUtils.getTargetInstance().remove(pee, true);
 			if (game.checkSprites.exists(tag))
 				game.checkSprites.remove(tag); // 虽然没有被销毁但是仍然需要添加
