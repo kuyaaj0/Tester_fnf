@@ -80,7 +80,7 @@ class MouseMove extends FlxBasic
         }
         
         // 惯性滑动
-        if (Math.abs(velocity) > minVelocity) {
+        if (!isDragging && Math.abs(velocity) > minVelocity) {
             applyInertia(elapsed);
         }
         //trace(velocity);
