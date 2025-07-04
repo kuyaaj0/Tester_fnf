@@ -129,7 +129,7 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	public var snd:FlxSound;
 
 	var _height:Int;
-	var line:Int;
+	public var line:Int;
 
 	public var Radius:Float = 0;
 	
