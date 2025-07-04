@@ -27,9 +27,9 @@ class RoundRect extends FlxSpriteGroup
 	var midDownRect:FlxSprite;
 	var rightDownRound:FlxSprite;
 
-	var mainColor:FlxColor;
-	var mainWidth:Float;
-	var mainHeight:Float;
+	public var mainColor:FlxColor;
+	public var mainWidth:Float;
+	public var mainHeight:Float;
 	public var mainRound:Float;
 	public var mainX:Float;
 	public var mainY:Float;

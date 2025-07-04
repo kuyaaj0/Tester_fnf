@@ -1,4 +1,4 @@
-package objects.state.optionState.backend;
+package objects.state.optionState;
 
 class OptionCata extends FlxSpriteGroup
 {
@@ -10,7 +10,7 @@ class OptionCata extends FlxSpriteGroup
 
 	public var option:Array<Option> = [];
 
-	var bg:RoundRect;
+	public var bg:RoundRect;
 
 	public function new(X:Float, Y:Float, width:Float, height:Float)
 	{
@@ -19,9 +19,11 @@ class OptionCata extends FlxSpriteGroup
 		mainX = X;
 		mainY = Y;
 
-		bg = new RoundRect(0, 0, width, height, width / 10, LEFT_UP);
+		bg = new RoundRect(0, 0, width, height, width / 75, LEFT_UP, OptionsState.instance.mainColor);
+		bg.alpha = 1.0;
+		bg.mainX = mainX;
+		bg.mainY = mainY;
 		add(bg);
-
 	}
 
 	public function addOption(tar:Option, sameY:Bool = false) {
@@ -33,10 +35,18 @@ class OptionCata extends FlxSpriteGroup
 		}
 		add(tar);
 
-		tar.changeX(mainX + putX);
-		tar.changeY(mainY + putY);
+		tar.initX(mainX, putX);
+		tar.initY(mainY, putY);
 
-		if (!sameY) heightSet += tar.height;
+		if (!sameY) heightSet += tar.saveHeight;
+	}
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		mainX = this.x;
+		mainY = this.y;
 	}
 
 	public function changeHeight(time:Float = 0.6) {

@@ -97,5 +97,7 @@ class UIGroup extends OptionCata
 
 		var option:Option = new Option(this, 'scoreZoom', BOOL, Language.get('scoreZoom', 'op'), Language.get('scoreZoom', 'opSub'));
 		addOption(option);
+
+		changeHeight(0.0000001); //初始化真正的height
 	}
 }

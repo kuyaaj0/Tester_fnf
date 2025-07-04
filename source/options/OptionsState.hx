@@ -20,6 +20,12 @@ class OptionsState extends MusicBeatState
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 
+	public var baseColor = 0x302E3A;
+	public var mainColor = 0x24232C;
+
+
+	////////////////////////////////////////////////////////////////////////////////////////////
+
 	var naviBG:RoundRect;
 	var naviSpriteGroup:Array<NaviSprite> = [];
 	var naviMove:MouseMove;
@@ -51,10 +57,10 @@ class OptionsState extends MusicBeatState
 			'Maintenance'	
 		];
 
-		var bg = new Rect(0, 0, FlxG.width, FlxG.height, 0, 0, 0x302E3A);
+		var bg = new Rect(0, 0, FlxG.width, FlxG.height, 0, 0, baseColor);
 		add(bg);
 
-		naviBG = new RoundRect(0, 0, UIScale.adjust(FlxG.width * 0.2), FlxG.height, 0, LEFT_CENTER,  0x24232C);
+		naviBG = new RoundRect(0, 0, UIScale.adjust(FlxG.width * 0.2), FlxG.height, 0, LEFT_CENTER,  mainColor);
 		add(naviBG);
 
 		for (i in 0...naviArray.length)
@@ -77,21 +83,23 @@ class OptionsState extends MusicBeatState
 
 		/////////////////////////////////////////////////////////////////
 
-		for (i in 0...naviArray.length) {
-			addOptionCata(naviArray[i]);
-		}
-		/*cataMove = new MouseMove(cataPosiData, 
+		cataMove = new MouseMove(cataPosiData, 
 								[-1 * naviSpriteGroup.length * 2 * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.height * 0.005)],
 								[ 
 									[UIScale.adjust(FlxG.width * 0.2), FlxG.width], 
 									[0, FlxG.height - Std.int(UIScale.adjust(FlxG.height * 0.1))]
 								],
 								cataMoveEvent);
-		add(cataMove);*/
+		add(cataMove);
+
+		for (i in 0...naviArray.length) {
+			addCata(naviArray[i]);
+		}
+		//cataInit();
 			
 		/////////////////////////////////////////////////////////////
 
-		downBG = new Rect(0, FlxG.height - Std.int(UIScale.adjust(FlxG.height * 0.1)), FlxG.width, Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, 0x24232C, 0.5);
+		downBG = new Rect(0, FlxG.height - Std.int(UIScale.adjust(FlxG.height * 0.1)), FlxG.width, Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, mainColor, 0.5);
 		add(downBG);
 
 		tipButton = new TipButton(
@@ -114,7 +122,7 @@ class OptionsState extends MusicBeatState
 
 		//////////////////////////////////////////////////////////////////////
 
-		specBG = new Rect(UIScale.adjust(FlxG.width * 0.2), 0, FlxG.width - UIScale.adjust(FlxG.width * 0.2), Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, 0x24232C, 0.5);
+		specBG = new Rect(UIScale.adjust(FlxG.width * 0.2), 0, FlxG.width - UIScale.adjust(FlxG.width * 0.2), Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, mainColor, 0.5);
 		add(specBG);
 
 		searchButton = new SearchButton(specBG.x + specBG.height * 0.2, specBG.height * 0.2, specBG.width * 0.5, specBG.height * 0.6);
@@ -142,28 +150,34 @@ class OptionsState extends MusicBeatState
 		super.closeSubState();
 	}
 
-	public function addOptionCata(type:String) {
+	public function addCata(type:String) {
 		var obj:OptionCata = null;
+
+		var outputX:Float = naviBG.width + UIScale.adjust(FlxG.width * (0.8 / 40)); //已被初始化
+		var outputWidth:Float = UIScale.adjust(FlxG.width * (0.8 - (0.8 / 40 * 2))); //已被初始化
+		var outputY:Float = 100; //等待被初始化
+		var outputHeight:Float = 200; //等待被初始化
+
 		switch (type) 
 		{
 			case 'General':
-				
+				obj = new GeneralGroup(outputX, outputY, outputWidth, outputHeight);
 			case 'User Interface':
-
+				obj = new InterfaceGroup(outputX, outputY, outputWidth, outputHeight);
 			case 'GamePlay':
-
+				obj = new GamePlayGroup(outputX, outputY, outputWidth, outputHeight);
 			case 'Game UI':
-
+				obj = new UIGroup(outputX, outputY, outputWidth, outputHeight);
 			case 'Skin':
-
+				obj = new SkinGroup(outputX, outputY, outputWidth, outputHeight);
 			case 'Input':
-
+				obj = new InputGroup(outputX, outputY, outputWidth, outputHeight);
 			case 'Audio':
-
+				obj = new GeneralGroup(outputX, outputY, outputWidth, outputHeight);
 			case 'Graphics':
-
+				obj = new GeneralGroup(outputX, outputY, outputWidth, outputHeight);
 			case 'Maintenance':
-			
+				obj = new GeneralGroup(outputX, outputY, outputWidth, outputHeight);
 			default:
 
 		}

@@ -58,5 +58,7 @@ class SkinGroup extends OptionCata
 
 		var option:Option = new Option(this, 'splashAlpha', FLOAT, Language.get('splashAlpha', 'op'), Language.get('splashAlpha', 'opSub'), [0, 1, 1]);
 		addOption(option);
+
+		changeHeight(0.0000001); //初始化真正的height
 	}
 }

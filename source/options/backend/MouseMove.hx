@@ -84,8 +84,8 @@ class MouseMove extends FlxBasic
             applyInertia(elapsed);
         }
         
-        if (target < moveLimit[0]) target = FlxMath.lerp(moveLimit[0], target, Math.exp(-elapsed * 30));
-        if (target > moveLimit[1]) target = FlxMath.lerp(moveLimit[1], target, Math.exp(-elapsed * 30));
+        if (target < moveLimit[0]) target = FlxMath.lerp(moveLimit[0], target, Math.exp(-elapsed * 20));
+        if (target > moveLimit[1]) target = FlxMath.lerp(moveLimit[1], target, Math.exp(-elapsed * 20));
 
         if (Math.abs(moveCheck - target) > 1)  moveCheck = target;
         else return;

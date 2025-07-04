@@ -1,4 +1,4 @@
-package objects.state.optionState.backend;
+package objects.state.optionState;
 
 enum OptionType
 {
@@ -23,7 +23,7 @@ enum OptionType
 
 class Option extends FlxSpriteGroup
 {
-	public var saveHeight:Int = 0;
+	public var saveHeight:Float = 0;
 
 	public var onChange:Void->Void = null;
 	public var type:OptionType = BOOL;
@@ -131,6 +131,14 @@ class Option extends FlxSpriteGroup
 		}
 	}
 
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		//mainX = this.x;
+		//mainY = this.y;
+	}
+
 	////////////////////////////////////////////////////////
 
 	function addBool()
@@ -153,9 +161,23 @@ class Option extends FlxSpriteGroup
 		
 	}
 
+	var titleLight:Rect;
+	var title:FlxText;
+	var titLine:Rect;
 	function addTitle()
 	{
-		
+		var title = new FlxText(0, 0, 0, description, Std.int(follow.width / 10));
+		title.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(follow.width / 50), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        title.antialiasing = ClientPrefs.data.antialiasing;
+		title.borderStyle = NONE;
+		title.x += follow.bg.mainRound;
+		title.active = false;
+		add(title);
+		titLine = new Rect(0, title.height, follow.bg.mainWidth, follow.width / 400, 0, 0, 0xFFFFFF, 0.3);
+		titLine.active = false;
+		add(titLine);
+
+		saveHeight = title.height + titLine.width;
 	}
 
 	function addState()
@@ -197,27 +219,39 @@ class Option extends FlxSpriteGroup
 
 	////////////////////////////////////////////////
 
-	var mainX:Float = 0;
+	var followX:Float = 0;  //optioncata位置
+	var innerX:Float = 0; //optioncata内部位置
 	var xOff:Float = 0;
 	var xTween:FlxTween = null;
 	public function changeX(data:Float, isMain:Bool = true, time:Float = 0.6) {
-		var output = isMain ? mainX : xOff;
+		var output = isMain ? followX : xOff;
 		output += data;
 
 		if (xTween != null) xTween.cancel();
-		var tween = FlxTween.tween(this, {x: mainX + xOff}, time, {ease: FlxEase.expoInOut});
+		var tween = FlxTween.tween(this, {x: followX + innerX + xOff}, time, {ease: FlxEase.expoInOut});
 		xTween = (tween);
 	}
 
-	var mainY:Float = 0;
+	public function initX(data:Float, innerData:Float) {
+		followX = data;
+		innerX = innerData;
+	}
+
+	var followY:Float = 0;  //optioncata位置
+	var innerY:Float = 0; //optioncata内部位置
 	var yOff:Float = 0;
 	var yTween:FlxTween = null;
 	public function changeY(data:Float, isMain:Bool = true, time:Float = 0.6) {
-		var output = isMain ? mainY : xOff;
+		var output = isMain ? followY : xOff;
 		output += data;
 
 		if (yTween != null) yTween.cancel();
-		var tween = FlxTween.tween(this, {y: mainY + yOff}, time, {ease: FlxEase.expoInOut});
+		var tween = FlxTween.tween(this, {y: followY + innerY + yOff}, time, {ease: FlxEase.expoInOut});
 		yTween = (tween);
+	}
+
+	public function initY(data:Float, innerData:Float) {
+		followY= data;
+		innerY = innerData;
 	}
 }
