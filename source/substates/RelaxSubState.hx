@@ -2,6 +2,12 @@ package substates;
 
 import objects.AudioDisplay.AudioCircleDisplay;
 
+import openfl.filters.BlurFilter;
+
+import flixel.graphics.frames.FlxFilterFrames;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+
 class RelaxSubState extends MusicBeatSubstate
 {
 	var camHUD:FlxCamera;
@@ -33,7 +39,14 @@ class RelaxSubState extends MusicBeatSubstate
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 
-		var aa:AudioCircleDisplay = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 500, 500, 32, 4, FlxColor.WHITE, 100);
+		var blurFilter:BlurFilter = new BlurFilter(10, 10, 1);
+		var filterFrames = FlxFilterFrames.fromFrames(bg.frames, Std.int(bg.width), Std.int(bg.height), [blurFilter]);
+		filterFrames.applyToSprite(bg, false, true);
+		bg.alpha = 0;
+
+		FlxTween.tween(bg, {alpha: 1}, 1, {ease: FlxEase.quadInOut});
+
+		var aa:AudioCircleDisplay = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 500, 100, 46, 4, FlxColor.WHITE, 150);
 		add(aa);
 		aa.alpha = 0.7;
 

@@ -12,9 +12,9 @@ class AudioDisplay extends FlxSpriteGroup
 	var _height:Int;
 	var line:Int;
 
-	var symmetry:Bool = true;
+	var symmetry:Bool = false;
 
-	public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, symmetry:Bool = true)
+	public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, symmetry:Bool = false)
 	{
 		super(X, Y);
 
@@ -22,27 +22,13 @@ class AudioDisplay extends FlxSpriteGroup
 		this.line = line;
 		this.symmetry = symmetry;
 
-		/*if (symmetry)
+		for (i in 0...line)
 		{
-			var center = Width / 2;
-			var spacing = Width / line;
-			for (i in 0...line)
-			{
-				var newLine = new FlxSprite().makeGraphic(Std.int(spacing - gap), 1, Color);
-				var pos = i < line/2 ? center - spacing*(line/2 - i) : center + spacing*(i - line/2);
-				newLine.x = pos;
-				add(newLine);
-			}
-		}else{*/
-			for (i in 0...line)
-			{
-				var newLine = new FlxSprite().makeGraphic(Std.int(Width / line - gap), 1, Color);
-				newLine.x = (Width / line) * i;
-				add(newLine);
-			}
-			/*
+			var newLine = new FlxSprite().makeGraphic(Std.int(Width / line - gap), 1, Color);
+			newLine.x = (Width / line) * i;
+			add(newLine);
 		}
-			*/
+
 		_height = Height;
 		@:privateAccess
 		if (snd != null)
@@ -90,6 +76,8 @@ class AudioDisplay extends FlxSpriteGroup
 		}
 	}
 
+	var animFrame:Int = 0;
+
 	function updateLine(elapsed:Float)
 	{
 		if (getValues == null)
@@ -97,7 +85,14 @@ class AudioDisplay extends FlxSpriteGroup
 
 		for (i in 0...members.length)
 		{
-			var animFrame:Int = Math.round(getValues[i].value * _height);
+			if (i >= members.length / 2 && symmetry)
+			{
+				animFrame = Math.round(getValues[members.length - 1 - i].value * _height);
+			}
+			else
+			{
+				animFrame = Math.round(getValues[i].value * _height);
+			}
 
 			animFrame = Math.round(animFrame * FlxG.sound.volume);
 
@@ -137,20 +132,27 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	var line:Int;
 
 	public var Radius:Float = 0;
+	
+	var symmetry:Bool = true;
+	var Number:Int = 1;
 
-
-	public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor,Radius:Float = 50)
+	public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor,Radius:Float = 50, symmetry:Bool = true, Number:Int = 3)
 	{
 		super(X, Y);
 
 		this.snd = snd;
 		this.line = line;
 		this.Radius = Radius;
+		this.symmetry = symmetry;
+		if (Number < 1)
+			Number = 1;
 
-		for (i in 0...line)
+		this.Number = Number;
+
+		for (i in 0...line * Number)
 		{
-			var newLine = new FlxSprite().makeGraphic(Std.int(Width / line - gap), 1, Color);
-			var angle = 360 / line * i;
+			var newLine = new FlxSprite().makeGraphic(gap, 1, Color);
+			var angle = (360 / (line * Number)) * i;
 			newLine.angle = angle;
 			newLine.origin.y = 1;
 			var correctedAngle = angle - 90;
@@ -208,20 +210,33 @@ class AudioCircleDisplay extends FlxSpriteGroup
 		}
 	}
 
+	var animFrame:Int = 0;
+
 	function updateLine(elapsed:Float)
 	{
 		if (getValues == null)
 			return;
 
-		for (i in 0...members.length)
+		for (i in 0...line)
 		{
-			var animFrame:Int = Math.round(getValues[i].value * _height);
+			if (i >= line / 2 && symmetry)
+			{
+				animFrame = Math.round(getValues[line - i].value * _height);
+			}
+			else
+			{
+				animFrame = Math.round(getValues[i].value * _height);
+			}
 
 			animFrame = Math.round(animFrame * FlxG.sound.volume);
 
-			members[i].scale.y = FlxMath.lerp(animFrame, members[i].scale.y, Math.exp(-elapsed * 16));
-			if (members[i].scale.y < _height / 40)
-				members[i].scale.y = _height / 40;
+			for (i1 in 0...Number)
+			{
+				var nowLine:Int = i + (i1 * line);
+				members[nowLine].scale.y = FlxMath.lerp(animFrame, members[nowLine].scale.y, Math.exp(-elapsed * 16));
+				if (members[nowLine].scale.y < _height / 40)
+					members[nowLine].scale.y = _height / 40;
+			}
 		}
 	}
 
