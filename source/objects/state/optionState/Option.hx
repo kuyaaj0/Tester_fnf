@@ -27,6 +27,7 @@ enum OptionType
 class Option extends FlxSpriteGroup
 {
 	public var saveHeight:Float = 0;
+	var inter:Float = 10;
 
 	public var onChange:Void->Void = null;
 	public var type:OptionType = BOOL;
@@ -61,6 +62,7 @@ class Option extends FlxSpriteGroup
 		this.description = description;
 		this.tips = tips;
 
+		///////////////////////////////////////////////////////////////////////////////////////////////////
 
 		if (this.type != STATE && variable != '')
 			this.defaultValue = Reflect.getProperty(ClientPrefs.data, variable);
@@ -80,6 +82,8 @@ class Option extends FlxSpriteGroup
 					defaultValue = '';
 			default:
 		}
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////
 
 		switch (type)
 		{
@@ -116,6 +120,8 @@ class Option extends FlxSpriteGroup
 			default:
 		}
 
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+
 		switch (type)
 		{
 			case BOOL:
@@ -144,9 +150,31 @@ class Option extends FlxSpriteGroup
 
 	////////////////////////////////////////////////////////
 
+	var boolBG:RoundRect;
+	var boolTar:FlxText;
+	var boolLine:Rect;
 	function addBool()
 	{
-		
+		var calcWidth = follow.bg.realWidth * ((1 - (1 / 2 / 50 * 3)) / 2);
+		boolBG = new RoundRect(0, 0, calcWidth, calcWidth * 0.15, calcWidth / 75, LEFT_UP, 0xffffff);
+		boolBG.alpha = 0.1;
+		//bg.mainX = mainX;
+		//bg.mainY = mainY;
+		add(boolBG);
+
+		boolTar = new FlxText(0, 0, 0, 'Target: ' + variable, Std.int(follow.width / 10));
+		boolTar.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(boolBG.realWidth / 30), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        boolTar.antialiasing = ClientPrefs.data.antialiasing;
+		boolTar.borderStyle = NONE;
+		boolTar.x += boolBG.mainRound;
+		boolTar.active = false;
+		add(boolTar);
+
+		boolLine = new Rect(0, boolTar.height, boolBG.realWidth, boolBG.realWidth / 400, 0, 0, 0xFFFFFF, 0.3);
+		boolLine.active = false;
+		add(boolLine);
+
+		saveHeight = boolBG.realHeight + inter;
 	}
 
 	function addData()
@@ -163,19 +191,17 @@ class Option extends FlxSpriteGroup
 	var tipsText:FlxText;
 	function addTip()
 	{
-		var tipsText = new FlxText(0, 0, 0, description, Std.int(follow.width / 10));
+		tipsText = new FlxText(0, 0, 0, description, Std.int(follow.width / 10));
 		tipsText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(follow.width / 45), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         tipsText.antialiasing = ClientPrefs.data.antialiasing;
 		tipsText.borderStyle = NONE;
-		tipsText.x += follow.bg.mainRound;
 		tipsText.active = false;
 		add(tipsText);
 
 		var data = tipsText.height * 0.5;
-		tipsLight = new Rect(follow.bg.mainRound, 0,  data / 6, data, data / 4, data / 4, EngineSet.mainColor);
+		tipsLight = new Rect(0, 0,  data / 6, data, data / 4, data / 4, EngineSet.mainColor);
 		add(tipsLight);
 
-		tipsLight.x -= tipsLight.width / 2;
 		tipsLight.y += (tipsText.height - tipsLight.height) / 2;
 
 		tipsText.x += tipsLight.width * 2;
@@ -184,7 +210,7 @@ class Option extends FlxSpriteGroup
 		var filterFrames = FlxFilterFrames.fromFrames(tipsLight.frames, Std.int(tipsLight.width * 10), Std.int(tipsLight.height), [glowFilter]);
 		filterFrames.applyToSprite(tipsLight, false, true);
 
-		saveHeight = tipsText.height;
+		saveHeight = tipsText.height + inter;
 	}
 
 	var titleLight:Rect;
@@ -192,7 +218,7 @@ class Option extends FlxSpriteGroup
 	var titLine:Rect;
 	function addTitle()
 	{
-		var title = new FlxText(0, 0, 0, description, Std.int(follow.width / 10));
+		title = new FlxText(0, 0, 0, description, Std.int(follow.width / 10));
 		title.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(follow.width / 30), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         title.antialiasing = ClientPrefs.data.antialiasing;
 		title.borderStyle = NONE;
@@ -217,7 +243,7 @@ class Option extends FlxSpriteGroup
 		titLine.active = false;
 		add(titLine);
 
-		saveHeight = title.height + titLine.height;
+		saveHeight = title.height + titLine.height + inter;
 	}
 
 	function addState()

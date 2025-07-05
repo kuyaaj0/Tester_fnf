@@ -27,7 +27,7 @@ class OptionCata extends FlxSpriteGroup
 	}
 
 	public function addOption(tar:Option, sameY:Bool = false) {
-		var putX:Float = this.width / 4 / 50;
+		var putX:Float = this.width / 2 / 50;
 		var putY:Float = heightSet;
 		if (sameY) {
 			putX += this.width / 2; 
