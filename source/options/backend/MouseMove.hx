@@ -122,6 +122,7 @@ class MouseMove extends FlxBasic
 
     var dataCheck:Bool = true; //正数检测
     private function velocUpdate(data:Float) {
+        if (data == 0) return; //都是0了加个几把
         if (dataCheck) { //之前是正数
             if (data > 0) { //正数
                 velocityArray.push(velocity);
