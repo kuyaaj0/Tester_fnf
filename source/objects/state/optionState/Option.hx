@@ -125,7 +125,7 @@ class Option extends FlxSpriteGroup
 			case STRING:
 				addString();
 			case TEXT:
-				addText();
+				addTip();
 			case TITLE:
 				addTitle();
 			case STATE:
@@ -159,9 +159,32 @@ class Option extends FlxSpriteGroup
 		
 	}
 
-	function addText()
+	var tipsLight:Rect;
+	var tipsText:FlxText;
+	function addTip()
 	{
-		
+		var tipsText = new FlxText(0, 0, 0, description, Std.int(follow.width / 10));
+		tipsText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(follow.width / 45), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        tipsText.antialiasing = ClientPrefs.data.antialiasing;
+		tipsText.borderStyle = NONE;
+		tipsText.x += follow.bg.mainRound;
+		tipsText.active = false;
+		add(tipsText);
+
+		var data = tipsText.height * 0.5;
+		tipsLight = new Rect(follow.bg.mainRound, 0,  data / 6, data, data / 4, data / 4, EngineSet.mainColor);
+		add(tipsLight);
+
+		tipsLight.x -= tipsLight.width / 2;
+		tipsLight.y += (tipsText.height - tipsLight.height) / 2;
+
+		tipsText.x += tipsLight.width * 2;
+
+		var glowFilter:GlowFilter = new GlowFilter(EngineSet.mainColor, 0.75, tipsLight.width * 2, tipsLight.width * 2);
+		var filterFrames = FlxFilterFrames.fromFrames(tipsLight.frames, Std.int(tipsLight.width * 10), Std.int(tipsLight.height), [glowFilter]);
+		filterFrames.applyToSprite(tipsLight, false, true);
+
+		saveHeight = tipsText.height;
 	}
 
 	var titleLight:Rect;
@@ -194,7 +217,7 @@ class Option extends FlxSpriteGroup
 		titLine.active = false;
 		add(titLine);
 
-		saveHeight = title.height + titLine.width;
+		saveHeight = title.height + titLine.height;
 	}
 
 	function addState()
@@ -252,6 +275,8 @@ class Option extends FlxSpriteGroup
 	public function initX(data:Float, innerData:Float) {
 		followX = data;
 		innerX = innerData;
+		if (type == TITLE) return;
+		this.x = followX + innerX;
 	}
 
 	var followY:Float = 0;  //optioncata位置
@@ -268,7 +293,8 @@ class Option extends FlxSpriteGroup
 	}
 
 	public function initY(data:Float, innerData:Float) {
-		followY= data;
+		followY = data;
 		innerY = innerData;
+		this.y = followY + innerY;
 	}
 }

@@ -24,6 +24,9 @@ class RoundRect extends FlxSpriteGroup
 	public var mainX:Float; //可更改，如果用于flxspritegroup需要重新输入
 	public var mainY:Float; //可更改，如果用于flxspritegroup需要重新输入
 
+	public var realWidth:Float; //建议从这里获取数据
+	public var realHeight:Float; //建议从这里获取数据
+
 	////////////////////////////////////////////////////////////////////////////////
 
 	var widthEase:String;
@@ -68,14 +71,17 @@ class RoundRect extends FlxSpriteGroup
 		rightDownRound = drawRoundRect(leftDownRound.width + midDownRect.width, leftUpRound.height + midRect.height, round, round, round, 4);
 		add(rightDownRound);
 
-		mainWidth = midRect.width;
-        mainHeight = leftUpRound.height + midRect.height + leftDownRound.height;
+		realWidth = mainWidth = midRect.width;
+        realHeight = mainHeight = leftUpRound.height + midRect.height + leftDownRound.height;
 		mainRound = Std.int(round);
 	}
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		realWidth = midRect.width * midRect.scale.x;
+        realHeight = leftUpRound.height * leftUpRound.scale.y + midRect.height * midRect.scale.y + leftDownRound.height * leftDownRound.scale.y;
 	}
 
 	//////////////////////////////////////////////////////
@@ -135,6 +141,7 @@ class RoundRect extends FlxSpriteGroup
                 midDownRect.x = mainX + (mainWidth - data) / 2 + mainRound;
                 leftDownRound.x = mainX + mainWidth - data;
         }
+		realWidth = midRect.width * midRect.scale.x;
     }
 
     var widthTweenArray:Array<FlxTween> = [];
@@ -245,6 +252,7 @@ class RoundRect extends FlxSpriteGroup
                 midUpRect.y = mainY + height - data;  
                 rightUpRound.y = mainY + height - data;
         }
+        realHeight = leftUpRound.height * leftUpRound.scale.y + midRect.height * midRect.scale.y + leftDownRound.height * leftDownRound.scale.y;
 	}
 
 	var heightTweenArray:Array<FlxTween> = [];

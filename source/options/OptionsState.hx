@@ -192,7 +192,7 @@ class OptionsState extends MusicBeatState
 		if (!init) cataPosiData = cataMove.target;
 		for (i in 0...cataGroup.length) {
 			if (i == 0) cataGroup[i].y = cataPosiData;
-			else cataGroup[i].y = cataGroup[i - 1].y + cataGroup[i - 1].bg.height + 50;
+			else cataGroup[i].y = cataGroup[i - 1].y + cataGroup[i - 1].bg.realHeight + UIScale.adjust(FlxG.width * (0.8 / 40));
 		}
 	}
 
