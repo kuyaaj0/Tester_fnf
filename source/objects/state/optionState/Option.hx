@@ -1,5 +1,8 @@
 package objects.state.optionState;
 
+import openfl.filters.GlowFilter;
+import flixel.graphics.frames.FlxFilterFrames;
+
 enum OptionType
 {
 	BOOL;
@@ -135,8 +138,8 @@ class Option extends FlxSpriteGroup
 	{
 		super.update(elapsed);
 
-		//mainX = this.x;
-		//mainY = this.y;
+		followX = follow.mainX;
+		followY = follow.mainY;
 	}
 
 	////////////////////////////////////////////////////////
@@ -167,12 +170,26 @@ class Option extends FlxSpriteGroup
 	function addTitle()
 	{
 		var title = new FlxText(0, 0, 0, description, Std.int(follow.width / 10));
-		title.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(follow.width / 50), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+		title.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(follow.width / 30), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         title.antialiasing = ClientPrefs.data.antialiasing;
 		title.borderStyle = NONE;
 		title.x += follow.bg.mainRound;
 		title.active = false;
 		add(title);
+
+		var data = title.height * 0.5;
+		titleLight = new Rect(follow.bg.mainRound, 0,  data / 6, data, data / 4, data / 4, EngineSet.mainColor);
+		add(titleLight);
+
+		titleLight.x -= titleLight.width / 2;
+		titleLight.y += (title.height - titleLight.height) / 2;
+
+		title.x += titleLight.width * 2;
+
+		var glowFilter:GlowFilter = new GlowFilter(EngineSet.mainColor, 0.75, titleLight.width * 2, titleLight.width * 2);
+		var filterFrames = FlxFilterFrames.fromFrames(titleLight.frames, Std.int(titleLight.width * 10), Std.int(titleLight.height), [glowFilter]);
+		filterFrames.applyToSprite(titleLight, false, true);
+
 		titLine = new Rect(0, title.height, follow.bg.mainWidth, follow.width / 400, 0, 0, 0xFFFFFF, 0.3);
 		titLine.active = false;
 		add(titLine);

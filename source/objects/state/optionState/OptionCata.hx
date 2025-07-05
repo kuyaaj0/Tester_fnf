@@ -47,6 +47,8 @@ class OptionCata extends FlxSpriteGroup
 
 		mainX = this.x;
 		mainY = this.y;
+		bg.mainX = mainX;
+		bg.mainY = mainY;
 	}
 
 	public function changeHeight(time:Float = 0.6) {

@@ -83,19 +83,21 @@ class OptionsState extends MusicBeatState
 
 		/////////////////////////////////////////////////////////////////
 
+		for (i in 0...naviArray.length) {
+			addCata(naviArray[i]);
+		}
+
+		var moveHeight:Float = 0;
+		for (num in cataGroup) moveHeight += num.bg.height;
 		cataMove = new MouseMove(cataPosiData, 
-								[-1 * naviSpriteGroup.length * 2 * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.height * 0.005)],
+								[-1 * moveHeight, 100],
 								[ 
 									[UIScale.adjust(FlxG.width * 0.2), FlxG.width], 
 									[0, FlxG.height - Std.int(UIScale.adjust(FlxG.height * 0.1))]
 								],
 								cataMoveEvent);
 		add(cataMove);
-
-		for (i in 0...naviArray.length) {
-			addCata(naviArray[i]);
-		}
-		//cataInit();
+		cataMoveEvent(true);
 			
 		/////////////////////////////////////////////////////////////
 
@@ -189,7 +191,8 @@ class OptionsState extends MusicBeatState
 	public function cataMoveEvent(init:Bool = false){
 		if (!init) cataPosiData = cataMove.target;
 		for (i in 0...cataGroup.length) {
-			cataGroup[i].y = cataPosiData + i * UIScale.adjust(FlxG.height * 0.1);
+			if (i == 0) cataGroup[i].y = cataPosiData;
+			else cataGroup[i].y = cataGroup[i - 1].y + cataGroup[i - 1].bg.height + 50;
 		}
 	}
 

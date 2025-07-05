@@ -38,6 +38,6 @@ class InterfaceGroup extends OptionCata
 		var option:Option = new Option(this, 'loadingScreen', BOOL, Language.get('loadingScreen', 'op'), Language.get('loadingScreen', 'opSub'));
 		addOption(option);
 
-		changeHeight(0.0000001); //初始化真正的height
+		changeHeight(0); //初始化真正的height
 	}
 }
