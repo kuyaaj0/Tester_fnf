@@ -150,9 +150,15 @@ class Option extends FlxSpriteGroup
 
 	////////////////////////////////////////////////////////
 
+	var boolButton:BoolButton;
 	function addBool()
 	{
 		baseBGAdd();
+
+		var clacHeight = baseBG.realHeight - (baseTar.height + baseLine.height) - baseBG.mainRound * 2;
+		var clacWidth = baseBG.realWidth * 0.4 - baseBG.mainRound;
+		boolButton = new BoolButton(baseBG.realWidth * 0.6, baseTar.height + baseLine.height + baseBG.mainRound, clacWidth, clacHeight, this);
+		add(boolButton);
 	}
 
 	
@@ -239,8 +245,8 @@ class Option extends FlxSpriteGroup
 		var calcWidth = follow.bg.realWidth * ((1 - (1 / 2 / 50 * 3)) / 2);
 		baseBG = new RoundRect(0, 0, calcWidth, calcWidth * 0.15, calcWidth / 75, LEFT_UP, 0xffffff);
 		baseBG.alpha = 0.1;
-		//bg.mainX = mainX;
-		//bg.mainY = mainY;
+		baseBG.mainX = followX + innerX;
+		baseBG.mainY = followY + innerY;
 		add(baseBG);
 
 		baseTar = new FlxText(0, 0, 0, 'Target: ' + variable, Std.int(follow.width / 10));
@@ -266,7 +272,7 @@ class Option extends FlxSpriteGroup
 		baseDesc.y -= (baseDesc.height - baseDesc.textField.textHeight) / 2;
 
 		var clacHeight = baseDesc.textField.textHeight / (baseBG.realHeight - baseTar.height + baseLine.height);
-		if (clacHeight > 1) baseDesc.size = Std.int(baseDesc.size / clacHeight / 1.1); //原理来讲不应该超过这个高度的，这个玩意纯粹的防止蠢人
+		if (clacHeight > 1) baseDesc.size = Std.int(baseDesc.size / clacHeight / 1.05); //原理来讲不应该超过这个高度的，这个玩意纯粹的防止蠢人
 
 		baseDesc.x += baseBG.mainRound;
 		baseDesc.y += (baseBG.realHeight - baseTar.height + baseLine.height - baseDesc.textField.textHeight) / 2;
@@ -309,9 +315,9 @@ class Option extends FlxSpriteGroup
 
 	////////////////////////////////////////////////
 
-	var followX:Float = 0;  //optioncata位置
-	var innerX:Float = 0; //optioncata内部位置
-	var xOff:Float = 0;
+	public var followX:Float = 0;  //optioncata位置
+	public var innerX:Float = 0; //optioncata内部位置
+	public var xOff:Float = 0;
 	var xTween:FlxTween = null;
 	public function changeX(data:Float, isMain:Bool = true, time:Float = 0.6) {
 		var output = isMain ? followX : xOff;
@@ -329,9 +335,9 @@ class Option extends FlxSpriteGroup
 		this.x = followX + innerX;
 	}
 
-	var followY:Float = 0;  //optioncata位置
-	var innerY:Float = 0; //optioncata内部位置
-	var yOff:Float = 0;
+	public var followY:Float = 0;  //optioncata在主体的位置
+	public var innerY:Float = 0; //optioncata内部位置
+	public var yOff:Float = 0;
 	var yTween:FlxTween = null;
 	public function changeY(data:Float, isMain:Bool = true, time:Float = 0.6) {
 		var output = isMain ? followY : xOff;

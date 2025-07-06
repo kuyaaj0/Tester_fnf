@@ -147,6 +147,7 @@ class MouseMove extends FlxBasic
 
     private function velocityChange() {
         var arr = velocityArray;
+        if (arr.length == 0) return;
         arr.sort(Reflect.compare);
 
         var delete:Int = Std.int(arr.length / 4);
