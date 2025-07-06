@@ -112,7 +112,7 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 		
 		if (recordPicture != null) {
-			oldRecordPicture = recordPicture.clone();
+			oldRecordPicture = recordPicture;
 			recordPicture = null;
 		}
 		
@@ -254,10 +254,10 @@ class RelaxSubState extends MusicBeatSubstate
 	 */
 	private function updateSongInfoDisplay(songInfo:SongInfo):Void {
 		if (songInfo == null) return;
-		var actY = songNameText.y;
+		var actY = FlxG.height / 2;
 		if (songNameText != null) {
 			Thread.create(() ->{
-				FlxTween.tween(songNameText, {y: songNameText.y + maskRadius}, 1, {
+				FlxTween.tween(songNameText, {y: actY + maskRadius}, 1, {
 					ease: FlxEase.quadIn,
 					onComplete: function(_) {
 						songNameText.text = songInfo.name != null ? songInfo.name : "?????";
