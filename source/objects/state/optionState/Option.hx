@@ -150,41 +150,20 @@ class Option extends FlxSpriteGroup
 
 	////////////////////////////////////////////////////////
 
-	var boolBG:RoundRect;
-	var boolTar:FlxText;
-	var boolLine:Rect;
 	function addBool()
 	{
-		var calcWidth = follow.bg.realWidth * ((1 - (1 / 2 / 50 * 3)) / 2);
-		boolBG = new RoundRect(0, 0, calcWidth, calcWidth * 0.15, calcWidth / 75, LEFT_UP, 0xffffff);
-		boolBG.alpha = 0.1;
-		//bg.mainX = mainX;
-		//bg.mainY = mainY;
-		add(boolBG);
-
-		boolTar = new FlxText(0, 0, 0, 'Target: ' + variable, Std.int(follow.width / 10));
-		boolTar.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(boolBG.realWidth / 30), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
-        boolTar.antialiasing = ClientPrefs.data.antialiasing;
-		boolTar.borderStyle = NONE;
-		boolTar.x += boolBG.mainRound;
-		boolTar.active = false;
-		add(boolTar);
-
-		boolLine = new Rect(0, boolTar.height, boolBG.realWidth, boolBG.realWidth / 400, 0, 0, 0xFFFFFF, 0.3);
-		boolLine.active = false;
-		add(boolLine);
-
-		saveHeight = boolBG.realHeight + inter;
+		baseBGAdd();
 	}
 
+	
 	function addData()
 	{
-		
+		baseBGAdd();
 	}
 
 	function addString()
 	{
-		
+		baseBGAdd();
 	}
 
 	var tipsLight:Rect;
@@ -249,6 +228,51 @@ class Option extends FlxSpriteGroup
 	function addState()
 	{
 		
+	}
+
+	var baseBG:RoundRect;
+	var baseTar:FlxText;
+	var baseLine:Rect;
+	var baseDesc:FlxText;
+	function baseBGAdd()
+	{
+		var calcWidth = follow.bg.realWidth * ((1 - (1 / 2 / 50 * 3)) / 2);
+		baseBG = new RoundRect(0, 0, calcWidth, calcWidth * 0.15, calcWidth / 75, LEFT_UP, 0xffffff);
+		baseBG.alpha = 0.1;
+		//bg.mainX = mainX;
+		//bg.mainY = mainY;
+		add(baseBG);
+
+		baseTar = new FlxText(0, 0, 0, 'Target: ' + variable, Std.int(follow.width / 10));
+		baseTar.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.realWidth / 30), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        baseTar.antialiasing = ClientPrefs.data.antialiasing;
+		baseTar.borderStyle = NONE;
+		baseTar.x += baseBG.mainRound;
+		baseTar.alpha = 0.3;
+		baseTar.blend = ADD;
+		baseTar.active = false;
+		add(baseTar);
+
+		baseLine = new Rect(0, baseTar.height, baseBG.realWidth, baseBG.realWidth / 400, 0, 0, 0xFFFFFF, 0.3);
+		baseLine.active = false;
+		add(baseLine);
+
+		baseDesc = new FlxText(0, baseTar.height + baseLine.height, baseBG.realWidth * 0.58, description, Std.int(follow.width / 10));
+		baseDesc.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.realWidth / 25), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        baseDesc.antialiasing = ClientPrefs.data.antialiasing;
+		baseDesc.borderStyle = NONE;
+		baseDesc.active = false;
+		
+		baseDesc.y -= (baseDesc.height - baseDesc.textField.textHeight) / 2;
+
+		var clacHeight = baseDesc.textField.textHeight / (baseBG.realHeight - baseTar.height + baseLine.height);
+		if (clacHeight > 1) baseDesc.size = Std.int(baseDesc.size / clacHeight / 1.1); //原理来讲不应该超过这个高度的，这个玩意纯粹的防止蠢人
+
+		baseDesc.x += baseBG.mainRound;
+		baseDesc.y += (baseBG.realHeight - baseTar.height + baseLine.height - baseDesc.textField.textHeight) / 2;
+		add(baseDesc);
+
+		saveHeight = baseBG.realHeight + inter;
 	}
 
 	///////////////////////////////////////////////
