@@ -48,14 +48,26 @@ class GeneralBack extends FlxSpriteGroup
 	var textTween:FlxTween;
 	var focused:Bool = false;
 
+	var firstClick:Array<Float> = [0, 0];
+	var canClick:Bool = true;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
 		onFocus = FlxG.mouse.overlaps(this);
+		if(FlxG.mouse.justPressed) firstClick = [FlxG.mouse.x, FlxG.mouse.y];
 
-		if (onFocus && onClick != null && FlxG.mouse.justReleased)
+		if(FlxG.mouse.pressed && canClick && (Math.abs(FlxG.mouse.x - firstClick[0]) > 20 || Math.abs(FlxG.mouse.y - firstClick[1]) > 20))
+		{
+			canClick = false;
+		}
+
+		if (onFocus && onClick != null && FlxG.mouse.justReleased && canClick)
 			onClick();
+
+		if (FlxG.mouse.justReleased && !canClick)
+			canClick = true;
 
 		if (onFocus)
 		{

@@ -29,6 +29,10 @@ class BoolButton extends FlxSpriteGroup {
     }
 
     public var allowUpdate:Bool = true;
+
+    public var firstClick:Array<Float> = [0, 0];
+    public var canClick:Bool = true;
+
     override function update(elapsed:Float) {
         super.update(elapsed);
         
@@ -37,12 +41,19 @@ class BoolButton extends FlxSpriteGroup {
         var mouse = FlxG.mouse;
 
         var inputAllow:Bool = true;
+
+        if(FlxG.mouse.justPressed) firstClick = [FlxG.mouse.x, FlxG.mouse.y];
+
+		if(FlxG.mouse.pressed && canClick && (Math.abs(FlxG.mouse.x - firstClick[0]) > 20 || Math.abs(FlxG.mouse.y - firstClick[1]) > 20))
+		{
+			canClick = false;
+		}
         
         if (inputAllow) {
             // Check if mouse is over the button
             if (mouse.overlaps(bg)) {
                 // Mouse released
-                if (mouse.justReleased) {
+                if (mouse.justReleased && canClick) {
                     // Check if mouse is on left or right side
                     var localX = mouse.getScreenPosition().x - this.x;
                     var isRightSide = localX > bg.width / 2;
@@ -52,6 +63,8 @@ class BoolButton extends FlxSpriteGroup {
                 }
             }
         }
+        if (FlxG.mouse.justReleased && !canClick)
+			canClick = true;
     }
 
     var moveTween:FlxTween;
