@@ -101,7 +101,7 @@ class OptionsState extends MusicBeatState
 			
 		/////////////////////////////////////////////////////////////
 
-		downBG = new Rect(0, FlxG.height - Std.int(UIScale.adjust(FlxG.height * 0.1)), FlxG.width, Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, mainColor, 0.5);
+		downBG = new Rect(0, FlxG.height - Std.int(UIScale.adjust(FlxG.height * 0.1)), FlxG.width, Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, mainColor, 0.75);
 		add(downBG);
 
 		tipButton = new TipButton(
@@ -124,7 +124,7 @@ class OptionsState extends MusicBeatState
 
 		//////////////////////////////////////////////////////////////////////
 
-		specBG = new Rect(UIScale.adjust(FlxG.width * 0.2), 0, FlxG.width - UIScale.adjust(FlxG.width * 0.2), Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, mainColor, 0.5);
+		specBG = new Rect(UIScale.adjust(FlxG.width * 0.2), 0, FlxG.width - UIScale.adjust(FlxG.width * 0.2), Std.int(UIScale.adjust(FlxG.height * 0.1)), 0, 0, mainColor, 0.75);
 		add(specBG);
 
 		searchButton = new SearchButton(specBG.x + specBG.height * 0.2, specBG.height * 0.2, specBG.width * 0.5, specBG.height * 0.6);
@@ -150,6 +150,10 @@ class OptionsState extends MusicBeatState
 	override function closeSubState()
 	{
 		super.closeSubState();
+	}
+
+	public function changeTip(str:String) {
+		tipButton.changeText(str);
 	}
 
 	public function addCata(type:String) {
