@@ -42,5 +42,7 @@ class WatermarkGroup extends OptionCata
 		var option:Option = new Option(Language.get('WatermarkScale'), 'WatermarkScale', FLOAT, 0, 5, 1);
 		var option:Option = new Option(this, 'WatermarkScale', FLOAT, Language.get('WatermarkScale', 'op'), Language.get('WatermarkScale', 'opSub'), [0, 5, 1]);
 		addOption(option);
+
+		changeHeight(0); //初始化真正的height
 	}
 }

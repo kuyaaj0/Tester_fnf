@@ -155,5 +155,7 @@ class BackendGroup extends OptionCata
 		var option:Option = new Option(this, 'filesCheckNew', STATE, Language.get('filesCheckNew', 'op'), Language.get('filesCheckNew', 'opSub'), 'CopyState');
 		addOption(option);
 		#end
+
+        changeHeight(0); //初始化真正的height
     }
 }

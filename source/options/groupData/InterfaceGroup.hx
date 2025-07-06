@@ -1,6 +1,6 @@
 package options.groupData;
 
-class InterFaceGroup extends OptionCata
+class InterfaceGroup extends OptionCata
 {
 	public function new(X:Float, Y:Float, width:Float, height:Float)
 	{
@@ -37,5 +37,7 @@ class InterFaceGroup extends OptionCata
 
 		var option:Option = new Option(this, 'loadingScreen', BOOL, Language.get('loadingScreen', 'op'), Language.get('loadingScreen', 'opSub'));
 		addOption(option);
+
+		changeHeight(0); //初始化真正的height
 	}
 }

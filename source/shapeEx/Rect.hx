@@ -21,7 +21,7 @@ class Rect extends FlxSprite
 		shape.graphics.drawRoundRect(0, 0, width, height, roundWidth, roundHeight);
 		shape.graphics.endFill();
 
-		var bitmap:BitmapData = new BitmapData(Std.int(width), Std.int(height), true, 0);
+		var bitmap:BitmapData = new BitmapData(Std.int(width + 1), Std.int(height + 1), true, 0);
 		bitmap.draw(shape);
 		return bitmap;
 	}

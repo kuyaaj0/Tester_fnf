@@ -49,5 +49,7 @@ class InputGroup extends OptionCata
 
 		var option:Option = new Option(this, 'MobileExtraControl', STATE, Language.get('MobileExtraControl', 'op'), Language.get('MobileExtraControl', 'opSub'), 'MobileExtraControl');
 		addOption(option);
+
+		changeHeight(0); //初始化真正的height
 	}
 }

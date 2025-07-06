@@ -32,11 +32,6 @@ class GeneralGroup extends OptionCata
 		addOption(option);
 		option.onChange = onChangeLanguage; //打样
 
-		//假设这里是加到最后了加上
-		changeHeight(0.0000001); //初始化真正的height
-
-		//就这么多
-
 		var colorblindFilterArray:Array<String> = [
 			'None',
 			'Protanopia',
@@ -78,6 +73,8 @@ class GeneralGroup extends OptionCata
 		var option:Option = new Option(this, 'gcFreeZone', BOOL, Language.get('gcFreeZone', 'op'), Language.get('gcFreeZone', 'opSub'));
 		addOption(option);
 		option.onChange = onChangeGcZone;
+
+		changeHeight(0); //初始化真正的height
 	}
 
 	function onChangeFramerate()

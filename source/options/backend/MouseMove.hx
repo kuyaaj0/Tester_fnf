@@ -84,8 +84,8 @@ class MouseMove extends FlxBasic
             applyInertia(elapsed);
         }
         
-        if (target < moveLimit[0]) target = FlxMath.lerp(moveLimit[0], target, Math.exp(-elapsed * 30));
-        if (target > moveLimit[1]) target = FlxMath.lerp(moveLimit[1], target, Math.exp(-elapsed * 30));
+        if (target < moveLimit[0]) target = FlxMath.lerp(moveLimit[0], target, Math.exp(-elapsed * 20));
+        if (target > moveLimit[1]) target = FlxMath.lerp(moveLimit[1], target, Math.exp(-elapsed * 20));
 
         if (Math.abs(moveCheck - target) > 1)  moveCheck = target;
         else return;
@@ -99,6 +99,7 @@ class MouseMove extends FlxBasic
         isDragging = true;
         lastMouseY = startY;
         velocity = 0;
+        velocityArray = [];
     }
     
     private function updateDrag(currentY:Float) {
@@ -122,6 +123,7 @@ class MouseMove extends FlxBasic
 
     var dataCheck:Bool = true; //正数检测
     private function velocUpdate(data:Float) {
+        if (data == 0) return; //都是0了加权个几把
         if (dataCheck) { //之前是正数
             if (data > 0) { //正数
                 velocityArray.push(velocity);
@@ -145,6 +147,7 @@ class MouseMove extends FlxBasic
 
     private function velocityChange() {
         var arr = velocityArray;
+        if (arr.length == 0) return;
         arr.sort(Reflect.compare);
 
         var delete:Int = Std.int(arr.length / 4);
