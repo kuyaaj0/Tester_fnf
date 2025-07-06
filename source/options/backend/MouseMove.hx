@@ -99,6 +99,7 @@ class MouseMove extends FlxBasic
         isDragging = true;
         lastMouseY = startY;
         velocity = 0;
+        velocityArray = [];
     }
     
     private function updateDrag(currentY:Float) {
