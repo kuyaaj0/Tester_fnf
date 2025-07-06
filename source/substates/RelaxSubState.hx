@@ -22,8 +22,6 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxTimer;
 
-import sys.thread.Thread;
-
 class RelaxSubState extends MusicBeatSubstate
 {
 	var camBack:FlxCamera;
@@ -41,10 +39,8 @@ class RelaxSubState extends MusicBeatSubstate
 	var oldRecordPicture:FlxSprite;
 	var oldAudio:AudioCircleDisplay;
 
-	var autoChangeTimer:FlxTimer;
-	var enableAutoChange:Bool = true;
 	var transitionTime:Float = 0.5;
-	var autoChangeDelay:Float = 10;
+	var isTransitioning:Bool = false;
 
 	public function new()
 	{
@@ -58,71 +54,111 @@ class RelaxSubState extends MusicBeatSubstate
 	 *	@param	background	背景图片
 	 *  @param	looped		是否循环播放
 	 *	@param	record		唱片背景图片（可选）
-	 *  @param	autoChange	是否自动切换到下一首（默认为true）
 	**/
-	public function loadSongs(sound:FlxSoundAsset, background:FlxGraphicAsset, looped:Bool = false, record:FlxGraphicAsset = null, autoChange:Bool = true) {
-		var thread = Thread.create(() ->
-		{
-			if (autoChangeTimer != null) {
-				autoChangeTimer.cancel();
-				autoChangeTimer.destroy();
-				autoChangeTimer = null;
-			}
-			
-			enableAutoChange = autoChange;
-			FlxG.sound.playMusic(sound, 1, looped);
-
-			fadeOutOldElements();
-			createNewElements(background, record != null ? record : background);
-			applyBlurFilter();
-			fadeInNewElements();
-			
-			if (enableAutoChange) {
-				autoChangeTimer = new FlxTimer().start(autoChangeDelay, 
-					(_) -> loadSongs(Paths.music('freakyMenu'), Paths.image('funkay'), true));
-			}
-		});
-	}
-
-	private function fadeOutOldElements():Void {
+	public function loadSongs(sound:FlxSoundAsset, background:FlxGraphicAsset, looped:Bool = false, record:FlxGraphicAsset = null) {
+		if (isTransitioning) return;
+		isTransitioning = true;
+		Paths.image(background);
+		if (record != null) Paths.image(record);
+		Paths.music(sound);
+		
+		// 先停止并播放新音乐
+		FlxG.sound.music.stop();
+		FlxG.sound.playMusic(sound, 1, looped);
+		
+		// 保存旧元素的引用
 		if (backendPicture != null) {
 			oldBackendPicture = backendPicture;
-			FlxTween.tween(oldBackendPicture, {alpha: 0}, transitionTime, {
-				ease: FlxEase.quadIn,
-				onComplete: function(twn:FlxTween) {
-					if (oldBackendPicture != null) {
-						remove(oldBackendPicture);
-						oldBackendPicture.destroy();
-						oldBackendPicture = null;
-					}
-				}
-			});
+			backendPicture = null;
 		}
 		
 		if (recordPicture != null) {
-			oldRecordPicture = recordPicture;
-			FlxTween.tween(oldRecordPicture, {alpha: 0, angle: 180}, transitionTime, {
-				ease: FlxEase.quadIn,
-				onComplete: function(twn:FlxTween) {
-					if (oldRecordPicture != null) {
-						remove(oldRecordPicture);
-						oldRecordPicture.destroy();
-						oldRecordPicture = null;
-					}
-				}
-			});
+			oldRecordPicture = recordPicture.clone();
+			recordPicture = null;
 		}
 		
 		if (audio != null) {
 			oldAudio = audio;
+			audio = null;
+		}
+		
+		createNewElements(background, record != null ? record : background);
+		applyBlurFilter();
+		
+		var allComplete:Bool = false;
+		var newElementsComplete:Bool = false;
+		var oldElementsComplete:Bool = false;
+		
+		function checkAllComplete() {
+			if (newElementsComplete && oldElementsComplete && !allComplete) {
+				allComplete = true;
+				isTransitioning = false;
+			}
+		}
+		
+		fadeInNewElements(() -> {
+			newElementsComplete = true;
+			checkAllComplete();
+		});
+		
+		fadeOutOldElements(() -> {
+			oldElementsComplete = true;
+			checkAllComplete();
+		});
+	}
+
+	private function fadeOutOldElements(onComplete:Void->Void):Void {
+		var tweenCount = 0;
+		var totalTweens = 0;
+		
+		if (oldBackendPicture != null) totalTweens++;
+		if (oldRecordPicture != null) totalTweens++;
+		if (oldAudio != null) totalTweens++;
+		
+		if (totalTweens == 0) {
+			onComplete();
+			return;
+		}
+		
+		function checkComplete() {
+			tweenCount++;
+			if (tweenCount >= totalTweens) {
+				onComplete();
+			}
+		}
+		
+		if (oldBackendPicture != null) {
+			FlxTween.tween(oldBackendPicture, {alpha: 0}, transitionTime, {
+				ease: FlxEase.quadIn,
+				onComplete: function(twn:FlxTween) {
+					remove(oldBackendPicture);
+					oldBackendPicture.destroy();
+					oldBackendPicture = null;
+					checkComplete();
+				}
+			});
+		}
+		
+		if (oldRecordPicture != null) {
+			FlxTween.tween(oldRecordPicture, {alpha: 0, angle: 180}, transitionTime, {
+				ease: FlxEase.quadIn,
+				onComplete: function(twn:FlxTween) {
+					remove(oldRecordPicture);
+					oldRecordPicture.destroy();
+					oldRecordPicture = null;
+					checkComplete();
+				}
+			});
+		}
+		
+		if (oldAudio != null) {
 			FlxTween.tween(oldAudio, {alpha: 0}, transitionTime, {
 				ease: FlxEase.quadIn,
 				onComplete: function(twn:FlxTween) {
-					if (oldAudio != null) {
-						remove(oldAudio);
-						oldAudio.destroy();
-						oldAudio = null;
-					}
+					remove(oldAudio);
+					oldAudio.destroy();
+					oldAudio = null;
+					checkComplete();
 				}
 			});
 		}
@@ -165,17 +201,45 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 	}
 	
-	private function fadeInNewElements():Void {
+	private function fadeInNewElements(onComplete:Void->Void):Void {
+		var tweenCount = 0;
+		var totalTweens = 0;
+		
+		if (backendPicture != null) totalTweens++;
+		if (recordPicture != null) totalTweens++;
+		if (audio != null) totalTweens++;
+		
+		if (totalTweens == 0) {
+			onComplete();
+			return;
+		}
+		
+		function checkComplete() {
+			tweenCount++;
+			if (tweenCount >= totalTweens) {
+				onComplete();
+			}
+		}
+		
 		if (backendPicture != null) {
-			FlxTween.tween(backendPicture, {alpha: 1}, transitionTime, {ease: FlxEase.quadOut});
+			FlxTween.tween(backendPicture, {alpha: 1}, transitionTime, {
+				ease: FlxEase.quadOut,
+				onComplete: function(_) checkComplete()
+			});
 		}
 		
 		if (recordPicture != null) {
-			FlxTween.tween(recordPicture, {alpha: 1, angle: 360}, transitionTime, {ease: FlxEase.quadOut});
+			FlxTween.tween(recordPicture, {alpha: 1, angle: 360}, transitionTime, {
+				ease: FlxEase.quadOut,
+				onComplete: function(_) checkComplete()
+			});
 		}
 		
 		if (audio != null) {
-			FlxTween.tween(audio, {alpha: 0.7}, transitionTime, {ease: FlxEase.quadOut});
+			FlxTween.tween(audio, {alpha: 0.7}, transitionTime, {
+				ease: FlxEase.quadOut,
+				onComplete: function(_) checkComplete()
+			});
 		}
 	}
 	
@@ -201,6 +265,7 @@ class RelaxSubState extends MusicBeatSubstate
 		circleMask = new Shape();
 		updateMask();
 
+		// Initial load with test song
 		loadSongs(Paths.music('gameOver'), Paths.image('menuDesat'), true);
 	}
 
@@ -246,12 +311,6 @@ class RelaxSubState extends MusicBeatSubstate
 
 	override function destroy()
 	{
-		if (autoChangeTimer != null) {
-			autoChangeTimer.cancel();
-			autoChangeTimer.destroy();
-			autoChangeTimer = null;
-		}
-		
 		if (backendPicture != null) {
 			backendPicture.destroy();
 			backendPicture = null;
@@ -293,5 +352,16 @@ class RelaxSubState extends MusicBeatSubstate
 	{
 		super.update(elapsed);
 		updateMask();
+
+		if(FlxG.keys.justPressed.A)
+		{
+			loadSongs(Paths.music('gameOver'), Paths.image('menuDesat'), true);
+		}else if(FlxG.keys.justPressed.S)
+		{
+			loadSongs(Paths.music('freakyMenu'), Paths.image('funkay'), true);
+		}else if(FlxG.keys.justPressed.D)
+		{
+			loadSongs(Paths.music('tea-time'), Paths.image('menuBGBlue'), true, Paths.image('newgrounds_logo'));
+		}
 	}
 }
