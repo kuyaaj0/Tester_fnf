@@ -168,7 +168,7 @@ class AudioCircleDisplay extends FlxSpriteGroup
 		if (snd != null)
 		{
 			analyzer = new SpectralAnalyzer(snd._channel.__audioSource, Std.int(line * 1 + Math.abs(0.05 * (4 - ClientPrefs.data.audioDisplayQuality))), 1, 5);
-			analyzer.fftN = 256 * ClientPrefs.data.audioDisplayQuality;
+			analyzer.fftN = 1024 * ClientPrefs.data.audioDisplayQuality;
 		}
 	}
 
