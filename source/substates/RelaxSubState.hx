@@ -22,8 +22,21 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxTimer;
 
+typedef SongInfo = {
+	name: String, 							// 歌曲名称
+	sound: Array<FlxSoundAsset>, 			// 音频资源
+	background: Array<FlxGraphicAsset>, 	// 背景图像
+	record: Array<FlxGraphicAsset>, 		// 唱片图像
+	backendVideo: FlxGraphicAsset, 			// 背景视频
+	bpm: Float, 							// 每分钟节拍数
+	writer: String 							// 作曲家
+};
+
 class RelaxSubState extends MusicBeatSubstate
 {
+	public var SongsArray:Array<SongInfo> = [];
+	private var currentSongIndex:Int = 0;
+
 	var camBack:FlxCamera;
 	var camPic:FlxCamera;
 	var camHUD:FlxCamera;
@@ -41,6 +54,13 @@ class RelaxSubState extends MusicBeatSubstate
 
 	var transitionTime:Float = 0.5;
 	var isTransitioning:Bool = false;
+	
+	// 控制唱片是否旋转
+	public var enableRecordRotation:Bool = true;
+	
+	// 歌曲信息显示
+	var songNameText:FlxText;
+	var writerText:FlxText;
 
 	public function new()
 	{
@@ -50,23 +70,34 @@ class RelaxSubState extends MusicBeatSubstate
 	}
 
 	/**
-	 *	@param	sound		音频路径/Openfl的Sound/一个嵌入的Sound类引用
-	 *	@param	background	背景图片
-	 *  @param	looped		是否循环播放
-	 *	@param	record		唱片背景图片（可选）
+	 *	@param	songInfo	歌曲信息
 	**/
-	public function loadSongs(sound:FlxSoundAsset, background:FlxGraphicAsset, looped:Bool = false, record:FlxGraphicAsset = null) {
-		if (isTransitioning) return;
+	public function loadSongs(songInfo:SongInfo = null):Void {
+		if (isTransitioning || songInfo == null) return;
 		isTransitioning = true;
-		Paths.image(background);
-		if (record != null) Paths.image(record);
-		Paths.music(sound);
 		
-		// 先停止并播放新音乐
+		// 预加载资源
+		if (songInfo.background != null && songInfo.background.length > 0) {
+			for (bg in songInfo.background) {
+				Paths.image(bg);
+			}
+		}
+		
+		if (songInfo.record != null && songInfo.record.length > 0) {
+			for (rec in songInfo.record) {
+				Paths.image(rec);
+			}
+		}
+		
+		if (songInfo.sound != null && songInfo.sound.length > 0) {
+			for (snd in songInfo.sound) {
+				Paths.music(snd);
+			}
+		}
+		
 		FlxG.sound.music.stop();
-		FlxG.sound.playMusic(sound, 1, looped);
 		
-		// 保存旧元素的引用
+		// 保存旧元素以便淡出
 		if (backendPicture != null) {
 			oldBackendPicture = backendPicture;
 			backendPicture = null;
@@ -82,8 +113,15 @@ class RelaxSubState extends MusicBeatSubstate
 			audio = null;
 		}
 		
-		createNewElements(background, record != null ? record : background);
+		// 创建新元素
+		var backgroundImage:FlxGraphicAsset = (songInfo.background != null && songInfo.background.length > 0) ? songInfo.background[0] : null;
+		var recordImage:FlxGraphicAsset = (songInfo.record != null && songInfo.record.length > 0) ? songInfo.record[0] : null;
+		
+		createNewElements(backgroundImage, recordImage);
 		applyBlurFilter();
+		
+		// 更新歌曲信息显示
+		updateSongInfoDisplay(songInfo);
 		
 		var allComplete:Bool = false;
 		var newElementsComplete:Bool = false;
@@ -98,6 +136,9 @@ class RelaxSubState extends MusicBeatSubstate
 		
 		fadeInNewElements(() -> {
 			newElementsComplete = true;
+			if (songInfo.sound != null && songInfo.sound.length > 0) {
+				FlxG.sound.playMusic(songInfo.sound[0], 1);
+			}
 			checkAllComplete();
 		});
 		
@@ -165,16 +206,18 @@ class RelaxSubState extends MusicBeatSubstate
 	}
 	
 	private function createNewElements(background:FlxGraphicAsset, recordImage:FlxGraphicAsset):Void {
-		backendPicture = new FlxSprite().loadGraphic(background);
-		backendPicture.antialiasing = ClientPrefs.data.antialiasing;
-		backendPicture.scrollFactor.set(0, 0);
-		backendPicture.scale.x = FlxG.width / backendPicture.width;
-		backendPicture.scale.y = FlxG.height / backendPicture.height;
-		backendPicture.updateHitbox();
-		backendPicture.screenCenter();
-		backendPicture.cameras = [camBack];
-		backendPicture.alpha = 0;
-		add(backendPicture);
+		if (background != null) {
+			backendPicture = new FlxSprite().loadGraphic(background);
+			backendPicture.antialiasing = ClientPrefs.data.antialiasing;
+			backendPicture.scrollFactor.set(0, 0);
+			backendPicture.scale.x = backendPicture.scale.y = Math.min(FlxG.width / backendPicture.width, FlxG.height / backendPicture.height) + 0.1;
+
+			backendPicture.updateHitbox();
+			backendPicture.screenCenter();
+			backendPicture.cameras = [camBack];
+			backendPicture.alpha = 0;
+			add(backendPicture);
+		}
 
 		audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
 									  500, 100, 46, 4, FlxColor.WHITE, 150);
@@ -182,12 +225,36 @@ class RelaxSubState extends MusicBeatSubstate
 		audio.cameras = [camBack];
 		add(audio);
 
-		recordPicture = new FlxSprite().loadGraphic(recordImage);
-		recordPicture.antialiasing = ClientPrefs.data.antialiasing;
-		updatePictureScale();
-		recordPicture.cameras = [camPic];
-		recordPicture.alpha = 0;
-		add(recordPicture);
+		// 如果recordImage为null但background不为null，则使用background作为唱片图片
+		var actualRecordImage:FlxGraphicAsset = recordImage;
+		if (actualRecordImage == null && background != null) {
+			actualRecordImage = background;
+		}
+		
+		if (actualRecordImage != null) {
+			recordPicture = new FlxSprite().loadGraphic(actualRecordImage);
+			recordPicture.antialiasing = ClientPrefs.data.antialiasing;
+			updatePictureScale();
+			recordPicture.cameras = [camPic];
+			recordPicture.alpha = 0;
+			add(recordPicture);
+		}
+	}
+	
+	/**
+	 * 更新歌曲信息显示
+	 * @param songInfo 歌曲信息
+	 */
+	private function updateSongInfoDisplay(songInfo:SongInfo):Void {
+		if (songInfo == null) return;
+		
+		if (songNameText != null) {
+			songNameText.text = songInfo.name != null ? songInfo.name : "未知歌曲";
+		}
+		
+		if (writerText != null) {
+			writerText.text = songInfo.writer != null ? "作曲: " + songInfo.writer : "";
+		}
 	}
 	
 	private function applyBlurFilter():Void {
@@ -262,11 +329,87 @@ class RelaxSubState extends MusicBeatSubstate
 
 		super.create();
 
+		// 初始化歌曲信息显示
+		songNameText = new FlxText(0, FlxG.height - 80, FlxG.width, "", 24);
+		songNameText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		songNameText.scrollFactor.set();
+		songNameText.borderSize = 2;
+		songNameText.cameras = [camHUD];
+		add(songNameText);
+		
+		writerText = new FlxText(0, FlxG.height - 50, FlxG.width, "", 16);
+		writerText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		writerText.scrollFactor.set();
+		writerText.borderSize = 1.5;
+		writerText.cameras = [camHUD];
+		add(writerText);
+
 		circleMask = new Shape();
 		updateMask();
 
-		// Initial load with test song
-		loadSongs(Paths.music('gameOver'), Paths.image('menuDesat'), true);
+		// 初始化歌曲列表
+		initSongsList();
+		
+		// 加载第一首歌曲
+		if (SongsArray.length > 0) {
+			loadSongs(SongsArray[0]);
+		}
+	}
+	
+	/**
+	 * 初始化歌曲列表
+	 */
+	private function initSongsList():Void {
+		// 示例歌曲，实际应用中可以从配置文件或其他来源加载
+		SongsArray = [
+			{
+				name: "Game Over",
+				sound: [Paths.music('gameOver')],
+				background: [Paths.image('menuDesat')],
+				record: null,
+				backendVideo: null,
+				bpm: 100,
+				writer: "Kawai Sprite"
+			},
+			{
+				name: "Freaky Menu",
+				sound: [Paths.music('freakyMenu')],
+				background: [Paths.image('menuBG')],
+				record: [Paths.image('funkay')],
+				backendVideo: null,
+				bpm: 102,
+				writer: "Kawai Sprite"
+			},
+			{
+				name: "Tea Time",
+				sound: [Paths.music('tea-time')],
+				background: [Paths.image('menuBGBlue')],
+				record: [Paths.image('newgrounds_logo')],
+				backendVideo: null,
+				bpm: 120,
+				writer: "Kawai Sprite"
+			}
+		];
+	}
+	
+	/**
+	 * 切换到下一首歌曲
+	 */
+	private function nextSong():Void {
+		if (SongsArray.length <= 1) return;
+		
+		currentSongIndex = (currentSongIndex + 1) % SongsArray.length;
+		loadSongs(SongsArray[currentSongIndex]);
+	}
+	
+	/**
+	 * 切换到上一首歌曲
+	 */
+	private function prevSong():Void {
+		if (SongsArray.length <= 1) return;
+		
+		currentSongIndex = (currentSongIndex - 1 + SongsArray.length) % SongsArray.length;
+		loadSongs(SongsArray[currentSongIndex]);
 	}
 
 	private function updateMask():Void
@@ -345,6 +488,19 @@ class RelaxSubState extends MusicBeatSubstate
 			circleMask = null;
 		}
 		
+		if (songNameText != null) {
+			songNameText.destroy();
+			songNameText = null;
+		}
+		
+		if (writerText != null) {
+			writerText.destroy();
+			writerText = null;
+		}
+		
+		// 清空歌曲数组
+		SongsArray = [];
+		
 		super.destroy();
 	}
 
@@ -353,15 +509,41 @@ class RelaxSubState extends MusicBeatSubstate
 		super.update(elapsed);
 		updateMask();
 
-		if(FlxG.keys.justPressed.A)
+		// 键盘控制
+		if (FlxG.keys.justPressed.LEFT || (virtualPad != null && virtualPad.buttonLeft.justPressed))
 		{
-			loadSongs(Paths.music('gameOver'), Paths.image('menuDesat'), true);
-		}else if(FlxG.keys.justPressed.S)
+			prevSong();
+		}
+		else if (FlxG.keys.justPressed.RIGHT || (virtualPad != null && virtualPad.buttonRight.justPressed))
 		{
-			loadSongs(Paths.music('freakyMenu'), Paths.image('funkay'), true);
-		}else if(FlxG.keys.justPressed.D)
+			nextSong();
+		}
+		
+		// 旋转唱片
+		if (recordPicture != null && !isTransitioning && enableRecordRotation)
 		{
-			loadSongs(Paths.music('tea-time'), Paths.image('menuBGBlue'), true, Paths.image('newgrounds_logo'));
+			recordPicture.angle += elapsed * 20; // 调整旋转速度
+			if (recordPicture.angle >= 360) recordPicture.angle -= 360;
+		}
+		
+		// 测试按键 - 可以根据需要移除
+		if (FlxG.keys.justPressed.A)
+		{
+			loadSongs(SongsArray[0]);
+		}
+		else if (FlxG.keys.justPressed.S)
+		{
+			loadSongs(SongsArray[1]);
+		}
+		else if (FlxG.keys.justPressed.D)
+		{
+			loadSongs(SongsArray[2]);
+		}
+		
+		// 返回按钮
+		if (FlxG.keys.justPressed.ESCAPE || (virtualPad != null && virtualPad.buttonB.justPressed))
+		{
+			close();
 		}
 	}
 }
