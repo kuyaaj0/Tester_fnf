@@ -58,20 +58,20 @@ class GeneralGroup extends OptionCata
 		addOption(option);
 
 		var option:Option = new Option(this, 'flashing', BOOL, Language.get('flashing', 'op'), Language.get('flashing', 'opSub'));
-		addOption(option);
+		addOption(option, true);
 
 		var option:Option = new Option(this, 'shaders', BOOL, Language.get('shaders', 'op'), Language.get('shaders', 'opSub'));
 		addOption(option);
 
 		var option:Option = new Option(this, 'cacheOnGPU', BOOL, Language.get('cacheOnGPU', 'op'), Language.get('cacheOnGPU', 'opSub'));
-		addOption(option);
+		addOption(option, true);
 
 		var option:Option = new Option(this, 'autoPause', BOOL, Language.get('autoPause', 'op'), Language.get('autoPause', 'opSub'));
 		addOption(option);
 		option.onChange = onChangePause;
 
 		var option:Option = new Option(this, 'gcFreeZone', BOOL, Language.get('gcFreeZone', 'op'), Language.get('gcFreeZone', 'opSub'));
-		addOption(option);
+		addOption(option, true);
 		option.onChange = onChangeGcZone;
 
 		changeHeight(0); //初始化真正的height

@@ -140,12 +140,29 @@ class Option extends FlxSpriteGroup
 		}
 	}
 
+	var overlopCheck:Float;
+	var alreadyShow:Bool = false;
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
 		followX = follow.mainX;
 		followY = follow.mainY;
+
+		var mouse = FlxG.mouse;
+
+       
+        if (mouse.overlaps(this)) {
+			overlopCheck += elapsed;
+		} else {
+			overlopCheck = 0;
+			alreadyShow = false;
+		}
+
+		if (overlopCheck >= 0.4 && !alreadyShow) {
+			OptionsState.instance.changeTip(tips);
+			alreadyShow = true;
+		}
 	}
 
 	////////////////////////////////////////////////////////
@@ -164,7 +181,7 @@ class Option extends FlxSpriteGroup
 	
 	function addData()
 	{
-		baseBGAdd();
+		baseBGAdd(true);
 	}
 
 	function addString()
@@ -240,17 +257,27 @@ class Option extends FlxSpriteGroup
 	var baseTar:FlxText;
 	var baseLine:Rect;
 	var baseDesc:FlxText;
-	function baseBGAdd()
+	function baseBGAdd(big:Bool = false)
 	{
-		var calcWidth = follow.bg.realWidth * ((1 - (1 / 2 / 50 * 3)) / 2);
-		baseBG = new RoundRect(0, 0, calcWidth, calcWidth * 0.15, calcWidth / 75, LEFT_UP, 0xffffff);
+		var mult:Float = 1; //
+		if (big) mult = 2;
+
+		var calcWidth:Float = 0;
+		if (!big) calcWidth = follow.bg.realWidth * ((1 - (1 / 2 / 50 * 3)) / 2);
+		else calcWidth = follow.bg.realWidth * (1 - (1 / 2 / 50 * 2));
+
+		var calcHeight:Float = 0;
+		if (!big) calcHeight = calcWidth * 0.16;
+		else calcHeight = calcWidth * 0.1;
+
+		baseBG = new RoundRect(0, 0, calcWidth, calcHeight, calcWidth / 75 / mult, LEFT_UP, 0xffffff);
 		baseBG.alpha = 0.1;
 		baseBG.mainX = followX + innerX;
 		baseBG.mainY = followY + innerY;
 		add(baseBG);
 
 		baseTar = new FlxText(0, 0, 0, 'Target: ' + variable, Std.int(follow.width / 10));
-		baseTar.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.realWidth / 30), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+		baseTar.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.realWidth / 30 / mult), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         baseTar.antialiasing = ClientPrefs.data.antialiasing;
 		baseTar.borderStyle = NONE;
 		baseTar.x += baseBG.mainRound;
@@ -259,12 +286,12 @@ class Option extends FlxSpriteGroup
 		baseTar.active = false;
 		add(baseTar);
 
-		baseLine = new Rect(0, baseTar.height, baseBG.realWidth, baseBG.realWidth / 400, 0, 0, 0xFFFFFF, 0.3);
+		baseLine = new Rect(0, baseTar.height, baseBG.realWidth, baseBG.realWidth / 400 / mult, 0, 0, 0xFFFFFF, 0.3);
 		baseLine.active = false;
 		add(baseLine);
 
 		baseDesc = new FlxText(0, baseTar.height + baseLine.height, baseBG.realWidth * 0.58, description, Std.int(follow.width / 10));
-		baseDesc.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.realWidth / 25), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+		baseDesc.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.realWidth / 25 / mult), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         baseDesc.antialiasing = ClientPrefs.data.antialiasing;
 		baseDesc.borderStyle = NONE;
 		baseDesc.active = false;

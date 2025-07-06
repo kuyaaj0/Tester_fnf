@@ -8,7 +8,7 @@ class OptionCata extends FlxSpriteGroup
 	public var heightSet:Float = 0;
 	public var heightSetOffset:Float = 0; //用于特殊的高度处理
 
-	public var option:Array<Option> = [];
+	public var optionArray:Array<Option> = [];
 
 	public var bg:RoundRect;
 
@@ -31,12 +31,14 @@ class OptionCata extends FlxSpriteGroup
 		var putY:Float = heightSet;
 		if (sameY) {
 			putX += this.width / 2; 
-			putY -= option[option.length - 1].height;
+			putY -= optionArray[optionArray.length - 1].saveHeight;
 		}
 		add(tar);
 
 		tar.initX(mainX, putX);
 		tar.initY(mainY, putY);
+
+		optionArray.push(tar);
 
 		if (!sameY) heightSet += tar.saveHeight;
 	}
