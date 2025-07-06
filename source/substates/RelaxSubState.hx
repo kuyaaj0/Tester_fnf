@@ -59,6 +59,7 @@ class RelaxSubState extends MusicBeatSubstate
 	var isTransitioning:Bool = false;
 	
 	public var enableRecordRotation:Bool = true;
+	public var bgBlur:Bool = false; // 是否启用背景模糊效果
 	
 	// 歌曲信息显示
 	var songNameText:FlxText;
@@ -279,7 +280,7 @@ class RelaxSubState extends MusicBeatSubstate
 	}
 		
 	private function applyBlurFilter():Void {
-		if (backendPicture != null) {
+		if (backendPicture != null && bgBlur) {
 			var blurFilter:BlurFilter = new BlurFilter(10, 10, 1);
 			var filterFrames = FlxFilterFrames.fromFrames(backendPicture.frames, 
 														Std.int(backendPicture.width), 
