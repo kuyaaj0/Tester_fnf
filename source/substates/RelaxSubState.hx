@@ -22,6 +22,8 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxTimer;
 
+import sys.thread.Thread;
+
 typedef SongInfo = {
 	name: String, 							// 歌曲名称
 	sound: Array<FlxSoundAsset>, 			// 音频资源
@@ -39,6 +41,7 @@ class RelaxSubState extends MusicBeatSubstate
 
 	var camBack:FlxCamera;
 	var camPic:FlxCamera;
+	var camText:FlxCamera;
 	var camHUD:FlxCamera;
 
 	var maskRadius:Float = 150;
@@ -55,7 +58,6 @@ class RelaxSubState extends MusicBeatSubstate
 	var transitionTime:Float = 0.5;
 	var isTransitioning:Bool = false;
 	
-	// 控制唱片是否旋转
 	public var enableRecordRotation:Bool = true;
 	
 	// 歌曲信息显示
@@ -95,7 +97,12 @@ class RelaxSubState extends MusicBeatSubstate
 			}
 		}
 		
+		// 停止当前音乐并播放新音乐
 		FlxG.sound.music.stop();
+		if (songInfo.sound != null && songInfo.sound.length > 0) {
+			FlxG.sound.playMusic(songInfo.sound[0], 1);
+			FlxG.sound.music.onComplete = () -> nextSong();
+		}
 		
 		// 保存旧元素以便淡出
 		if (backendPicture != null) {
@@ -136,9 +143,6 @@ class RelaxSubState extends MusicBeatSubstate
 		
 		fadeInNewElements(() -> {
 			newElementsComplete = true;
-			if (songInfo.sound != null && songInfo.sound.length > 0) {
-				FlxG.sound.playMusic(songInfo.sound[0], 1);
-			}
 			checkAllComplete();
 		});
 		
@@ -174,6 +178,7 @@ class RelaxSubState extends MusicBeatSubstate
 				onComplete: function(twn:FlxTween) {
 					remove(oldBackendPicture);
 					oldBackendPicture.destroy();
+					oldBackendPicture.kill();
 					oldBackendPicture = null;
 					checkComplete();
 				}
@@ -186,6 +191,7 @@ class RelaxSubState extends MusicBeatSubstate
 				onComplete: function(twn:FlxTween) {
 					remove(oldRecordPicture);
 					oldRecordPicture.destroy();
+					oldRecordPicture.kill();
 					oldRecordPicture = null;
 					checkComplete();
 				}
@@ -247,16 +253,31 @@ class RelaxSubState extends MusicBeatSubstate
 	 */
 	private function updateSongInfoDisplay(songInfo:SongInfo):Void {
 		if (songInfo == null) return;
-		
+		var actY = songNameText.y;
 		if (songNameText != null) {
-			songNameText.text = songInfo.name != null ? songInfo.name : "未知歌曲";
+			Thread.create(() ->{
+				FlxTween.tween(songNameText, {y: songNameText.y + maskRadius}, 1, {
+					ease: FlxEase.quadIn,
+					onComplete: function(_) {
+						songNameText.text = songInfo.name != null ? songInfo.name : "?????";
+						songNameText.updateHitbox();
+						songNameText.screenCenter(X);
+						songNameText.y = actY - maskRadius;
+						FlxTween.tween(songNameText, {y: actY}, 1, {
+							ease: FlxEase.backOut
+						});
+					}
+				});
+			});
+			
 		}
-		
 		if (writerText != null) {
-			writerText.text = songInfo.writer != null ? "作曲: " + songInfo.writer : "";
+			writerText.text = songInfo.writer != null ? songInfo.writer : "?????";
+			writerText.screenCenter();
+			writerText.updateHitbox();
 		}
 	}
-	
+		
 	private function applyBlurFilter():Void {
 		if (backendPicture != null) {
 			var blurFilter:BlurFilter = new BlurFilter(10, 10, 1);
@@ -314,35 +335,37 @@ class RelaxSubState extends MusicBeatSubstate
 	{
 		camBack = new FlxCamera();
 		camPic = new FlxCamera();
+		camText = new FlxCamera();
 		camHUD = new FlxCamera();
 
 		camHUD.bgColor.alpha = 0;
 		camPic.bgColor.alpha = 0;
+		camText.bgColor.alpha = 0;
 		camBack.bgColor.alpha = 0;
 
 		FlxG.cameras.add(camBack, false);
 		FlxG.cameras.add(camPic, false);
+		FlxG.cameras.add(camText, false);
 		FlxG.cameras.add(camHUD, false);
-
-		addVirtualPad(LEFT_RIGHT, A_B);
-		virtualPad.cameras = [camHUD];
 
 		super.create();
 
 		// 初始化歌曲信息显示
 		songNameText = new FlxText(0, FlxG.height - 80, FlxG.width, "", 24);
-		songNameText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		songNameText.setFormat(Paths.font("montserrat.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		songNameText.scrollFactor.set();
 		songNameText.borderSize = 2;
-		songNameText.cameras = [camHUD];
+		songNameText.cameras = [camText];
 		add(songNameText);
+		songNameText.screenCenter();
 		
 		writerText = new FlxText(0, FlxG.height - 50, FlxG.width, "", 16);
-		writerText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		writerText.setFormat(Paths.font("montserrat.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		writerText.scrollFactor.set();
 		writerText.borderSize = 1.5;
-		writerText.cameras = [camHUD];
+		writerText.cameras = [camText];
 		add(writerText);
+		writerText.screenCenter();
 
 		circleMask = new Shape();
 		updateMask();
@@ -437,6 +460,7 @@ class RelaxSubState extends MusicBeatSubstate
 		circleMask.graphics.endFill();
 
 		camPic.flashSprite.mask = circleMask;
+		camText.flashSprite.mask = circleMask;
 	}
 
 	private function updatePictureScale():Void
@@ -525,6 +549,8 @@ class RelaxSubState extends MusicBeatSubstate
 			recordPicture.angle += elapsed * 20; // 调整旋转速度
 			if (recordPicture.angle >= 360) recordPicture.angle -= 360;
 		}
+
+		writerText.y = songNameText.y + songNameText.height + 10;
 		
 		// 测试按键 - 可以根据需要移除
 		if (FlxG.keys.justPressed.A)
