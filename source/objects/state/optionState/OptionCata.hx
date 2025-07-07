@@ -30,7 +30,7 @@ class OptionCata extends FlxSpriteGroup
 		var putX:Float = this.width / 2 / 50;
 		var putY:Float = heightSet;
 		if (sameY) {
-			putX += this.width / 2; 
+			putX += (this.width - this.width / 2 / 50) / 2;
 			putY -= optionArray[optionArray.length - 1].saveHeight;
 		}
 		add(tar);
