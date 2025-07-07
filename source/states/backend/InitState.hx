@@ -140,10 +140,10 @@ class InitState extends MusicBeatState
 		#if mobile
 		if (ClientPrefs.data.filesCheck)
 		{
-			if (CopyState.checkExistingFiles())
+			if (!CopyState.checkExistingFiles())
 			{
 				// ClientPrefs.data.filesCheck = false;
-				ClientPrefs.saveSettings();
+				//ClientPrefs.saveSettings();
 				FlxG.switchState(new CopyState());
 				return;
 			}
@@ -231,16 +231,10 @@ class InitState extends MusicBeatState
 			#if VIDEOS_ALLOWED
 			startVideo('menuExtend/titleIntro');
 			#else
-			startIntro();
+			changeState();
 			#end
 		else
-			startIntro();
-	}
-	
-	function startIntro()
-	{
-		persistentUpdate = true;
-		changeState();
+			changeState();
 	}
 	
 	override function update(elapsed:Float)
@@ -346,11 +340,12 @@ class InitState extends MusicBeatState
 	
 	function videoEnd()
 	{
-		skipVideo.visible = false;
-		if (video != null)
+		if (skipVideo != null) skipVideo.visible = false;
+		if (video != null) {
 			video.stop();
-		video.visible = false;
-		startIntro();
+			video.visible = false;
+		}
+		changeState();
 		trace("end");
 	}
 	
