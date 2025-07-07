@@ -44,6 +44,7 @@ class RelaxSubState extends MusicBeatSubstate
 	var camPic:FlxCamera;
 	var camText:FlxCamera;
 	var camHUD:FlxCamera;
+	var camOption:FlxCamera;
 	
 	// BPM缩放相关变量
 	private var currentBPM:Float = 100;
@@ -79,6 +80,8 @@ class RelaxSubState extends MusicBeatSubstate
 	var LeftButton:FlxSprite;
 	var MiddleButton:FlxSprite;
 	var RightButton:FlxSprite;
+
+	var SaveY:Array<Float> = [];
 
 	public function new()
 	{
@@ -422,18 +425,24 @@ class RelaxSubState extends MusicBeatSubstate
 		camText.bgColor.alpha = 0;
 		camBack.bgColor.alpha = 0;
 
+		camOption = new FlxCamera();
+		camOption.bgColor.alpha = 0;
+		camOption.y = 0;
+
 		FlxG.cameras.add(camBack, false);
 		FlxG.cameras.add(camPic, false);
 		FlxG.cameras.add(camText, false);
 		FlxG.cameras.add(camHUD, false);
+		FlxG.cameras.add(camOption, false);
 
 		topTrapezoid = new FlxSprite();
 		drawTrapezoid(FlxG.width * 0.7, 40);
 		topTrapezoid.y = 0; // 初始位置为可见
 		topTrapezoid.x = (FlxG.width - topTrapezoid.width) / 2;
 		topTrapezoid.scrollFactor.set();
-		topTrapezoid.cameras = [camHUD];
+		topTrapezoid.cameras = [camOption];
 		add(topTrapezoid);
+		camOption.y = -topTrapezoid.height; // 初始隐藏
 		
 		defaultZoom = 1.0;
 		camPic.zoom = defaultZoom;
@@ -527,6 +536,8 @@ class RelaxSubState extends MusicBeatSubstate
 		LeftButton.y = buttonY;
 		MiddleButton.y = buttonY;
 		RightButton.y = buttonY;
+
+		SaveY = [LeftButton.y, RightButton.y];
 	}
 	
 	private function initSongsList():Void {
@@ -713,45 +724,56 @@ class RelaxSubState extends MusicBeatSubstate
 		super.destroy();
 	}
 
+	// 处理顶部梯形的显示和隐藏
 	private function handleTopTrapezoidVisibility(nearTop:Bool, elapsed:Float):Void {
+		// 如果鼠标靠近顶部
 		if (nearTop) {
+			// 如果正在等待隐藏，取消等待
 			if (waitingToHide) {
 				waitingToHide = false;
 				hideTimer = 0;
 			}
 			
-			if (topTrapezoid.y < 0 && !isTweening) {
+			// 如果梯形不在可见位置且没有正在进行的动画，则显示它
+			if (camOption.y < 0 && !isTweening) {
+				// 取消可能存在的旧动画
 				if (topTrapezoidTween != null && topTrapezoidTween.active) {
 					topTrapezoidTween.cancel();
 				}
 				
 				isTweening = true;
-				topTrapezoidTween = FlxTween.tween(topTrapezoid, {y: 0}, 0.3, {
+				topTrapezoidTween = FlxTween.tween(camOption, {y: 0}, 0.3, {
 					ease: FlxEase.quadOut,
 					onComplete: function(_) {
 						isTweening = false;
 					}
 				});
 			}
-		} else {
+		} 
+		// 如果鼠标不在顶部
+		else {
+			// 如果还没有开始等待隐藏，则开始计时
 			if (!waitingToHide && !isTweening) {
 				waitingToHide = true;
 				hideTimer = 0;
 			}
 			
+			// 如果正在等待隐藏，增加计时器
 			if (waitingToHide) {
 				hideTimer += elapsed;
 				
+				// 如果等待时间超过3秒，则隐藏梯形
 				if (hideTimer >= 3.0 && !isTweening) {
 					waitingToHide = false;
 					hideTimer = 0;
 					
+					// 取消可能存在的旧动画
 					if (topTrapezoidTween != null && topTrapezoidTween.active) {
 						topTrapezoidTween.cancel();
 					}
 					
 					isTweening = true;
-					topTrapezoidTween = FlxTween.tween(topTrapezoid, {y: -topTrapezoid.height}, 0.3, {
+					topTrapezoidTween = FlxTween.tween(camOption, {y: -topTrapezoid.height}, 0.3, {
 						ease: FlxEase.quadIn,
 						onComplete: function(_) {
 							isTweening = false;
@@ -766,6 +788,19 @@ class RelaxSubState extends MusicBeatSubstate
 	{
 		super.update(elapsed);
 		updateMask();
+		
+		if (backendPicture != null && !isTransitioning) {
+			var mouseX = FlxG.mouse.getScreenPosition(camHUD).x;
+			var mouseY = FlxG.mouse.getScreenPosition(camHUD).y;
+			var centerX = FlxG.width / 2;
+			var centerY = FlxG.height / 2;
+			
+			var offsetX = (mouseX - centerX) * 0.01;
+			var offsetY = (mouseY - centerY) * 0.01;
+			
+			backendPicture.x = centerX - backendPicture.width / 2 + offsetX;
+			backendPicture.y = centerY - backendPicture.height / 2 + offsetY;
+		}
 
 		var mousePos = FlxG.mouse.getScreenPosition(camHUD);
 		var nearTop = mousePos.y < 50;
@@ -824,9 +859,9 @@ class RelaxSubState extends MusicBeatSubstate
 		if (FlxG.mouse.justPressed) {
 			if (isOverLeft) {
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.7);
-				FlxTween.tween(LeftButton, {y: LeftButton.y + 5}, 0.1, {
+				FlxTween.tween(LeftButton, {y: SaveY[0] + 5}, 0.1, {
 					ease: FlxEase.quadOut,
-					onComplete: function(_) FlxTween.tween(LeftButton, {y: LeftButton.y - 5}, 0.1)
+					onComplete: function(_) FlxTween.tween(LeftButton, {y: SaveY[0]}, 0.1)
 				});
 				prevSong();
 			}
@@ -841,9 +876,9 @@ class RelaxSubState extends MusicBeatSubstate
 			}
 			else if (isOverRight) {
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.7);
-				FlxTween.tween(RightButton, {y: RightButton.y + 5}, 0.1, {
+				FlxTween.tween(RightButton, {y: SaveY[1] + 5}, 0.1, {
 					ease: FlxEase.quadOut,
-					onComplete: function(_) FlxTween.tween(RightButton, {y: RightButton.y - 5}, 0.1)
+					onComplete: function(_) FlxTween.tween(RightButton, {y: SaveY[1]}, 0.1)
 				});
 				nextSong();
 			}
@@ -893,6 +928,7 @@ class RelaxSubState extends MusicBeatSubstate
 		
 		if (FlxG.keys.justPressed.ESCAPE || (virtualPad != null && virtualPad.buttonB.justPressed))
 		{
+			FlxG.sound.music.play();
 			close();
 		}
 	}
