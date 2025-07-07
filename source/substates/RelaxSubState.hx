@@ -294,10 +294,9 @@ class RelaxSubState extends MusicBeatSubstate
 		var actY = FlxG.height / 2;
 		var animationDuration:Float = 0.5;
 		
-		// 设置当前歌曲的BPM
-		currentBPM = songInfo.bpm > 0 ? songInfo.bpm : 100; // 使用有效BPM或默认值100
-		beatTime = 60 / currentBPM; // 计算一拍的时间（秒）
-		beatTimer = 0; // 重置节拍计时器
+		currentBPM = songInfo.bpm > 0 ? songInfo.bpm : 100;
+		beatTime = 60 / currentBPM;
+		beatTimer = 0;
 		
 		if (songNameTween != null && songNameTween.active) {
 			songNameTween.cancel();
@@ -319,10 +318,8 @@ class RelaxSubState extends MusicBeatSubstate
 						var minutes:Int = Math.floor(totalLength / 60);
 						var seconds:Int = Math.floor(totalLength % 60);
 						
-						// 更新文本内容为"0:00 / 总时间"
 						songLengthText.text = '0:00 / ${minutes}:${seconds < 10 ? "0" + seconds : Std.string(seconds)}';
 						
-						// 确保文本居中显示在中间按钮上
 						songLengthText.x = MiddleButton.x + (MiddleButton.width - songLengthText.width) / 2;
 						songLengthText.y = MiddleButton.y + (MiddleButton.height - songLengthText.height) / 2;
 					}
@@ -391,7 +388,28 @@ class RelaxSubState extends MusicBeatSubstate
 			});
 		}
 	}
-	
+
+	var topTrapezoid:FlxSprite;
+	var hideTimer:Float = 0; // 隐藏计时器
+	var waitingToHide:Bool = false; // 是否正在等待隐藏
+	var topTrapezoidTween:FlxTween = null; // 用于存储当前的tween动画
+	var isTweening:Bool = false; // 是否正在进行tween动画
+
+	private function drawTrapezoid(topWidth:Float, height:Float):Void {
+		var bottomWidth = topWidth * 0.8;
+		var sideSlope = (topWidth - bottomWidth) / 2;
+		
+		topTrapezoid.makeGraphic(Std.int(topWidth), Std.int(height), FlxColor.TRANSPARENT, true);
+		
+		var vertices = [
+			new FlxPoint(0, 0),
+			new FlxPoint(topWidth, 0),
+			new FlxPoint(topWidth - sideSlope, height), 
+			new FlxPoint(sideSlope, height)
+		];
+		FlxSpriteUtil.drawPolygon(topTrapezoid, vertices, 0xFF24232C);
+	}
+
 	override function create()
 	{
 		camBack = new FlxCamera();
@@ -408,8 +426,15 @@ class RelaxSubState extends MusicBeatSubstate
 		FlxG.cameras.add(camPic, false);
 		FlxG.cameras.add(camText, false);
 		FlxG.cameras.add(camHUD, false);
+
+		topTrapezoid = new FlxSprite();
+		drawTrapezoid(FlxG.width * 0.7, 40);
+		topTrapezoid.y = 0; // 初始位置为可见
+		topTrapezoid.x = (FlxG.width - topTrapezoid.width) / 2;
+		topTrapezoid.scrollFactor.set();
+		topTrapezoid.cameras = [camHUD];
+		add(topTrapezoid);
 		
-		// 设置相机默认缩放值
 		defaultZoom = 1.0;
 		camPic.zoom = defaultZoom;
 
@@ -418,8 +443,8 @@ class RelaxSubState extends MusicBeatSubstate
 		songNameText = new FlxText(0, FlxG.height / 2, FlxG.width, "", 24);
 		songNameText.setFormat(Paths.font("montserrat.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		songNameText.scrollFactor.set();
-		songNameText.borderSize = 1; // 减小黑边粗细
-		songNameText.antialiasing = true; // 启用抗锯齿
+		songNameText.borderSize = 1;
+		songNameText.antialiasing = true;
 		songNameText.cameras = [camText];
 		songNameText.alpha = 1;
 		add(songNameText);
@@ -428,8 +453,8 @@ class RelaxSubState extends MusicBeatSubstate
 		writerText = new FlxText(0, songNameText.y + songNameText.height + 10, FlxG.width, "", 16);
 		writerText.setFormat(Paths.font("montserrat.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		writerText.scrollFactor.set();
-		writerText.borderSize = 0.8; // 减小黑边粗细
-		writerText.antialiasing = true; // 启用抗锯齿
+		writerText.borderSize = 0.8;
+		writerText.antialiasing = true;
 		writerText.cameras = [camText];
 		writerText.alpha = 1;
 		add(writerText);
@@ -437,12 +462,11 @@ class RelaxSubState extends MusicBeatSubstate
 
 		createButtons();
 		
-		// 创建歌曲进度文本并放在中间按钮上
 		songLengthText = new FlxText(0, 0, 0, "0:00 / 0:00", 16);
 		songLengthText.setFormat(Paths.font("montserrat.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		songLengthText.scrollFactor.set();
-		songLengthText.borderSize = 1; // 减小黑边粗细
-		songLengthText.antialiasing = true; // 启用抗锯齿
+		songLengthText.borderSize = 1;
+		songLengthText.antialiasing = true;
 		songLengthText.cameras = [camHUD];
 		songLengthText.alpha = 1;
 		add(songLengthText);
@@ -452,7 +476,6 @@ class RelaxSubState extends MusicBeatSubstate
 
 		initSongsList();
 		
-		// 初始化索引并加载第一首歌曲
 		if (SongsArray.length > 0) {
 			currentSongIndex = 0;
 			pendingSongIndex = -1;
@@ -461,29 +484,23 @@ class RelaxSubState extends MusicBeatSubstate
 	}
 
 	function createButtons(){
-		var buttonHeight = 60; // 减小按钮高度
-		var buttonSpacing = 15; // 按钮间距
+		var buttonHeight = 60;
+		var buttonSpacing = 15;
 	
-		// 将按钮放在屏幕底部，留出一点边距
-		var buttonY = FlxG.height - buttonHeight - 10; // 屏幕底部，上移10像素
+		var buttonY = FlxG.height - buttonHeight - 10;
 	
-		// 所有按钮宽度相同，更窄一些
 		var buttonWidth = 100;
 	
-		// 计算按钮组的总宽度并居中
 		var totalWidth = buttonWidth * 3 + buttonSpacing * 2;
 		var startX = (FlxG.width - totalWidth) / 2;
-	
-		// 左边按钮尖尖朝左
+
 		LeftButton = new ButtonSprite(startX, buttonY, buttonWidth, buttonHeight, 50, "left");
 		LeftButton.scrollFactor.set(0, 0);
-	
-		// 中间按钮显示时间文本
+
 		MiddleButton = new FlxSprite(LeftButton.x + LeftButton.width + buttonSpacing, buttonY);
-		MiddleButton.makeGraphic(buttonWidth, Std.int(buttonHeight), FlxColor.WHITE);
+		MiddleButton.makeGraphic(buttonWidth, Std.int(buttonHeight), 0xFF24232C);
 		MiddleButton.scrollFactor.set(0, 0);
 
-		// 右边按钮尖尖朝右
 		RightButton = new ButtonSprite(MiddleButton.x + MiddleButton.width + buttonSpacing, buttonY, buttonWidth, buttonHeight, 50, "right");
 		RightButton.scrollFactor.set(0, 0);
 
@@ -562,7 +579,6 @@ class RelaxSubState extends MusicBeatSubstate
 		var nextIndex = (currentSongIndex + 1) % SongsArray.length;
 		
 		if (isTransitioning) {
-			// 如果正在过渡中，记录待播放的索引
 			pendingSongIndex = nextIndex;
 			return;
 		}
@@ -580,7 +596,6 @@ class RelaxSubState extends MusicBeatSubstate
 		var prevIndex = (currentSongIndex - 1 + SongsArray.length) % SongsArray.length;
 		
 		if (isTransitioning) {
-			// 如果正在过渡中，记录待播放的索引
 			pendingSongIndex = prevIndex;
 			return;
 		}
@@ -635,6 +650,11 @@ class RelaxSubState extends MusicBeatSubstate
 		if (songNameTween != null && songNameTween.active) {
 			songNameTween.cancel();
 			songNameTween = null;
+		}
+		
+		if (topTrapezoidTween != null && topTrapezoidTween.active) {
+			topTrapezoidTween.cancel();
+			topTrapezoidTween = null;
 		}
 		
 		if (backendPicture != null) {
@@ -693,14 +713,66 @@ class RelaxSubState extends MusicBeatSubstate
 		super.destroy();
 	}
 
+	private function handleTopTrapezoidVisibility(nearTop:Bool, elapsed:Float):Void {
+		if (nearTop) {
+			if (waitingToHide) {
+				waitingToHide = false;
+				hideTimer = 0;
+			}
+			
+			if (topTrapezoid.y < 0 && !isTweening) {
+				if (topTrapezoidTween != null && topTrapezoidTween.active) {
+					topTrapezoidTween.cancel();
+				}
+				
+				isTweening = true;
+				topTrapezoidTween = FlxTween.tween(topTrapezoid, {y: 0}, 0.3, {
+					ease: FlxEase.quadOut,
+					onComplete: function(_) {
+						isTweening = false;
+					}
+				});
+			}
+		} else {
+			if (!waitingToHide && !isTweening) {
+				waitingToHide = true;
+				hideTimer = 0;
+			}
+			
+			if (waitingToHide) {
+				hideTimer += elapsed;
+				
+				if (hideTimer >= 3.0 && !isTweening) {
+					waitingToHide = false;
+					hideTimer = 0;
+					
+					if (topTrapezoidTween != null && topTrapezoidTween.active) {
+						topTrapezoidTween.cancel();
+					}
+					
+					isTweening = true;
+					topTrapezoidTween = FlxTween.tween(topTrapezoid, {y: -topTrapezoid.height}, 0.3, {
+						ease: FlxEase.quadIn,
+						onComplete: function(_) {
+							isTweening = false;
+						}
+					});
+				}
+			}
+		}
+	}
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 		updateMask();
 
+		var mousePos = FlxG.mouse.getScreenPosition(camHUD);
+		var nearTop = mousePos.y < 50;
+		handleTopTrapezoidVisibility(nearTop, elapsed);
+
 		writerText.y = songNameText.y + songNameText.height + 10;
 		
-		// 确保歌曲进度文本始终居中在中间按钮上
 		var buttonX = MiddleButton.x;
 		var buttonY = MiddleButton.y;
 		var buttonWidth = MiddleButton.width;
@@ -718,25 +790,21 @@ class RelaxSubState extends MusicBeatSubstate
 			}
 		}
 		
-					// 更新歌曲播放时间和总时间
 		if (FlxG.sound.music != null) {
-			var currentTime:Float = FlxG.sound.music.time / 1000; // 当前播放时间（秒）
-			var totalTime:Float = FlxG.sound.music.length / 1000; // 总时间（秒）
+			var currentTime:Float = FlxG.sound.music.time / 1000;
+			var totalTime:Float = FlxG.sound.music.length / 1000;
 
 			var currentMinutes:Int = Math.floor(currentTime / 60);
 			var currentSeconds:Int = Math.floor(currentTime % 60);
 			var totalMinutes:Int = Math.floor(totalTime / 60);
 			var totalSeconds:Int = Math.floor(totalTime % 60);
 
-			// 更新进度文本，显示当前时间/总时间
 			songLengthText.text = '${currentMinutes}:${currentSeconds < 10 ? "0" + currentSeconds : Std.string(currentSeconds)} / ${totalMinutes}:${totalSeconds < 10 ? "0" + totalSeconds : Std.string(totalSeconds)}';
 
-			// 确保文本居中显示在中间按钮上
 			songLengthText.x = MiddleButton.x + (MiddleButton.width - songLengthText.width) / 2;
 			songLengthText.y = MiddleButton.y + (MiddleButton.height - songLengthText.height) / 2;
 		}
 
-		// 键盘控制
 		if (FlxG.keys.justPressed.LEFT) {
 			prevSong();
 		}
@@ -744,18 +812,15 @@ class RelaxSubState extends MusicBeatSubstate
 			nextSong();
 		}
 		
-		// 按钮交互控制
 		var mousePos = FlxG.mouse.getScreenPosition(camHUD);
 		var isOverLeft = LeftButton.overlapsPoint(mousePos, true, camHUD);
 		var isOverMiddle = MiddleButton.overlapsPoint(mousePos, true, camHUD);
 		var isOverRight = RightButton.overlapsPoint(mousePos, true, camHUD);
 		
-		// 悬停效果 - 所有按钮使用相同的悬停效果
-		LeftButton.alpha = isOverLeft ? 0.8 : 1.0;
-		MiddleButton.alpha = isOverMiddle ? 0.8 : 1.0;
-		RightButton.alpha = isOverRight ? 0.8 : 1.0;
+		LeftButton.alpha = isOverLeft ? 0.8 : 1;
+		MiddleButton.alpha = isOverMiddle ? 0.8 : 1;
+		RightButton.alpha = isOverRight ? 0.8 : 1;
 		
-		// 点击效果
 		if (FlxG.mouse.justPressed) {
 			if (isOverLeft) {
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.7);
@@ -768,7 +833,6 @@ class RelaxSubState extends MusicBeatSubstate
 			else if (isOverMiddle && FlxG.sound.music != null) {
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.7);
 				
-				// 切换播放/暂停状态
 				if (FlxG.sound.music.playing) {
 					FlxG.sound.music.pause();
 				} else {
@@ -819,12 +883,10 @@ class RelaxSubState extends MusicBeatSubstate
 			}
 		}
 
-		// 切换BPM缩放效果
 		if (FlxG.keys.justPressed.B)
 		{
 			enableBpmZoom = !enableBpmZoom;
 			if (!enableBpmZoom) {
-				// 如果禁用缩放效果，恢复默认缩放值
 				camPic.zoom = defaultZoom;
 			}
 		}
@@ -926,25 +988,21 @@ class ButtonSprite extends FlxSprite
         
         // 计算斜边斜率
         var slope = (width - shortSide) / height;
-        
         // 逐行绘制
         for (y in 0...height) {
             var startX:Int = 0;
             var endX:Int = width;
             
             if (direction == "right") {
-                // 尖尖朝右
                 endX = Std.int(width - slope * y);
                 startX = 0;
             } else if (direction == "left") {
-                // 尖尖朝左
                 startX = Std.int(slope * y);
                 endX = width;
             }
             
-            // 绘制一行
             for (x in startX...endX) {
-                pixels.setPixel32(x, y, FlxColor.WHITE);
+                pixels.setPixel32(x, y, 0xFF24232C);
             }
         }
     }
