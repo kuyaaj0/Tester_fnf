@@ -12,7 +12,11 @@ class NumButton extends FlxSpriteGroup {
 
     var deleteButton:FlxSprite;
     var addButton:FlxSprite;
+
+    var moveBG:Rect;
 	
+    var max:Float;
+    var min:Float;
 
     public function new(X:Float, Y:Float, width:Float, height:Float, follow:Option) {
         super(X, Y);
@@ -33,6 +37,18 @@ class NumButton extends FlxSpriteGroup {
         addButton.x += width - addButton.width;
         addButton.y += (height - addButton.height) / 2;
         add(addButton);
+
+        moveBG = new Rect(deleteButton.width * 1.2, 
+                         0, 
+                         width - (deleteButton.width + addButton.width) * 1.2, 
+                         deleteButton.height * 0.5, 
+                         deleteButton.height * 0.5 * 0.5, 
+                         deleteButton.height * 0.5 * 0.5,
+                         0x000000,
+                         0.4
+                         );
+        moveBG.y += (height - moveBG.height) / 2;
+        add(moveBG);
     }
     
     private function createButton(size:Float, color:Int, symbol:String) {

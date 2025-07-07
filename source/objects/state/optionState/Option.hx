@@ -26,16 +26,16 @@ enum OptionType
 
 class Option extends FlxSpriteGroup
 {
-	public var saveHeight:Float = 0;
-	var inter:Float = 10;
-
 	public var onChange:Void->Void = null;
 	public var type:OptionType = BOOL;
 
+	public var saveHeight:Float = 0;
+	var inter:Float = 10; //设置与设置间的y轴间隔
+
 	public var variable:String = null; // Variable from ClientPrefs.hx
 	public var defaultValue:Dynamic = null; //获取出来的数值
-	public var description:String = '';
-	public var tips:String;
+	public var description:String = ''; //简短的描述
+	public var tips:String; //真正的解释
 
 	//STRING
 	public var strGroup:Array<String> = null;
@@ -44,7 +44,7 @@ class Option extends FlxSpriteGroup
 	//INT FLOAT PERCENT;
 	public var minValue:Float = 0;
 	public var maxValue:Float = 0;
-	public var decimals:Int = 0;
+	public var decimals:Int = 0; //数据需要精确到小数点几位
 	public var exatraDisplay:String = '';
 
 	public var follow:OptionCata;
