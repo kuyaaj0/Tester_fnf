@@ -14,6 +14,8 @@ class NumButton extends FlxSpriteGroup {
     var addButton:FlxSprite;
 
     var moveBG:Rect;
+    var moveDis:Rect;
+    var rod:Rect;
 	
     var max:Float;
     var min:Float;
@@ -22,6 +24,8 @@ class NumButton extends FlxSpriteGroup {
         super(X, Y);
 
         this.follow = follow;
+        this.min = follow.minValue;
+        this.max = follow.maxValue;
         innerX = X;
         innerY = Y;
 
@@ -49,7 +53,46 @@ class NumButton extends FlxSpriteGroup {
                          );
         moveBG.y += (height - moveBG.height) / 2;
         add(moveBG);
+
+        moveDis = new Rect(deleteButton.width * 1.2, 
+                         0, 
+                         width - (deleteButton.width + addButton.width) * 1.2, 
+                         deleteButton.height * 0.5, 
+                         deleteButton.height * 0.5 * 0.5, 
+                         deleteButton.height * 0.5 * 0.5,
+                         EngineSet.mainColor,
+                         1.0
+                         );
+        moveDis.y += (height - moveDis.height) / 2;
+        add(moveDis);
+
+        rod = new Rect(deleteButton.width * 1.2, 
+                        0, 
+                        height / 10, 
+                        deleteButton.height, 
+                        height / 10, 
+                        height / 10, 
+                        0xffffff,
+                        1.0
+                        );
+        rod.y += (height - rod.height) / 2;
+        add(rod);
+
+        initData();
     }
+
+    function initData() {
+        var percent = (follow.defaultValue - min) / (max - min);
+        rectUpdate(percent);
+    }
+
+    function rectUpdate(percent:Float)
+	{
+		moveDis._frame.frame.width = moveDis.width * percent;
+		if (moveDis._frame.frame.width < 1)
+			moveDis._frame.frame.width = 1;
+		rod.x = follow.followX + follow.innerX + innerX + deleteButton.width * 1.2 + (moveBG.width - rod.width) * percent;
+	}
     
     private function createButton(size:Float, color:Int, symbol:String) {
         // 绘制按钮背景
