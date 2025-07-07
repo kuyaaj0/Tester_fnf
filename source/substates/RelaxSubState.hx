@@ -784,6 +784,9 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 	}
 
+	// 背景跟随鼠标的平滑系数 (0.1表示较慢跟随，0.9表示较快跟随)
+	var bgFollowSmooth:Float = 0.2;
+	
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -795,11 +798,20 @@ class RelaxSubState extends MusicBeatSubstate
 			var centerX = FlxG.width / 2;
 			var centerY = FlxG.height / 2;
 			
-			var offsetX = (mouseX - centerX) * 0.01;
-			var offsetY = (mouseY - centerY) * 0.01;
+			// 计算目标偏移量
+			var targetOffsetX = (mouseX - centerX) * 0.01;
+			var targetOffsetY = (mouseY - centerY) * 0.01;
 			
-			backendPicture.x = centerX - backendPicture.width / 2 + offsetX;
-			backendPicture.y = centerY - backendPicture.height / 2 + offsetY;
+			// 当前偏移量
+			var currentOffsetX = backendPicture.x - (centerX - backendPicture.width / 2);
+			var currentOffsetY = backendPicture.y - (centerY - backendPicture.height / 2);
+			
+			// 使用线性插值平滑移动
+			var smoothX = FlxMath.lerp(currentOffsetX, targetOffsetX, bgFollowSmooth);
+			var smoothY = FlxMath.lerp(currentOffsetY, targetOffsetY, bgFollowSmooth);
+			
+			backendPicture.x = centerX - backendPicture.width / 2 + smoothX;
+			backendPicture.y = centerY - backendPicture.height / 2 + smoothY;
 		}
 
 		var mousePos = FlxG.mouse.getScreenPosition(camHUD);
