@@ -127,7 +127,7 @@ class Option extends FlxSpriteGroup
 			case BOOL:
 				addBool();
 			case INT, FLOAT, PERCENT:
-				addData();
+				addNum();
 			case STRING:
 				addString();
 			case TEXT:
@@ -159,7 +159,7 @@ class Option extends FlxSpriteGroup
 			alreadyShow = false;
 		}
 
-		if (overlopCheck >= 0.4 && !alreadyShow) {
+		if (overlopCheck >= 0.2 && !alreadyShow) {
 			OptionsState.instance.changeTip(tips);
 			alreadyShow = true;
 		}
@@ -178,10 +178,15 @@ class Option extends FlxSpriteGroup
 		add(boolButton);
 	}
 
-	
-	function addData()
+	var numButton:NumButton;
+	function addNum()
 	{
 		baseBGAdd(true);
+
+		var clacHeight = baseBG.realHeight - (baseTar.height + baseLine.height) - baseBG.mainRound * 2;
+		var clacWidth = baseBG.realWidth * 0.5 - baseBG.mainRound * 2;
+		numButton = new NumButton(baseBG.realWidth * 0.5 + baseBG.mainRound, baseTar.height + baseLine.height + baseBG.mainRound, clacWidth, clacHeight, this);
+		add(numButton);
 	}
 
 	function addString()
@@ -253,13 +258,13 @@ class Option extends FlxSpriteGroup
 		
 	}
 
-	var baseBG:RoundRect;
+	public var baseBG:RoundRect;
 	var baseTar:FlxText;
 	var baseLine:Rect;
 	var baseDesc:FlxText;
 	function baseBGAdd(big:Bool = false)
 	{
-		var mult:Float = 1; //
+		var mult:Float = 1; //一些数据需要保持一致
 		if (big) mult = 2;
 
 		var calcWidth:Float = 0;
@@ -290,7 +295,9 @@ class Option extends FlxSpriteGroup
 		baseLine.active = false;
 		add(baseLine);
 
-		baseDesc = new FlxText(0, baseTar.height + baseLine.height, baseBG.realWidth * 0.58, description, Std.int(follow.width / 10));
+		var calcWidth = baseBG.realWidth * 0.58;
+		if (big) calcWidth = baseBG.realWidth * 0.5;
+		baseDesc = new FlxText(0, baseTar.height + baseLine.height, calcWidth, description, Std.int(follow.width / 10));
 		baseDesc.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.realWidth / 25 / mult), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         baseDesc.antialiasing = ClientPrefs.data.antialiasing;
 		baseDesc.borderStyle = NONE;

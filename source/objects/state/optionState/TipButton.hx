@@ -13,6 +13,7 @@ class TipButton extends FlxSpriteGroup
         background.mainX = X;
         background.mainY = Y;
         add(background);
+        background.visible = false; //也许以后会用到，但是目前看来还是删了比较好看些
 
         textDis = new AlphaText(0, 0, 0, 'text', Std.int(height * 0.32));
 		textDis.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(height * 0.32), EngineSet.mainColor, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
