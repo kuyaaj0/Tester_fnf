@@ -142,8 +142,6 @@ class InitState extends MusicBeatState
 		{
 			if (!CopyState.checkExistingFiles())
 			{
-				// ClientPrefs.data.filesCheck = false;
-				//ClientPrefs.saveSettings();
 				FlxG.switchState(new CopyState());
 				return;
 			}

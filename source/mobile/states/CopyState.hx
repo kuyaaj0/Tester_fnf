@@ -246,7 +246,7 @@ class CopyState extends MusicBeatState
 
 		maxLoopTimes = locatedFiles.length;
 
-		return (maxLoopTimes < 0);
+		return (maxLoopTimes <= 0);
 	}
 
 	public static function checkExistingFilesNew(delete:Bool = false):Bool
@@ -311,7 +311,7 @@ class CopyState extends MusicBeatState
 
 		maxLoopTimes = locatedFiles.length;
 
-		return (maxLoopTimes < 0);
+		return (maxLoopTimes <= 0);
 		#end
 	}
 }
