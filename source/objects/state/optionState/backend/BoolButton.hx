@@ -76,6 +76,6 @@ class BoolButton extends FlxSpriteGroup {
         //FlxTween.color(bg, 0.2, bg.color, targetColor, { ease: FlxEase.quadOut });
         bg.color = targetColor;  //为什么几把不能用tween
         
-        if (follow.onChange != null) follow.onChange();
+        follow.change();
     }
 }
