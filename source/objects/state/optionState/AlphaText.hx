@@ -37,9 +37,14 @@ class AlphaText extends FlxSpriteGroup
 
     var mainTween:FlxTween;
     var minorTween:FlxTween;
+    var saveText:String = '';
     public function changeText(newText:String, time:Float = 0.6) {
-        if (mainTween != null) mainTween.cancel();
-        if (minorTween != null) minorTween.cancel();
+        if (newText == saveText) return;
+
+        saveText = newText;
+
+        if (mainTween != null) { mainTween.cancel(); mainText.alpha = 1; }
+        if (minorTween != null) { minorTween.cancel(); minorText.alpha = 0; }
 
         minorText.text = newText;
         minorText.scale.x = minorText.scale.y = 1;

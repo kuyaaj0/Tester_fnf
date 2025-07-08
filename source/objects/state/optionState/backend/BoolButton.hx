@@ -20,7 +20,7 @@ class BoolButton extends FlxSpriteGroup {
         bg.antialiasing = ClientPrefs.data.antialiasing;
         add(bg);
 
-        dis = new Rect(2, 2, width / 2 - 4, height - 4, width / 20, width / 20, 0xFFFFFF, 0.8);
+        dis = new Rect(2, 3, width / 2 - 4, height - 6, width / 20, width / 20, 0xFFFFFF, 0.8);
         dis.antialiasing = ClientPrefs.data.antialiasing;
         add(dis);
 
