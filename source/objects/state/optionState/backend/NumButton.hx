@@ -127,7 +127,7 @@ class NumButton extends FlxSpriteGroup {
                 }
 
                 if (addButton.scale.x > 0.8)
-                    addButton.scale.x = addButton.scale.y -= EngineSet.FPSfix(0.01);
+                    addButton.scale.x = addButton.scale.y -= ((addButton.scale.x - 0.8) * (addButton.scale.x - 0.8) * 0.75);
             } else {
                 addHoldTime = 0;
                 focusAdd = false;
@@ -153,7 +153,7 @@ class NumButton extends FlxSpriteGroup {
                 }
 
                 if (deleteButton.scale.x > 0.8)
-                    deleteButton.scale.x = deleteButton.scale.y -= EngineSet.FPSfix(0.01);
+                    deleteButton.scale.x = deleteButton.scale.y -= ((deleteButton.scale.x - 0.8) * (deleteButton.scale.x - 0.8) * 0.75);
             } else {
                 deleteHoldTime = 0;
                 focusDelete = false;
@@ -163,13 +163,10 @@ class NumButton extends FlxSpriteGroup {
             focusDelete = false;
         }
 
-        if (!mouse.pressed)
-        {
-            if (addButton.scale.x < 1)
-                addButton.scale.x = addButton.scale.y += EngineSet.FPSfix(0.01);
-            if (deleteButton.scale.x < 1)
-                deleteButton.scale.x = deleteButton.scale.y += EngineSet.FPSfix(0.01);
-        }
+        if (addButton.scale.x < 1 && !focusAdd)
+            addButton.scale.x = addButton.scale.y += ((1 - addButton.scale.x) * (1 - addButton.scale.x) * 0.5);
+        if (deleteButton.scale.x < 1 && !focusDelete)
+            deleteButton.scale.x = deleteButton.scale.y += ((1 - deleteButton.scale.x) * (1 - deleteButton.scale.x) * 0.5);
 	}
 
     var lastMouseX = 0;

@@ -102,9 +102,10 @@ class Option extends FlxSpriteGroup
 				if (data[3] != null) this.extraDisplay = data[3];
 
 			case PERCENT:
-				this.decimals = data[0];
-				this.decimals = data[1];
-				if (data[2] != null) this.extraDisplay = data[2];
+				this.minValue = data[0];
+				this.maxValue = data[1];
+				this.decimals = data[2];
+				this.extraDisplay = '%';
 				
 			case STRING:
 				this.strGroup = data;

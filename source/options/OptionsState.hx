@@ -87,10 +87,18 @@ class OptionsState extends MusicBeatState
 			addCata(naviArray[i]);
 		}
 
-		var moveHeight:Float = 0;
-		for (num in cataGroup) moveHeight += num.bg.height;
+		var moveHeight:Float = 100;
+		for (num in cataGroup) {
+			if (num != cataGroup[cataGroup.length - 1]) {
+				moveHeight -= num.bg.realHeight;
+				moveHeight -= UIScale.adjust(FlxG.width * (0.8 / 40));
+			} else {
+				moveHeight -= cataGroup[cataGroup.length - 1].bg.realHeight - UIScale.adjust(FlxG.height * 0.8);
+				moveHeight -= UIScale.adjust(FlxG.width * (0.8 / 40)) * 2;
+			}
+		}
 		cataMove = new MouseMove(cataPosiData, 
-								[-1 * moveHeight, 100],
+								[moveHeight, 100],
 								[ 
 									[UIScale.adjust(FlxG.width * 0.2), FlxG.width], 
 									[0, FlxG.height - Std.int(UIScale.adjust(FlxG.height * 0.1))]
@@ -152,6 +160,15 @@ class OptionsState extends MusicBeatState
 		super.closeSubState();
 	}
 
+	public function changeCata(sort:Int) {
+		var outputData:Float = 100;
+		for (cata in 0...sort) {
+			outputData -= cataGroup[cata].bg.realHeight;
+			outputData -= UIScale.adjust(FlxG.width * (0.8 / 40));
+		}
+		cataMove.lerpData = outputData;
+	}
+
 	public function changeTip(str:String) {
 		tipButton.changeText(str);
 	}
@@ -185,13 +202,12 @@ class OptionsState extends MusicBeatState
 			case 'Maintenance':
 				obj = new GeneralGroup(outputX, outputY, outputWidth, outputHeight);
 			default:
-
 		}
 		cataGroup.push(obj);
 		add(obj);
 	}
 
-	static public var cataPosiData:Float = 0;
+	static public var cataPosiData:Float = 100;
 	public function cataMoveEvent(init:Bool = false){
 		if (!init) cataPosiData = cataMove.target;
 		for (i in 0...cataGroup.length) {

@@ -10,6 +10,8 @@ class MouseMove extends FlxBasic
     public var target:Float;
     public var moveLimit:Array<Float> = [];  //[min, max]
     public var mouseLimit:Array<Array<Float>> = [];   //[ X[min, max], Y[min, max] ]
+
+    public var lerpData:Float = 0;
     
     public var event:Dynamic->Void = null;
 
@@ -62,11 +64,13 @@ class MouseMove extends FlxBasic
             // 鼠标滚轮
             if (mouse.wheel!= 0) {
                 velocity += mouse.wheel * mouseWheelSensitivity;
+                lerpData = 0;
             }
             
             // 鼠标按下
             if (mouse.justPressed) {
                 startDrag(mouse.y);
+                lerpData = 0;
             }
             
             // 拖动中更新位置
@@ -83,6 +87,8 @@ class MouseMove extends FlxBasic
         if (!isDragging && Math.abs(velocity) > minVelocity) {
             applyInertia(elapsed);
         }
+
+        if (lerpData != 0) target = FlxMath.lerp(lerpData, target, Math.exp(-elapsed * 20));
         
         if (target < moveLimit[0]) target = FlxMath.lerp(moveLimit[0], target, Math.exp(-elapsed * 20));
         if (target > moveLimit[1]) target = FlxMath.lerp(moveLimit[1], target, Math.exp(-elapsed * 20));
