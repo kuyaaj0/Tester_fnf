@@ -37,7 +37,7 @@ class TopButtons extends FlxSpriteGroup
 		// 按钮大小和间距
 		var buttonSize:Int = 40;
 		var buttonSpacing:Int = 80;
-		var buttonY:Float = 5;
+		var buttonY:Float = 0;
 		var buttonY2:Float = buttonY + 5;
 
 		// 创建按钮背景
