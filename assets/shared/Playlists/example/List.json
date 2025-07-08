@@ -1,0 +1,14 @@
+{
+    "name": "example",
+	"list": [
+		{
+			"name": "Aimai Attitude",
+			"sound": ["assets/shared/Playlists/example/songs/Aimai-Attitude.ogg"],
+			"background": ["assets/shared/Playlists/example/art/Aimai-Attitude.png"],
+			"record": null,
+			"backendVideo": null,
+			"bpm": 200,
+			"writer": "rejection"
+		}
+	]
+}

@@ -5,6 +5,7 @@ import objects.state.relaxState.ButtonSprite;
 import objects.state.relaxState.TopButtons;
 import objects.state.relaxState.SongInfoDisplay;
 import objects.state.relaxState.ControlButtons;
+import objects.state.relaxState.windows.PlayListWindow;
 
 import openfl.filters.BlurFilter;
 import openfl.display.Shape;
@@ -33,11 +34,21 @@ typedef SongInfo = {
 	writer: String 							// 作曲家
 };
 
+typedef SongLists = {
+	name: String,
+	list: Array<SongInfo>
+};
+
 class RelaxSubState extends MusicBeatSubstate
 {
-	public var SongsArray:Array<SongInfo> = [];
+	public var SongsArray:SongLists = {
+		name: "Unknown",
+		list: []
+	};
 	private var currentSongIndex:Int = 0;
 	private var pendingSongIndex:Int = -1;
+	private var curSelected:Int = 0; // 当前选中的歌曲索引
+	private var currentPlaylistIndex:Int = 0; // 当前选中的歌单索引
 
 	var camBack:FlxCamera;
 	var camPic:FlxCamera;
@@ -167,9 +178,9 @@ class RelaxSubState extends MusicBeatSubstate
 					
 					// 使用短延迟确保UI更新完成
 					new FlxTimer().start(0.1, function(_) {
-						if (indexToLoad >= 0 && indexToLoad < SongsArray.length) {
+						if (indexToLoad >= 0 && indexToLoad < SongsArray.list.length) {
 							currentSongIndex = indexToLoad;
-							loadSongs(SongsArray[currentSongIndex]);
+							loadSongs(SongsArray.list[currentSongIndex]);
 						}
 					});
 				}
@@ -441,12 +452,27 @@ class RelaxSubState extends MusicBeatSubstate
 		circleMask = new Shape();
 		updateMask();
 
+		// 创建歌单窗口
+		playListWindow = new PlayListWindow();
+		playListWindow.onSongSelected = function(index:Int) {
+			curSelected = index;
+			changeSelection();
+		};
+		playListWindow.onPlaylistSelected = function(index:Int) {
+			// 当歌单改变时，更新当前歌曲选择
+			curSelected = 0;
+			changeSelection();
+		};
+		playListWindow.cameras = [camHUD]; // 确保使用正确的相机
+		add(playListWindow);
+		trace('PlayListWindow created and added to display list');
+		
 		initSongsList();
 		
-		if (SongsArray.length > 0) {
+		if (SongsArray.list.length > 0) {
 			currentSongIndex = 0;
 			pendingSongIndex = -1;
-			loadSongs(SongsArray[0]);
+			loadSongs(SongsArray.list[0]);
 		}
 	}
 
@@ -467,53 +493,34 @@ class RelaxSubState extends MusicBeatSubstate
 	}
 	
 	private function initSongsList():Void {
-		SongsArray = [
-			{
-				name: "Game Over",
-				sound: [Paths.music('gameOver')],
-				background: [Paths.image('menuDesat')],
-				record: null,
-				backendVideo: null,
-				bpm: 50,
-				writer: "Funkin Team"
-			},
-			{
-				name: "Freaky Menu",
-				sound: [Paths.music('freakyMenu')],
-				background: [Paths.image('menuBG')],
-				record: [Paths.image('funkay')],
-				backendVideo: null,
-				bpm: 50,
-				writer: "Funkin Team"
-			},
-			{
-				name: "Tea Time",
-				sound: [Paths.music('tea-time')],
-				background: [Paths.image('menuBGBlue')],
-				record: [Paths.image('newgrounds_logo')],
-				backendVideo: null,
-				bpm: 53,
-				writer: "Funkin Team"
-			},
-			{
-				name: "Aimai Attitude",
-				sound: ["assets/shared/Playlists/example/songs/Aimai-Attitude.ogg"],
-				background: ["assets/shared/Playlists/example/art/Aimai-Attitude.png"],
-				record: null,
-				backendVideo: null,
-				bpm: 200,
-				writer: "rejection"
-			}
-		];
+		SongsArray = {
+			name: "example",
+			list: [
+				{
+					name: "Aimai Attitude",
+					sound: ["assets/shared/Playlists/example/songs/Aimai-Attitude.ogg"],
+					background: ["assets/shared/Playlists/example/art/Aimai-Attitude.png"],
+					record: null,
+					backendVideo: null,
+					bpm: 200,
+					writer: "rejection"
+				}
+			]
+		};
+		
+		// 加载歌单数据
+		if (playListWindow != null) {
+			playListWindow.loadAllPlaylists();
+		}
 	}
 	
 	/**
 	 * 切换到下一首歌曲
 	 */
 	private function nextSong():Void {
-		if (SongsArray.length <= 1) return;
+		if (SongsArray.list.length <= 1) return;
 		
-		var nextIndex = (currentSongIndex + 1) % SongsArray.length;
+		var nextIndex = (currentSongIndex + 1) % SongsArray.list.length;
 		
 		if (isTransitioning) {
 			pendingSongIndex = nextIndex;
@@ -521,16 +528,16 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 		
 		currentSongIndex = nextIndex;
-		loadSongs(SongsArray[currentSongIndex]);
+		loadSongs(SongsArray.list[currentSongIndex]);
 	}
 	
 	/**
 	 * 切换到上一首歌曲
 	 */
 	private function prevSong():Void {
-		if (SongsArray.length <= 1) return;
+		if (SongsArray.list.length <= 1) return;
 		
-		var prevIndex = (currentSongIndex - 1 + SongsArray.length) % SongsArray.length;
+		var prevIndex = (currentSongIndex - 1 + SongsArray.list.length) % SongsArray.list.length;
 		
 		if (isTransitioning) {
 			pendingSongIndex = prevIndex;
@@ -538,7 +545,27 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 		
 		currentSongIndex = prevIndex;
-		loadSongs(SongsArray[currentSongIndex]);
+		loadSongs(SongsArray.list[currentSongIndex]);
+	}
+	
+	/**
+	 * 根据当前选中的索引更改歌曲
+	 */
+	private function changeSelection():Void {
+		if (curSelected < 0 || curSelected >= SongsArray.list.length) return;
+		
+		if (isTransitioning) {
+			pendingSongIndex = curSelected;
+			return;
+		}
+		
+		currentSongIndex = curSelected;
+		loadSongs(SongsArray.list[currentSongIndex]);
+		
+		// 更新歌单窗口中的当前歌曲
+		if (playListWindow != null) {
+			playListWindow.setCurrentSong(currentPlaylistIndex, currentSongIndex);
+		}
 	}
 
 	private function updateMask():Void
@@ -656,7 +683,10 @@ class RelaxSubState extends MusicBeatSubstate
 		// 重置状态
 		currentSongIndex = 0;
 		pendingSongIndex = -1;
-		SongsArray = [];
+		SongsArray = {
+			name: "Unknown",
+			list: []
+		};
 		
 		super.destroy();
 	}
@@ -717,6 +747,9 @@ class RelaxSubState extends MusicBeatSubstate
 	var clickList:Bool = false;
 	var clickOption:Bool = false;
 	var clickLock:Bool = false;
+	
+	// 歌单窗口
+	var playListWindow:PlayListWindow;
 	
 	override function update(elapsed:Float)
 	{
@@ -824,7 +857,11 @@ class RelaxSubState extends MusicBeatSubstate
 				clickList = !clickList;
 				if (clickList && clickOption)
 					clickOption = !clickList;
-				trace('list!');
+
+				if (playListWindow != null) {
+					playListWindow.Hidding = clickList;
+					playListWindow.toggle();
+				}
 			}
 			else if (isOverSetting) {
 				clickOption = !clickOption;
@@ -848,26 +885,26 @@ class RelaxSubState extends MusicBeatSubstate
 		{
 			if (!isTransitioning) {
 				currentSongIndex = 0;
-				loadSongs(SongsArray[0]);
+				loadSongs(SongsArray.list[0]);
 			} else {
 				pendingSongIndex = 0;
 			}
 		}
 		else if (FlxG.keys.justPressed.S)
 		{
-			if (!isTransitioning && SongsArray.length > 1) {
+			if (!isTransitioning && SongsArray.list.length > 1) {
 				currentSongIndex = 1;
-				loadSongs(SongsArray[1]);
-			} else if (SongsArray.length > 1) {
+				loadSongs(SongsArray.list[1]);
+			} else if (SongsArray.list.length > 1) {
 				pendingSongIndex = 1;
 			}
 		}
 		else if (FlxG.keys.justPressed.D)
 		{
-			if (!isTransitioning && SongsArray.length > 2) {
+			if (!isTransitioning && SongsArray.list.length > 2) {
 				currentSongIndex = 2;
-				loadSongs(SongsArray[2]);
-			} else if (SongsArray.length > 2) {
+				loadSongs(SongsArray.list[2]);
+			} else if (SongsArray.list.length > 2) {
 				pendingSongIndex = 2;
 			}
 		}
