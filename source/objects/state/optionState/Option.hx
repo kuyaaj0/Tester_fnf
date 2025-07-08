@@ -14,7 +14,6 @@ enum OptionType
 	STRING;
 
 	STATE;
-	SUBSTATE;
 
 	TITLE;
 	TEXT;
@@ -270,26 +269,42 @@ class Option extends FlxSpriteGroup
 		saveHeight = title.height + titLine.height + inter;
 	}
 
+	var stateButton:StateButton;
 	function addState()
 	{
-		
+		var double = false; //还是小的比较好看
+
+		var calcWidth:Float = 0;
+		var calcHeight:Float = 0;
+
+		if (!double) calcWidth = follow.bg.realWidth * ((1 - (1 / 2 / 50 * 3)) / 2);
+		else calcWidth = follow.bg.realWidth * (1 - (1 / 2 / 50 * 2));
+
+		var calcHeight:Float = 0;
+		if (!double) calcHeight = calcWidth * 0.16;
+		else calcHeight = calcWidth * 0.1;
+
+		stateButton = new StateButton(calcWidth, calcHeight, this);
+		add(stateButton);
+
+		saveHeight = stateButton.bg.height + inter;
 	}
 
 	public var baseBG:Rect;
 	var baseTar:FlxText;
 	var baseLine:Rect;
 	var baseDesc:FlxText;
-	function baseBGAdd(big:Bool = false)
+	function baseBGAdd(double:Bool = false)
 	{
 		var mult:Float = 1; //一些数据需要保持一致
-		if (big) mult = 2;
+		if (double) mult = 2;
 
 		var calcWidth:Float = 0;
-		if (!big) calcWidth = follow.bg.realWidth * ((1 - (1 / 2 / 50 * 3)) / 2);
+		if (!double) calcWidth = follow.bg.realWidth * ((1 - (1 / 2 / 50 * 3)) / 2);
 		else calcWidth = follow.bg.realWidth * (1 - (1 / 2 / 50 * 2));
 
 		var calcHeight:Float = 0;
-		if (!big) calcHeight = calcWidth * 0.16;
+		if (!double) calcHeight = calcWidth * 0.16;
 		else calcHeight = calcWidth * 0.1;
 
 		baseBG = new Rect(0, 0, calcWidth, calcHeight, calcWidth / 75 / mult, calcWidth / 75 / mult, 0xffffff, 0.1);
@@ -310,7 +325,7 @@ class Option extends FlxSpriteGroup
 		add(baseLine);
 
 		var calcWidth = baseBG.width * 0.58;
-		if (big) calcWidth = baseBG.width * 0.5;
+		if (double) calcWidth = baseBG.width * 0.5;
 		baseDesc = new FlxText(0, baseTar.height + baseLine.height, calcWidth, description, Std.int(follow.width / 10));
 		baseDesc.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.width / 25 / mult), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         baseDesc.antialiasing = ClientPrefs.data.antialiasing;
