@@ -9,7 +9,7 @@ class NaviSprite extends FlxSpriteGroup
     public var optionSort:Int;
     public var isModsAdd:Bool = false;
 
-    public var background:RoundRect;
+    public var background:Rect;
     public var icon:FlxSprite;
     public var textDis:FlxText;
     var specRect:Rect;
@@ -26,10 +26,7 @@ class NaviSprite extends FlxSpriteGroup
         mainWidth = width;
         mainHeight = height;
 
-        background = new RoundRect(0, 0, width, height, height / 5, LEFT_CENTER, EngineSet.mainColor);
-        background.alpha = 0.000001;
-        background.mainX = X;
-        background.mainY = Y;
+        background = new Rect(0, 0, width, height, height / 5, height / 5, EngineSet.mainColor, 0.0000001);
         add(background);
 
         specRect = new Rect(0, 0, 5, height * 0.5, 5, 5, EngineSet.mainColor);
@@ -65,19 +62,34 @@ class NaviSprite extends FlxSpriteGroup
 	{
 		super.update(elapsed);
 
-		onFocus = FlxG.mouse.overlaps(this);
+        var mouse = FlxG.mouse;
+
+		onFocus = mouse.overlaps(this);
 
 		if (onFocus) {
             if (background.alpha < 0.2) background.alpha += EngineSet.FPSfix(0.015);
 
-            if (FlxG.mouse.justPressed) {
+            if (mouse.justPressed) {
                 
             }
-            if (FlxG.mouse.pressed) {
+
+            if (mouse.pressed) {
                 onChoose = true;
+                if (this.scale.x > 0.9)
+                    this.scale.x = this.scale.y -= ((this.scale.x - 0.9) * (this.scale.x - 0.9) * 0.75);
+            }
+
+            if (mouse.justReleased) {
+                OptionsState.instance.changeCata(optionSort);
             }
         } else {
             if (background.alpha > 0) background.alpha -= EngineSet.FPSfix(0.015);
+        }
+
+        if (!mouse.pressed)
+        {
+            if (this.scale.x < 1)
+                this.scale.x = this.scale.y += ((1 - this.scale.x) * (1 - this.scale.x) * 0.75);
         }
 	}
 }
