@@ -250,6 +250,7 @@ class RelaxSubState extends MusicBeatSubstate
 		if (background != null) {
 			backendPicture = new FlxSprite().loadGraphic(background);
 			backendPicture.antialiasing = ClientPrefs.data.antialiasing;
+			backendPicture.scale.set(1.1,1.1);
 			backendPicture.updateHitbox();
 			backendPicture.screenCenter();
 			backendPicture.cameras = [camBack];
@@ -691,7 +692,7 @@ class RelaxSubState extends MusicBeatSubstate
 			}
 			
 			if (waitingToHide) {
-				hideTimer += elapsed;
+				if(!clickList && !clickOption) hideTimer += elapsed;
 				if (hideTimer >= 3.0 && !isTweening) {
 					waitingToHide = false;
 

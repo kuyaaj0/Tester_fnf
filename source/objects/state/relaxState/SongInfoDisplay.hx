@@ -22,24 +22,27 @@ class SongInfoDisplay
 
 	private function createTextDisplays():Void
 	{
-		songNameText = new FlxText(0, FlxG.height / 2, FlxG.width, "", 24);
-		songNameText.setFormat(Paths.font("montserrat.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		songNameText = new FlxText(0, FlxG.height / 2, FlxG.width, "", 48);
+		songNameText.setFormat(Paths.font("montserrat.ttf"), 48, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		songNameText.scale.set(0.5,0.5);
 		songNameText.scrollFactor.set();
 		songNameText.borderSize = 1;
 		songNameText.antialiasing = true;
 		songNameText.alpha = 1;
 		songNameText.screenCenter();
 
-		writerText = new FlxText(0, songNameText.y + songNameText.height + 10, FlxG.width, "", 16);
-		writerText.setFormat(Paths.font("montserrat.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		writerText = new FlxText(0, songNameText.y + songNameText.height + 10, FlxG.width, "", 32);
+		writerText.setFormat(Paths.font("montserrat.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		writerText.scale.set(0.5,0.5);
 		writerText.scrollFactor.set();
 		writerText.borderSize = 0.8;
 		writerText.antialiasing = true;
 		writerText.alpha = 1;
 		writerText.screenCenter(X);
 
-		songLengthText = new FlxText(0, 0, 0, "0:00 / 0:00", 16);
-		songLengthText.setFormat(Paths.font("montserrat.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		songLengthText = new FlxText(0, 0, 0, "0:00 / 0:00", 32);
+		songLengthText.setFormat(Paths.font("montserrat.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		songLengthText.scale.set(0.5,0.5);
 		songLengthText.scrollFactor.set();
 		songLengthText.borderSize = 1;
 		songLengthText.antialiasing = true;
