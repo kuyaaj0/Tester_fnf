@@ -398,6 +398,21 @@ class RelaxSubState extends MusicBeatSubstate
 	var topTrapezoidTween:FlxTween = null; // 用于存储当前的tween动画
 	var isTweening:Bool = false; // 是否正在进行tween动画
 
+	// 顶部按钮
+	var settingButton:FlxSprite;
+	var listButton:FlxSprite;
+	var lockButton:FlxSprite;
+	
+	// 按钮背景
+	var settingBg:FlxSprite;
+	var listBg:FlxSprite;
+	var lockBg:FlxSprite;
+
+	// 按钮状态
+	var isSettingActive:Bool = false;
+	var isListActive:Bool = false;
+	var isLockActive:Bool = false;
+
 	private function drawTrapezoid(topWidth:Float, height:Float):Void {
 		var bottomWidth = topWidth * 0.8;
 		var sideSlope = (topWidth - bottomWidth) / 2;
@@ -411,6 +426,71 @@ class RelaxSubState extends MusicBeatSubstate
 			new FlxPoint(sideSlope, height)
 		];
 		FlxSpriteUtil.drawPolygon(topTrapezoid, vertices, 0xFF24232C);
+	}
+
+	private function createTopButtons():Void {
+		// 按钮大小和间距
+		var buttonSize:Int = Std.int(topTrapezoid.height);
+		var buttonSpacing:Int = 80;
+		var buttonY:Float = (topTrapezoid.height - buttonSize) / 2;
+		var buttonY2:Float = buttonY + 5;
+
+		// 创建按钮背景
+		var bgColor:FlxColor = FlxColor.WHITE;
+		bgColor.alphaFloat = 0.3; // 30%透明度
+
+		// 设置按钮（居中）
+		settingButton = new FlxSprite((FlxG.width - buttonSize) / 2, buttonY2);
+		settingButton.loadGraphic('assets/shared/images/menuExtend/RelaxState/setting.png');
+		settingButton.scrollFactor.set();
+		settingButton.cameras = [camOption];
+		settingButton.scale.x = settingButton.scale.y = 0.5;
+		settingButton.updateHitbox();
+		settingButton.x = (FlxG.width - buttonSize) / 2;
+		settingButton.y = buttonY2;
+
+		settingBg = new FlxSprite(settingButton.x - buttonSize + settingButton.width / 2, buttonY);
+		settingBg.makeGraphic(buttonSize * 2, buttonSize, bgColor);
+		settingBg.cameras = [camOption];
+		add(settingBg);
+
+		add(settingButton);
+
+		// 歌单按钮（设置按钮左侧）
+		listButton = new FlxSprite(settingButton.x - buttonSize - buttonSpacing, buttonY2);
+		listButton.loadGraphic('assets/shared/images/menuExtend/RelaxState/list.png');
+		listButton.scrollFactor.set();
+		listButton.cameras = [camOption];
+		listButton.scale.x = listButton.scale.y = 0.5;
+		listButton.updateHitbox();
+		listButton.x = settingButton.x - buttonSize - buttonSpacing;
+		listButton.y = buttonY2;
+		
+		listBg = new FlxSprite(settingButton.x - buttonSize * 2 - buttonSpacing + settingButton.width / 2, buttonY);
+		listBg.makeGraphic(buttonSize * 2, buttonSize, bgColor);
+		listBg.scrollFactor.set();
+		listBg.cameras = [camOption];
+		add(listBg);
+
+		add(listButton);
+
+		// 锁定按钮（设置按钮右侧）
+		lockButton = new FlxSprite(settingButton.x + buttonSize + buttonSpacing, buttonY2);
+		lockButton.loadGraphic('assets/shared/images/menuExtend/RelaxState/rock.png');
+		lockButton.scrollFactor.set();
+		lockButton.cameras = [camOption];
+		lockButton.scale.x = lockButton.scale.y = 0.5;
+		lockButton.updateHitbox();
+		lockButton.x = settingButton.x + buttonSize + buttonSpacing;
+		lockButton.y = buttonY2;
+
+		lockBg = new FlxSprite(settingButton.x + buttonSpacing + lockButton.width / 2, buttonY);
+		lockBg.makeGraphic(buttonSize * 2, buttonSize, bgColor);
+		lockBg.scrollFactor.set();
+		lockBg.cameras = [camOption];
+		add(lockBg);
+
+		add(lockButton);
 	}
 
 	override function create()
@@ -443,6 +523,8 @@ class RelaxSubState extends MusicBeatSubstate
 		topTrapezoid.cameras = [camOption];
 		add(topTrapezoid);
 		camOption.y = -topTrapezoid.height; // 初始隐藏
+
+		createTopButtons();
 		
 		defaultZoom = 1.0;
 		camPic.zoom = defaultZoom;
@@ -716,7 +798,7 @@ class RelaxSubState extends MusicBeatSubstate
 			songLengthText.destroy();
 			songLengthText = null;
 		}
-		
+
 		currentSongIndex = 0;
 		pendingSongIndex = -1;
 		SongsArray = [];
@@ -734,9 +816,7 @@ class RelaxSubState extends MusicBeatSubstate
 				hideTimer = 0;
 			}
 			
-			// 如果梯形不在可见位置且没有正在进行的动画，则显示它
 			if (camOption.y < 0 && !isTweening) {
-				// 取消可能存在的旧动画
 				if (topTrapezoidTween != null && topTrapezoidTween.active) {
 					topTrapezoidTween.cancel();
 				}
@@ -750,24 +830,17 @@ class RelaxSubState extends MusicBeatSubstate
 				});
 			}
 		} 
-		// 如果鼠标不在顶部
 		else {
-			// 如果还没有开始等待隐藏，则开始计时
 			if (!waitingToHide && !isTweening) {
 				waitingToHide = true;
 				hideTimer = 0;
 			}
 			
-			// 如果正在等待隐藏，增加计时器
 			if (waitingToHide) {
 				hideTimer += elapsed;
-				
-				// 如果等待时间超过3秒，则隐藏梯形
 				if (hideTimer >= 3.0 && !isTweening) {
 					waitingToHide = false;
-					hideTimer = 0;
-					
-					// 取消可能存在的旧动画
+
 					if (topTrapezoidTween != null && topTrapezoidTween.active) {
 						topTrapezoidTween.cancel();
 					}
@@ -784,6 +857,12 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 	}
 
+	var bgFollowSmooth:Float = 0.2;
+
+	var clickList:Bool = false;
+	var clickOption:Bool = false;
+	var clickLock:Bool = false;
+	
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -795,11 +874,17 @@ class RelaxSubState extends MusicBeatSubstate
 			var centerX = FlxG.width / 2;
 			var centerY = FlxG.height / 2;
 			
-			var offsetX = (mouseX - centerX) * 0.01;
-			var offsetY = (mouseY - centerY) * 0.01;
+			var targetOffsetX = (mouseX - centerX) * 0.01;
+			var targetOffsetY = (mouseY - centerY) * 0.01;
 			
-			backendPicture.x = centerX - backendPicture.width / 2 + offsetX;
-			backendPicture.y = centerY - backendPicture.height / 2 + offsetY;
+			var currentOffsetX = backendPicture.x - (centerX - backendPicture.width / 2);
+			var currentOffsetY = backendPicture.y - (centerY - backendPicture.height / 2);
+			
+			var smoothX = FlxMath.lerp(currentOffsetX, targetOffsetX, bgFollowSmooth);
+			var smoothY = FlxMath.lerp(currentOffsetY, targetOffsetY, bgFollowSmooth);
+			
+			backendPicture.x = centerX - backendPicture.width / 2 + smoothX;
+			backendPicture.y = centerY - backendPicture.height / 2 + smoothY;
 		}
 
 		var mousePos = FlxG.mouse.getScreenPosition(camHUD);
@@ -851,10 +936,18 @@ class RelaxSubState extends MusicBeatSubstate
 		var isOverLeft = LeftButton.overlapsPoint(mousePos, true, camHUD);
 		var isOverMiddle = MiddleButton.overlapsPoint(mousePos, true, camHUD);
 		var isOverRight = RightButton.overlapsPoint(mousePos, true, camHUD);
+
+		var isOverList = listBg.overlapsPoint(mousePos, true, camOption);
+		var isOverSetting = settingBg.overlapsPoint(mousePos, true, camOption);
+		var isOverRock = lockBg.overlapsPoint(mousePos, true, camOption);
 		
 		LeftButton.alpha = isOverLeft ? 0.8 : 1;
 		MiddleButton.alpha = isOverMiddle ? 0.8 : 1;
 		RightButton.alpha = isOverRight ? 0.8 : 1;
+
+		listBg.alpha = isOverList ? 1 : (clickList ? 0.5 : 0.1);
+		settingBg.alpha = isOverSetting ? 1: (clickOption ? 0.5 : 0.1);
+		lockBg.alpha = isOverRock ? 1 : (clickLock ? 0.5 : 0.1);
 		
 		if (FlxG.mouse.justPressed) {
 			if (isOverLeft) {
@@ -881,6 +974,22 @@ class RelaxSubState extends MusicBeatSubstate
 					onComplete: function(_) FlxTween.tween(RightButton, {y: SaveY[1]}, 0.1)
 				});
 				nextSong();
+			}
+			else if (isOverList) {
+				clickList = !clickList;
+				if (clickList && clickOption)
+					clickOption = !clickList;
+				trace('list!');
+			}
+			else if (isOverSetting) {
+				clickOption = !clickOption;
+				if (clickList && clickOption)
+					clickList = !clickOption;
+				trace('setting');
+			}
+			else if (isOverRock) {
+				clickLock = !clickLock;
+				trace('lock');
 			}
 		}
 		
@@ -943,6 +1052,8 @@ class RelaxSubState extends MusicBeatSubstate
 
 	var beatTimess:Int = 0;
 
+	var helpBool:Bool = false;
+
 	function onBPMBeat(){
 		var targetZoom = defaultZoom + zoomIntensity;
 		camPic.zoom = targetZoom;
@@ -965,6 +1076,46 @@ class RelaxSubState extends MusicBeatSubstate
 			ease: FlxEase.quadOut
 		});
 		beatTimess++;
+
+		helpBool = !helpBool;
+		if(helpBool){
+			listButton.scale.x = settingButton.scale.y = lockButton.scale.x = 0.6;
+			listButton.scale.y = settingButton.scale.x = lockButton.scale.y = 0.4;
+			Main.watermark.scaleX = ClientPrefs.data.WatermarkScale + 0.1;
+			Main.watermark.scaleY = ClientPrefs.data.WatermarkScale - 0.1;
+			FlxTween.tween(Main.watermark, {scaleX: ClientPrefs.data.WatermarkScale, scaleY: ClientPrefs.data.WatermarkScale}, beatTime * 0.5, {
+				ease: FlxEase.quadOut
+			});
+
+			FlxTween.tween(listButton.scale, {x: 0.5 ,y: 0.5}, beatTime * 0.5, {
+				ease: FlxEase.quadOut
+			});
+			FlxTween.tween(settingButton.scale, {x: 0.5 ,y: 0.5}, beatTime * 0.5, {
+				ease: FlxEase.quadOut
+			});
+			FlxTween.tween(lockButton.scale, {x: 0.5 ,y: 0.5}, beatTime * 0.5, {
+				ease: FlxEase.quadOut
+			});
+		}else{
+			listButton.scale.x = settingButton.scale.y = lockButton.scale.x = 0.4;
+			listButton.scale.y = settingButton.scale.x = lockButton.scale.y = 0.6;
+			Main.watermark.scaleX = ClientPrefs.data.WatermarkScale - 0.1;
+			Main.watermark.scaleY = ClientPrefs.data.WatermarkScale + 0.1;
+			FlxTween.tween(Main.watermark, {scaleX: ClientPrefs.data.WatermarkScale, scaleY: ClientPrefs.data.WatermarkScale}, beatTime * 0.5, {
+				ease: FlxEase.quadOut
+			});
+			//XD
+		
+			FlxTween.tween(listButton.scale, {x: 0.5, y: 0.5}, beatTime * 0.5, {
+				ease: FlxEase.quadOut
+			});
+			FlxTween.tween(settingButton.scale, {x: 0.5 ,y: 0.5}, beatTime * 0.5, {
+				ease: FlxEase.quadOut
+			});
+			FlxTween.tween(lockButton.scale, {x: 0.5, y: 0.5}, beatTime * 0.5, {
+				ease: FlxEase.quadOut
+			});
+		}
 
 		if(beatTimess == 4)
 		{
