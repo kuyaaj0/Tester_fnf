@@ -45,7 +45,7 @@ class Option extends FlxSpriteGroup
 	public var minValue:Float = 0;
 	public var maxValue:Float = 0;
 	public var decimals:Int = 0; //数据需要精确到小数点几位
-	public var exatraDisplay:String = '';
+	public var extraDisplay:String = '';
 
 	public var follow:OptionCata;
 
@@ -93,18 +93,18 @@ class Option extends FlxSpriteGroup
 			case INT:
 				this.minValue = data[0];
 				this.maxValue = data[1];
-				if (data[2] != null) this.exatraDisplay = data[2];
+				if (data[2] != null) this.extraDisplay = data[2];
 
 			case FLOAT:
 				this.minValue = data[0];
 				this.maxValue = data[1];
 				this.decimals = data[2];
-				if (data[3] != null) this.exatraDisplay = data[3];
+				if (data[3] != null) this.extraDisplay = data[3];
 
 			case PERCENT:
 				this.decimals = data[0];
 				this.decimals = data[1];
-				if (data[2] != null) this.exatraDisplay = data[2];
+				if (data[2] != null) this.extraDisplay = data[2];
 				
 			case STRING:
 				this.strGroup = data;
@@ -178,15 +178,31 @@ class Option extends FlxSpriteGroup
 		add(boolButton);
 	}
 
+	public var valueText:FlxText;
 	var numButton:NumButton;
 	function addNum()
 	{
 		baseBGAdd(true);
 
+		valueText = new FlxText(0, 0, 0, defaultValue + ' ' + extraDisplay, Std.int(baseBG.width / 20 / 2));
+		valueText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.width / 30 / 2), 0xffffff, RIGHT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        valueText.antialiasing = ClientPrefs.data.antialiasing;
+		valueText.borderStyle = NONE;
+		valueText.x += baseBG.width - valueText.textField.textWidth - baseBG.mainRound;
+		valueText.alpha = 0.3;
+		valueText.blend = ADD;
+		add(valueText);
+		
+
 		var clacHeight = baseBG.height - (baseTar.height + baseLine.height) - baseBG.mainRound * 2;
 		var clacWidth = baseBG.width * 0.5 - baseBG.mainRound * 2;
 		numButton = new NumButton(baseBG.width * 0.5 + baseBG.mainRound, baseTar.height + baseLine.height + baseBG.mainRound, clacWidth, clacHeight, this);
 		add(numButton);
+	}
+
+	public function updateNumText() {
+		valueText.text = defaultValue + ' ' + extraDisplay;
+		valueText.x = followX + innerX + baseBG.width - valueText.textField.textWidth - baseBG.mainRound;
 	}
 
 	function addString()
@@ -278,7 +294,7 @@ class Option extends FlxSpriteGroup
 		baseBG = new Rect(0, 0, calcWidth, calcHeight, calcWidth / 75 / mult, calcWidth / 75 / mult, 0xffffff, 0.1);
 		add(baseBG);
 
-		baseTar = new FlxText(0, 0, 0, 'Target: ' + variable, Std.int(follow.width / 10));
+		baseTar = new FlxText(0, 0, 0, 'Target: ' + variable, Std.int(baseBG.width / 20 / mult));
 		baseTar.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.width / 30 / mult), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         baseTar.antialiasing = ClientPrefs.data.antialiasing;
 		baseTar.borderStyle = NONE;
@@ -328,6 +344,7 @@ class Option extends FlxSpriteGroup
 
 	dynamic public function setValue(value:Dynamic)
 	{
+		defaultValue = value;
 		return Reflect.setProperty(ClientPrefs.data, variable, value);
 	}
 

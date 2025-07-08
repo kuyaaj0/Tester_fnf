@@ -224,6 +224,7 @@ class NumButton extends FlxSpriteGroup {
 		if (follow.type == PERCENT)
 			//follow.valueText.text = Std.string(follow.getValue() * 100) + '%';
 		follow.change();
+        follow.updateNumText();
 	}
     
     private function createButton(size:Float, color:Int, symbol:String) {
