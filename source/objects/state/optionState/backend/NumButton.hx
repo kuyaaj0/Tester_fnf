@@ -87,8 +87,10 @@ class NumButton extends FlxSpriteGroup {
     }
 
     public var onFocus:Bool = false;
-
-    var holdTime:Float = 0;
+    public var focusAdd:Bool = false;
+    var addHoldTime:Float = 0;
+    public var focusDelete:Bool = false;
+    var deleteHoldTime:Float = 0;
     override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -109,35 +111,58 @@ class NumButton extends FlxSpriteGroup {
 			onFocus = false;
 		}
 
-		if ((mouse.overlaps(addButton) || mouse.overlaps(deleteButton)))
+		if (mouse.overlaps(addButton))
 		{
-            var isAdd:Bool = mouse.overlaps(addButton);
 			if (mouse.justPressed) {  
-			    changeData(isAdd);
+			    changeData(true);
+                focusAdd = true;
             }
 
-            if (mouse.pressed) {  
-			    if (holdTime > 0.3) {
-                    holdTime -= 0.01;
-                    changeData(isAdd);
+            if (mouse.pressed && focusAdd) {  
+			    if (addHoldTime > 0.3) {
+                    addHoldTime -= 0.01;
+                    changeData(true);
                 } else {
-                    holdTime += elapsed;
+                    addHoldTime += elapsed;
                 }
 
-                if (isAdd) {
-                    if (addButton.scale.x > 0.8)
-                        addButton.scale.x = addButton.scale.y -= EngineSet.FPSfix(0.01);
-                } else { 
-                    if (deleteButton.scale.x > 0.8)
-                        deleteButton.scale.x = deleteButton.scale.y -= EngineSet.FPSfix(0.01);
-                }
+                if (addButton.scale.x > 0.8)
+                    addButton.scale.x = addButton.scale.y -= EngineSet.FPSfix(0.01);
             } else {
-                
+                addHoldTime = 0;
+                focusAdd = false;
             }
 		} else {
-            holdTime = 0;
+            addHoldTime = 0;
+            focusAdd = false;
         }
-        
+
+        if (mouse.overlaps(deleteButton))
+        {
+			if (mouse.justPressed) {  
+			    changeData(false);
+                focusDelete = true;
+            }
+
+            if (mouse.pressed && focusDelete) {  
+			    if (deleteHoldTime > 0.3) {
+                    deleteHoldTime -= 0.01;
+                    changeData(false);
+                } else {
+                    deleteHoldTime += elapsed;
+                }
+
+                if (deleteButton.scale.x > 0.8)
+                    deleteButton.scale.x = deleteButton.scale.y -= EngineSet.FPSfix(0.01);
+            } else {
+                deleteHoldTime = 0;
+                focusDelete = false;
+            }
+		} else {
+            deleteHoldTime = 0;
+            focusDelete = false;
+        }
+
         if (!mouse.pressed)
         {
             if (addButton.scale.x < 1)

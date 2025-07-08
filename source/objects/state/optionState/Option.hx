@@ -172,9 +172,9 @@ class Option extends FlxSpriteGroup
 	{
 		baseBGAdd();
 
-		var clacHeight = baseBG.realHeight - (baseTar.height + baseLine.height) - baseBG.mainRound * 2;
-		var clacWidth = baseBG.realWidth * 0.4 - baseBG.mainRound;
-		boolButton = new BoolButton(baseBG.realWidth * 0.6, baseTar.height + baseLine.height + baseBG.mainRound, clacWidth, clacHeight, this);
+		var clacHeight = baseBG.height - (baseTar.height + baseLine.height) - baseBG.mainRound * 2;
+		var clacWidth = baseBG.width * 0.4 - baseBG.mainRound;
+		boolButton = new BoolButton(baseBG.width * 0.6, baseTar.height + baseLine.height + baseBG.mainRound, clacWidth, clacHeight, this);
 		add(boolButton);
 	}
 
@@ -183,9 +183,9 @@ class Option extends FlxSpriteGroup
 	{
 		baseBGAdd(true);
 
-		var clacHeight = baseBG.realHeight - (baseTar.height + baseLine.height) - baseBG.mainRound * 2;
-		var clacWidth = baseBG.realWidth * 0.5 - baseBG.mainRound * 2;
-		numButton = new NumButton(baseBG.realWidth * 0.5 + baseBG.mainRound, baseTar.height + baseLine.height + baseBG.mainRound, clacWidth, clacHeight, this);
+		var clacHeight = baseBG.height - (baseTar.height + baseLine.height) - baseBG.mainRound * 2;
+		var clacWidth = baseBG.width * 0.5 - baseBG.mainRound * 2;
+		numButton = new NumButton(baseBG.width * 0.5 + baseBG.mainRound, baseTar.height + baseLine.height + baseBG.mainRound, clacWidth, clacHeight, this);
 		add(numButton);
 	}
 
@@ -258,7 +258,7 @@ class Option extends FlxSpriteGroup
 		
 	}
 
-	public var baseBG:RoundRect;
+	public var baseBG:Rect;
 	var baseTar:FlxText;
 	var baseLine:Rect;
 	var baseDesc:FlxText;
@@ -275,14 +275,11 @@ class Option extends FlxSpriteGroup
 		if (!big) calcHeight = calcWidth * 0.16;
 		else calcHeight = calcWidth * 0.1;
 
-		baseBG = new RoundRect(0, 0, calcWidth, calcHeight, calcWidth / 75 / mult, LEFT_UP, 0xffffff);
-		baseBG.alpha = 0.1;
-		baseBG.mainX = followX + innerX;
-		baseBG.mainY = followY + innerY;
+		baseBG = new Rect(0, 0, calcWidth, calcHeight, calcWidth / 75 / mult, calcWidth / 75 / mult, 0xffffff, 0.1);
 		add(baseBG);
 
 		baseTar = new FlxText(0, 0, 0, 'Target: ' + variable, Std.int(follow.width / 10));
-		baseTar.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.realWidth / 30 / mult), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+		baseTar.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.width / 30 / mult), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         baseTar.antialiasing = ClientPrefs.data.antialiasing;
 		baseTar.borderStyle = NONE;
 		baseTar.x += baseBG.mainRound;
@@ -291,28 +288,28 @@ class Option extends FlxSpriteGroup
 		baseTar.active = false;
 		add(baseTar);
 
-		baseLine = new Rect(0, baseTar.height, baseBG.realWidth, baseBG.realWidth / 400 / mult, 0, 0, 0xFFFFFF, 0.3);
+		baseLine = new Rect(0, baseTar.height, baseBG.width, baseBG.width / 400 / mult, 0, 0, 0xFFFFFF, 0.3);
 		baseLine.active = false;
 		add(baseLine);
 
-		var calcWidth = baseBG.realWidth * 0.58;
-		if (big) calcWidth = baseBG.realWidth * 0.5;
+		var calcWidth = baseBG.width * 0.58;
+		if (big) calcWidth = baseBG.width * 0.5;
 		baseDesc = new FlxText(0, baseTar.height + baseLine.height, calcWidth, description, Std.int(follow.width / 10));
-		baseDesc.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.realWidth / 25 / mult), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+		baseDesc.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.width / 25 / mult), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         baseDesc.antialiasing = ClientPrefs.data.antialiasing;
 		baseDesc.borderStyle = NONE;
 		baseDesc.active = false;
 		
 		baseDesc.y -= (baseDesc.height - baseDesc.textField.textHeight) / 2;
 
-		var clacHeight = baseDesc.textField.textHeight / (baseBG.realHeight - baseTar.height + baseLine.height);
+		var clacHeight = baseDesc.textField.textHeight / (baseBG.height - baseTar.height + baseLine.height);
 		if (clacHeight > 1) baseDesc.size = Std.int(baseDesc.size / clacHeight / 1.05); //原理来讲不应该超过这个高度的，这个玩意纯粹的防止蠢人
 
 		baseDesc.x += baseBG.mainRound;
-		baseDesc.y += (baseBG.realHeight - baseTar.height + baseLine.height - baseDesc.textField.textHeight) / 2;
+		baseDesc.y += (baseBG.height - baseTar.height + baseLine.height - baseDesc.textField.textHeight) / 2;
 		add(baseDesc);
 
-		saveHeight = baseBG.realHeight + inter;
+		saveHeight = baseBG.height + inter;
 	}
 
 	///////////////////////////////////////////////

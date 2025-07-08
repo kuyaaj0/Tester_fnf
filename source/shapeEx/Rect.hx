@@ -2,10 +2,13 @@ package shapeEx;
 
 class Rect extends FlxSprite
 {
+	public var mainRound:Float;
 	public function new(X:Float = 0, Y:Float = 0, width:Float = 0, height:Float = 0, roundWidth:Float = 0, roundHeight:Float = 0,
 			Color:FlxColor = FlxColor.WHITE, ?Alpha:Float = 1)
 	{
 		super(X, Y);
+
+		this.mainRound = roundWidth;
 
 		loadGraphic(drawRect(width, height, roundWidth, roundHeight));
 		antialiasing = ClientPrefs.data.antialiasing;
