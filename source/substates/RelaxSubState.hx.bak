@@ -5,7 +5,7 @@ import objects.state.relaxState.ButtonSprite;
 import objects.state.relaxState.TopButtons;
 import objects.state.relaxState.SongInfoDisplay;
 import objects.state.relaxState.ControlButtons;
-//import objects.state.relaxState.windows.PlayListWindow; 未完工
+import objects.state.relaxState.windows.PlayListWindow;
 
 import openfl.filters.BlurFilter;
 import openfl.display.Shape;
@@ -452,6 +452,21 @@ class RelaxSubState extends MusicBeatSubstate
 		circleMask = new Shape();
 		updateMask();
 
+		// 创建歌单窗口
+		playListWindow = new PlayListWindow();
+		playListWindow.onSongSelected = function(index:Int) {
+			curSelected = index;
+			changeSelection();
+		};
+		playListWindow.onPlaylistSelected = function(index:Int) {
+			// 当歌单改变时，更新当前歌曲选择
+			curSelected = 0;
+			changeSelection();
+		};
+		playListWindow.cameras = [camHUD]; // 确保使用正确的相机
+		add(playListWindow);
+		trace('PlayListWindow created and added to display list');
+		
 		initSongsList();
 		
 		if (SongsArray.list.length > 0) {
@@ -492,6 +507,12 @@ class RelaxSubState extends MusicBeatSubstate
 				}
 			]
 		};
+		
+		// 加载歌单数据
+		if (playListWindow != null) {
+			playListWindow.loadAllPlaylists();
+		}
+	}
 	
 	/**
 	 * 切换到下一首歌曲
@@ -540,6 +561,11 @@ class RelaxSubState extends MusicBeatSubstate
 		
 		currentSongIndex = curSelected;
 		loadSongs(SongsArray.list[currentSongIndex]);
+		
+		// 更新歌单窗口中的当前歌曲
+		if (playListWindow != null) {
+			playListWindow.setCurrentSong(currentPlaylistIndex, currentSongIndex);
+		}
 	}
 
 	private function updateMask():Void
@@ -722,6 +748,9 @@ class RelaxSubState extends MusicBeatSubstate
 	var clickOption:Bool = false;
 	var clickLock:Bool = false;
 	
+	// 歌单窗口
+	var playListWindow:PlayListWindow;
+	
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -828,6 +857,11 @@ class RelaxSubState extends MusicBeatSubstate
 				clickList = !clickList;
 				if (clickList && clickOption)
 					clickOption = !clickList;
+
+				if (playListWindow != null) {
+					playListWindow.Hidding = clickList;
+					playListWindow.toggle();
+				}
 			}
 			else if (isOverSetting) {
 				clickOption = !clickOption;
