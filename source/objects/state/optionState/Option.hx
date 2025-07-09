@@ -75,6 +75,7 @@ class Option extends FlxSpriteGroup
 				if (defaultValue == null)
 					defaultValue = 0;
 			case STRING:
+				strGroup = data;
 				if (data.length > 0)
 					defaultValue = data[0];
 				if (defaultValue == null)
@@ -205,9 +206,13 @@ class Option extends FlxSpriteGroup
 		valueText.x = followX + innerX + baseBG.width - valueText.textField.textWidth - baseBG.mainRound;
 	}
 
+	var chooseRect:StringRect;
 	function addString()
 	{
 		baseBGAdd();
+		chooseRect = new StringRect(0, baseBG.height + inter, follow.bg.realWidth * (1 - (1 / 2 / 50 * 2)), follow.bg.width * 0.2, this);
+		add(chooseRect);
+		saveHeight += chooseRect.height + inter;
 	}
 
 	var tipsLight:Rect;

@@ -158,6 +158,7 @@ class OptionsState extends MusicBeatState
 	override function closeSubState()
 	{
 		super.closeSubState();
+		persistentUpdate = true;
 	}
 
 	public function changeCata(sort:Int) {

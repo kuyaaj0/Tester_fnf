@@ -21,8 +21,39 @@ class StateButton extends FlxSpriteGroup{
 		stateName.x += (bg.width - stateName.width) / 2;
         stateName.y += (bg.height - stateName.height) / 2;
 		stateName.alpha = 0.8;
-		stateName.blend = ADD;
-		stateName.active = false;
+		//stateName.blend = ADD;
+		//stateName.active = false;
 		add(stateName);
 	}
+
+    var colorChange:Bool = false;
+    override function update(elapsed:Float) {
+        super.update(elapsed);
+        
+        //if (!allowUpdate) return;
+        
+        var mouse = FlxG.mouse;
+
+        if (mouse.overlaps(bg)) {
+            if (!colorChange) {
+                colorChange = true;
+                bg.color = 0xffffff;
+                bg.alpha = 1;
+                stateName.color = EngineSet.mainColor;
+                stateName.alpha = 0.8;
+            }
+
+            if (mouse.justReleased) {
+                follow.change();
+            }
+        } else {
+            if (colorChange) {
+                    colorChange = false;
+                    bg.color = EngineSet.mainColor;
+                    bg.alpha = 0.5;
+                    stateName.color = 0xFFFFFF;
+                    stateName.alpha = 0.8;
+                }
+        }
+    }
 }

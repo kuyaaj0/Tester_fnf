@@ -283,9 +283,10 @@ class ControlsSubState extends MusicBeatSubstate
 			if (controls.BACK || FlxG.gamepads.anyJustPressed(B))
 			{
 				ClientPrefs.saveSettings();
-				FlxTransitionableState.skipNextTransIn = true;
-				FlxTransitionableState.skipNextTransOut = true;
-				MusicBeatState.switchState(new options.OptionsState());
+				close();
+				//FlxTransitionableState.skipNextTransIn = true;
+				//FlxTransitionableState.skipNextTransOut = true;
+				//MusicBeatState.switchState(new options.OptionsState());
 				return;
 			}
 			if (FlxG.keys.justPressed.CONTROL

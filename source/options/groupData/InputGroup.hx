@@ -10,6 +10,7 @@ class InputGroup extends OptionCata
 		addOption(option);
 
 		var option:Option = new Option(this, 'ControlsSubState', STATE, Language.get('ControlsSubState', 'op'), Language.get('ControlsSubState', 'opSub'), 'ControlsSubState');
+		option.onChange = changeState;
 		addOption(option);
 		
 		/////--TouchMain--\\\\\
@@ -51,5 +52,9 @@ class InputGroup extends OptionCata
 		addOption(option);
 
 		changeHeight(0); //初始化真正的height
+	}
+
+	function changeState() {
+		OptionsState.instance.moveState(3);
 	}
 }
