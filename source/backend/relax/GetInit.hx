@@ -30,15 +30,15 @@ class GetInit
             return listNum;
         }
           
-        var contents:Array<String> = FileSystem.readDirectory("assets/shared/Playlists/"
+        var contents:Array<String> = FileSystem.readDirectory("assets/shared/Playlists/");
         if (contents.length == 0) 
             return listNum;
             
         for (item in contents){
-            var listFile:String = 'assets/shared/Playlists/' + item + '/List.json'
+            var listFile:String = 'assets/shared/Playlists/' + item + '/List.json';
             if(FileSystem.exists(listFile))
                 listNum++;
-                listArray.push(listFile)
+                listArray.push(listFile);
         }
         return listNum;
     }
