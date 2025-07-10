@@ -92,12 +92,12 @@ class GetInit
                     AllListSong.push(ii);
                 }
             }
-            listss:SongLists = {
+            listss = {
                 name: 'All Songs',
                 list: AllListSong
             }
         }else{
-            listss:SongLists = {
+            listss = {
                 name: 'All Songs',
                 list: []
             }
