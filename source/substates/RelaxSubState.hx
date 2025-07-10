@@ -864,7 +864,7 @@ class RelaxSubState extends MusicBeatSubstate
 		
 		if (controls.BACK) {
 		    removeVirtualPad();
-		    FlxG.sound.playMusic(Paths.music('freakyMenu');
+		    FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			close();
 		}
 	}
