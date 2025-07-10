@@ -157,12 +157,12 @@ class SongButtons extends FlxSpriteGroup
         maxY = this.y + 20;
     }
     
-    public function reload(newX:Float, newY:Float)
+    public function reload(List:Int = 0, newX:Float, newY:Float)
     {
         this.x = newX;
         this.y = newY;
         clear();
-        songData = GetInit.getSongLists();
+        songData = GetInit.getList(List);
         createSongButtons();
         calculateDragBounds();
     }

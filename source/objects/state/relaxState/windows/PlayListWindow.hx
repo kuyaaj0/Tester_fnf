@@ -22,10 +22,13 @@ class PlayListWindow extends FlxSpriteGroup
     private var rightShownX:Float;
     
     public var nowChoose:Array<Int> = [0, 0];
+    
+    public var relaxSubState:RelaxSubState;
 
     public function new()
     {
         super();
+        relaxSubState = new RelaxSubState();
         
         leftRect = new FlxSprite(0, 50);
         rightRect = new FlxSprite(FlxG.width, 50);
@@ -180,6 +183,6 @@ class PlayListWindow extends FlxSpriteGroup
 
     private function _onDoubleClick():Void
     {
-        RelaxSubState.OtherListLoad(nowChoose);
+        relaxSubState.OtherListLoad(nowChoose);
     }
 }
