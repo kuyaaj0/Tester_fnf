@@ -5,7 +5,7 @@ import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.util.FlxSpriteUtil;
 
-import substate.RelaxSubState;
+import substates.RelaxSubState;
 
 class PlayListWindow extends FlxSpriteGroup
 {
@@ -20,7 +20,7 @@ class PlayListWindow extends FlxSpriteGroup
     private var rightHiddenX:Float;
     private var rightShownX:Float;
     
-    public var nowChoose:Array<Int,Int> = [0, 0];
+    public var nowChoose:Array<Int> = [0, 0];
 
     public function new()
     {
