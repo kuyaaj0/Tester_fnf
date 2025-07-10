@@ -30,6 +30,8 @@ import backend.relax.GetInit.SongInfo;
 
 class RelaxSubState extends MusicBeatSubstate
 {
+    public static var instance:RelaxSubState;
+    
 	public var SongsArray:SongLists = {
 		name: "Unknown",
 		list: []
@@ -380,6 +382,7 @@ class RelaxSubState extends MusicBeatSubstate
 
 	override function create()
 	{
+	    instance = this;
 		camBack = new FlxCamera();
 		camPic = new FlxCamera();
 		camText = new FlxCamera();

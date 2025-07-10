@@ -10,6 +10,7 @@ import substates.RelaxSubState;
 
 class PlayListWindow extends FlxSpriteGroup
 {
+    public static var instance:PlayListWindow;
     public var Hidding:Bool = true;
     public var leftRect:FlxSprite;
     public var rightRect:FlxSprite;
@@ -23,12 +24,9 @@ class PlayListWindow extends FlxSpriteGroup
     
     public var nowChoose:Array<Int> = [0, 0];
     
-    public var relaxSubState:RelaxSubState;
-
     public function new()
     {
         super();
-        relaxSubState = new RelaxSubState();
         
         leftRect = new FlxSprite(0, 50);
         rightRect = new FlxSprite(FlxG.width, 50);
@@ -72,6 +70,8 @@ class PlayListWindow extends FlxSpriteGroup
         add(rightRect);
         
         createButtons();
+        
+        instance = this;
     }
     
     public var leftButtons:SongButtons;
@@ -183,6 +183,6 @@ class PlayListWindow extends FlxSpriteGroup
 
     private function _onDoubleClick():Void
     {
-        relaxSubState.OtherListLoad(nowChoose);
+        RelaxSubState.instance.OtherListLoad(nowChoose);
     }
 }

@@ -26,12 +26,9 @@ class SongButtons extends FlxSpriteGroup
     
     public var onSongSelected:Int->SongInfo->Void;
     
-    public var playListWindow:PlayListWindow;
-    
     public function new(List:Int = 0, x:Float = 0, y:Float = 0)
     {
         super(x, y);
-        playListWindow = new PlayListWindow();
         buttonWidth = FlxG.width * 0.3 - 10;
         songData = GetInit.getList(List);
         
@@ -97,8 +94,8 @@ class SongButtons extends FlxSpriteGroup
                     if (clickedButton != null) {
                         var index = getButtonIndex(clickedButton);
                         if (index != -1) {
-                            playListWindow.handleDoubleClickCheck();
-                            playListWindow.nowChoose[1] = index;
+                            PlayListWindow.instance.handleDoubleClickCheck();
+                            PlayListWindow.instance.nowChoose[1] = index;
                             
                             if (onSongSelected != null) {
                                 onSongSelected(index, songData.list[index]);
