@@ -54,7 +54,7 @@ class OptionCata extends FlxSpriteGroup
 	}
 
 	public function changeHeight(time:Float = 0.6) {
-		bg.changeHeight(heightSet + heightSetOffset, time);
+		bg.changeHeight(heightSet + heightSetOffset, time, 'SineInOut');
 	}
 
 	public function optionAdjust(str:Option, outputData:Float, time:Float = 0.6) {

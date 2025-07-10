@@ -119,7 +119,7 @@ class NumButton extends FlxSpriteGroup {
             }
 
             if (mouse.pressed && focusAdd) {  
-                OptionsState.instance.cataMove.allowUpdate = false;
+                OptionsState.instance.cataMove.inputAllow = false;
 			    if (addHoldTime > 0.3) {
                     addHoldTime -= 0.01;
                     changeData(true);
@@ -146,7 +146,7 @@ class NumButton extends FlxSpriteGroup {
             }
 
             if (mouse.pressed && focusDelete) {  
-                OptionsState.instance.cataMove.allowUpdate = false;
+                OptionsState.instance.cataMove.inputAllow = false;
 			    if (deleteHoldTime > 0.3) {
                     deleteHoldTime -= 0.01;
                     changeData(false);
@@ -174,7 +174,7 @@ class NumButton extends FlxSpriteGroup {
     var lastMouseX = 0;
     function onHold()
 	{
-        OptionsState.instance.cataMove.allowUpdate = false;
+        OptionsState.instance.cataMove.inputAllow = false;
         var deltaX:Float = FlxG.mouse.x - lastMouseX;
         lastMouseX = FlxG.mouse.x;
         if (deltaX == 0) return;

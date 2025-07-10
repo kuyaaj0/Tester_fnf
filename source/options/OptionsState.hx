@@ -32,7 +32,7 @@ class OptionsState extends MusicBeatState
 
 	var cataGroup:Array<OptionCata> = [];
 	public var cataMove:MouseMove;
-	public var cataCount:Int = 0; //string开启的检测
+	public var cataCount:Array<StringRect> = []; //string开启的检测
 
 	var downBG:Rect;
 	var tipButton:TipButton;
@@ -155,9 +155,8 @@ class OptionsState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		if (cataCount > 0) OptionsState.instance.cataMove.allowUpdate = false;
-		else OptionsState.instance.cataMove.allowUpdate = true;
-
+		if (cataCount.length > 0) cataMove.inputAllow = false;
+		else cataMove.inputAllow = true;
 	}
 
 	override function closeSubState()

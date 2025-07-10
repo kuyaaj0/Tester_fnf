@@ -116,12 +116,14 @@ class StringSelect extends FlxSpriteGroup
         // 完全不可见的情况（在背景上方或下方）
         if (visibleBottom <= startY || visibleTop >= overY) {
             str.visible = false;
+            str.allowChoose = false;
             return;
         }
         
         // 设置可见性
         str.visible = true;
-        
+        str.allowChoose = true;
+
         // 计算裁剪参数（基于局部坐标系）
         var clipY = Math.max(0, startY - optionTop);  // 裁剪上边距
         var clipHeight = visibleBottom - visibleTop;  // 可见高度
@@ -169,6 +171,8 @@ class ChooseRect extends FlxSpriteGroup {
 
     var name:String;
 
+    var setAlpha:Float = 0;
+
     ///////////////////////////////////////////////////////////////////////////////
 
     public function new(X:Float, Y:Float, width:Float, height:Float, name:String, sort:Int, follow:StringSelect) {
@@ -185,16 +189,18 @@ class ChooseRect extends FlxSpriteGroup {
 		textDis.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(height * 0.45), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         textDis.borderStyle = NONE;
 		textDis.antialiasing = ClientPrefs.data.antialiasing;
-        //textDis.x += height / 5;
         textDis.y += (height - textDis.height) * 0.5;
 		add(textDis);
-        textDis.alpha = 0;
+        textDis.alpha = 0.1;
+
+        if (name == follow.follow.getValue()) setAlpha = 0.1; //标亮之前的设置
     }
 
     public var onFocus:Bool = false;
     public var onPress:Bool = false;
     public var onChoose:Bool = false;
     public var allowUpdate:Bool = false;
+    public var allowChoose:Bool = false;
     override function update(elapsed:Float) {
         super.update(elapsed);
 
@@ -213,15 +219,15 @@ class ChooseRect extends FlxSpriteGroup {
                 onChoose = true;
             }
 
-            if (mouse.justReleased && allowUpdate) {
-
+            if (mouse.justReleased && allowUpdate && allowChoose) {
                 follow.follow.setValue(name);
-                follow.follow.change();
                 follow.follow.updateDisText();
-                follow.follow.stringRect.change();
+                follow.follow.change();
+                follow.follow.stringRect.change(); //关闭设置了喵
             }
         } else {
-            if (bg.alpha > 0) bg.alpha -= EngineSet.FPSfix(0.09);
+            if (bg.alpha > setAlpha) bg.alpha -= EngineSet.FPSfix(0.09);
+            if (setAlpha > bg.alpha) bg.alpha = setAlpha;
         }
 
         bg.alpha = bg.alpha * textDis.alpha;
