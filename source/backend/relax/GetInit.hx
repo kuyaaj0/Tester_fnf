@@ -66,9 +66,40 @@ class GetInit
             }
         }else{
             return {
-                name: 'NoFound!',
+                name: 'No Found!',
                 list: []
             };
+        }
+    }
+    
+    static public function getAllListName():Array{
+        var AllName:Array = [];
+        for (i in listArray){
+            AllName.push(i.name);
+            return AllName;
+        }
+    }
+    
+    static public function getAllSongs():SongLists{
+        var AllListSong:Array = [];
+        var listID:Int = getListNum() - 1;
+        if (getListNum() > 0) {
+            for (i in 0...listID){
+                var allList = getList(i).list;
+                for (ii in allList){
+                    AllListSong.push(ii);
+                }
+            }
+            var listss:SongLists = {
+                name: 'All Songs',
+                list: AllListSong
+            }
+        }else{
+            var listss:SongLists = {
+                name: 'All Songs',
+                list: []
+            }
+            return listss;
         }
     }
 }

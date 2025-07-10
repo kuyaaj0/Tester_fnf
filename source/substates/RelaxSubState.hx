@@ -5,7 +5,7 @@ import objects.state.relaxState.ButtonSprite;
 import objects.state.relaxState.TopButtons;
 import objects.state.relaxState.SongInfoDisplay;
 import objects.state.relaxState.ControlButtons;
-//import objects.state.relaxState.windows.PlayListWindow; 未完工
+import objects.state.relaxState.windows.PlayListWindow; //未完工
 
 import openfl.filters.BlurFilter;
 import openfl.display.Shape;
@@ -36,8 +36,8 @@ class RelaxSubState extends MusicBeatSubstate
 	};
 	private var currentSongIndex:Int = 0;
 	private var pendingSongIndex:Int = -1;
-	private var curSelected:Int = 0; // 当前选中的歌曲索引
-	private var currentPlaylistIndex:Int = 0; // 当前选中的歌单索引
+	
+	public var nowChoose:Array = [0,0];
 
 	var camBack:FlxCamera;
 	var camPic:FlxCamera;
@@ -46,13 +46,12 @@ class RelaxSubState extends MusicBeatSubstate
 	var camOption:FlxCamera;
 	var camVpad:FlxCamera;
 	
-	// BPM缩放相关变量
 	private var currentBPM:Float = 100;
-	private var beatTime:Float = 0.6; // 默认一拍时间（秒）
+	private var beatTime:Float = 0.6;
 	private var beatTimer:Float = 0;
 	private var defaultZoom:Float = 1.0;
-	private var zoomIntensity:Float = 0.05; // 缩放强度
-	public var enableBpmZoom:Bool = true; // 是否启用BPM缩放
+	private var zoomIntensity:Float = 0.05;
+	public var enableBpmZoom:Bool = true;
 
 	var maskRadius:Float = 150;
 	var circleMask:Shape;
@@ -74,6 +73,8 @@ class RelaxSubState extends MusicBeatSubstate
 	public var controlButtons:ControlButtons;
 	public var topButtons:TopButtons;
 	public var songInfoDisplay:SongInfoDisplay;
+	
+	public var playListWindow:PlayListWindow;
 
 	public function new()
 	{
@@ -90,7 +91,6 @@ class RelaxSubState extends MusicBeatSubstate
 		if (isTransitioning || songInfo == null) return;
 		isTransitioning = true;
 		
-		// 预加载资源
 		if (songInfo.background != null && songInfo.background.length > 0) {
 			for (bg in songInfo.background) {
 				Paths.image(bg);
@@ -109,23 +109,19 @@ class RelaxSubState extends MusicBeatSubstate
 			}
 		}
 		
-		// 停止当前音乐并播放新音乐
 		FlxG.sound.music.stop();
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
 			FlxG.sound.playMusic(songInfo.sound[0], 1);
 			FlxG.sound.music.onComplete = () -> {
-				// 歌曲结束时直接切换到下一首
 				nextSong();
 			};
 			
-			// 重置歌曲进度文本
 			if (songInfoDisplay.songLengthText != null) {
 				songInfoDisplay.songLengthText.text = "0:00 / 0:00";
 				songInfoDisplay.songLengthText.screenCenter(X);
 			}
 		}
 		
-		// 保存旧元素以便淡出
 		if (backendPicture != null) {
 			oldBackendPicture = backendPicture;
 			backendPicture = null;
@@ -141,14 +137,12 @@ class RelaxSubState extends MusicBeatSubstate
 			audio = null;
 		}
 		
-		// 创建新元素
 		var backgroundImage:FlxGraphicAsset = (songInfo.background != null && songInfo.background.length > 0) ? songInfo.background[0] : null;
 		var recordImage:FlxGraphicAsset = (songInfo.record != null && songInfo.record.length > 0) ? songInfo.record[0] : null;
 		
 		createNewElements(backgroundImage, recordImage);
 		applyBlurFilter();
 		
-		// 更新歌曲信息显示
 		updateSongInfoDisplay(songInfo);
 		
 		var allComplete:Bool = false;
@@ -160,12 +154,10 @@ class RelaxSubState extends MusicBeatSubstate
 				allComplete = true;
 				isTransitioning = false;
 				
-				// 检查是否有待播放的歌曲
 				if (pendingSongIndex != -1) {
 					var indexToLoad = pendingSongIndex;
-					pendingSongIndex = -1; // 重置待播放索引
+					pendingSongIndex = -1;
 					
-					// 使用短延迟确保UI更新完成
 					new FlxTimer().start(0.1, function(_) {
 						if (indexToLoad >= 0 && indexToLoad < SongsArray.list.length) {
 							currentSongIndex = indexToLoad;
@@ -353,10 +345,10 @@ class RelaxSubState extends MusicBeatSubstate
 	}
 
 	var topTrapezoid:FlxSprite;
-	var hideTimer:Float = 0; // 隐藏计时器
-	var waitingToHide:Bool = false; // 是否正在等待隐藏
-	var topTrapezoidTween:FlxTween = null; // 用于存储当前的tween动画
-	var isTweening:Bool = false; // 是否正在进行tween动画
+	var hideTimer:Float = 0;
+	var waitingToHide:Bool = false;
+	var topTrapezoidTween:FlxTween = null;
+	var isTweening:Bool = false;
 
 	private function drawTrapezoid(topWidth:Float, height:Float):Void {
 		var bottomWidth = topWidth * 0.8;
@@ -383,7 +375,6 @@ class RelaxSubState extends MusicBeatSubstate
 			}
 		}
 		
-		// 将TopButtons添加到显示列表
 		add(topButtons);
 	}
 
@@ -416,12 +407,12 @@ class RelaxSubState extends MusicBeatSubstate
 
 		topTrapezoid = new FlxSprite();
 		drawTrapezoid(FlxG.width * 0.7, 40);
-		topTrapezoid.y = 0; // 初始位置为可见
+		topTrapezoid.y = 0;
 		topTrapezoid.x = (FlxG.width - topTrapezoid.width) / 2;
 		topTrapezoid.scrollFactor.set();
 		topTrapezoid.cameras = [camOption];
 		add(topTrapezoid);
-		camOption.y = -topTrapezoid.height; // 初始隐藏
+		camOption.y = -topTrapezoid.height;
 
 		createTopButtons();
 		
@@ -453,6 +444,12 @@ class RelaxSubState extends MusicBeatSubstate
 			pendingSongIndex = -1;
 			loadSongs(SongsArray.list[0]);
 		}
+		
+		playListWindow = new PlayListWindow();
+		for (i in playListWindow.members){
+		    i.cameras = [camOption];
+		}
+		add(playListWindow);
 		
 		var DebugText:FlxText = new FlxText(0, 0, FlxG.width, SongsArray.name, 25);
 		DebugText.font = Paths.font('Lang-ZH.ttf');
@@ -512,21 +509,6 @@ class RelaxSubState extends MusicBeatSubstate
 		currentSongIndex = prevIndex;
 		loadSongs(SongsArray.list[currentSongIndex]);
 	}
-	
-	/**
-	 * 根据当前选中的索引更改歌曲
-	 */
-	private function changeSelection():Void {
-		if (curSelected < 0 || curSelected >= SongsArray.list.length) return;
-		
-		if (isTransitioning) {
-			pendingSongIndex = curSelected;
-			return;
-		}
-		
-		currentSongIndex = curSelected;
-		loadSongs(SongsArray.list[currentSongIndex]);
-	}
 
 	private function updateMask():Void
 	{
@@ -571,7 +553,6 @@ class RelaxSubState extends MusicBeatSubstate
 
 	override function destroy()
 	{
-		// 取消所有活动的tween
 		if (songInfoDisplay.songNameTween != null && songInfoDisplay.songNameTween.active) {
 			songInfoDisplay.songNameTween.cancel();
 			songInfoDisplay.songNameTween = null;
@@ -582,7 +563,6 @@ class RelaxSubState extends MusicBeatSubstate
 			topTrapezoidTween = null;
 		}
 		
-		// 销毁图片和音频资源
 		if (backendPicture != null) {
 			backendPicture.destroy();
 			backendPicture = null;
@@ -598,7 +578,6 @@ class RelaxSubState extends MusicBeatSubstate
 			audio = null;
 		}
 		
-		// 销毁旧的过渡资源
 		if (oldBackendPicture != null) {
 			oldBackendPicture.destroy();
 			oldBackendPicture = null;
@@ -614,7 +593,6 @@ class RelaxSubState extends MusicBeatSubstate
 			oldAudio = null;
 		}
 		
-		// 销毁UI组件
 		if (controlButtons != null) {
 			controlButtons.destroy();
 			controlButtons = null;
@@ -630,7 +608,6 @@ class RelaxSubState extends MusicBeatSubstate
 			songInfoDisplay = null;
 		}
 		
-		// 销毁其他资源
 		if (circleMask != null) {
 			circleMask = null;
 		}
@@ -640,7 +617,6 @@ class RelaxSubState extends MusicBeatSubstate
 			topTrapezoid = null;
 		}
 
-		// 重置状态
 		currentSongIndex = 0;
 		pendingSongIndex = -1;
 		SongsArray = {
@@ -651,11 +627,8 @@ class RelaxSubState extends MusicBeatSubstate
 		super.destroy();
 	}
 
-	// 处理顶部梯形的显示和隐藏
 	private function handleTopTrapezoidVisibility(nearTop:Bool, elapsed:Float):Void {
-		// 如果鼠标靠近顶部
 		if (nearTop) {
-			// 如果正在等待隐藏，取消等待
 			if (waitingToHide) {
 				waitingToHide = false;
 				hideTimer = 0;
@@ -738,7 +711,6 @@ class RelaxSubState extends MusicBeatSubstate
 
 		songInfoDisplay.writerText.y = songInfoDisplay.songNameText.y + songInfoDisplay.songNameText.height + 10;
 		
-		// 更新歌曲时长文本位置
 		songInfoDisplay.updateSongLengthPosition(
 			controlButtons.MiddleButton.x,
 			controlButtons.MiddleButton.y,
@@ -759,10 +731,8 @@ class RelaxSubState extends MusicBeatSubstate
 			var currentTime:Float = FlxG.sound.music.time / 1000;
 			var totalTime:Float = FlxG.sound.music.length / 1000;
 			
-			// 使用SongInfoDisplay类更新歌曲长度
 			songInfoDisplay.updateSongLength(currentTime, totalTime);
 			
-			// 更新歌曲长度文本位置
 			songInfoDisplay.updateSongLengthPosition(
 				controlButtons.MiddleButton.x,
 				controlButtons.MiddleButton.y,
@@ -814,6 +784,7 @@ class RelaxSubState extends MusicBeatSubstate
 				clickList = !clickList;
 				if (clickList && clickOption)
 					clickOption = !clickList;
+					playListWindow.toggle();
 			}
 			else if (isOverSetting) {
 				clickOption = !clickOption;
@@ -831,34 +802,6 @@ class RelaxSubState extends MusicBeatSubstate
 		{
 			recordPicture.angle += elapsed * 20;
 			if (recordPicture.angle >= 360) recordPicture.angle -= 360;
-		}
-
-		if (FlxG.keys.justPressed.A)
-		{
-			if (!isTransitioning) {
-				currentSongIndex = 0;
-				loadSongs(SongsArray.list[0]);
-			} else {
-				pendingSongIndex = 0;
-			}
-		}
-		else if (FlxG.keys.justPressed.S)
-		{
-			if (!isTransitioning && SongsArray.list.length > 1) {
-				currentSongIndex = 1;
-				loadSongs(SongsArray.list[1]);
-			} else if (SongsArray.list.length > 1) {
-				pendingSongIndex = 1;
-			}
-		}
-		else if (FlxG.keys.justPressed.D)
-		{
-			if (!isTransitioning && SongsArray.list.length > 2) {
-				currentSongIndex = 2;
-				loadSongs(SongsArray.list[2]);
-			} else if (SongsArray.list.length > 2) {
-				pendingSongIndex = 2;
-			}
 		}
 
 		if (FlxG.keys.justPressed.B)
@@ -883,7 +826,6 @@ class RelaxSubState extends MusicBeatSubstate
 		var targetZoom = defaultZoom + zoomIntensity;
 		camPic.zoom = targetZoom;
 
-		// 使用ControlButtons类处理按钮动画
 		controlButtons.handleBeatAnimation(beatTime);
 		
 		FlxTween.tween(camPic, {zoom: defaultZoom}, beatTime * 0.5, {
@@ -893,17 +835,15 @@ class RelaxSubState extends MusicBeatSubstate
 		beatTimess++;
 		helpBool = !helpBool;
 		
-		// 使用TopButtons类处理顶部按钮动画
 		topButtons.handleBeatAnimation(helpBool, beatTime);
 		
-		// 处理水印动画
 		if(helpBool){
 			Main.watermark.scaleX = ClientPrefs.data.WatermarkScale + 0.1;
 			Main.watermark.scaleY = ClientPrefs.data.WatermarkScale - 0.1;
 		}else{
 			Main.watermark.scaleX = ClientPrefs.data.WatermarkScale - 0.1;
 			Main.watermark.scaleY = ClientPrefs.data.WatermarkScale + 0.1;
-		}
+		} //XD
 		
 		FlxTween.tween(Main.watermark, {scaleX: ClientPrefs.data.WatermarkScale, scaleY: ClientPrefs.data.WatermarkScale}, beatTime * 0.5, {
 			ease: FlxEase.quadOut
@@ -916,15 +856,25 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 	}
 	function fourTimeBeat() {
-		// 使用ControlButtons类处理四拍动画
 		controlButtons.handleFourTimeBeatAnimation(beatTime);
 		
-		// 处理歌曲长度文本动画
 		var currentY = songInfoDisplay.songLengthText.y;
 		songInfoDisplay.songLengthText.y += 5;
 		
 		FlxTween.tween(songInfoDisplay.songLengthText, {y: currentY}, beatTime * 0.5, {
 			ease: FlxEase.quadOut
 		});
+	}
+	//ListID:Int SongID:Int
+	public function OtherListLoad(data:Array<Int> = [0, 0]){
+	    if(data[1] >= SongsArray.list.length){
+	        data[1] = SongsArray.list.length - 1;
+	    }
+	    if(data[0] >= GetInit.getListNum())
+	        data[0] = GetInit.getListNum() - 1;
+	        
+	    nowChoose = data;
+	    SongsArray = GetInit.getList(data[0]);
+	    loadSongs(SongsArray.list[data[1]]);
 	}
 }
