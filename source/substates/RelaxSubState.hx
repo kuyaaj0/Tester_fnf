@@ -24,20 +24,7 @@ import flixel.util.FlxTimer;
 
 import sys.thread.Thread;
 
-typedef SongInfo = {
-	name: String, 							// 歌曲名称
-	sound: Array<FlxSoundAsset>, 			// 音频资源
-	background: Array<FlxGraphicAsset>, 	// 背景图像
-	record: Array<FlxGraphicAsset>, 		// 唱片图像
-	backendVideo: FlxGraphicAsset, 			// 背景视频
-	bpm: Float, 							// 每分钟节拍数
-	writer: String 							// 作曲家
-};
-
-typedef SongLists = {
-	name: String,
-	list: Array<SongInfo>
-};
+import backend.relax.GetInit;
 
 class RelaxSubState extends MusicBeatSubstate
 {
@@ -55,6 +42,7 @@ class RelaxSubState extends MusicBeatSubstate
 	var camText:FlxCamera;
 	var camHUD:FlxCamera;
 	var camOption:FlxCamera;
+	var camVpad:FlxCamera;
 	
 	// BPM缩放相关变量
 	private var currentBPM:Float = 100;
@@ -81,8 +69,6 @@ class RelaxSubState extends MusicBeatSubstate
 	public var enableRecordRotation:Bool = true;
 	public var bgBlur:Bool = false;
 	
-	// 使用SongInfoDisplay类替代原有的文本显示
-
 	public var controlButtons:ControlButtons;
 	public var topButtons:TopButtons;
 	public var songInfoDisplay:SongInfoDisplay;
@@ -92,6 +78,7 @@ class RelaxSubState extends MusicBeatSubstate
 		super();
         FlxG.state.persistentUpdate = false;
 		FlxG.sound.music.stop();
+		addVirtualPad(NONE, B);
 	}
 
 	/**
@@ -404,11 +391,13 @@ class RelaxSubState extends MusicBeatSubstate
 		camPic = new FlxCamera();
 		camText = new FlxCamera();
 		camHUD = new FlxCamera();
+		camVpad = new FlxCamera();
 
 		camHUD.bgColor.alpha = 0;
 		camPic.bgColor.alpha = 0;
 		camText.bgColor.alpha = 0;
 		camBack.bgColor.alpha = 0;
+		camVpad.bgColor.alpha = 0;
 
 		camOption = new FlxCamera();
 		camOption.bgColor.alpha = 0;
@@ -419,6 +408,9 @@ class RelaxSubState extends MusicBeatSubstate
 		FlxG.cameras.add(camText, false);
 		FlxG.cameras.add(camHUD, false);
 		FlxG.cameras.add(camOption, false);
+		FlxG.cameras.add(camVpad, false);
+		
+		virtualPad.cameras = [camVpad];
 
 		topTrapezoid = new FlxSprite();
 		drawTrapezoid(FlxG.width * 0.7, 40);
@@ -452,7 +444,7 @@ class RelaxSubState extends MusicBeatSubstate
 		circleMask = new Shape();
 		updateMask();
 
-		initSongsList();
+		initSongsList(0);
 		
 		if (SongsArray.list.length > 0) {
 			currentSongIndex = 0;
@@ -477,21 +469,8 @@ class RelaxSubState extends MusicBeatSubstate
 		controlButtons.MiddleButton.pixelPerfectPosition = true;
 	}
 	
-	private function initSongsList():Void {
-		SongsArray = {
-			name: "example",
-			list: [
-				{
-					name: "Aimai Attitude",
-					sound: ["assets/shared/Playlists/example/songs/Aimai-Attitude.ogg"],
-					background: ["assets/shared/Playlists/example/art/Aimai-Attitude.png"],
-					record: null,
-					backendVideo: null,
-					bpm: 200,
-					writer: "rejection"
-				}
-			]
-		};
+	private function initSongsList(ListNum:Int = 0):Void {
+		SongsArray = GetInit.getList(ListNum);
 	}
 	/**
 	 * 切换到下一首歌曲
@@ -837,7 +816,7 @@ class RelaxSubState extends MusicBeatSubstate
 			}
 			else if (isOverRock) {
 				clickLock = !clickLock;
-				trace('lock');
+				camVpad.alpha = clickLock ? 0 : 1;
 			}
 		}
 		
@@ -883,9 +862,9 @@ class RelaxSubState extends MusicBeatSubstate
 			}
 		}
 		
-		if (FlxG.keys.justPressed.ESCAPE || (virtualPad != null && virtualPad.buttonB.justPressed))
-		{
-			FlxG.sound.music.play();
+		if (controls.BACK) {
+		    removeVirtualPad();
+		    FlxG.sound.playMusic(Paths.music('freakyMenu');
 			close();
 		}
 	}
