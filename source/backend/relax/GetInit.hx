@@ -72,13 +72,16 @@ class GetInit
         }
     }
     
-    static public function getAllListName():Array<String>{
-        var AllName:Array<String> = [];
-        var helpInt:Int = getListNum() - 1;
-        for(i in 0...helpInt){
-            AllName.push(getList(i).name);
+    static public function getAllListName():Map<Int, String> {
+        var allName = new Map<Int, String>();
+        var listCount = getListNum();
+        
+        for (i in 0...listCount) {
+            var list = getList(i);
+            allName.set(i, list.name);
         }
-        return AllName;
+        
+        return allName;
     }
     
     static public function getAllSongs():SongLists{
