@@ -16,7 +16,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
-//import flixel.text.FlxText;
+import flixel.text.FlxText;
 //import flixel.sound.FlxSound;
 import flixel.system.FlxAssets.FlxSoundAsset;
 import flixel.system.FlxAssets.FlxGraphicAsset;
@@ -453,6 +453,11 @@ class RelaxSubState extends MusicBeatSubstate
 			pendingSongIndex = -1;
 			loadSongs(SongsArray.list[0]);
 		}
+		
+		var DebugText:FlxText = new FlxText(0, 0, FlxG.width, SongsArray.name, 50);
+		DebugText.font = Paths.font('Lang-ZH.ttf');
+		add(DebugText);
+		DebugText.cameras = [camHUD];
 	}
 
 	function createButtons(){

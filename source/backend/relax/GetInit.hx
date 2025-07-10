@@ -53,7 +53,11 @@ class GetInit
             if(ListNum > listArray.length - 1) ListNum = 0;
             try{
                 var data:Dynamic = Json.parse(listArray[ListNum]);
-                return data;
+                var lists:SongLists = {
+                    name: data.name,
+                    list: data.list
+                };
+                return lists;
             }catch(e:Dynamic){
                 return {
                     name: 'Parsing failed!',
