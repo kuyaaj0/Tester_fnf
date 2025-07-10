@@ -72,7 +72,7 @@ class GetInit
         }
     }
     
-    static public function getAllListName():Array{
+    static public function getAllListName():Array<String>{
         var AllName:Array = [];
         for (i in listArray){
             AllName.push(i.name);

@@ -37,7 +37,7 @@ class RelaxSubState extends MusicBeatSubstate
 	private var currentSongIndex:Int = 0;
 	private var pendingSongIndex:Int = -1;
 	
-	public var nowChoose:Array = [0,0];
+	public var nowChoose:Array<Int> = [0,0];
 
 	var camBack:FlxCamera;
 	var camPic:FlxCamera;
