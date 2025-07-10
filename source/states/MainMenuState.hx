@@ -323,6 +323,8 @@ class MainMenuState extends MusicBeatState
 
 	var endCheck:Bool = false;
 
+	var checkNum:Int = 0;
+
 	override function update(elapsed:Float)
 	{
 		#if (debug && android)
@@ -354,8 +356,9 @@ class MainMenuState extends MusicBeatState
 
 		if (FlxG.mouse.justPressed)
 			usingMouse = true;
+		        checkNum++;
 
-		if (FlxG.mouse.justPressedRight)
+		if (FlxG.mouse.justPressedRight || checkNum > 10)
 			openSubState(new substates.RelaxSubState());
 		
 
