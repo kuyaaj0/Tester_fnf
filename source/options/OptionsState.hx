@@ -31,7 +31,8 @@ class OptionsState extends MusicBeatState
 	var naviMove:MouseMove;
 
 	var cataGroup:Array<OptionCata> = [];
-	var cataMove:MouseMove;
+	public var cataMove:MouseMove;
+	public var cataCount:Int = 0; //string开启的检测
 
 	var downBG:Rect;
 	var tipButton:TipButton;
@@ -72,7 +73,7 @@ class OptionsState extends MusicBeatState
 		}
 		naviMoveEvent(true);
 
-		naviMove = new MouseMove(naviPosiData, 
+		naviMove = new MouseMove(OptionsState, 'naviPosiData', 
 								[-1 * naviSpriteGroup.length * 2 * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.height * 0.005)],
 								[	
 									[UIScale.adjust(FlxG.width * 0.005), 
@@ -97,7 +98,7 @@ class OptionsState extends MusicBeatState
 				moveHeight -= UIScale.adjust(FlxG.width * (0.8 / 40)) * 2;
 			}
 		}
-		cataMove = new MouseMove(cataPosiData, 
+		cataMove = new MouseMove(OptionsState, 'cataPosiData', 
 								[moveHeight, 100],
 								[ 
 									[UIScale.adjust(FlxG.width * 0.2), FlxG.width], 
@@ -106,6 +107,7 @@ class OptionsState extends MusicBeatState
 								cataMoveEvent);
 		add(cataMove);
 		cataMoveEvent(true);
+		//cataMove.allowUpdate = false;
 			
 		/////////////////////////////////////////////////////////////
 
@@ -152,6 +154,9 @@ class OptionsState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		if (cataCount > 0) OptionsState.instance.cataMove.allowUpdate = false;
+		else OptionsState.instance.cataMove.allowUpdate = true;
 
 	}
 
@@ -208,9 +213,12 @@ class OptionsState extends MusicBeatState
 		add(obj);
 	}
 
+	public function addMove(tar:MouseMove) {
+		add(tar);
+	}
+
 	static public var cataPosiData:Float = 100;
 	public function cataMoveEvent(init:Bool = false){
-		if (!init) cataPosiData = cataMove.target;
 		for (i in 0...cataGroup.length) {
 			if (i == 0) cataGroup[i].y = cataPosiData;
 			else cataGroup[i].y = cataGroup[i - 1].y + cataGroup[i - 1].bg.realHeight + UIScale.adjust(FlxG.width * (0.8 / 40));
@@ -219,7 +227,6 @@ class OptionsState extends MusicBeatState
 
 	static public var naviPosiData:Float = 0;
 	public function naviMoveEvent(init:Bool = false){
-		if (!init) naviPosiData = naviMove.target;
 		for (i in 0...naviSpriteGroup.length) {
 			naviSpriteGroup[i].y = naviPosiData + i * UIScale.adjust(FlxG.height * 0.1);
 		}

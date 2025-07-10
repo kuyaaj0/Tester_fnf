@@ -28,8 +28,8 @@ class Option extends FlxSpriteGroup
 	public var onChange:Void->Void = null;
 	public var type:OptionType = BOOL;
 
-	public var saveHeight:Float = 0;
-	var inter:Float = 10; //设置与设置间的y轴间隔
+	public var saveHeight:Float = 0; //仅仅用作最开始设置的时候使用
+	public var inter:Float = 10; //设置与设置间的y轴间隔
 
 	public var variable:String = null; // Variable from ClientPrefs.hx
 	public var defaultValue:Dynamic = null; //获取出来的数值
@@ -151,7 +151,6 @@ class Option extends FlxSpriteGroup
 		followY = follow.mainY;
 
 		var mouse = FlxG.mouse;
-
        
         if (mouse.overlaps(this)) {
 			overlopCheck += elapsed;
@@ -191,7 +190,7 @@ class Option extends FlxSpriteGroup
 		valueText.borderStyle = NONE;
 		valueText.x += baseBG.width - valueText.textField.textWidth - baseBG.mainRound;
 		valueText.alpha = 0.3;
-		valueText.blend = ADD;
+		//valueText.blend = ADD;
 		add(valueText);
 		
 
@@ -201,18 +200,34 @@ class Option extends FlxSpriteGroup
 		add(numButton);
 	}
 
-	public function updateNumText() {
+	public function updateDisText() {
 		valueText.text = defaultValue + ' ' + extraDisplay;
 		valueText.x = followX + innerX + baseBG.width - valueText.textField.textWidth - baseBG.mainRound;
 	}
 
-	var chooseRect:StringRect;
+	public var stringRect:StringRect;
+	public var select:StringSelect;
 	function addString()
 	{
 		baseBGAdd();
-		chooseRect = new StringRect(0, baseBG.height + inter, follow.bg.realWidth * (1 - (1 / 2 / 50 * 2)), follow.bg.width * 0.2, this);
-		add(chooseRect);
-		saveHeight += chooseRect.height + inter;
+
+		valueText = new FlxText(0, 0, 0, defaultValue + ' ' + extraDisplay, Std.int(baseBG.width / 20 / 2));
+		valueText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.width / 30), 0xffffff, RIGHT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        valueText.antialiasing = ClientPrefs.data.antialiasing;
+		valueText.borderStyle = NONE;
+		valueText.x += baseBG.width - valueText.textField.textWidth - baseBG.mainRound;
+		valueText.alpha = 0.3;
+		//valueText.blend = ADD;
+		add(valueText);
+
+		var clacHeight = baseBG.height - (baseTar.height + baseLine.height) - baseBG.mainRound * 2;
+		var clacWidth = baseBG.width * 0.4 - baseBG.mainRound;
+		stringRect = new StringRect(baseBG.width * 0.6, baseTar.height + baseLine.height + baseBG.mainRound, clacWidth, clacHeight, this);
+		add(stringRect);
+
+		select = new StringSelect(0, baseBG.height + inter, follow.bg.realWidth * (1 - (1 / 2 / 50 * 2)), follow.bg.width * 0.2, this);
+		select.visible = false;
+		add(select);
 	}
 
 	var tipsLight:Rect;
@@ -321,7 +336,7 @@ class Option extends FlxSpriteGroup
 		baseTar.borderStyle = NONE;
 		baseTar.x += baseBG.mainRound;
 		baseTar.alpha = 0.3;
-		baseTar.blend = ADD;
+		//baseTar.blend = ADD;
 		baseTar.active = false;
 		add(baseTar);
 
@@ -371,7 +386,7 @@ class Option extends FlxSpriteGroup
 
 	public function resetData()
 	{
-		if (variable == '' || type == STATE)
+		if (variable == '')
 			return;
 		Reflect.setProperty(ClientPrefs.data, variable, Reflect.getProperty(ClientPrefs.defaultData, variable));
 		defaultValue = Reflect.getProperty(ClientPrefs.defaultData, variable);
@@ -385,8 +400,8 @@ class Option extends FlxSpriteGroup
 	////////////////////////////////////////////////
 
 	public var followX:Float = 0;  //optioncata位置
-	public var innerX:Float = 0; //optioncata内部位置
-	public var xOff:Float = 0;
+	public var innerX:Float = 0; //这个option在optioncata内部位置
+	public var xOff:Float = 0; //用于图形在cata内部位移
 	var xTween:FlxTween = null;
 	public function changeX(data:Float, isMain:Bool = true, time:Float = 0.6) {
 		var output = isMain ? followX : xOff;
@@ -394,7 +409,7 @@ class Option extends FlxSpriteGroup
 
 		if (xTween != null) xTween.cancel();
 		var tween = FlxTween.tween(this, {x: followX + innerX + xOff}, time, {ease: FlxEase.expoInOut});
-		xTween = (tween);
+		xTween = tween;
 	}
 
 	public function initX(data:Float, innerData:Float) {
@@ -406,10 +421,10 @@ class Option extends FlxSpriteGroup
 
 	public var followY:Float = 0;  //optioncata在主体的位置
 	public var innerY:Float = 0; //optioncata内部位置
-	public var yOff:Float = 0;
-	var yTween:FlxTween = null;
+	public var yOff:Float = 0; //用于图形在cata内部位移
+	public var yTween:FlxTween = null;
 	public function changeY(data:Float, isMain:Bool = true, time:Float = 0.6) {
-		var output = isMain ? followY : xOff;
+		var output = isMain ? followY : yOff;
 		output += data;
 
 		if (yTween != null) yTween.cancel();

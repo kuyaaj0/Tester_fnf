@@ -97,7 +97,7 @@ class NumButton extends FlxSpriteGroup {
 
         var mouse = FlxG.mouse;
 
-		if (mouse.y > rod.y && mouse.y < (rod.y + rod.height) && mouse.x > (rod.x - rod.width * 2) && mouse.x < (rod.x + rod.width * 2) && mouse.justPressed)
+		if (mouse.y > rod.y && mouse.y < (rod.y + rod.height) && mouse.x > (rod.x - rod.width * 4) && mouse.x < (rod.x + rod.width * 4) && mouse.justPressed)
 		{
 			onFocus = true;
             lastMouseX = mouse.x;
@@ -119,6 +119,7 @@ class NumButton extends FlxSpriteGroup {
             }
 
             if (mouse.pressed && focusAdd) {  
+                OptionsState.instance.cataMove.allowUpdate = false;
 			    if (addHoldTime > 0.3) {
                     addHoldTime -= 0.01;
                     changeData(true);
@@ -145,6 +146,7 @@ class NumButton extends FlxSpriteGroup {
             }
 
             if (mouse.pressed && focusDelete) {  
+                OptionsState.instance.cataMove.allowUpdate = false;
 			    if (deleteHoldTime > 0.3) {
                     deleteHoldTime -= 0.01;
                     changeData(false);
@@ -172,6 +174,7 @@ class NumButton extends FlxSpriteGroup {
     var lastMouseX = 0;
     function onHold()
 	{
+        OptionsState.instance.cataMove.allowUpdate = false;
         var deltaX:Float = FlxG.mouse.x - lastMouseX;
         lastMouseX = FlxG.mouse.x;
         if (deltaX == 0) return;
@@ -217,11 +220,8 @@ class NumButton extends FlxSpriteGroup {
 
         if (outputData == null) return;
         follow.setValue(outputData);
-		//follow.valueText.text = follow.getValue() + follow.display;
-		if (follow.type == PERCENT)
-			//follow.valueText.text = Std.string(follow.getValue() * 100) + '%';
 		follow.change();
-        follow.updateNumText();
+        follow.updateDisText();
 	}
     
     private function createButton(size:Float, color:Int, symbol:String) {

@@ -1,203 +1,146 @@
 package objects.state.optionState.backend;
 
-import flixel.math.FlxRect;
+import openfl.display.Shape;
+import openfl.display.BitmapData;
 
-class StringRect extends FlxSpriteGroup
-{
+class StringRect extends FlxSpriteGroup{
+    var bg:Rect;
+    var dis:FlxSprite;
+    var disText:FlxText;
+
     var follow:Option;
 
-    public var background:Rect;
-    public var slider:Rect;
+    var innerX:Float; //该摁键在option的x
+    var innerY:Float; //该摁键在option的y
 
-    public var options:Array<String>;
-    public var optionSprites:Array<ChooseRect>;
-    
-    public var isDragging:Bool = false;
+    var isOpend:Bool = false;
 
-    public var currentSelection:Int = 0;
-    
-    public function new(X:Float, Y:Float, width:Float, height:Float, follow:Option)
-    {
+    public function new(X:Float, Y:Float, width:Float, height:Float, follow:Option) {
         super(X, Y);
 
         this.follow = follow;
-        this.options = follow.strGroup;
-        
-        background = new Rect(0, 0, width, height, width / 75, width / 75, 0xffffff, 0.5);
-        add(background);
+        innerX = X;
+        innerY = Y;
 
-        var init = 160;
+        bg = new Rect(0, 0, width, height, width / 20, width / 20, 0x000000, 0.3);
+        bg.antialiasing = ClientPrefs.data.antialiasing;
+        add(bg);
 
-        var calcWidth = width * (init - 1) / init;
-        optionSprites = [];
-        for (i in 0...options.length)
-        {
-            var option = new ChooseRect(0, i * height / 5, calcWidth, height / 5, options[i], i, this);
-            add(option);
-            optionSprites.push(option);
-        }
-        
-        // 创建滑块
-        var calcWidth = width / init;
-        var calcHeight = height * 5 / options.length;
-        if (calcHeight > height) calcHeight = height;
-        slider = new Rect(width - calcWidth, 0, calcWidth, calcHeight, calcWidth / 5, calcWidth / 5, 0xffffff, 0.8);
-        add(slider);
-        
-        // 设置初始选择
-        //updateSelection(0);
-        
+        disText = new FlxText(0, 0, 0, 'Tap to choose', Std.int(bg.width / 20 / 2));
+		disText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(bg.height / 2), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        disText.antialiasing = ClientPrefs.data.antialiasing;
+		disText.borderStyle = NONE;
+		disText.x += bg.mainRound;
+		disText.alpha = 0.3;
+        disText.y += (bg.height - disText.height) / 2;
+		add(disText);
+
+        dis = new FlxSprite();
+        dis.loadGraphic(createButton(height * 0.75, 0xffffff));
+        dis.antialiasing = ClientPrefs.data.antialiasing;
+        dis.x += bg.width - dis.width - (bg.height - dis.height) / 2; 
+        dis.y += (bg.height - dis.height) / 2;
+        dis.flipY = true;
+        add(dis);
     }
-    
-    override public function update(elapsed:Float):Void
-    {
+
+    public var allowUpdate:Bool = true;
+    override function update(elapsed:Float) {
         super.update(elapsed);
-    
-        var mouse = FlxG.mouse;
         
-        // 检查鼠标是否在选项上
-        if (FlxG.mouse.justPressed)
-        {
-            for (i in 0...optionSprites.length)
-            {
-                if (optionSprites[i].overlapsPoint(FlxG.mouse.getWorldPosition()))
-                {
-                    updateSelection(i);
-                    break;
-                }
-            }
-            
-            // 检查是否点击了滑块
-            if (slider.overlapsPoint(FlxG.mouse.getWorldPosition()))
-            {
-                isDragging = true;
-            }
-        }
+        if (!allowUpdate) return;
         
-        // 拖动滑块
-        if (isDragging && FlxG.mouse.pressed)
-        {
-            /*
-            var mouseY = FlxG.mouse.getWorldPosition().y;
-            mouseY = FlxMath.bound(mouseY, sliderTrack.y + slider.height / 2, sliderTrack.y + sliderTrack.height - slider.height / 2);
-            
-            slider.y = mouseY;
-            
-            // 根据滑块位置更新可见区域
-            var sliderPos = (slider.y - sliderTrack.y - slider.height / 2) / (sliderTrack.height - slider.height);
-            var visibleHeight = height - 2 * padding;
-            var contentHeight = options.length * background.height;
-            var scrollY = (contentHeight - visibleHeight) * sliderPos;
-            
-            // 使用FlxRect切割选项显示
-            for (i in 0...optionSprites.length)
-            {
-                var optionY = y + padding + (i * background.height) - scrollY;
-                var optionRect = FlxRect.get(x + padding, optionY, 
-                    realWidth - sliderWidth - 3 * padding, background.height - padding);
-                
-                // 检查选项是否在可见区域内
-                var visibleRect = FlxRect.get(x + padding, y + padding, 
-                    realWidth - sliderWidth - 3 * padding, realWidth - 2 * padding);
-                
-                var clippedRect = optionRect.intersection(visibleRect);
-                
-                if (clippedRect != null && clippedRect.height > 0)
-                {
-                    optionSprites[i].visible = true;
-                    optionSprites[i].setPosition(clippedRect.x, clippedRect.y);
-                    optionSprites[i].setGraphicSize(Std.int(clippedRect.width), Std.int(clippedRect.height));
-                }
-                else
-                {
-                    optionSprites[i].visible = false;
-                }
-            }
-                */
-        }
-        else if (isDragging && FlxG.mouse.justReleased)
-        {
-            isDragging = false;
-        }
-    }
-    
-    private function updateSelection(index:Int):Void
-    {
-        /*
-        if (index < 0 || index >= options.length) return;
-        
-        // 重置所有选项颜色
-        for (option in optionSprites)
-        {
-            option.color = 0xffffff;
-        }
-        
-        // 高亮当前选择
-        optionSprites[index].color = FlxColor.GREEN;
-        currentSelection = index;
-        
-        trace("Selected: " + options[index]);
-        */ 
-    }
-}
-
-
-class ChooseRect extends FlxSpriteGroup {
-    public var background:Rect;
-    public var textDis:FlxText;
-
-    public var optionSort:Int;
-
-    ///////////////////////////////////////////////////////////////////////////////
-
-    public function new(X:Float, Y:Float, width:Float, height:Float, name:String, sort:Int, follow:StringRect) {
-        super(X, Y);
-
-        optionSort = sort;
-
-        background = new Rect(0, 0, width, height, height / 5, height / 5, EngineSet.mainColor, 0.3);
-        add(background);
-
-        textDis = new FlxText(0, 0, 0, name, Std.int(height * 0.15));
-		textDis.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(height * 0.45), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
-        textDis.borderStyle = NONE;
-		textDis.antialiasing = ClientPrefs.data.antialiasing;
-        //textDis.x += height / 5;
-        textDis.y += (height - textDis.height) * 0.5;
-		add(textDis);
-    }
-
-    public var onFocus:Bool = false;
-    public var onPress:Bool = false;
-    public var onChoose:Bool = false;
-    override function update(elapsed:Float)
-	{
-		super.update(elapsed);
-
         var mouse = FlxG.mouse;
 
-		onFocus = mouse.overlaps(this);
+        if (mouse.overlaps(bg)) {
 
-		if (onFocus) {
-            if (background.alpha < 0.5) background.alpha += EngineSet.FPSfix(0.015);
+            bg.color = 0xffffff;
+            bg.alpha = 0.3;
 
-            if (mouse.justPressed) {
-                
-            }
+            disText.color = EngineSet.mainColor;
+            disText.alpha = 1;
 
-            if (mouse.pressed) {
-                onChoose = true;
-            }
+            dis.color = EngineSet.mainColor;
+            dis.alpha = 1;
 
             if (mouse.justReleased) {
+                change();
             }
         } else {
-            if (background.alpha > 0) background.alpha -= EngineSet.FPSfix(0.015);
-        }
+            bg.color = 0x000000;
+            bg.alpha = 0.3;
 
-        if (!mouse.pressed)
-        {
-            
+            disText.color = 0xffffff;
+            disText.alpha = 0.3;
+
+            dis.color = 0xffffff;
+            dis.alpha = 0.3;
         }
-	}
+    }
+
+    var alphaTween:Array<FlxTween> = [];
+    public function change() {
+        if (alphaTween.length > 0)
+            for (tween in alphaTween) 
+                if (tween != null) tween.cancel();
+
+        if (isOpend) { //关闭
+            disText.text = 'Tap to choose';
+            dis.flipY = true;
+            
+            var tween = FlxTween.tween(follow.select.bg, {alpha: 0}, 0.6, {ease: FlxEase.expoOut, onComplete: function(twn:FlxTween){follow.select.active = follow.select.visible = false; OptionsState.instance.cataCount--;} });
+            alphaTween.push(tween);
+            var tween = FlxTween.tween(follow.select.slider, {alpha: 0}, 0.6, {ease: FlxEase.expoOut});
+            alphaTween.push(tween);
+            
+            for (i in 0...follow.select.optionSprites.length) {
+                follow.select.optionSprites[i].allowUpdate = false;
+                var tween = FlxTween.tween(follow.select.optionSprites[i].textDis, {alpha: 0}, 0.6, {ease: FlxEase.expoOut, onComplete: function(twn:FlxTween){ } });
+                alphaTween.push(tween);
+            }
+
+            follow.follow.optionAdjust(follow, -1 * (follow.select.bg.height + follow.inter));
+        } else { //开启
+            OptionsState.instance.cataCount++;
+            disText.text = 'Tap to close';
+            dis.flipY = false;
+
+            follow.select.active = follow.select.visible = true;
+            var tween = FlxTween.tween(follow.select.bg, {alpha: 0.1}, 0.6, {ease: FlxEase.expoIn, onComplete: function(twn:FlxTween){ } });
+            alphaTween.push(tween);
+            var tween = FlxTween.tween(follow.select.slider, {alpha: 0.8}, 0.6, {ease: FlxEase.expoIn});
+            alphaTween.push(tween);
+            for (i in 0...follow.select.optionSprites.length) {
+                var tween = FlxTween.tween(follow.select.optionSprites[i].textDis, {alpha: 1}, 0.6, {ease: FlxEase.expoIn, onComplete: function(twn:FlxTween){ follow.select.optionSprites[i].allowUpdate = true;} });
+                alphaTween.push(tween);
+            }
+
+            follow.follow.optionAdjust(follow, follow.select.bg.height + follow.inter);
+        }
+        isOpend = !isOpend;
+    }
+
+    private function createButton(size:Float, color:Int) {
+        var button = new Shape();
+        button.graphics.beginFill(color);
+        
+        // 2. 设置符号绘制样式
+        button.graphics.lineStyle(3, 0xffffff); // 白色线条，3像素粗
+        
+        // 3. 计算符号位置（保留30%边距）
+        var margin = size * 0.3;
+        var centerX = size / 2;
+        var symbolHeight = size * 0.4; // 符号高度占40%
+        
+        // 4. 绘制"^"符号
+        button.graphics.moveTo(centerX, margin); // 起点：顶部中心
+        button.graphics.lineTo(size * 0.22, margin + symbolHeight); // 向左下画线
+        button.graphics.moveTo(centerX, margin); // 回到起点
+        button.graphics.lineTo(size * 0.78, margin + symbolHeight); // 向右下画线
+        
+        // 5. 转换为BitmapData
+        var bitmap = new BitmapData(Std.int(size), Std.int(size), true, 0);
+        bitmap.draw(button);
+        return bitmap;
+    }
 }

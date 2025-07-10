@@ -5,8 +5,11 @@ import flixel.math.FlxMath;
 
 class MouseMove extends FlxBasic
 {
-    public var allowUpdate:Bool;
+    public var allowUpdate:Bool = true;
     
+    public var follow:Dynamic; //数据跟谁
+    public var followData:String; //数据
+
     public var target:Float;
     public var moveLimit:Array<Float> = [];  //[min, max]
     public var mouseLimit:Array<Array<Float>> = [];   //[ X[min, max], Y[min, max] ]
@@ -19,36 +22,40 @@ class MouseMove extends FlxBasic
     
     private var isDragging:Bool = false;
     private var lastMouseY:Float = 0;
-    private var velocity:Float = 0;
+    public var velocity:Float = 0; //检测的时候需要它
     private var velocityArray:Array<Float> = [];
     
     // 物理参数
-    public var dragSensitivity:Float = 1.0;   // 拖动灵敏度
-    public var deceleration:Float = 0.9;      // 减速系数 (0.9 - 0.99 效果较好)
-    public var minVelocity:Float = 0.001;       // 最小速度阈值
+    private var dragSensitivity:Float = 1.0;   // 拖动灵敏度
+    private var deceleration:Float = 0.9;      // 减速系数 (0.9 - 0.99 效果较好)
+    private var minVelocity:Float = 0.001;       // 最小速度阈值
     
     // 鼠标滚轮相关参数
-    public var mouseWheelSensitivity:Float = 20.0; // 鼠标滚轮更改量的控制变量
+    public var mouseWheelSensitivity:Float = 20.0; // 鼠标滚轮更改量的控制变量(可被修改)
     
     ////////////////////////////////////////////////////////////////////////////////////////////////
     
-    public function new(tar:Float, moveData:Array<Float>, mouseData:Array<Array<Float>>, onClick:Dynamic->Void = null, needUpdate:Bool = true) {
+    public function new(follow:Dynamic, followData:String, moveData:Array<Float>, mouseData:Array<Array<Float>>, onClick:Dynamic->Void = null, needUpdate:Bool = true) {
         super();
         this.allowUpdate = needUpdate;
         
-        this.target = tar; //好像确实没啥用，但是可以用来初始化数据 --狐月影
+        this.follow = follow;
+        this.followData = followData;
+
+        this.target = Reflect.getProperty(follow, followData); //好像确实没啥用，但是可以用来初始化数据 --狐月影
         this.moveLimit = moveData;
         this.mouseLimit = mouseData;
-        
         
         this.event = onClick;
     }
     
     var moveCheck:Float = 0;
     override function update(elapsed:Float) {
-        super.update(elapsed);
         
-        if (!allowUpdate) return;
+        if (!allowUpdate) {
+            super.update(elapsed);
+            return;
+        }
         
         var mouse = FlxG.mouse;
 
@@ -95,10 +102,14 @@ class MouseMove extends FlxBasic
 
         if (Math.abs(moveCheck - target) > 1)  moveCheck = target;
         else return;
+
+        Reflect.setProperty(follow, followData, target);
         
         if (event!= null) {
             event(null);
         }
+
+        super.update(elapsed);
     }
     
     private function startDrag(startY:Float) {
@@ -129,7 +140,6 @@ class MouseMove extends FlxBasic
 
     var dataCheck:Bool = true; //正数检测
     private function velocUpdate(data:Float) {
-        if (data == 0) return; //都是0了加权个几把
         if (dataCheck) { //之前是正数
             if (data > 0) { //正数
                 velocityArray.push(velocity);

@@ -45,15 +45,30 @@ class OptionCata extends FlxSpriteGroup
 
 	override function update(elapsed:Float)
 	{
-		super.update(elapsed);
-
 		mainX = this.x;
 		mainY = this.y;
 		bg.mainX = mainX;
 		bg.mainY = mainY;
+
+		super.update(elapsed);
 	}
 
 	public function changeHeight(time:Float = 0.6) {
 		bg.changeHeight(heightSet + heightSetOffset, time);
+	}
+
+	public function optionAdjust(str:Option, outputData:Float, time:Float = 0.6) {
+		var start:Int = -1;
+		for (op in 0...optionArray.length) {
+			if (str == optionArray[op]) start = op;
+
+			if (start != -1 && op > start) { 
+				optionArray[op].yOff += outputData;
+				optionArray[op].changeY(outputData, false, time);
+			}
+		}
+		heightSetOffset += outputData;
+
+		changeHeight(time);
 	}
 }
