@@ -49,25 +49,25 @@ class MouseMove extends FlxBasic
         this.event = onClick;
     }
     
-    var moveCheck:Float = 0;
+    public var inputAllow:Bool = true;
     override function update(elapsed:Float) {
         
         if (!allowUpdate) {
             super.update(elapsed);
             return;
         }
-        
+
         var mouse = FlxG.mouse;
 
-        var inputAllow:Bool = true;
+        var checkInput:Bool = true;
 
         if (!(mouse.x > mouseLimit[0][0] && mouse.x < mouseLimit[0][1] && mouse.y > mouseLimit[1][0] && mouse.y < mouseLimit[1][1])) {
             if (isDragging) 
                 endDrag();
-            inputAllow = false;
+            checkInput = false;
         }
         
-        if (inputAllow) {
+        if (checkInput && inputAllow) {
             // 鼠标滚轮
             if (mouse.wheel!= 0) {
                 velocity += mouse.wheel * mouseWheelSensitivity;
@@ -99,9 +99,6 @@ class MouseMove extends FlxBasic
         
         if (target < moveLimit[0]) target = FlxMath.lerp(moveLimit[0], target, Math.exp(-elapsed * 20));
         if (target > moveLimit[1]) target = FlxMath.lerp(moveLimit[1], target, Math.exp(-elapsed * 20));
-
-        if (Math.abs(moveCheck - target) > 1)  moveCheck = target;
-        else return;
 
         Reflect.setProperty(follow, followData, target);
         

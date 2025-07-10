@@ -169,6 +169,8 @@ class ChooseRect extends FlxSpriteGroup {
 
     var name:String;
 
+    var setAlpha:Float = 0;
+
     ///////////////////////////////////////////////////////////////////////////////
 
     public function new(X:Float, Y:Float, width:Float, height:Float, name:String, sort:Int, follow:StringSelect) {
@@ -188,7 +190,9 @@ class ChooseRect extends FlxSpriteGroup {
         //textDis.x += height / 5;
         textDis.y += (height - textDis.height) * 0.5;
 		add(textDis);
-        textDis.alpha = 0;
+        textDis.alpha = 0.1;
+
+        if (name == follow.follow.getValue()) setAlpha = 0.1; //标亮之前的设置
     }
 
     public var onFocus:Bool = false;
@@ -214,14 +218,14 @@ class ChooseRect extends FlxSpriteGroup {
             }
 
             if (mouse.justReleased && allowUpdate) {
-
                 follow.follow.setValue(name);
-                follow.follow.change();
                 follow.follow.updateDisText();
-                follow.follow.stringRect.change();
+                follow.follow.change();
+                follow.follow.stringRect.change(); //关闭设置了喵
             }
         } else {
-            if (bg.alpha > 0) bg.alpha -= EngineSet.FPSfix(0.09);
+            if (bg.alpha > setAlpha) bg.alpha -= EngineSet.FPSfix(0.09);
+            if (setAlpha > bg.alpha) bg.alpha = setAlpha;
         }
 
         bg.alpha = bg.alpha * textDis.alpha;
