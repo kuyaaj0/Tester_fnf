@@ -74,7 +74,7 @@ class GetInit
     
     static public function getAllListName():Array<String>{
         var AllName:Array<String> = [];
-        var helpInt:Int = getListNum - 1;
+        var helpInt:Int = getListNum() - 1;
         for(i in 0...helpInt){
             AllName.push(getList(i).name);
         }
@@ -84,6 +84,7 @@ class GetInit
     static public function getAllSongs():SongLists{
         var AllListSong:Array<SongInfo> = [];
         var listID:Int = getListNum() - 1;
+        var listss:SongLists;
         if (getListNum() > 0) {
             for (i in 0...listID){
                 var allList = getList(i).list;
@@ -91,12 +92,12 @@ class GetInit
                     AllListSong.push(ii);
                 }
             }
-            var listss:SongLists = {
+            listss:SongLists = {
                 name: 'All Songs',
                 list: AllListSong
             }
         }else{
-            var listss:SongLists = {
+            listss:SongLists = {
                 name: 'All Songs',
                 list: []
             }

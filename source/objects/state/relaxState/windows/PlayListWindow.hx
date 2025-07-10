@@ -12,9 +12,7 @@ class PlayListWindow extends FlxSpriteGroup
     public var rightRect:FlxSprite;
     
     private var tweenDuration:Float = 0.3;
-    
-    private var easeType:FlxEase = FlxEase.quadOut;
-    
+
     private var leftHiddenX:Float;
     private var leftShownX:Float;
     private var rightHiddenX:Float;
