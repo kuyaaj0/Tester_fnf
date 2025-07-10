@@ -42,7 +42,7 @@ class GetInit
             var listFile:String = 'assets/shared/Playlists/' + item + '/List.json';
             if(FileSystem.exists(listFile))
                 listNum++;
-                listArray.push(listFile);
+                listArray.push(File.getContent(listFile));
         }
         return listNum;
     }

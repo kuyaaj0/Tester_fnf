@@ -454,7 +454,7 @@ class RelaxSubState extends MusicBeatSubstate
 			loadSongs(SongsArray.list[0]);
 		}
 		
-		var DebugText:FlxText = new FlxText(0, 0, FlxG.width, SongsArray.name, 50);
+		var DebugText:FlxText = new FlxText(0, 0, FlxG.width, SongsArray.name, 25);
 		DebugText.font = Paths.font('Lang-ZH.ttf');
 		add(DebugText);
 		DebugText.cameras = [camHUD];
