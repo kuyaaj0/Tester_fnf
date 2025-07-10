@@ -25,7 +25,8 @@ class GetInit
     static var listArray:Array<String> = [];
     static public function getListNum():Int{
         var listNum:Int = 0;
-        if (!FileSystem.exits('assets/shared/Playlists/')){
+        listArray = [];
+        if (!FileSystem.exists('assets/shared/Playlists/')){
             FileSystem.createDirectory('assets/shared/Playlists/');
             return listNum;
         }
@@ -43,14 +44,14 @@ class GetInit
         return listNum;
     }
     
-    static public function getList(ListNum:Int):Dynamic{
+    static public function getList(ListNum:Int):SongLists{
         if (getListNum() > 0) {
             if(ListNum < 0) ListNum = listArray.length - 1;
             if(ListNum > listArray.length - 1) ListNum = 0;
             try{
                 var data:Dynamic = Json.parse(listArray[ListNum]);
                 return data;
-            }catch{
+            }catch(e:Dynamic){
                 return {
                     name: 'Parsing failed!',
                     list: []
