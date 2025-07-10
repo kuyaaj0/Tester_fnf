@@ -332,14 +332,14 @@ class PlayState extends MusicBeatState
 		if (preloadEvents != null)
 			extraEvents = preloadEvents;
 	}
-
+	
 	override public function create()
 	{
 		if (!ClientPrefs.data.loadingScreen)
 			Paths.clearStoredMemory();
 		startCallback = startCountdown;
 		endCallback = endSong;
-
+		
 		// for lua
 		instance = this;
 

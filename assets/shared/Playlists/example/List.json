@@ -9,6 +9,15 @@
 			"backendVideo": null,
 			"bpm": 200,
 			"writer": "rejection"
+		},
+		{
+		    "name": "Wellerman",
+			"sound": ["assets/shared/Playlists/example/songs/Wellerman.ogg"],
+			"background": ["assets/shared/Playlists/example/art/Wellerman.png"],
+			"record": null,
+			"backendVideo": null,
+			"bpm": 110,
+			"writer": "Acapella"
 		}
 	]
 }
