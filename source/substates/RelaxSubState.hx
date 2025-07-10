@@ -866,7 +866,10 @@ class RelaxSubState extends MusicBeatSubstate
 		});
 	}
 
-	public function OtherListLoad(data:Array<Int> = [ListID:Int = 0, SongID:Int = 0]){
+	public function OtherListLoad(data:Array<Int> = null){
+	    if(data == null || data[0] == null || data[1] == null)
+	        return;
+	        
 	    if(data[1] >= SongsArray.list.length){
 	        data[1] = SongsArray.list.length - 1;
 	    }
