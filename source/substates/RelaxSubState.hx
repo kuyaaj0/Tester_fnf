@@ -25,6 +25,8 @@ import flixel.util.FlxTimer;
 import sys.thread.Thread;
 
 import backend.relax.GetInit;
+import backend.relax.GetInit.SongLists;
+import backend.relax.GetInit.SongInfo;
 
 class RelaxSubState extends MusicBeatSubstate
 {
