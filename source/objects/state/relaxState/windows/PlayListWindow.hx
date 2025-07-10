@@ -22,8 +22,8 @@ class PlayListWindow extends FlxSpriteGroup
     {
         super();
         
-        leftRect = new FlxSprite(0, 30);
-        rightRect = new FlxSprite(FlxG.width, 30);
+        leftRect = new FlxSprite(0, 50);
+        rightRect = new FlxSprite(FlxG.width, 50);
 
         var width:Int = Math.floor(FlxG.width * 0.3);
         var height:Int = Math.floor(FlxG.height * 0.8);
@@ -56,9 +56,9 @@ class PlayListWindow extends FlxSpriteGroup
         rightShownX = FlxG.width - rightRect.width;
         
         leftRect.x = leftHiddenX;
-        leftRect.y = 30;
+        leftRect.y = 50;
         rightRect.x = rightHiddenX;
-        rightRect.y = 30;
+        rightRect.y = 50;
         
         add(leftRect);
         add(rightRect);

@@ -790,6 +790,8 @@ class RelaxSubState extends MusicBeatSubstate
 				clickOption = !clickOption;
 				if (clickList && clickOption)
 					clickList = !clickOption;
+					playListWindow.Hidding = false;
+					playListWindow.hide();
 				trace('setting');
 			}
 			else if (isOverRock) {
