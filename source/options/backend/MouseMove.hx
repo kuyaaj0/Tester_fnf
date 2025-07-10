@@ -129,11 +129,6 @@ class MouseMove extends FlxBasic
         isDragging = false;
         velocityChange();
     }
-    
-    private function applyInertia(elapsed:Float) {
-        velocity *= Math.pow(deceleration, elapsed * 60);
-        target += velocity * elapsed * 60;
-    }
 
     var dataCheck:Bool = true; //正数检测
     private function velocUpdate(data:Float) {
@@ -159,20 +154,49 @@ class MouseMove extends FlxBasic
     }
 
     private function velocityChange() {
-        var arr = velocityArray;
-        if (arr.length == 0) return;
-        arr.sort(Reflect.compare);
-
-        var delete:Int = Std.int(arr.length / 4);
-        arr.splice(0, delete);
-        arr.splice(arr.length - delete - 1, delete);
-
-        var sum:Float = 0;
-        for (num in arr) {
-            sum += num;
+        if (velocityArray.length < 3) { // 样本太少时不处理
+            velocity = 0;
+            return;
         }
-        sum = sum / arr.length;
+        
+        // 减少过滤比例
+        var delete = Std.int(velocityArray.length / 6);
+        velocityArray.sort(Reflect.compare);
+        
+        // 保留中间部分数据
+        var filtered = velocityArray.slice(delete, velocityArray.length - delete);
+        
+        // 计算加权平均(越新的数据权重越高)
+        var sum:Float = 0;
+        var weightSum:Float = 0;
+        for (i in 0...filtered.length) {
+            var weight = (i + 1) / filtered.length; // 线性权重
+            sum += filtered[i] * weight;
+            weightSum += weight;
+        }
+        
+        velocity = sum / weightSum;
+        
+        // 添加最小速度限制
+        var minSpeed = 5.0; // 设置一个最小速度阈值
+        if (Math.abs(velocity) < minSpeed) {
+            velocity = velocity < 0 ? -minSpeed : minSpeed;
+        }
+        
+        // 帧率补偿
+        velocity *= EngineSet.FPSfix(1.0, true);
+    }
 
-        velocity = EngineSet.FPSfix(sum, true); //帧数平衡修复
+    private function applyInertia(elapsed:Float) {
+        // 使用更平滑的减速曲线
+        var decelFactor = Math.pow(deceleration, elapsed * 60);
+        velocity *= decelFactor;
+        
+        // 添加速度衰减下限
+        if (Math.abs(velocity) < minVelocity) {
+            velocity = 0;
+        } else {
+            target += velocity * elapsed * 60;
+        }
     }
 }
