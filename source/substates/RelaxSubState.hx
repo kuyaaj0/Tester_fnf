@@ -865,8 +865,8 @@ class RelaxSubState extends MusicBeatSubstate
 			ease: FlxEase.quadOut
 		});
 	}
-	//ListID:Int SongID:Int
-	public function OtherListLoad(data:Array<Int> = [0, 0]){
+
+	public function OtherListLoad(data:Array<Int> = [ListID:Int = 0, SongID:Int = 0]){
 	    if(data[1] >= SongsArray.list.length){
 	        data[1] = SongsArray.list.length - 1;
 	    }

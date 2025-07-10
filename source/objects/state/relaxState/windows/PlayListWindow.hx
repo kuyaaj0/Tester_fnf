@@ -76,14 +76,14 @@ class PlayListWindow extends FlxSpriteGroup
         FlxTween.cancelTweensOf(rightRect);
         
         FlxTween.tween(leftRect, { x: leftShownX }, tweenDuration, {
-            ease: easeType,
+            ease: FlxEase.quadOut,
             onComplete: function(t:FlxTween) {
                 leftRect.x = leftShownX;
             }
         });
 
         FlxTween.tween(rightRect, { x: rightShownX }, tweenDuration, {
-            ease: easeType,
+            ease: FlxEase.quadOut,
             onComplete: function(t:FlxTween) {
                 rightRect.x = rightShownX;
             }
@@ -100,14 +100,14 @@ class PlayListWindow extends FlxSpriteGroup
         FlxTween.cancelTweensOf(rightRect);
         
         FlxTween.tween(leftRect, { x: leftHiddenX }, tweenDuration, {
-            ease: easeType,
+            ease: FlxEase.quadOut,
             onComplete: function(t:FlxTween) {
                 leftRect.x = leftHiddenX;
             }
         });
         
         FlxTween.tween(rightRect, { x: rightHiddenX }, tweenDuration, {
-            ease: easeType,
+            ease: FlxEase.quadOut,
             onComplete: function(t:FlxTween) {
                 rightRect.x = rightHiddenX;
             }
