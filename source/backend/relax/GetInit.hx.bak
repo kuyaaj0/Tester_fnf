@@ -25,7 +25,7 @@ class GetInit
     static var listArray:Array<String> = [];
     static public function getListNum():Int{
         var listNum:Int = 0;
-        if (!FileSystem.exits('assets/shared/Playlists/')){
+        if (!FileSystem.exits('assets/shared/Playlists/'){
             FileSystem.createDirectory('assets/shared/Playlists/');
             return listNum;
         }
