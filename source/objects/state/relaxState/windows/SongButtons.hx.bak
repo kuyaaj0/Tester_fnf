@@ -31,7 +31,6 @@ class SongButtons extends FlxSpriteGroup
     public function new(List:Int = 0, x:Float = 0, y:Float = 0)
     {
         super(x, y);
-        playListWindow = new PlayListWindow();
         buttonWidth = FlxG.width * 0.3 - 10;
         songData = GetInit.getList(List);
         

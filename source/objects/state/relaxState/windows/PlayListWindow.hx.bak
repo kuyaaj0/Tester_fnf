@@ -4,7 +4,6 @@ import flixel.group.FlxSpriteGroup;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.util.FlxSpriteUtil;
-import flixel.math.FlxRect;
 
 import substates.RelaxSubState;
 
