@@ -117,7 +117,7 @@ class PlayListWindow extends FlxSpriteGroup
             for (btn in leftButtons) {
                 FlxTween.cancelTweensOf(btn);
                 var tweenX:Float;
-                if(creatHide) tweenX = FlxG.width * 0.3;
+                if(creatHide) tweenX = FlxG.width * 0.3 - 5;
                 else tweenX = 0;
                 FlxTween.tween(btn, {x: tweenX}, tweenDuration, { ease: FlxEase.quadOut });
             }
@@ -126,7 +126,7 @@ class PlayListWindow extends FlxSpriteGroup
         if(rightButtons != null && rightButtons.length > 0){
             for (btn in rightButtons) {
                 FlxTween.cancelTweensOf(btn);
-                FlxTween.tween(btn, {x: -(FlxG.width * 0.3 - 10)}, tweenDuration, { ease: FlxEase.quadOut });
+                FlxTween.tween(btn, {x: -(FlxG.width * 0.3 - 10) - 5}, tweenDuration, { ease: FlxEase.quadOut });
             }
         }
     }
@@ -151,7 +151,7 @@ class PlayListWindow extends FlxSpriteGroup
                 FlxTween.cancelTweensOf(btn);
                 var tweenX:Float;
                 if(creatHide) tweenX = 0;
-                else tweenX = FlxG.width * 0.3;
+                else tweenX = -(FlxG.width * 0.3);
                 FlxTween.tween(btn, {x: tweenX}, tweenDuration, { ease: FlxEase.quadOut });
             }
         }
