@@ -151,7 +151,7 @@ class PlayListWindow extends FlxSpriteGroup
                 FlxTween.cancelTweensOf(btn);
                 var tweenX:Float;
                 if(creatHide) tweenX = 0;
-                else tweenX = FlxG.width * 0.3(
+                else tweenX = FlxG.width * 0.3;
                 FlxTween.tween(btn, {x: tweenX}, tweenDuration, { ease: FlxEase.quadOut });
             }
         }
