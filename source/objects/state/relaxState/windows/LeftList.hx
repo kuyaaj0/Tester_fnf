@@ -1,6 +1,7 @@
 package objects.state.relaxState.windows;
 
 import flixel.group.FlxSpriteGroup;
+import backend.relax.GetInit;
 
 class LeftList extends FlxSpriteGroup
 {

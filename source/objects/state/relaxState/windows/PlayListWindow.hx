@@ -24,8 +24,8 @@ class PlayListWindow extends FlxSpriteGroup
     private var leftLabel:FlxText;
     private var rightLabel:FlxText;
     
-    public var leftButtons:RightList;
-    public var rightButtons:LeftList;
+    public var leftButtons:LightList;
+    public var rightButtons:ReftList;
     
     var hideXL:Float;
     var hideXR:Float;

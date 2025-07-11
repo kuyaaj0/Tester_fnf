@@ -7,9 +7,9 @@ class RightList extends FlxSpriteGroup
 {
     public var RightButtons:Map<Int, ListButtons> = new Map();
     //按下按钮后的回调
-    public dynamic var onButtonClicked:Int->Void = null;
+    public var onButtonClicked:Int->Void = null;
     // 列表更新完成后的回调
-    public dynamic var onListUpdated:Void->Void = null;
+    public var onListUpdated:Void->Void = null;
     
     public var nowChoose:Int = 0;
     
@@ -54,13 +54,5 @@ class RightList extends FlxSpriteGroup
             button.destroy();
         }
         RightButtons.clear();
-    }
-    
-    public function getButton(index:Int):Null<ListButtons> {
-        return RightButtons.get(index);
-    }
-    
-    public function getButtonCount():Int {
-        return RightButtons.count();
     }
 }
