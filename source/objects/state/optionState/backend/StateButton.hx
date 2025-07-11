@@ -21,8 +21,6 @@ class StateButton extends FlxSpriteGroup{
 		stateName.x += (bg.width - stateName.width) / 2;
         stateName.y += (bg.height - stateName.height) / 2;
 		stateName.alpha = 0.8;
-		//stateName.blend = ADD;
-		//stateName.active = false;
 		add(stateName);
 	}
 
@@ -32,7 +30,7 @@ class StateButton extends FlxSpriteGroup{
         
         //if (!allowUpdate) return;
         
-        var mouse = FlxG.mouse;
+        var mouse = OptionsState.instance.mouseEvent;
 
         if (mouse.overlaps(bg)) {
             if (!colorChange) {

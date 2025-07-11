@@ -40,12 +40,14 @@ class BoolButton extends FlxSpriteGroup {
         var mouse = FlxG.mouse;
 
         var inputAllow:Bool = true;
+
+        if (Math.abs(OptionsState.instance.cataMove.velocity) > 2) inputAllow = false;
         
         if (inputAllow) {
             // Check if mouse is over the button
             if (mouse.overlaps(bg)) {
                 // Mouse released
-                if (mouse.justReleased) {
+                if (OptionsState.instance.mouseEvent.justReleased) {
                     // Check if mouse is on left or right side
                     var localX = mouse.getScreenPosition().x - this.x;
                     var isRightSide = localX > bg.width / 2;

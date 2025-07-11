@@ -54,6 +54,7 @@ import backend.Difficulty;
 import backend.Mods;
 import backend.ui.*; // Psych-UI
 import backend.data.*;
+import backend.mouse.*;
 
 import objects.Alphabet;
 import objects.BGSprite;

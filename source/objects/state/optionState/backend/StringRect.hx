@@ -50,7 +50,7 @@ class StringRect extends FlxSpriteGroup{
         
         if (!allowUpdate) return;
         
-        var mouse = FlxG.mouse;
+        var mouse = OptionsState.instance.mouseEvent;
 
         if (mouse.overlaps(bg)) {
 
