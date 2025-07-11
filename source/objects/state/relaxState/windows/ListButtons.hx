@@ -1,3 +1,5 @@
+package objects.state.relaxState.windows;
+
 import flixel.FlxSpriteGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
