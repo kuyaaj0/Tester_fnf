@@ -5,6 +5,7 @@ import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.util.FlxSpriteUtil;
 import flixel.math.FlxRect;
+import backend.relax.GetInit;
 
 import substates.RelaxSubState;
 
@@ -21,6 +22,13 @@ class PlayListWindow extends FlxSpriteGroup
     private var leftShownX:Float;
     private var rightHiddenX:Float;
     private var rightShownX:Float;
+    
+    public var LeftbuttonIndexMap:Map<ListButton, Int> = new Map();
+    public var RightbuttonIndexMap:Map<ListButton, Int> = new Map();
+    public var leftButtons:Array<ListButton>;
+    public var rightButtons:Array<ListButton>;
+    private var leftLabel:FlxText;
+    private var rightLabel:FlxText;
     
     public var nowChoose:Array<Int> = [0, 0];
     
@@ -69,81 +77,69 @@ class PlayListWindow extends FlxSpriteGroup
         add(leftRect);
         add(rightRect);
         
-        createButtons();
+        leftLabel = new FlxText(leftHiddenX, 55, leftRect.width, "SONG LIST", 60);
+        leftLabel.setFormat(null, 32, 0xFFFFFFFF, CENTER);
+        leftLabel.borderStyle = OUTLINE;
+        leftLabel.borderColor = 0xFF000000;
+        add(leftLabel);
+        
+        rightLabel = new FlxText(rightHiddenX, 55, rightRect.width, "PLAYLIST", 60);
+        rightLabel.setFormat(null, 32, 0xFFFFFFFF, CENTER);
+        rightLabel.borderStyle = OUTLINE;
+        rightLabel.borderColor = 0xFF000000;
+        add(rightLabel);
+        
+        CreateRightButton();
         
         instance = this;
     }
     
-    public var leftButtons:SongButtons;
-    public var rightButtons:SongButtons;
-    private var leftLabel:FlxText;
-    private var rightLabel:FlxText;
-    
-    private function createButtons()
-    {
-        var labelHeight:Float = 30;
-        
-        leftLabel = new FlxText(leftShownX, 20, leftRect.width, "SONG LIST", 16);
-        leftLabel.setFormat(null, 16, 0xFFFFFFFF, CENTER);
-        leftLabel.borderStyle = OUTLINE;
-        leftLabel.borderColor = 0xFF000000;
-        add(leftLabel);
-    
-        leftButtons = new SongButtons(0, leftShownX, 50 + labelHeight);
-        leftButtons.clipRect = new FlxRect(leftShownX, 50 + labelHeight, leftRect.width, leftRect.height - labelHeight);
-        add(leftButtons);
-    
-        rightLabel = new FlxText(rightShownX, 20, rightRect.width, "PLAYLIST", 16);
-        rightLabel.setFormat(null, 16, 0xFFFFFFFF, CENTER);
-        rightLabel.borderStyle = OUTLINE;
-        rightLabel.borderColor = 0xFF000000;
-        add(rightLabel);
-    
-        rightButtons = new SongButtons(1, rightShownX, 50 + labelHeight);
-        rightButtons.clipRect = new FlxRect(rightShownX, 50 + labelHeight, rightRect.width, rightRect.height - labelHeight);
-        add(rightButtons);
-    }
-    
-    public function show():Void
-    {
+    public function show():Void {
         if (!Hidding) return;
-        
         Hidding = false;
         
         FlxTween.cancelTweensOf(leftRect);
         FlxTween.cancelTweensOf(rightRect);
-        FlxTween.cancelTweensOf(leftButtons);
-        FlxTween.cancelTweensOf(rightButtons);
         FlxTween.cancelTweensOf(leftLabel);
         FlxTween.cancelTweensOf(rightLabel);
         
-        FlxTween.tween(leftRect, { x: leftShownX }, 0.2, { ease: FlxEase.quadOut });
-        FlxTween.tween(rightRect, { x: rightShownX }, 0.2, { ease: FlxEase.quadOut });
-        FlxTween.tween(leftButtons, { x: leftShownX }, 0.2, { ease: FlxEase.quadOut });
-        FlxTween.tween(rightButtons, { x: rightShownX }, 0.2, { ease: FlxEase.quadOut });
-        FlxTween.tween(leftLabel, { x: leftShownX }, 0.2, { ease: FlxEase.quadOut });
-        FlxTween.tween(rightLabel, { x: rightShownX }, 0.2, { ease: FlxEase.quadOut });
+        FlxTween.tween(leftRect, { x: leftShownX }, tweenDuration, { ease: FlxEase.quadOut });
+        FlxTween.tween(rightRect, { x: rightShownX }, tweenDuration, { ease: FlxEase.quadOut });
+        
+        FlxTween.tween(leftLabel, { x: leftShownX }, tweenDuration, { ease: FlxEase.quadOut });
+        FlxTween.tween(rightLabel, { x: rightShownX }, tweenDuration, { ease: FlxEase.quadOut });
+        
+        for (btn in leftButtons) {
+            btn.x = leftHiddenX;
+            FlxTween.tween(btn, { x: leftShownX }, tweenDuration, { ease: FlxEase.quadOut });
+        }
+        for (btn in rightButtons) {
+            btn.x = rightHiddenX;
+            FlxTween.tween(btn, { x: rightShownX }, tweenDuration, { ease: FlxEase.quadOut });
+        }
     }
     
-    public function hide():Void
-    {
+    public function hide():Void {
         if (Hidding) return;
-        
         Hidding = true;
         
         FlxTween.cancelTweensOf(leftRect);
         FlxTween.cancelTweensOf(rightRect);
-        FlxTween.cancelTweensOf(leftButtons);
-        FlxTween.cancelTweensOf(rightButtons);
         FlxTween.cancelTweensOf(leftLabel);
         FlxTween.cancelTweensOf(rightLabel);
         
-        FlxTween.tween(leftRect, { x: leftHiddenX }, 0.2, { ease: FlxEase.quadOut });
-        FlxTween.tween(rightRect, { x: rightHiddenX }, 0.2, { ease: FlxEase.quadOut });
-        FlxTween.tween(leftButtons, { x: leftHiddenX }, 0.2, { ease: FlxEase.quadOut });
-        FlxTween.tween(rightButtons, { x: rightHiddenX }, 0.2, { ease: FlxEase.quadOut });
-        FlxTween.tween(leftLabel, { x: leftHiddenX }, 0.2, { ease: FlxEase.quadOut });
-        FlxTween.tween(rightLabel, { x: rightHiddenX }, 0.2, { ease: FlxEase.quadOut });
+        FlxTween.tween(leftRect, { x: leftHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
+        FlxTween.tween(rightRect, { x: rightHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
+        
+        FlxTween.tween(leftLabel, { x: leftHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
+        FlxTween.tween(rightLabel, { x: rightHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
+        
+        for (btn in leftButtons) {
+            FlxTween.tween(btn, { x: leftHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
+        }
+        for (btn in rightButtons) {
+            FlxTween.tween(btn, { x: rightHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
+        }
     }
     
     public function toggle():Void
@@ -184,5 +180,45 @@ class PlayListWindow extends FlxSpriteGroup
     private function _onDoubleClick():Void
     {
         RelaxSubState.instance.OtherListLoad(nowChoose);
+    }
+
+    public function CreateRightButton() {
+        rightButtons = [];
+        RightbuttonIndexMap.clear();
+        
+        for (i in 0...GetInit.getListNum()) {
+            var button = new ListButton(rightShownX, 60 + i * 45);
+            button.setText(GetInit.getAllListName()[i]);
+            
+            RightbuttonIndexMap.set(button, i);
+            
+            button.onClick = function() {
+                nowChoose[0] = RightbuttonIndexMap.get(button);
+                CreateLeftButton();
+            };
+            
+            rightButtons.push(button);
+            add(button);
+        }
+    }
+    
+    public function CreateLeftButton() {
+        leftButtons = [];
+        LeftbuttonIndexMap.clear();
+        
+        for (i in 0...GetInit.getList(nowChoose[0]).list.length) {
+            var button = new ListButton(leftShownX, 60 + i * 45);
+            button.setText(GetInit.getList(nowChoose[0]).list[i]);
+            
+            LeftbuttonIndexMap.set(button, i);
+            
+            button.onClick = function() {
+                nowChoose[1] = LeftbuttonIndexMap.get(button);
+                handleDoubleClickCheck();
+            };
+            
+            leftButtons.push(button);
+            add(button);
+        }
     }
 }
