@@ -155,7 +155,7 @@ class PlayListWindow extends FlxSpriteGroup
                     FlxTween.cancelTweensOf(btn);
                     FlxTween.tween(btn, { x: leftHiddenX }, tweenDuration, { 
                         ease: FlxEase.quadOut,
-                        onComplete: function() {
+                        onComplete: function(twn:FlxTween) {
                             btn.active = false;
                             btn.visible = false;
                         }
@@ -167,7 +167,7 @@ class PlayListWindow extends FlxSpriteGroup
                     FlxTween.cancelTweensOf(btn);
                     FlxTween.tween(btn, { x: rightHiddenX }, tweenDuration, { 
                         ease: FlxEase.quadOut,
-                        onComplete: function() {
+                        onComplete: function(twn:FlxTween) {
                             btn.active = false;
                             btn.visible = false;
                         }
