@@ -250,11 +250,11 @@ class PlayListWindow extends FlxSpriteGroup
             
             rightButtons.push(button);
             add(button);
-            
-            rightList.items = rightButtons;
-            rightList.minScrollY = -rightButtons.length * 45 + (FlxG.height * 0.8 - 120);
-            rightList.maxScrollY = 0;
         }
+        
+        rightList.items = rightButtons;
+        rightList.minScrollY = -rightButtons.length * 45 + (FlxG.height * 0.8 - 120);
+        rightList.maxScrollY = 0;
     }
     
     public function CreateLeftButton() {
@@ -281,11 +281,11 @@ class PlayListWindow extends FlxSpriteGroup
             
             leftButtons.push(button);
             add(button);
-            
-            leftList.items = leftButtons;
-            leftList.minScrollY = -leftButtons.length * 45 + (FlxG.height * 0.8 - 120);
-            leftList.maxScrollY = 0;
         }
+        
+        leftList.items = leftButtons;
+        leftList.minScrollY = -leftButtons.length * 45 + (FlxG.height * 0.8 - 120);
+        leftList.maxScrollY = 0;
     }
     
     function changeRect(str:ListButtons, startY:Float, overY:Float) { //ai真的太好用了喵 --狐月影
