@@ -12,7 +12,7 @@ class LeftList extends FlxSpriteGroup
     }
     
     public function updateList(nowChoose:Int = 0){
-        clearButtons()
+        clearButtons();
         
         var shit = GetInit.getList(nowChoose).list.length; //即使没有一个歌单也会返回一个空歌单
         
