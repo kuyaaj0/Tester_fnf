@@ -110,13 +110,18 @@ class PlayListWindow extends FlxSpriteGroup
         FlxTween.tween(leftLabel, { x: leftShownX }, tweenDuration, { ease: FlxEase.quadOut });
         FlxTween.tween(rightLabel, { x: rightShownX }, tweenDuration, { ease: FlxEase.quadOut });
         
-        for (btn in leftButtons) {
-            btn.x = leftHiddenX;
-            FlxTween.tween(btn, { x: leftShownX }, tweenDuration, { ease: FlxEase.quadOut });
-        }
-        for (btn in rightButtons) {
-            btn.x = rightHiddenX;
-            FlxTween.tween(btn, { x: rightShownX }, tweenDuration, { ease: FlxEase.quadOut });
+        try{
+            if(leftButtons != [])
+            {
+                for (btn in leftButtons) {
+                    FlxTween.tween(btn, { x: leftShownX }, tweenDuration, { ease: FlxEase.quadOut });
+                }
+            }
+            If(rightButtons != []){
+                for (btn in rightButtons) {
+                    FlxTween.tween(btn, { x: rightShownX }, tweenDuration, { ease: FlxEase.quadOut });
+                }
+            }
         }
     }
     
@@ -135,11 +140,18 @@ class PlayListWindow extends FlxSpriteGroup
         FlxTween.tween(leftLabel, { x: leftHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
         FlxTween.tween(rightLabel, { x: rightHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
         
-        for (btn in leftButtons) {
-            FlxTween.tween(btn, { x: leftHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
-        }
-        for (btn in rightButtons) {
-            FlxTween.tween(btn, { x: rightHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
+        try{
+            if(leftButtons != [])
+            {
+                for (btn in leftButtons) {
+                    FlxTween.tween(btn, { x: leftHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
+                }
+            }
+            If(rightButtons != []){
+                for (btn in rightButtons) {
+                    FlxTween.tween(btn, { x: rightHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
+                }
+            }
         }
     }
     
@@ -189,7 +201,8 @@ class PlayListWindow extends FlxSpriteGroup
         
         for (i in 0...GetInit.getListNum()) {
             var button = new ListButtons(rightShownX, 60 + i * 45);
-            button.setText(GetInit.getAllListName()[i]);
+            var helpMap = GetInit.getAllListName();
+            button.setText(helpMap.get(i));
             
             RightbuttonIndexMap.set(button, i);
             

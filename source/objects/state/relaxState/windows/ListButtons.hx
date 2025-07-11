@@ -25,7 +25,7 @@ class ListButtons extends FlxSpriteGroup
     public var onClick:Void->Void = null;
     private var isPressed:Bool = false;
     
-    public function new(label:String = "", x:Float = 0, y:Float = 0, width:Float = 180, height:Float = 40)
+    public function new(x:Float = 0, y:Float = 0, width:Float = 180, height:Float = 40, label:String = "")
     {
         super(x, y);
         
@@ -34,25 +34,30 @@ class ListButtons extends FlxSpriteGroup
         FlxSpriteUtil.drawRoundRect(background, 0, 0, width, height, CORNER_RADIUS, CORNER_RADIUS, DEFAULT_COLOR);
         add(background);
         
-        text = new FlxText(PADDING, PADDING, width - PADDING * 2, label);
+        text = new FlxText(PADDING, PADDING, 0, label); // width设为0让文本自动扩展
         text.setFormat(null, 16, FlxColor.WHITE, LEFT);
+        text.wordWrap = false;
         originalTextX = text.x;
         add(text);
         
         checkTextOverflow();
     }
     
-    private function checkTextOverflow():Void
-    {
+    private function checkTextOverflow():Void {
+        text.wordWrap = false;
+        text.fieldWidth = 0;
+        
         var textWidth = text.width;
         var availableWidth = background.width - PADDING * 2;
         
         needsScrolling = textWidth > availableWidth;
         
-        if (needsScrolling)
-        {
+        if (needsScrolling) {
             textScrollPosition = 0;
             textScrollTimer = 0;
+            text.clipRect = new FlxRect(0, 0, availableWidth, text.height);
+        } else {
+            text.clipRect = null;
         }
     }
     
@@ -60,24 +65,22 @@ class ListButtons extends FlxSpriteGroup
     {
         super.update(elapsed);
         
-        if (needsScrolling)
-        {
-            textScrollTimer += elapsed;
-            
-            if (textScrollTimer >= textScrollDelay)
-            {
-                textScrollPosition -= textScrollSpeed * elapsed;
-                var maxScroll = text.width - (background.width - PADDING * 2);
-                
-                if (textScrollPosition <= -maxScroll)
-                {
-                    textScrollPosition = 0;
-                    textScrollTimer = 0;
-                }
-                
-                text.x = originalTextX + textScrollPosition;
-            }
-        }
+        if (needsScrolling) {
+           textScrollTimer += elapsed;
+           
+           if (textScrollTimer >= textScrollDelay) {
+               textScrollPosition -= textScrollSpeed * elapsed;
+               var maxScroll = text.width - (background.width - PADDING * 2);
+               
+               if (textScrollPosition <= -maxScroll) {
+                   textScrollPosition = 0;
+                   textScrollTimer = 0;
+               }
+               
+               text.x = originalTextX + textScrollPosition;
+               text.clipRect.x = -textScrollPosition;
+           }
+       }
         
         if (FlxG.mouse.overlaps(this) && FlxG.mouse.justPressed) {
             isPressed = true;
