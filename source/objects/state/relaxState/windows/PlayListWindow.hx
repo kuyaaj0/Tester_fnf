@@ -33,10 +33,18 @@ class PlayListWindow extends FlxSpriteGroup
     
     public var nowChoose:Array<Int> = [0, 0];
     
+    public var leftGroup:FlxSpriteGroup;
+    public var rightGroup:FlxSpriteGroup;
+    
     public function new()
     {
         super();
+        leftGroup = new FlxSpriteGroup();
+        rightGr = new FlxSpriteGroup();
         
+        add(leftGroup);
+        add(rightGroup);
+
         leftRect = new FlxSprite(0, 50);
         rightRect = new FlxSprite(FlxG.width, 50);
 
@@ -92,54 +100,34 @@ class PlayListWindow extends FlxSpriteGroup
         
         CreateRightButton();
         
-        instance = this;
-    }
-    
-    override function update(e:Float){
-        if(rightButtons != null && rightButtons.length > 0){
-            for (btn in rightButtons) {
-                btn.x = rightRect.x + 5;
-            }
-        }
+        leftGroup.add(leftRect);
+        leftGroup.add(leftLabel);
         
-        if(leftButtons != null && leftButtons.length > 0){
-            for (btn in leftButtons) {
-                btn.x = leftRect.x + 5;
-            }
-        }
+        rightGroup.add(rightRect);
+        rightGroup.add(rightLabel);
+        
+        instance = this;
+        
+        leftGroup.camera = rightGroup.camera = RelaxSubState.instance.camOption;
     }
     
     public function show():Void {
         if (!Hidding) return;
         Hidding = false;
         
-        FlxTween.cancelTweensOf(leftRect);
-        FlxTween.cancelTweensOf(rightRect);
-        FlxTween.cancelTweensOf(leftLabel);
-        FlxTween.cancelTweensOf(rightLabel);
-        
-        FlxTween.tween(leftRect, { x: leftShownX }, tweenDuration, { ease: FlxEase.quadOut });
-        FlxTween.tween(rightRect, { x: rightShownX }, tweenDuration, { ease: FlxEase.quadOut });
-        
-        FlxTween.tween(leftLabel, { x: leftShownX }, tweenDuration, { ease: FlxEase.quadOut });
-        FlxTween.tween(rightLabel, { x: rightShownX }, tweenDuration, { ease: FlxEase.quadOut });
-        
+        FlxTween.cancelTweensOf(leftGroup);
+        FlxTween.cancelTweensOf(rightGroup);
+        FlxTween.tween(leftGroup, { x: leftShownX }, tweenDuration, { ease: FlxEase.quadOut });
+        FlxTween.tween(rightGroup, { x: rightShownX }, tweenDuration, { ease: FlxEase.quadOut });
     }
 
     public function hide():Void {
         if (Hidding) return;
         Hidding = true;
-        
-        FlxTween.cancelTweensOf(leftRect);
-        FlxTween.cancelTweensOf(rightRect);
-        FlxTween.cancelTweensOf(leftLabel);
-        FlxTween.cancelTweensOf(rightLabel);
-        
-        FlxTween.tween(leftRect, { x: leftHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
-        FlxTween.tween(rightRect, { x: rightHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
-        
-        FlxTween.tween(leftLabel, { x: leftHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
-        FlxTween.tween(rightLabel, { x: rightHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
+        FlxTween.cancelTweensOf(leftGroup);
+        FlxTween.cancelTweensOf(rightGroup);
+        FlxTween.tween(leftGroup, { x: leftHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
+        FlxTween.tween(rightGroup, { x: rightHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
     }
     
     public function toggle():Void
@@ -189,7 +177,7 @@ class PlayListWindow extends FlxSpriteGroup
         var shit = GetInit.getListNum() - 1;
         
         for (i in 0...shit) {
-            var button = new ListButtons(rightHiddenX, 120 + i * 45, FlxG.width * 0.3 - 10);
+            var button = new ListButtons(rightShownX, 120 + i * 45, FlxG.width * 0.3 - 10);
             var helpMap = GetInit.getAllListName();
             button.setText(helpMap.get(i));
             
@@ -207,8 +195,8 @@ class PlayListWindow extends FlxSpriteGroup
             };
             
             rightButtons.push(button);
+            rightGroup.add(button);
             add(button);
-            button.camera = RelaxSubState.instance.camOption;
         }
     }
     
@@ -217,7 +205,7 @@ class PlayListWindow extends FlxSpriteGroup
         LeftbuttonIndexMap.clear();
         
         for (i in 0...GetInit.getList(nowChoose[0]).list.length) {
-            var button = new ListButtons(leftHiddenX, 120 + i * 45, FlxG.width * 0.3 - 10);
+            var button = new ListButtons(leftShownX, 120 + i * 45, FlxG.width * 0.3 - 10);
             button.setText(GetInit.getList(nowChoose[0]).list[i].name);
             
             LeftbuttonIndexMap.set(button, i);
@@ -228,8 +216,8 @@ class PlayListWindow extends FlxSpriteGroup
             };
             
             leftButtons.push(button);
+            leftGroup.add(button);
             add(button);
-            button.camera = RelaxSubState.instance.camOption;
         }
     }
 }
