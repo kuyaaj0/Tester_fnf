@@ -26,6 +26,8 @@ class OptionsState extends MusicBeatState
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 
+	public var mouseEvent:MouseEvent;
+
 	var naviBG:RoundRect;
 	var naviSpriteGroup:Array<NaviSprite> = [];
 	var naviMove:MouseMove;
@@ -58,6 +60,9 @@ class OptionsState extends MusicBeatState
 			'Maintenance'	
 		];
 
+		mouseEvent = new MouseEvent();
+		add(mouseEvent);
+
 		var bg = new Rect(0, 0, FlxG.width, FlxG.height, 0, 0, baseColor);
 		add(bg);
 
@@ -74,7 +79,7 @@ class OptionsState extends MusicBeatState
 		naviMoveEvent(true);
 
 		naviMove = new MouseMove(OptionsState, 'naviPosiData', 
-								[-1 * naviSpriteGroup.length * 2 * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.height * 0.005)],
+								[-1 * (naviSpriteGroup.length - 9) * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.height * 0.005)],
 								[	
 									[UIScale.adjust(FlxG.width * 0.005), 
 									UIScale.adjust(FlxG.width * 0.19)], [0, FlxG.height]

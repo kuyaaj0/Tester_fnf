@@ -32,8 +32,11 @@ class StringSelect extends FlxSpriteGroup
         this.options = follow.strGroup;
 
         //这些alpha会在后面出现的时候设置（具体去看stringrect）
+
+        var calcHeight:Float = height;
+        if (follow.strGroup.length < 5) calcHeight = calcHeight * (follow.strGroup.length / 5);
         
-        bg = new Rect(0, 0, width, height, width / 75, width / 75, 0xffffff, 0);
+        bg = new Rect(0, 0, width, calcHeight, width / 75, width / 75, 0xffffff, 0);
         add(bg);
 
         var init = 80;
@@ -50,8 +53,8 @@ class StringSelect extends FlxSpriteGroup
         
         // 创建滑块
         var calcWidth = width / init;
-        var calcHeight = height * 5 / options.length;
-        if (calcHeight > height) calcHeight = height;
+        var calcHeight = bg.height * 5 / options.length;
+        if (calcHeight > bg.height) calcHeight = bg.height;
         slider = new Rect(width - calcWidth, 0, calcWidth, calcHeight, calcWidth, calcWidth, 0xffffff, 0);
         add(slider);
 
@@ -81,7 +84,9 @@ class StringSelect extends FlxSpriteGroup
          for (i in 0...options.length)
         {
             var option = optionSprites[i];
-            option.y = follow.y + mainY + i * bg.height / 5 + posiData; //初始化在state的y
+            var calcHeight = bg.height / 5;
+            if (options.length < 5) calcHeight = bg.height / options.length;
+            option.y = follow.y + mainY + i * calcHeight + posiData; //初始化在state的y
         }
     
         var mouse = FlxG.mouse;
@@ -142,21 +147,6 @@ class StringSelect extends FlxSpriteGroup
     
     private function updateSelection(index:Int):Void
     {
-        /*
-        if (index < 0 || index >= options.length) return;
-        
-        // 重置所有选项颜色
-        for (option in optionSprites)
-        {
-            option.color = 0xffffff;
-        }
-        
-        // 高亮当前选择
-        optionSprites[index].color = FlxColor.GREEN;
-        currentSelection = index;
-        
-        trace("Selected: " + options[index]);
-        */ 
     }
 }
 
@@ -204,7 +194,7 @@ class ChooseRect extends FlxSpriteGroup {
     override function update(elapsed:Float) {
         super.update(elapsed);
 
-        var mouse = FlxG.mouse;
+        var mouse = OptionsState.instance.mouseEvent;
 
 		onFocus = mouse.overlaps(this);
 
