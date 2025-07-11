@@ -13,7 +13,7 @@ class GeneralGroup extends OptionCata
 
 		var option:Option = new Option(this, 'framerate', INT, Language.get('framerate', 'op'), Language.get('framerate', 'opSub'), [24, 1000, 'FPS']);
 		addOption(option);
-		option.onChange = onChangeFramerate; //打样
+		option.onChange = onChangeFramerate;
 
 		var langArray:Array<String> = [];
 		var contents:Array<String> = FileSystem.readDirectory(Paths.getPath('language'));
@@ -45,7 +45,7 @@ class GeneralGroup extends OptionCata
 		];
 
 		var option:Option = new Option(this, 'colorblindMode', STRING, Language.get('colorblindMode', 'op'), Language.get('colorblindMode', 'opSub'), colorblindFilterArray);
-		addOption(option);
+		addOption(option, true);
 		option.onChange = onChangeFilter;
 
 		var option:Option = new Option(this, 'lowQuality', BOOL, Language.get('lowQuality', 'op'), Language.get('lowQuality', 'opSub'));

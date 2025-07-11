@@ -1,5 +1,7 @@
 package objects.state.optionState;
 
+import objects.state.optionState.Option.OptionType;
+
 class OptionCata extends FlxSpriteGroup
 {
 	public var mainX:Float;
@@ -35,7 +37,16 @@ class OptionCata extends FlxSpriteGroup
 		}
 		add(tar);
 
-		tar.initX(mainX, putX);
+		var specX:Float = 0;
+		switch (tar.type)
+		{
+			case STRING:
+				if (sameY)
+					specX = (this.width - this.width / 2 / 50) / 2;
+			default:
+		}
+
+		tar.initX(mainX, putX, specX);
 		tar.initY(mainY, putY);
 
 		optionArray.push(tar);
@@ -60,7 +71,11 @@ class OptionCata extends FlxSpriteGroup
 	public function optionAdjust(str:Option, outputData:Float, time:Float = 0.6) {
 		var start:Int = -1;
 		for (op in 0...optionArray.length) {
-			if (str == optionArray[op]) start = op;
+			if (str == optionArray[op]) {
+				start = op;
+				if (start != (optionArray.length - 1) && str.type == STRING && optionArray[start + 1].type == STRING && (start + 1) % 2 == 1)
+					start++;
+			}
 
 			if (start != -1 && op > start) { 
 				optionArray[op].yOff += outputData;

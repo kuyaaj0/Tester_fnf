@@ -171,6 +171,7 @@ class OptionsState extends MusicBeatState
 	}
 
 	public function changeCata(sort:Int) {
+		if (cataCount.length > 0) return;
 		var outputData:Float = 100;
 		for (cata in 0...sort) {
 			outputData -= cataGroup[cata].bg.realHeight;

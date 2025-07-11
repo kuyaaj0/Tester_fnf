@@ -98,6 +98,14 @@ class StringSelect extends FlxSpriteGroup
             changeRect(str, startY, overY);
         }
 
+        if (options.length > 5) { //对的其实我是真懒得兼容了
+            var data = posiData;
+            if (data > 0) data = 0;
+            if (data < optionMove.moveLimit[0]) data = optionMove.moveLimit[0];
+            data = Math.abs(data);
+            slider.y = follow.y + mainY + (data / Math.abs(optionMove.moveLimit[0])) * (bg.height - slider.height);
+        }
+
         // 拖动滑块
         if (isDragging && FlxG.mouse.pressed)
         {

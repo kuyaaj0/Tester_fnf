@@ -38,7 +38,6 @@ class Option extends FlxSpriteGroup
 
 	//STRING
 	public var strGroup:Array<String> = null;
-	public var curOption:Int = 0;
 
 	//INT FLOAT PERCENT;
 	public var minValue:Float = 0;
@@ -109,15 +108,6 @@ class Option extends FlxSpriteGroup
 				
 			case STRING:
 				this.strGroup = data;
-			default:
-		}
-
-		switch (type)
-		{
-			case STRING:
-				var num:Int = strGroup.indexOf(getValue());
-				if (num > -1)
-					curOption = num; //定位当前选择
 			default:
 		}
 
@@ -408,15 +398,15 @@ class Option extends FlxSpriteGroup
 		output += data;
 
 		if (xTween != null) xTween.cancel();
-		var tween = FlxTween.tween(this, {x: followX + innerX + xOff}, time, {ease: FlxEase.expoInOut});
-		xTween = tween;
+		xTween = FlxTween.tween(this, {x: followX + innerX + xOff}, time, {ease: FlxEase.expoInOut});
 	}
 
-	public function initX(data:Float, innerData:Float) {
+	public function initX(data:Float, innerData:Float, ?specData:Float = 0) {
 		followX = data;
 		innerX = innerData;
 		if (type == TITLE) return;
 		this.x = followX + innerX;
+		if (specData != 0) this.select.x -= specData;
 	}
 
 	public var followY:Float = 0;  //optioncata在主体的位置
@@ -428,8 +418,7 @@ class Option extends FlxSpriteGroup
 		output += data;
 
 		if (yTween != null) yTween.cancel();
-		var tween = FlxTween.tween(this, {y: followY + innerY + yOff}, time, {ease: FlxEase.expoInOut});
-		yTween = (tween);
+		yTween = FlxTween.tween(this, {y: followY + innerY + yOff}, time, {ease: FlxEase.expoInOut});
 	}
 
 	public function initY(data:Float, innerData:Float) {
