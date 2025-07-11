@@ -156,8 +156,8 @@ class PlayListWindow extends FlxSpriteGroup
 	//var avgSpeed:Array<Float> = [0, 0];
     
     override public function update(elapsed:Float){
-        applyClipping(leftList, leftList.scrollY);
-        applyClipping(rightList, rightList.scrollY);
+        applyClipping(leftButtons);
+        applyClipping(rightButtons);
         
         if (FlxG.mouse.pressed && FlxG.mouse.overlaps(leftRect)) {
 			if (leftButtons.height > Math.floor(FlxG.height * 0.8))
@@ -192,19 +192,19 @@ class PlayListWindow extends FlxSpriteGroup
         }
     }
     
-    public function applyClipping(list:FlxSpriteGroup, scrollOffset:Float = 0)
+    public function applyClipping(list:FlxSpriteGroup)
     {
         for (member in list.members)
         {
             if (Std.isOfType(member, ListButtons))
             {
                 var button:ListButtons = cast member;
-                changeRect(button, 115 - scrollOffset, Math.floor(FlxG.height * 0.8) - scrollOffset);
+                changeRect(button, 115, Math.floor(FlxG.height * 0.8));
             }
         }
     }
     
-    function changeRect(str:FlxSpriteGroup, startY:Float, overY:Float) { //ai真的太好用了喵 --狐月影
+    function changeRect(str:ListButtons, startY:Float, overY:Float) { //ai真的太好用了喵 --狐月影
         // 获取选项矩形的顶部和底部坐标（相对于父容器）
         var optionTop = str.y;
         var optionBottom = str.y + str.height;
