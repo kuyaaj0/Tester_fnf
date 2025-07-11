@@ -39,7 +39,7 @@ class ScrollableList {
         for (i in 0...items.length) {
             var button = items[i];
             button.y = 120 + i * 45 + scrollY;
-            button.allowClick = !isDragging;
+            button.allowChoose = !isDragging;
         }
     }
     
