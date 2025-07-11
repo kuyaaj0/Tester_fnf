@@ -31,6 +31,9 @@ class PlayListWindow extends FlxSpriteGroup
     private var leftLabel:FlxText;
     private var rightLabel:FlxText;
     
+    public var leftList:ScrollableList;
+    public var rightList:ScrollableList;
+    
     public var nowChoose:Array<Int> = [0, 0];
     var creatHide:Bool = true;
     
@@ -80,13 +83,13 @@ class PlayListWindow extends FlxSpriteGroup
         add(rightRect);
         
         leftLabel = new FlxText(leftHiddenX, 55, leftRect.width, "SONG LIST", 60);
-        leftLabel.setFormat(Paths.font("montserrat.ttf"), 32, 0xFFFFFFFF, CENTER);
+        leftLabel.setFormat(Paths.font("Lang-ZH.ttf"), 32, 0xFFFFFFFF, CENTER);
         leftLabel.borderStyle = OUTLINE;
         leftLabel.borderColor = 0xFF000000;
         add(leftLabel);
         
         rightLabel = new FlxText(rightHiddenX, 55, rightRect.width, "PLAYLIST", 60);
-        rightLabel.setFormat(Paths.font("montserrat.ttf"), 32, 0xFFFFFFFF, CENTER);
+        rightLabel.setFormat(Paths.font("Lang-ZH.ttf"), 32, 0xFFFFFFFF, CENTER);
         rightLabel.borderStyle = OUTLINE;
         rightLabel.borderColor = 0xFF000000;
         add(rightLabel);
@@ -96,6 +99,23 @@ class PlayListWindow extends FlxSpriteGroup
         instance = this;
         
         camera = RelaxSubState.instance.camOption;
+    }
+    
+    override function update(elapsed:Float) {
+        super.update(elapsed);
+        
+        leftList.update(elapsed);
+        rightList.update(elapsed);
+        
+        if (FlxG.mouse.overlaps(leftRect)) {
+            leftList.handleInput();
+        } else if (FlxG.mouse.overlaps(rightRect)) {
+            rightList.handleInput();
+        }
+        
+        for (button in leftList.items) changeRect(button, 115, FlxG.height * 0.8);
+        for (button in rightList.items) changeRect(button, 115, FlxG.height * 0.8);
+        
     }
     
     public function show():Void {
@@ -230,6 +250,10 @@ class PlayListWindow extends FlxSpriteGroup
             
             rightButtons.push(button);
             add(button);
+            
+            rightList.items = rightButtons;
+            rightList.minScrollY = -rightButtons.length * 45 + (FlxG.height * 0.8 - 120);
+            rightList.maxScrollY = 0;
         }
     }
     
@@ -257,6 +281,46 @@ class PlayListWindow extends FlxSpriteGroup
             
             leftButtons.push(button);
             add(button);
+            
+            leftList.items = leftButtons;
+            leftList.minScrollY = -leftButtons.length * 45 + (FlxG.height * 0.8 - 120);
+            leftList.maxScrollY = 0;
         }
+    }
+    
+    function changeRect(str:ListButtons, startY:Float, overY:Float) { //ai真的太好用了喵 --狐月影
+        // 获取选项矩形的顶部和底部坐标（相对于父容器）
+        var optionTop = str.y;
+        var optionBottom = str.y + str.height;
+        
+        // 计算实际可见区域
+        var visibleTop = Math.max(optionTop, startY);    // 可见顶部取两者最大值
+        var visibleBottom = Math.min(optionBottom, overY); // 可见底部取两者最小值
+        
+        // 完全不可见的情况（在背景上方或下方）
+        if (visibleBottom <= startY || visibleTop >= overY) {
+            str.visible = false;
+            str.allowChoose = false;
+            return;
+        }
+        
+        // 设置可见性
+        str.visible = true;
+        str.allowChoose = true;
+
+        // 计算裁剪参数（基于局部坐标系）
+        var clipY = Math.max(0, startY - optionTop);  // 裁剪上边距
+        var clipHeight = visibleBottom - visibleTop;  // 可见高度
+        
+        // 创建/更新裁剪矩形
+        var swagRect = str.clipRect;
+        if (swagRect == null) {
+            swagRect = new FlxRect(0, clipY, str.width, clipHeight);
+        } else {
+            swagRect.set(0, clipY, str.width, clipHeight);
+        }
+        
+        // 应用裁剪
+        str.clipRect = swagRect;
     }
 }
