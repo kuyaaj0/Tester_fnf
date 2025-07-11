@@ -95,40 +95,32 @@ class PlayListWindow extends FlxSpriteGroup
         instance = this;
     }
     
-    public function show():Void {
-    if (!Hidding) return;
-    Hidding = false;
-    
-    FlxTween.cancelTweensOf(leftRect);
-    FlxTween.cancelTweensOf(rightRect);
-    FlxTween.cancelTweensOf(leftLabel);
-    FlxTween.cancelTweensOf(rightLabel);
-    
-    FlxTween.tween(leftRect, { x: leftShownX }, tweenDuration, { ease: FlxEase.quadOut });
-    FlxTween.tween(rightRect, { x: rightShownX }, tweenDuration, { ease: FlxEase.quadOut });
-    
-    FlxTween.tween(leftLabel, { x: leftShownX }, tweenDuration, { ease: FlxEase.quadOut });
-    FlxTween.tween(rightLabel, { x: rightShownX }, tweenDuration, { ease: FlxEase.quadOut });
-    
-    try {
-        if(leftButtons != null && leftButtons.length > 0) {
-            for (btn in leftButtons) {
-                FlxTween.cancelTweensOf(btn);
-                btn.x = leftHiddenX;
-                FlxTween.tween(btn, { x: leftShownX }, tweenDuration, { ease: FlxEase.quadOut });
-            }
+    override function update(e:Float){
+        for (btn in rightButtons) {
+             btn.x = rightRect.x - 5;
         }
-        if(rightButtons != null && rightButtons.length > 0) {
-            for (btn in rightButtons) {
-                FlxTween.cancelTweensOf(btn);
-                btn.x = rightHiddenX;
-                FlxTween.tween(btn, { x: rightShownX }, tweenDuration, { ease: FlxEase.quadOut });
-            }
+        
+        for (btn in leftButtons) {
+            btn.x = leftRect.x + 5;
         }
-    } catch(e:Dynamic) {
-        trace("Show animation error: " + e);
     }
-}
+    
+    public function show():Void {
+        if (!Hidding) return;
+        Hidding = false;
+        
+        FlxTween.cancelTweensOf(leftRect);
+        FlxTween.cancelTweensOf(rightRect);
+        FlxTween.cancelTweensOf(leftLabel);
+        FlxTween.cancelTweensOf(rightLabel);
+        
+        FlxTween.tween(leftRect, { x: leftShownX }, tweenDuration, { ease: FlxEase.quadOut });
+        FlxTween.tween(rightRect, { x: rightShownX }, tweenDuration, { ease: FlxEase.quadOut });
+        
+        FlxTween.tween(leftLabel, { x: leftShownX }, tweenDuration, { ease: FlxEase.quadOut });
+        FlxTween.tween(rightLabel, { x: rightShownX }, tweenDuration, { ease: FlxEase.quadOut });
+        
+    }
 
     public function hide():Void {
         if (Hidding) return;
