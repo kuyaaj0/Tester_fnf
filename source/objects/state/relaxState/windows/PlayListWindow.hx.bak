@@ -113,6 +113,8 @@ class PlayListWindow extends FlxSpriteGroup
     try {
         if(leftButtons != null && leftButtons.length > 0) {
             for (btn in leftButtons) {
+                btn.active = true;
+                btn.visible = true;
                 FlxTween.cancelTweensOf(btn);
                 btn.x = leftHiddenX;
                 FlxTween.tween(btn, { x: leftShownX }, tweenDuration, { ease: FlxEase.quadOut });
@@ -120,8 +122,10 @@ class PlayListWindow extends FlxSpriteGroup
         }
         if(rightButtons != null && rightButtons.length > 0) {
             for (btn in rightButtons) {
+                btn.active = true; // 确保按钮激活
+                btn.visible = true;
                 FlxTween.cancelTweensOf(btn);
-                btn.x = rightHiddenX;
+                btn.x = rightHiddenX; // 从隐藏位置开始
                 FlxTween.tween(btn, { x: rightShownX }, tweenDuration, { ease: FlxEase.quadOut });
             }
         }
@@ -150,7 +154,11 @@ class PlayListWindow extends FlxSpriteGroup
                 for (btn in leftButtons) {
                     FlxTween.cancelTweensOf(btn);
                     FlxTween.tween(btn, { x: leftHiddenX }, tweenDuration, { 
-                        ease: FlxEase.quadOut
+                        ease: FlxEase.quadOut,
+                        onComplete: function(twn:FlxTween) {
+                            btn.active = false;
+                            btn.visible = false;
+                        }
                     });
                 }
             }
@@ -158,7 +166,11 @@ class PlayListWindow extends FlxSpriteGroup
                 for (btn in rightButtons) {
                     FlxTween.cancelTweensOf(btn);
                     FlxTween.tween(btn, { x: rightHiddenX }, tweenDuration, { 
-                        ease: FlxEase.quadOut
+                        ease: FlxEase.quadOut,
+                        onComplete: function(twn:FlxTween) {
+                            btn.active = false;
+                            btn.visible = false;
+                        }
                     });
                 }
             }
@@ -210,7 +222,7 @@ class PlayListWindow extends FlxSpriteGroup
         RightbuttonIndexMap.clear();
         
         for (i in 0...GetInit.getListNum()) {
-            var button = new ListButtons(rightHiddenX, 120 + i * 45, FlxG.width * 0.3 - 10);
+            var button = new ListButtons(rightShownX, 60 + i * 45, FlxG.width * 0.3 - 10);
             var helpMap = GetInit.getAllListName();
             button.setText(helpMap.get(i));
             
@@ -238,7 +250,7 @@ class PlayListWindow extends FlxSpriteGroup
         LeftbuttonIndexMap.clear();
         
         for (i in 0...GetInit.getList(nowChoose[0]).list.length) {
-            var button = new ListButtons(leftHiddenX, 120 + i * 45, FlxG.width * 0.3 - 10);
+            var button = new ListButtons(leftShownX, 60 + i * 45, FlxG.width * 0.3 - 10);
             button.setText(GetInit.getList(nowChoose[0]).list[i].name);
             
             LeftbuttonIndexMap.set(button, i);
