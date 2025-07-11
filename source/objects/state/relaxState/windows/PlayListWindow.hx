@@ -106,8 +106,8 @@ class PlayListWindow extends FlxSpriteGroup
 	var avgSpeed:Float = 0;
     
     override function update(e:Float){
-        for(button in leftButtons) changeRect(button, 115, FlxG.height * 0.8);
-        for(button in rightButtons) changeRect(button, 115, FlxG.height * 0.8);
+        //for(button in leftButtons) changeRect(button, 115, FlxG.height * 0.8);
+        //for(button in rightButtons) changeRect(button, 115, FlxG.height * 0.8);
         
         leftButtonAllHeight = leftButtons.length * 45;
         rightButtonAllHeight = rightButtons.length * 45;
