@@ -8,6 +8,8 @@ import flixel.math.FlxRect;
 import backend.relax.GetInit;
 import objects.state.relaxState.windows.ListButtons;
 
+import shapeEx.Rect;
+
 import substates.RelaxSubState;
 
 class PlayListWindow extends FlxSpriteGroup
@@ -38,33 +40,12 @@ class PlayListWindow extends FlxSpriteGroup
     {
         super();
         
-        leftRect = new FlxSprite(0, 50);
-        rightRect = new FlxSprite(FlxG.width, 50);
-
         var width:Int = Math.floor(FlxG.width * 0.3);
         var height:Int = Math.floor(FlxG.height * 0.8);
         var cornerRadius:Int = 20;
         
-        leftRect.makeGraphic(width, height, flixel.util.FlxColor.TRANSPARENT, true);
-        rightRect.makeGraphic(width, height, flixel.util.FlxColor.TRANSPARENT, true);
-        
-        FlxSpriteUtil.drawRoundRect(
-            leftRect,
-            0, 0,
-            width, height,
-            cornerRadius, cornerRadius,
-            0xFF24232C,
-            { thickness: 0 }
-        );
-        
-        FlxSpriteUtil.drawRoundRect(
-            rightRect,
-            0, 0,
-            width, height,
-            cornerRadius, cornerRadius,
-            0xFF24232C,
-            { thickness: 0 }
-        );
+        leftRect = new Rect(0, 50, width, height, cornerRadius, cornerRadius, 0xFF24232C);
+        rightRect = new Rect(FlxG.width, 50, width, height, cornerRadius, cornerRadius, 0xFF24232C);
         
         leftHiddenX = -leftRect.width;
         leftShownX = 0;
@@ -106,8 +87,18 @@ class PlayListWindow extends FlxSpriteGroup
 	var avgSpeed:Float = 0;
     
     override function update(e:Float){
-        //for(button in leftButtons) changeRect(button, 115, FlxG.height * 0.8);
-        //for(button in rightButtons) changeRect(button, 115, FlxG.height * 0.8);
+        if(leftButtons.length > 0){
+            for(i in 0...(leftButtons.length -1)){
+                changeRect(button, 0 , FlxG.height * 0.8 - i * 45);
+                button.y -= 1;
+            }
+        }
+        if(rightButtons.length > 0){
+            for(i in 0...(rightButtons.length -1)){
+                changeRect(button, 0 , FlxG.height * 0.8 - i * 45);
+                button.y += 1;
+            }
+        }
         
         leftButtonAllHeight = leftButtons.length * 45;
         rightButtonAllHeight = rightButtons.length * 45;
@@ -311,7 +302,7 @@ class PlayListWindow extends FlxSpriteGroup
         }
     }
     
-    function changeRect(str:ListButtons, startY:Float, overY:Float) { //ai真的太好用了喵 --狐月影
+    function changeRect(str:ChooseRect, startY:Float, overY:Float) { //ai真的太好用了喵 --狐月影
         // 获取选项矩形的顶部和底部坐标（相对于父容器）
         var optionTop = str.y;
         var optionBottom = str.y + str.height;
