@@ -23,10 +23,10 @@ class PlayListWindow extends FlxSpriteGroup
     private var rightHiddenX:Float;
     private var rightShownX:Float;
     
-    public var LeftbuttonIndexMap:Map<ListButton, Int> = new Map();
-    public var RightbuttonIndexMap:Map<ListButton, Int> = new Map();
-    public var leftButtons:Array<ListButton>;
-    public var rightButtons:Array<ListButton>;
+    public var LeftbuttonIndexMap:Map<ListButtons, Int> = new Map();
+    public var RightbuttonIndexMap:Map<ListButtons, Int> = new Map();
+    public var leftButtons:Array<ListButtons>;
+    public var rightButtons:Array<ListButtons>;
     private var leftLabel:FlxText;
     private var rightLabel:FlxText;
     
@@ -187,7 +187,7 @@ class PlayListWindow extends FlxSpriteGroup
         RightbuttonIndexMap.clear();
         
         for (i in 0...GetInit.getListNum()) {
-            var button = new ListButton(rightShownX, 60 + i * 45);
+            var button = new ListButtons(rightShownX, 60 + i * 45);
             button.setText(GetInit.getAllListName()[i]);
             
             RightbuttonIndexMap.set(button, i);
@@ -207,7 +207,7 @@ class PlayListWindow extends FlxSpriteGroup
         LeftbuttonIndexMap.clear();
         
         for (i in 0...GetInit.getList(nowChoose[0]).list.length) {
-            var button = new ListButton(leftShownX, 60 + i * 45);
+            var button = new ListButtons(leftShownX, 60 + i * 45);
             button.setText(GetInit.getList(nowChoose[0]).list[i]);
             
             LeftbuttonIndexMap.set(button, i);
