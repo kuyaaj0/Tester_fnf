@@ -880,6 +880,7 @@ class RelaxSubState extends MusicBeatSubstate
     	        data[0] = GetInit.getListNum() - 1;
     	        
     	    nowChoose = data;
+    	    currentSongIndex = data[1];
     	    SongsArray = GetInit.getList(data[0]);
     	    loadSongs(SongsArray.list[data[1]]);
 	    }

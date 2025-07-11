@@ -25,7 +25,7 @@ class RightList extends FlxSpriteGroup
         var buttonWidth = FlxG.width * 0.3 - 10;
         
         for (i in 0...listCount) {
-            var button = new ListButtons(10, 50 + i * 45, buttonWidth);
+            var button = new ListButtons(10, i * 45, buttonWidth);
             var listName = GetInit.getAllListName().get(i);
             
             button.setText(listName != null ? listName : "Unnamed List");
