@@ -7,7 +7,7 @@ import flixel.math.FlxRect;
 import flixel.math.FlxMath;
 import flixel.util.FlxSpriteUtil;
 
-class ListButton extends FlxSpriteGroup
+class ListButtons extends FlxSpriteGroup
 {
     public static final DEFAULT_COLOR:FlxColor = 0xFF5C5970;
     public static final CORNER_RADIUS:Float = 8;
