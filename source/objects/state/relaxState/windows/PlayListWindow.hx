@@ -111,13 +111,13 @@ class PlayListWindow extends FlxSpriteGroup
         FlxTween.tween(rightLabel, { x: rightShownX }, tweenDuration, { ease: FlxEase.quadOut });
         
         try{
-            if(leftButtons != [])
+            if(leftButtons != null && leftButtons.length > 0)
             {
                 for (btn in leftButtons) {
                     FlxTween.tween(btn, { x: leftShownX }, tweenDuration, { ease: FlxEase.quadOut });
                 }
             }
-            If(rightButtons != []){
+            if(rightButtons != null && rightButtons.length > 0){
                 for (btn in rightButtons) {
                     FlxTween.tween(btn, { x: rightShownX }, tweenDuration, { ease: FlxEase.quadOut });
                 }
