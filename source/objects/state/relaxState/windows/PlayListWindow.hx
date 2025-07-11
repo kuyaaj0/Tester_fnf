@@ -151,8 +151,8 @@ class PlayListWindow extends FlxSpriteGroup
         }
     }
     
-    override public function update(){
-        for (member in [leftButtons ,rightButtons]){
+    override public function update(elapsed:Float){
+        for (member in [leftButtons.LeftButtons ,rightButtons.RightButtons]){
             for (Button in member)
                 changeRect(Button, 115, Math.floor(FlxG.height * 0.8));
         }
