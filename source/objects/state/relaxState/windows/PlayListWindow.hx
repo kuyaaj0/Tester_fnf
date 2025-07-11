@@ -34,6 +34,8 @@ class PlayListWindow extends FlxSpriteGroup
     
     public var nowChoose:Array<Int> = [0, 0];
     
+    var swagRect = new FlxRect(0, 115, FlxG.width, FlxG.height);
+    
     public function new()
     {
         super();
@@ -151,93 +153,9 @@ class PlayListWindow extends FlxSpriteGroup
         }
     }
     
-    var saveMouseY:Array<Int> = [0, 0];
-	var moveData:Array<Int> = [0, 0];
-	//var avgSpeed:Array<Float> = [0, 0];
-    
     override public function update(elapsed:Float){
-        applyClipping(leftButtons);
-        applyClipping(rightButtons);
-        
-        if (FlxG.mouse.pressed && FlxG.mouse.overlaps(leftRect)) {
-			if (leftButtons.height > Math.floor(FlxG.height * 0.8))
-			{
-				if (FlxG.mouse.justPressed)
-					saveMouseY[0] = FlxG.mouse.y;
-				moveData[0] = FlxG.mouse.y - saveMouseY[0];
-				saveMouseY[0] = FlxG.mouse.y;
-
-				leftButtons.y += moveData[0];
-			}
-			if (leftButtons.y < (Math.floor(FlxG.height * 0.8) - leftButtons.height))
-				leftButtons.y = Math.floor(FlxG.height * 0.8) - leftButtons.height;
-			if (leftButtons.y > 0)
-				leftButtons.y = 0;
-        }
-        
-        if (FlxG.mouse.pressed && FlxG.mouse.overlaps(rightRect)) {
-			if (rightButtons.height > Math.floor(FlxG.height * 0.8))
-			{
-				if (FlxG.mouse.justPressed)
-					saveMouseY[1] = FlxG.mouse.y;
-				moveData[1] = FlxG.mouse.y - saveMouseY[1];
-				saveMouseY[1] = FlxG.mouse.y;
-
-				rightButtons.y += moveData[1];
-			}
-			if (rightButtons.y < (Math.floor(FlxG.height * 0.8) - rightButtons.height))
-				rightButtons.y = Math.floor(FlxG.height * 0.8) - rightButtons.height;
-			if (rightButtons.y > 0)
-				rightButtons.y = 0;
-        }
-    }
-    
-    public function applyClipping(list:FlxSpriteGroup)
-    {
-        for (member in list.members)
-        {
-            if (Std.isOfType(member, ListButtons))
-            {
-                var button:ListButtons = cast member;
-                changeRect(button, 115, Math.floor(FlxG.height * 0.8));
-            }
-        }
-    }
-    
-    function changeRect(str:ListButtons, startY:Float, overY:Float) { //ai真的太好用了喵 --狐月影
-        // 获取选项矩形的顶部和底部坐标（相对于父容器）
-        var optionTop = str.y;
-        var optionBottom = str.y + str.height;
-        
-        // 计算实际可见区域
-        var visibleTop = Math.max(optionTop, startY);    // 可见顶部取两者最大值
-        var visibleBottom = Math.min(optionBottom, overY); // 可见底部取两者最小值
-        
-        // 完全不可见的情况（在背景上方或下方）
-        if (visibleBottom <= startY || visibleTop >= overY) {
-            str.visible = false;
-            str.allowChoose = false;
-            return;
-        }
-        
-        // 设置可见性
-        str.visible = true;
-        str.allowChoose = true;
-
-        // 计算裁剪参数（基于局部坐标系）
-        var clipY = Math.max(0, startY - optionTop);  // 裁剪上边距
-        var clipHeight = visibleBottom - visibleTop;  // 可见高度
-        
-        // 创建/更新裁剪矩形
-        var swagRect = str.clipRect;
-        if (swagRect == null) {
-            swagRect = new FlxRect(0, clipY, str.width, clipHeight);
-        } else {
-            swagRect.set(0, clipY, str.width, clipHeight);
-        }
-        
-        // 应用裁剪
-        str.clipRect = swagRect;
+        rightButtons.y += 5;
+        leftButtons.clipRect = rightButtons.clipRect = swagRect;
     }
     
     //找ai写的双击触发函数 --MaoPou
