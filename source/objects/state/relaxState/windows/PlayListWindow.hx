@@ -235,7 +235,8 @@ class PlayListWindow extends FlxSpriteGroup
                         remove(btn);
                         btn.destroy();
                     }
-                    CreateLeftButton();
+                }
+                CreateLeftButton();
             };
             
             rightButtons.push(button);
