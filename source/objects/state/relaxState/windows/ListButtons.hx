@@ -27,15 +27,15 @@ class ListButtons extends FlxSpriteGroup
     
     public function new(x:Float = 0, y:Float = 0, width:Float = 180, height:Float = 40, label:String = "")
     {
-        super(x, y);
+        super();
         
-        background = new FlxSprite();
+        background = new FlxSprite(x,y);
         background.makeGraphic(Std.int(width), Std.int(height), FlxColor.TRANSPARENT, true);
         FlxSpriteUtil.drawRoundRect(background, 0, 0, width, height, CORNER_RADIUS, CORNER_RADIUS, DEFAULT_COLOR);
         add(background);
         
-        text = new FlxText(PADDING, PADDING, 0, label); // width设为0让文本自动扩展
-        text.setFormat(null, 16, FlxColor.WHITE, LEFT);
+        text = new FlxText(PADDING + x, PADDING + y, 0, label); // width设为0让文本自动扩展
+        text.setFormat(Paths.font("montserrat.ttf"), 16, FlxColor.WHITE, LEFT);
         text.wordWrap = false;
         originalTextX = text.x;
         add(text);
@@ -86,10 +86,13 @@ class ListButtons extends FlxSpriteGroup
             isPressed = true;
         }
         
-        if (isPressed && (FlxG.mouse.justReleased || FlxG.mouse.overlaps(this))) {
+        if (isPressed && FlxG.mouse.justReleased && FlxG.mouse.overlaps(this)) {
             if (onClick != null) onClick();
             isPressed = false;
         }
+        
+        if(isPressed) setColor(0xFF908BB0);
+        else setColor(0xFF5C5970);
     }
     
     public function setText(newText:String):Void

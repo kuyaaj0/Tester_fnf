@@ -79,13 +79,13 @@ class PlayListWindow extends FlxSpriteGroup
         add(rightRect);
         
         leftLabel = new FlxText(leftHiddenX, 55, leftRect.width, "SONG LIST", 60);
-        leftLabel.setFormat(null, 32, 0xFFFFFFFF, CENTER);
+        leftLabel.setFormat(Paths.font("montserrat.ttf"), 32, 0xFFFFFFFF, CENTER);
         leftLabel.borderStyle = OUTLINE;
         leftLabel.borderColor = 0xFF000000;
         add(leftLabel);
         
         rightLabel = new FlxText(rightHiddenX, 55, rightRect.width, "PLAYLIST", 60);
-        rightLabel.setFormat(null, 32, 0xFFFFFFFF, CENTER);
+        rightLabel.setFormat(Paths.font("montserrat.ttf"), 32, 0xFFFFFFFF, CENTER);
         rightLabel.borderStyle = OUTLINE;
         rightLabel.borderColor = 0xFF000000;
         add(rightLabel);
@@ -200,7 +200,7 @@ class PlayListWindow extends FlxSpriteGroup
         RightbuttonIndexMap.clear();
         
         for (i in 0...GetInit.getListNum()) {
-            var button = new ListButtons(rightShownX, 60 + i * 45);
+            var button = new ListButtons(rightShownX, 60 + i * 45, FlxG.width * 0.3 - 10);
             var helpMap = GetInit.getAllListName();
             button.setText(helpMap.get(i));
             
@@ -213,6 +213,7 @@ class PlayListWindow extends FlxSpriteGroup
             
             rightButtons.push(button);
             add(button);
+            button.camera = RelaxSubState.instance.camOption;
         }
     }
     
@@ -221,7 +222,7 @@ class PlayListWindow extends FlxSpriteGroup
         LeftbuttonIndexMap.clear();
         
         for (i in 0...GetInit.getList(nowChoose[0]).list.length) {
-            var button = new ListButtons(leftShownX, 60 + i * 45);
+            var button = new ListButtons(leftShownX, 60 + i * 45, FlxG.width * 0.3 - 10);
             button.setText(GetInit.getList(nowChoose[0]).list[i].name);
             
             LeftbuttonIndexMap.set(button, i);
@@ -233,6 +234,7 @@ class PlayListWindow extends FlxSpriteGroup
             
             leftButtons.push(button);
             add(button);
+            button.camera = RelaxSubState.instance.camOption;
         }
     }
 }
