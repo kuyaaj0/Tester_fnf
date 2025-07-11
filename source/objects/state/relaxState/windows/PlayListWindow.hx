@@ -43,6 +43,9 @@ class PlayListWindow extends FlxSpriteGroup
         
         leftRect = new FlxSprite(0, 50);
         rightRect = new FlxSprite(FlxG.width, 50);
+        
+        leftList = new ScrollableList();
+        rightList = new ScrollableList();
 
         var width:Int = Math.floor(FlxG.width * 0.3);
         var height:Int = Math.floor(FlxG.height * 0.8);
