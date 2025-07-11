@@ -40,7 +40,7 @@ class PlayListWindow extends FlxSpriteGroup
     {
         super();
         leftGroup = new FlxSpriteGroup();
-        rightGr = new FlxSpriteGroup();
+        rightGroup = new FlxSpriteGroup();
         
         add(leftGroup);
         add(rightGroup);
