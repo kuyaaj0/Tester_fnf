@@ -3,8 +3,6 @@ package backend.mouse;
 import flixel.FlxBasic;
 import flixel.math.FlxMath;
 
-//六百六十六ai把这个整的很好用了 --狐月影
-
 class MouseMove extends FlxBasic
 {
     public var allowUpdate:Bool = true;
@@ -53,7 +51,6 @@ class MouseMove extends FlxBasic
     
     public var inputAllow:Bool = true;
     override function update(elapsed:Float) {
-        
         if (!allowUpdate) {
             super.update(elapsed);
             return;
@@ -136,21 +133,29 @@ class MouseMove extends FlxBasic
     private function velocUpdate(data:Float) {
         if (dataCheck) { //之前是正数
             if (data > 0) { //正数
+                velocityArray.remove(0); //一旦发现有移动，删除帧更新时候插入的0
                 velocityArray.push(velocity);
                 if (velocityArray.length > 11) velocityArray.shift();
-            } else { //负数
+            } else if (data < 0) { //负数
                 velocityArray = [];
                 velocityArray.push(velocity);
                 dataCheck = false;
+            } else {
+                velocityArray.push(velocity); //如果确实没动就加上0进入计算
+                if (velocityArray.length > 11) velocityArray.shift();
             }
         } else { //之前是负数
             if (data < 0) { //负数
+                velocityArray.remove(0); //一旦发现有移动，删除帧更新时候插入的0
                 velocityArray.push(velocity);
                 if (velocityArray.length > 11) velocityArray.shift();
-            } else { //正数
+            } else if (data > 0)  { //正数
                 velocityArray = [];
                 velocityArray.push(velocity);
                 dataCheck = true;
+            } else {
+                velocityArray.push(velocity); //如果确实没动就加上0进入计算
+                if (velocityArray.length > 11) velocityArray.shift();
             }
         } 
     }
@@ -178,12 +183,6 @@ class MouseMove extends FlxBasic
         }
         
         velocity = sum / weightSum;
-        
-        // 添加最小速度限制
-        var minSpeed = 5.0; // 设置一个最小速度阈值
-        if (Math.abs(velocity) < minSpeed) {
-            velocity = velocity < 0 ? -minSpeed : minSpeed;
-        }
         
         // 帧率补偿
         velocity *= EngineSet.FPSfix(1.0, true);
