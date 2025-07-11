@@ -19,8 +19,6 @@ class ListButtons extends FlxSpriteGroup
     public var onClick:Void->Void = null;
     private var isPressed:Bool = false;
     
-    public var allowChoose:Bool = true;
-    
     public function new(x:Float = 0, y:Float = 0, width:Float = 180, height:Float = 40, label:String = "")
     {
         super();
@@ -45,7 +43,7 @@ class ListButtons extends FlxSpriteGroup
             isPressed = true;
         }
         
-        if (isPressed && FlxG.mouse.justReleased) {
+        if (isPressed && FlxG.mouse.justReleased && FlxG.mouse.overlaps(this)) {
             if (onClick != null) onClick();
             isPressed = false;
         }
