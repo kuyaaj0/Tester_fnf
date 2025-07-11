@@ -26,8 +26,8 @@ class PlayListWindow extends FlxSpriteGroup
     
     public var LeftbuttonIndexMap:Map<ListButtons, Int> = new Map();
     public var RightbuttonIndexMap:Map<ListButtons, Int> = new Map();
-    public var leftButtons:Array<ListButtons>;
-    public var rightButtons:Array<ListButtons>;
+    public var leftButtons:Array<ListButtons> = [];
+    public var rightButtons:Array<ListButtons> = [];
     private var leftLabel:FlxText;
     private var rightLabel:FlxText;
     
@@ -140,25 +140,6 @@ class PlayListWindow extends FlxSpriteGroup
         
         FlxTween.tween(leftLabel, { x: leftHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
         FlxTween.tween(rightLabel, { x: rightHiddenX }, tweenDuration, { ease: FlxEase.quadOut });
-        
-        try {
-            if(leftButtons != null && leftButtons.length > 0) {
-                for (btn in leftButtons) {
-                    FlxTween.cancelTweensOf(btn);
-                    FlxTween.tween(btn, { x: leftHiddenX }, tweenDuration, { 
-                        ease: FlxEase.quadOut
-                    });
-                }
-            }
-            if(rightButtons != null && rightButtons.length > 0) {
-                for (btn in rightButtons) {
-                    FlxTween.cancelTweensOf(btn);
-                    FlxTween.tween(btn, { x: rightHiddenX }, tweenDuration, { 
-                        ease: FlxEase.quadOut
-                    });
-                }
-            }
-        }
     }
     
     public function toggle():Void
