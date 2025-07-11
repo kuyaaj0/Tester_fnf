@@ -96,12 +96,16 @@ class PlayListWindow extends FlxSpriteGroup
     }
     
     override function update(e:Float){
-        for (btn in rightButtons) {
-             btn.x = rightRect.x - 5;
+        if(rightButtons != null && rightButtons.length > 0){
+            for (btn in rightButtons) {
+                btn.x = rightRect.x + 5;
+            }
         }
         
-        for (btn in leftButtons) {
-            btn.x = leftRect.x + 5;
+        if(leftButtons != null && leftButtons.length > 0){
+            for (btn in leftButtons) {
+                btn.x = leftRect.x + 5;
+            }
         }
     }
     
