@@ -32,6 +32,7 @@ class PlayListWindow extends FlxSpriteGroup
     private var rightLabel:FlxText;
     
     public var nowChoose:Array<Int> = [0, 0];
+    var creatHide:Bool = true;
     
     public function new()
     {
@@ -115,14 +116,17 @@ class PlayListWindow extends FlxSpriteGroup
         if(leftButtons != null && leftButtons.length > 0){
             for (btn in leftButtons) {
                 FlxTween.cancelTweensOf(btn);
-                FlxTween.tween(btn, { x: leftShownX + 2 }, tweenDuration, { ease: FlxEase.quadOut });
+                var tweenX:Float
+                if(creatHide) tweenX = FlxG.width * 0.3;
+                else tweenX = 0;
+                FlxTween.tween(btn, {x: tweenX}, tweenDuration, { ease: FlxEase.quadOut });
             }
         }
         
         if(rightButtons != null && rightButtons.length > 0){
             for (btn in rightButtons) {
                 FlxTween.cancelTweensOf(btn);
-                FlxTween.tween(btn, { x: 0 }, tweenDuration, { ease: FlxEase.quadOut });
+                FlxTween.tween(btn, {x: -(FlxG.width * 0.3 - 10)}, tweenDuration, { ease: FlxEase.quadOut });
             }
         }
     }
@@ -145,14 +149,17 @@ class PlayListWindow extends FlxSpriteGroup
         if(leftButtons != null && leftButtons.length > 0){
             for (btn in leftButtons) {
                 FlxTween.cancelTweensOf(btn);
-                FlxTween.tween(btn, { x: rightHiddenX + 5 }, tweenDuration, { ease: FlxEase.quadOut });
+                var tweenX:Float
+                if(creatHide) tweenX = 0;
+                else tweenX = FlxG.width * 0.3(
+                FlxTween.tween(btn, {x: tweenX}, tweenDuration, { ease: FlxEase.quadOut });
             }
         }
         
         if(rightButtons != null && rightButtons.length > 0){
             for (btn in rightButtons) {
                 FlxTween.cancelTweensOf(btn);
-                FlxTween.tween(btn, { x: 10}, tweenDuration, { ease: FlxEase.quadOut });
+                FlxTween.tween(btn, {x: 0}, tweenDuration, { ease: FlxEase.quadOut });
             }
         }
     }
@@ -204,7 +211,7 @@ class PlayListWindow extends FlxSpriteGroup
         var shit = GetInit.getListNum() - 1;
         
         for (i in 0...shit) {
-            var button = new ListButtons(rightShownX + 5, 120 + i * 45, FlxG.width * 0.3 - 10);
+            var button = new ListButtons(FlxG.width, 120 + i * 45, FlxG.width * 0.3 - 10);
             var helpMap = GetInit.getAllListName();
             button.setText(helpMap.get(i));
             
@@ -231,7 +238,14 @@ class PlayListWindow extends FlxSpriteGroup
         LeftbuttonIndexMap.clear();
         
         for (i in 0...GetInit.getList(nowChoose[0]).list.length) {
-            var button = new ListButtons(leftShownX + 5, 120 + i * 45, FlxG.width * 0.3 - 10);
+            var button:ListButtons;
+            if(Hidding) {
+                button = new ListButtons(leftHiddenX, 120 + i * 45, FlxG.width * 0.3 - 10);
+                creatHide = true;
+            }else{
+                button = new ListButtons(leftShownX + 5, 120 + i * 45, FlxG.width * 0.3 - 10);
+                creatHide = false;
+            }
             button.setText(GetInit.getList(nowChoose[0]).list[i].name);
             
             LeftbuttonIndexMap.set(button, i);
