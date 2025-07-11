@@ -7,6 +7,9 @@ class LeftList extends FlxSpriteGroup
 {
     public var LeftButtons:Map<Int, ListButtons> = new Map();
     
+    public var scrollY:Float = 0;
+    public var scrollSpeed:Float = 20;
+    
     public function new(nowChoose:Int = 0){
         super();
         updateList(nowChoose);

@@ -151,17 +151,60 @@ class PlayListWindow extends FlxSpriteGroup
         }
     }
     
+    var saveMouseY:Array<Int> = [0, 0];
+	var moveData:Array<Int> = [0, 0];
+	//var avgSpeed:Array<Float> = [0, 0];
+    
     override public function update(elapsed:Float){
-        for (member in [leftButtons.LeftButtons ,rightButtons.RightButtons]){
-            for (Button in member)
-                changeRect(Button, 115, Math.floor(FlxG.height * 0.8));
+        applyClipping(leftList, leftList.scrollY);
+        applyClipping(rightList, rightList.scrollY);
+        
+        if (FlxG.mouse.pressed && FlxG.mouse.overlaps(leftRect)) {
+			if (leftButtons.height > Math.floor(FlxG.height * 0.8))
+			{
+				if (FlxG.mouse.justPressed)
+					saveMouseY[0] = FlxG.mouse.y;
+				moveData[0] = FlxG.mouse.y - saveMouseY[0];
+				saveMouseY[0] = FlxG.mouse.y;
+
+				leftButtons.y += moveData[0];
+			}
+			if (leftButtons.y < (Math.floor(FlxG.height * 0.8) - leftButtons.height))
+				leftButtons.y = Math.floor(FlxG.height * 0.8) - leftButtons.height;
+			if (leftButtons.y > 0)
+				leftButtons.y = 0;
         }
         
-        handleButtonDrag(leftButtons, elapsed);
-        handleButtonDrag(rightButtons, elapsed);
+        if (FlxG.mouse.pressed && FlxG.mouse.overlaps(rightRect)) {
+			if (rightButtons.height > Math.floor(FlxG.height * 0.8))
+			{
+				if (FlxG.mouse.justPressed)
+					saveMouseY[1] = FlxG.mouse.y;
+				moveData[1] = FlxG.mouse.y - saveMouseY[1];
+				saveMouseY[1] = FlxG.mouse.y;
+
+				rightButtons.y += moveData[1];
+			}
+			if (rightButtons.y < (Math.floor(FlxG.height * 0.8) - rightButtons.height))
+				rightButtons.y = Math.floor(FlxG.height * 0.8) - rightButtons.height;
+			if (rightButtons.y > 0)
+				rightButtons.y = 0;
+        }
     }
     
-    function changeRect(str:ListButtons, startY:Float, overY:Float) { //ai真的太好用了喵 --狐月影
+    public function applyClipping(list:FlxSpriteGroup, scrollOffset:Float = 0)
+    {
+        for (member in list.members)
+        {
+            if (Std.isOfType(member, ListButtons))
+            {
+                var button:ListButtons = cast member;
+                changeRect(button, 115 - scrollOffset, Math.floor(FlxG.height * 0.8) - scrollOffset);
+            }
+        }
+    }
+    
+    function changeRect(str:FlxSpriteGroup, startY:Float, overY:Float) { //ai真的太好用了喵 --狐月影
         // 获取选项矩形的顶部和底部坐标（相对于父容器）
         var optionTop = str.y;
         var optionBottom = str.y + str.height;
@@ -227,72 +270,5 @@ class PlayListWindow extends FlxSpriteGroup
     private function _onDoubleClick():Void
     {
         RelaxSubState.instance.OtherListLoad(nowChoose);
-    }
-    
-    private var dragData:Map<FlxSpriteGroup, {
-        isDragging:Bool,
-        lastY:Float,
-        velocity:Float,
-        targetY:Float
-    }> = new Map();
-    
-    private function handleButtonDrag(buttons:FlxSpriteGroup, elapsed:Float):Void {
-        // 初始化拖动数据
-        if (!dragData.exists(buttons)) {
-            dragData.set(buttons, {
-                isDragging: false,
-                lastY: buttons.y,
-                velocity: 0,
-                targetY: buttons.y
-            });
-        }
-        var data = dragData.get(buttons);
-    
-        // 鼠标按下时开始拖动
-        if (FlxG.mouse.justPressed && FlxG.mouse.overlaps(buttons)) {
-            data.isDragging = true;
-            data.lastY = FlxG.mouse.y;
-        }
-    
-        // 鼠标释放时停止拖动
-        if (FlxG.mouse.justReleased) {
-            data.isDragging = false;
-        }
-    
-        // 拖动中：更新目标位置
-        if (data.isDragging) {
-            var deltaY = FlxG.mouse.y - data.lastY;
-            data.targetY += deltaY;
-            data.lastY = FlxG.mouse.y;
-        }
-    
-        // 计算缓冲和摩擦力
-        if (!data.isDragging) {
-            // 施加摩擦力（逐渐减速）
-            data.velocity *= Math.pow(0.9, elapsed * 60); // 0.9 是摩擦系数，可以调整
-        } else {
-            // 直接跟随鼠标（拖动时无缓冲）
-            data.velocity = 0;
-            buttons.y = data.targetY;
-            return;
-        }
-    
-        // 应用缓冲运动
-        var damping = 0.2; // 缓冲系数（越小越平滑）
-        buttons.y += (data.targetY - buttons.y) * damping + data.velocity;
-    
-        // 限制拖动范围（防止拖出边界）
-        var minY = 120; // 初始Y位置
-        var maxY = minY + leftRect.height - buttons.height; // 最大可拖动范围
-    
-        if (buttons.y < minY) {
-            buttons.y = minY;
-            data.targetY = minY;
-            data.velocity = 0;
-        } else if (buttons.y > maxY) {
-            buttons.y = maxY;
-            data.targetY = maxY;
-            data.velocity = 0;
-        }
     }
 }
