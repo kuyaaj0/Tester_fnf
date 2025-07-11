@@ -31,9 +31,6 @@ class PlayListWindow extends FlxSpriteGroup
     private var leftLabel:FlxText;
     private var rightLabel:FlxText;
     
-    public var leftList:ScrollableList;
-    public var rightList:ScrollableList;
-    
     public var nowChoose:Array<Int> = [0, 0];
     var creatHide:Bool = true;
     
@@ -43,9 +40,6 @@ class PlayListWindow extends FlxSpriteGroup
         
         leftRect = new FlxSprite(0, 50);
         rightRect = new FlxSprite(FlxG.width, 50);
-        
-        leftList = new ScrollableList();
-        rightList = new ScrollableList();
 
         var width:Int = Math.floor(FlxG.width * 0.3);
         var height:Int = Math.floor(FlxG.height * 0.8);
@@ -104,21 +98,87 @@ class PlayListWindow extends FlxSpriteGroup
         camera = RelaxSubState.instance.camOption;
     }
     
-    override function update(elapsed:Float) {
-        super.update(elapsed);
+    var leftButtonAllHeight:Float = 0;
+    var rightButtonAllHeight:Float = 0;
+    
+    var saveMouseY:Int = 0;
+	var moveData:Int = 0;
+	var avgSpeed:Float = 0;
+    
+    override function update(e:Float){
+        for(button in leftButtons) changeRect(button, 115, FlxG.height * 0.8);
+        for(button in rightButtons) changeRect(button, 115, FlxG.height * 0.8);
         
-        leftList.update(elapsed);
-        rightList.update(elapsed);
+        leftButtonAllHeight = leftButtons.length * 45;
+        rightButtonAllHeight = rightButtons.length * 45;
         
-        if (FlxG.mouse.overlaps(leftRect)) {
-            leftList.handleInput();
-        } else if (FlxG.mouse.overlaps(rightRect)) {
-            rightList.handleInput();
+        updateMove()
+    }
+    
+    function updateMove(){
+        if (FlxG.mouse.pressed && FlxG.mouse.overlaps(leftRect))
+        {
+            if (leftButtonAllHeight > leftRect.height)
+            {
+                if (FlxG.mouse.justPressed)
+                    saveMouseY = FlxG.mouse.y;
+                
+                moveData = FlxG.mouse.y - saveMouseY;
+                saveMouseY = FlxG.mouse.y;
+        
+                for (button in leftButtons) {
+                    button.y += moveData;
+                }
+                
+                var topButton = leftButtons[0];
+                var bottomButton = leftButtons[leftButtons.length - 1];
+                
+                if (topButton.y > 120) {
+                    var correction = 120 - topButton.y;
+                    for (button in leftButtons) {
+                        button.y += correction;
+                    }
+                }
+                else if (bottomButton.y + bottomButton.height < leftRect.y + leftRect.height) {
+                    var correction = (leftRect.y + leftRect.height) - (bottomButton.y + bottomButton.height);
+                    for (button in leftButtons) {
+                        button.y += correction;
+                    }
+                }
+            }
         }
         
-        for (button in leftList.items) changeRect(button, 115, FlxG.height * 0.8);
-        for (button in rightList.items) changeRect(button, 115, FlxG.height * 0.8);
+        if (FlxG.mouse.pressed && FlxG.mouse.overlaps(rightRect))
+        {
+            if (rightButtonAllHeight > rightRect.height)
+            {
+                if (FlxG.mouse.justPressed)
+                    saveMouseY = FlxG.mouse.y;
+                
+                moveData = FlxG.mouse.y - saveMouseY;
+                saveMouseY = FlxG.mouse.y;
         
+                for (button in rightButtons) {
+                    button.y += moveData;
+                }
+                
+                var topButton = rightButtons[0];
+                var bottomButton = rightButtons[rightButtons.length - 1];
+                
+                if (topButton.y > 120) {
+                    var correction = 120 - topButton.y;
+                    for (button in rightButtons) {
+                        button.y += correction;
+                    }
+                }
+                else if (bottomButton.y + bottomButton.height < rightRect.y + rightRect.height) {
+                    var correction = (rightRect.y + rightRect.height) - (bottomButton.y + bottomButton.height);
+                    for (button in rightButtons) {
+                        button.y += correction;
+                    }
+                }
+            }
+        }
     }
     
     public function show():Void {
@@ -254,10 +314,6 @@ class PlayListWindow extends FlxSpriteGroup
             rightButtons.push(button);
             add(button);
         }
-        
-        rightList.items = rightButtons;
-        rightList.minScrollY = -rightButtons.length * 45 + (FlxG.height * 0.8 - 120);
-        rightList.maxScrollY = 0;
     }
     
     public function CreateLeftButton() {
@@ -285,10 +341,6 @@ class PlayListWindow extends FlxSpriteGroup
             leftButtons.push(button);
             add(button);
         }
-        
-        leftList.items = leftButtons;
-        leftList.minScrollY = -leftButtons.length * 45 + (FlxG.height * 0.8 - 120);
-        leftList.maxScrollY = 0;
     }
     
     function changeRect(str:ListButtons, startY:Float, overY:Float) { //ai真的太好用了喵 --狐月影
