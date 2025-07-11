@@ -11,7 +11,7 @@ class RightList extends FlxSpriteGroup
     // 列表更新完成后的回调
     public dynamic var onListUpdated:Void->Void = null;
     
-    public nowChoose:Int = 0;
+    public var nowChoose:Int = 0;
     
     public function new(){
         super();
