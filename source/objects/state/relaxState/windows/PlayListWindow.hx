@@ -115,14 +115,14 @@ class PlayListWindow extends FlxSpriteGroup
         if(leftButtons != null && leftButtons.length > 0){
             for (btn in leftButtons) {
                 FlxTween.cancelTweensOf(btn);
-                FlxTween.tween(btn, { x: leftShownX + 5 }, tweenDuration, { ease: FlxEase.quadOut });
+                FlxTween.tween(btn, { x: leftShownX + 2 }, tweenDuration, { ease: FlxEase.quadOut });
             }
         }
         
         if(rightButtons != null && rightButtons.length > 0){
-            for (btn in leftButtons) {
+            for (btn in rightButtons) {
                 FlxTween.cancelTweensOf(btn);
-                FlxTween.tween(btn, { x: leftShownX + 5 }, tweenDuration, { ease: FlxEase.quadOut });
+                FlxTween.tween(btn, { x: 0 }, tweenDuration, { ease: FlxEase.quadOut });
             }
         }
     }
@@ -150,9 +150,9 @@ class PlayListWindow extends FlxSpriteGroup
         }
         
         if(rightButtons != null && rightButtons.length > 0){
-            for (btn in leftButtons) {
+            for (btn in rightButtons) {
                 FlxTween.cancelTweensOf(btn);
-                FlxTween.tween(btn, { x: rightHiddenX + 5 }, tweenDuration, { ease: FlxEase.quadOut });
+                FlxTween.tween(btn, { x: 10}, tweenDuration, { ease: FlxEase.quadOut });
             }
         }
     }
