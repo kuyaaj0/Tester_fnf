@@ -45,7 +45,7 @@ class RelaxSubState extends MusicBeatSubstate
 	var camPic:FlxCamera;
 	var camText:FlxCamera;
 	var camHUD:FlxCamera;
-	var camOption:FlxCamera;
+	public var camOption:FlxCamera;
 	var camVpad:FlxCamera;
 	
 	private var currentBPM:Float = 100;
