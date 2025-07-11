@@ -302,7 +302,7 @@ class PlayListWindow extends FlxSpriteGroup
         }
     }
     
-    function changeRect(str:ChooseRect, startY:Float, overY:Float) { //ai真的太好用了喵 --狐月影
+    function changeRect(str:ListButtons, startY:Float, overY:Float) { //ai真的太好用了喵 --狐月影
         // 获取选项矩形的顶部和底部坐标（相对于父容器）
         var optionTop = str.y;
         var optionBottom = str.y + str.height;
