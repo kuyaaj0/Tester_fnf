@@ -22,6 +22,9 @@ class ListButtons extends FlxSpriteGroup
     private var needsScrolling:Bool = false;
     private var originalTextX:Float = 0;
     
+    public var onClick:Void->Void = null;
+    private var isPressed:Bool = false;
+    
     public function new(label:String = "", x:Float = 0, y:Float = 0, width:Float = 180, height:Float = 40)
     {
         super(x, y);
@@ -74,6 +77,15 @@ class ListButtons extends FlxSpriteGroup
                 
                 text.x = originalTextX + textScrollPosition;
             }
+        }
+        
+        if (FlxG.mouse.overlaps(this) && FlxG.mouse.justPressed) {
+            isPressed = true;
+        }
+        
+        if (isPressed && (FlxG.mouse.justReleased || FlxG.mouse.overlaps(this))) {
+            if (onClick != null) onClick();
+            isPressed = false;
         }
     }
     

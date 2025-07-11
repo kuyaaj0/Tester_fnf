@@ -209,7 +209,7 @@ class PlayListWindow extends FlxSpriteGroup
         
         for (i in 0...GetInit.getList(nowChoose[0]).list.length) {
             var button = new ListButtons(leftShownX, 60 + i * 45);
-            button.setText(GetInit.getList(nowChoose[0]).list[i]);
+            button.setText(GetInit.getList(nowChoose[0]).list[i].name);
             
             LeftbuttonIndexMap.set(button, i);
             
