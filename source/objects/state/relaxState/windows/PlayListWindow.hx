@@ -89,14 +89,14 @@ class PlayListWindow extends FlxSpriteGroup
     override function update(e:Float){
         if(leftButtons.length > 0){
             for(i in 0...(leftButtons.length -1)){
-                changeRect(button, 0 , FlxG.height * 0.8 - i * 45);
-                button.y -= 1;
+                changeRect(leftButtons[i], 0 , FlxG.height * 0.8 - i * 45);
+                leftButtons[i].y -= 1;
             }
         }
         if(rightButtons.length > 0){
             for(i in 0...(rightButtons.length -1)){
-                changeRect(button, 0 , FlxG.height * 0.8 - i * 45);
-                button.y += 1;
+                changeRect(rightButtons[i], 0 , FlxG.height * 0.8 - i * 45);
+                rightButtons[i].y += 1;
             }
         }
         

@@ -19,7 +19,7 @@ class ListButtons extends FlxSpriteGroup
     public var onClick:Void->Void = null;
     private var isPressed:Bool = false;
     
-    public var nowChoose:Bool = true;
+    public var allowChoose:Bool = true;
     
     public function new(x:Float = 0, y:Float = 0, width:Float = 180, height:Float = 40, label:String = "")
     {
