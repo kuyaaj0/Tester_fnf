@@ -129,22 +129,6 @@ class PlayListWindow extends FlxSpriteGroup
                 for (button in leftButtons) {
                     button.y += moveData;
                 }
-                
-                var topButton = leftButtons[0];
-                var bottomButton = leftButtons[leftButtons.length - 1];
-                
-                if (topButton.y > 120) {
-                    var correction = 120 - topButton.y;
-                    for (button in leftButtons) {
-                        button.y += correction;
-                    }
-                }
-                else if (bottomButton.y + bottomButton.height < leftRect.y + leftRect.height) {
-                    var correction = (leftRect.y + leftRect.height) - (bottomButton.y + bottomButton.height);
-                    for (button in leftButtons) {
-                        button.y += correction;
-                    }
-                }
             }
         }
         
@@ -160,22 +144,6 @@ class PlayListWindow extends FlxSpriteGroup
         
                 for (button in rightButtons) {
                     button.y += moveData;
-                }
-                
-                var topButton = rightButtons[0];
-                var bottomButton = rightButtons[rightButtons.length - 1];
-                
-                if (topButton.y > 120) {
-                    var correction = 120 - topButton.y;
-                    for (button in rightButtons) {
-                        button.y += correction;
-                    }
-                }
-                else if (bottomButton.y + bottomButton.height < rightRect.y + rightRect.height) {
-                    var correction = (rightRect.y + rightRect.height) - (bottomButton.y + bottomButton.height);
-                    for (button in rightButtons) {
-                        button.y += correction;
-                    }
                 }
             }
         }

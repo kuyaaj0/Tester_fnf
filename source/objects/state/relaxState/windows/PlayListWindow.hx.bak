@@ -112,7 +112,7 @@ class PlayListWindow extends FlxSpriteGroup
         leftButtonAllHeight = leftButtons.length * 45;
         rightButtonAllHeight = rightButtons.length * 45;
         
-        updateMove()
+        updateMove();
     }
     
     function updateMove(){
