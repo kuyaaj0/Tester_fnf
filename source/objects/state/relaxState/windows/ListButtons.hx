@@ -1,6 +1,6 @@
 package objects.state.relaxState.windows;
 
-import flixel.FlxSpriteGroup;
+import flixel.group.FlxSpriteGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.math.FlxRect;
