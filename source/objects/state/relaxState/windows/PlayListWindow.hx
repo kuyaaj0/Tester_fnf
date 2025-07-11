@@ -208,7 +208,7 @@ class PlayListWindow extends FlxSpriteGroup
         rightButtons = [];
         RightbuttonIndexMap.clear();
         
-        var shit = GetInit.getListNum() - 1;
+        var shit = GetInit.getListNum();
         
         for (i in 0...shit) {
             var button = new ListButtons(FlxG.width, 120 + i * 45, FlxG.width * 0.3 - 10);
