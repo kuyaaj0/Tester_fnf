@@ -64,7 +64,8 @@ class RightList extends FlxSpriteGroup
             moveData = FlxG.mouse.y - saveY;
             saveY = FlxG.mouse.y;
             
-            for(i in members){
+            for(is in members){
+                i = case(is, ListButtons);
                 if(i.y > i.baseY){
                     i.y = i.baseY;
                 }else if(members[0].y < -(this.height - Math.floor(FlxG.height * 0.8))){
