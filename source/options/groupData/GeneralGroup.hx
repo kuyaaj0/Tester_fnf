@@ -8,29 +8,23 @@ class GeneralGroup extends OptionCata
 	{
 		super(X, Y, width, height);
 
-		var option:Option = new Option(this, TITLE, Language.get('General', 'op'), Language.get('General', 'opSub'));
+		var option:Option = new Option(this, 'General', TITLE);
 		addOption(option);
 
-		var option:Option = new Option(this, 'framerate', INT, Language.get('framerate', 'op'), Language.get('framerate', 'opSub'), [24, 1000, 'FPS']);
+		var option:Option = new Option(this, 'framerate', INT, [24, 1000, 'FPS']);
 		addOption(option);
 		option.onChange = onChangeFramerate;
 
-		var langArray:Array<String> = [];
-		var contents:Array<String> = FileSystem.readDirectory(Paths.getPath('language'));
-		for (item in contents)
-		{
-			if (item == "JustSay")
-				continue; // JustSay不能被读取为语言文件
-			var itemPath = Paths.getPath('language') + '/' + item;
-			if (FileSystem.isDirectory(itemPath))
-			{
-				langArray.push(item);
-			}
-		}
-		Language.check();
-		var option:Option = new Option(this, 'language', STRING, Language.get('language'), Language.get('language', 'onSub'), langArray);
+		var langArray:Array<String> = languageArray();
+		var option:Option = new Option(this, 'language', STRING, langArray);
 		addOption(option);
-		option.onChange = onChangeLanguage; //打样
+		option.onChange = onChangeLanguage;
+
+		var option:Option = new Option(this, 'gameQuality', INT, [0, 3]);
+		addOption(option);
+
+		var option:Option = new Option(this, 'lowQuality', BOOL);
+		addOption(option);
 
 		var colorblindFilterArray:Array<String> = [
 			'None',
@@ -44,37 +38,51 @@ class GeneralGroup extends OptionCata
 			'Achromatomaly'
 		];
 
-		var option:Option = new Option(this, 'colorblindMode', STRING, Language.get('colorblindMode', 'op'), Language.get('colorblindMode', 'opSub'), colorblindFilterArray);
+		var option:Option = new Option(this, 'colorblindMode', STRING, colorblindFilterArray);
 		addOption(option, true);
 		option.onChange = onChangeFilter;
 
-		var option:Option = new Option(this, 'lowQuality', BOOL, Language.get('lowQuality', 'op'), Language.get('lowQuality', 'opSub'));
+		var option:Option = new Option(this, 'antialiasing', BOOL);
 		addOption(option);
 
-		var option:Option = new Option(this, 'gameQuality', INT, Language.get('gameQuality', 'op'), Language.get('gameQuality', 'opSub'), [0, 3]);
-		addOption(option);
-
-		var option:Option = new Option(this, 'antialiasing', BOOL, Language.get('antialiasing', 'op'), Language.get('antialiasing', 'opSub'));
-		addOption(option);
-
-		var option:Option = new Option(this, 'flashing', BOOL, Language.get('flashing', 'op'), Language.get('flashing', 'opSub'));
+		var option:Option = new Option(this, 'flashing', BOOL);
 		addOption(option, true);
 
-		var option:Option = new Option(this, 'shaders', BOOL, Language.get('shaders', 'op'), Language.get('shaders', 'opSub'));
+		var option:Option = new Option(this, 'shaders', BOOL);
 		addOption(option);
 
-		var option:Option = new Option(this, 'cacheOnGPU', BOOL, Language.get('cacheOnGPU', 'op'), Language.get('cacheOnGPU', 'opSub'));
+		var option:Option = new Option(this, 'cacheOnGPU', BOOL);
 		addOption(option, true);
 
-		var option:Option = new Option(this, 'autoPause', BOOL, Language.get('autoPause', 'op'), Language.get('autoPause', 'opSub'));
+		var option:Option = new Option(this, 'autoPause', BOOL);
 		addOption(option);
 		option.onChange = onChangePause;
 
-		var option:Option = new Option(this, 'gcFreeZone', BOOL, Language.get('gcFreeZone', 'op'), Language.get('gcFreeZone', 'opSub'));
+		var option:Option = new Option(this, 'gcFreeZone', BOOL);
 		addOption(option, true);
 		option.onChange = onChangeGcZone;
 
 		changeHeight(0); //初始化真正的height
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+
+	function languageArray():Array<String> 
+	{
+		var output:Array<String> = [];
+		var contents:Array<String> = FileSystem.readDirectory(Paths.getPath('language'));
+		for (item in contents)
+		{
+			if (item == "JustSay")
+				continue; // JustSay不能被读取为语言文件
+			var itemPath = Paths.getPath('language') + '/' + item;
+			if (FileSystem.isDirectory(itemPath))
+			{
+				output.push(item);
+			}
+		}
+		Language.check();
+		return output;
 	}
 
 	function onChangeFramerate()

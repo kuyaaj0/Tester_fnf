@@ -17,6 +17,8 @@ class StringSelect extends FlxSpriteGroup
     var mainX:Float = 0;
     var mainY:Float = 0;
 
+    public var specX:Float = 0;
+
     public var currentSelection:Int = 0;
     public var posiData:Float = 0;
     var optionMove:MouseMove;
@@ -64,7 +66,7 @@ class StringSelect extends FlxSpriteGroup
         optionMove = new MouseMove(this, 'posiData', 
 								[calc , 0],
 								[ 
-									[follow.followX + follow.innerX + mainX, follow.followX + follow.innerX + mainX + bg.width], 
+									[follow.followX + follow.innerX + mainX - specX, follow.followX + follow.innerX + mainX - specX + bg.width], 
 									[follow.y + mainY, follow.y + mainY + bg.height]
 								]
 								);
@@ -75,7 +77,7 @@ class StringSelect extends FlxSpriteGroup
     public var allowUpdate:Bool = true;
     override public function update(elapsed:Float):Void
     {
-        optionMove.mouseLimit[0] = [follow.followX + follow.innerX + mainX, follow.followX + follow.innerX + mainX + bg.width];
+        optionMove.mouseLimit[0] = [follow.followX + follow.innerX + mainX - specX, follow.followX + follow.innerX + mainX - specX + bg.width];
         optionMove.mouseLimit[1] = [follow.y + mainY, follow.y + mainY + bg.height];
         super.update(elapsed);
 

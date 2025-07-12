@@ -58,7 +58,9 @@ class FuncButton extends FlxSpriteGroup
 	{
 		super.update(elapsed);
 
-		onFocus = FlxG.mouse.overlaps(this);
+        var mouse = OptionsState.instance.mouseEvent;
+
+		onFocus = mouse.overlaps(this);
 
 		if (onFocus) {
             if (background.alpha < 0.1) background.alpha += EngineSet.FPSfix(0.015);
@@ -67,15 +69,15 @@ class FuncButton extends FlxSpriteGroup
         }
         
         if (onFocus) {
-            if (FlxG.mouse.justPressed) {
+            if (mouse.justPressed) {
                 
             }
 
-            if (FlxG.mouse.pressed) {
+            if (mouse.pressed) {
 
             }
 
-            if (FlxG.mouse.justReleased) {
+            if (mouse.justReleased) {
                 event();
             }
         }

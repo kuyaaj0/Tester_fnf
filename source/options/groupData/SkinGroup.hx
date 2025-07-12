@@ -6,59 +6,79 @@ class SkinGroup extends OptionCata
 	{
 		super(X, Y, width, height);
 
-		var option:Option = new Option(this, TITLE, Language.get('Skin', 'op'), Language.get('Skin', 'opSub'));
+		var option:Option = new Option(this, 'Skin', TITLE);
 		addOption(option);
 
-		var option:Option = new Option(this, TEXT, Language.get('Note', 'op'), Language.get('Note', 'opSub'));
-		addOption(option);
+		var option:Option = new Option(this, 'Note', TEXT);
+		addOption(option,);
 
-		var noteSkins:Array<String> = [];
-		if (Mods.mergeAllTextsNamed('images/noteSkins/list.txt', 'shared').length > 0)
-			noteSkins = Mods.mergeAllTextsNamed('images/noteSkins/list.txt', 'shared');
-		else
-			noteSkins = CoolUtil.coolTextFile(Paths.getSharedPath('shared/images/noteSkins/list.txt'));
+		var noteSkins:Array<String> = addNoteSkins();
+
 		if (noteSkins.length > 0)
 		{
 			noteSkins.insert(0, ClientPrefs.defaultData.noteSkin);
 
-			var option:Option = new Option(this, 'noteSkin', STRING, Language.get('noteSkin', 'op'), Language.get('noteSkin', 'opSub'), noteSkins);
+			var option:Option = new Option(this, 'noteSkin', STRING, noteSkins);
 			addOption(option);
 		}
 
-		var option:Option = new Option(this, 'noteRGB', BOOL, Language.get('noteRGB', 'op'), Language.get('noteRGB', 'opSub'));
-		addOption(option);
+		var option:Option = new Option(this, 'noteRGB', BOOL);
+		if (noteSkins.length > 0)
+		{
+			addOption(option, true);
+		} else {
+			addOption(option, true);
+		}
 
-		var option:Option = new Option(this, 'NotesSubState', STATE, Language.get('NotesSubState', 'op'), Language.get('NotesSubState', 'opSub'), 'NotesSubState');
+		var option:Option = new Option(this, 'NotesSubState', STATE);
 		addOption(option);
 		
 		/////--Splash--\\\\\
 
-		var option:Option = new Option(this, TEXT, Language.get('Splash', 'op'), Language.get('Splash', 'opSub'));
+		var option:Option = new Option(this, 'Splash', TEXT);
 		addOption(option);
 
-		var noteSplashes:Array<String> = [];
-		if (Mods.mergeAllTextsNamed('images/noteSplashes/list.txt', 'shared').length > 0)
-			noteSplashes = Mods.mergeAllTextsNamed('images/noteSplashes/list.txt', 'shared');
-		else
-			noteSplashes = CoolUtil.coolTextFile(Paths.getSharedPath('shared/images/noteSplashes/list.txt'));
+		var option:Option = new Option(this, 'showSplash', BOOL);
+		addOption(option);
 
+		var noteSplashes:Array<String> = addNoteSplashes();
 		if (noteSplashes.length > 0)
 		{
 			noteSplashes.insert(0, ClientPrefs.defaultData.splashSkin);
 
-			var option:Option = new Option(this, 'splashSkin', STRING, Language.get('splashSkin', 'op'), Language.get('splashSkin', 'opSub'), noteSplashes);
-			addOption(option);
+			var option:Option = new Option(this, 'splashSkin', STRING, noteSplashes);
+			addOption(option, true);
 		}
 
-		var option:Option = new Option(this, 'splashRGB', BOOL, Language.get('splashRGB', 'op'), Language.get('splashRGB', 'opSub'));
-		addOption(option);
+		var option:Option = new Option(this, 'splashRGB', BOOL);
+		if (noteSplashes.length > 0)
+		{
+			addOption(option);
+		} else {
+			addOption(option, true);
+		}
 
-		var option:Option = new Option(this, 'showSplash', BOOL, Language.get('showSplash', 'op'), Language.get('showSplash', 'opSub'));
-		addOption(option);
-
-		var option:Option = new Option(this, 'splashAlpha', FLOAT, Language.get('splashAlpha', 'op'), Language.get('splashAlpha', 'opSub'), [0, 1, 1]);
+		var option:Option = new Option(this, 'splashAlpha', FLOAT, [0, 1, 1]);
 		addOption(option);
 
 		changeHeight(0); //初始化真正的height
+	}
+
+	function addNoteSkins():Array<String> {
+		var output:Array<String> = [];
+		if (Mods.mergeAllTextsNamed('images/noteSkins/list.txt', 'shared').length > 0)
+			output = Mods.mergeAllTextsNamed('images/noteSkins/list.txt', 'shared');
+		else
+			output = CoolUtil.coolTextFile(Paths.getSharedPath('shared/images/noteSkins/list.txt'));
+		return output;
+	}
+
+	function addNoteSplashes():Array<String> {
+		var output:Array<String> = [];
+		if (Mods.mergeAllTextsNamed('images/noteSplashes/list.txt', 'shared').length > 0)
+			output = Mods.mergeAllTextsNamed('images/noteSplashes/list.txt', 'shared');
+		else
+			output = CoolUtil.coolTextFile(Paths.getSharedPath('shared/images/noteSplashes/list.txt'));
+		return output;
 	}
 }

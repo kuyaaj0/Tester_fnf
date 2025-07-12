@@ -49,7 +49,7 @@ class Option extends FlxSpriteGroup
 
 	/////////////////////////////////////////////
 
-	public function new(follow:OptionCata, variable:String = '', type:OptionType = BOOL, description:String = '', tips:String = '', ?data:Dynamic)
+	public function new(follow:OptionCata, variable:String = '', type:OptionType = BOOL, ?data:Dynamic)
 	{
 		super();
 
@@ -57,8 +57,8 @@ class Option extends FlxSpriteGroup
 
 		this.variable = variable;
 		this.type = type;
-		this.description = description;
-		this.tips = tips;
+		this.description = Language.get(variable, 'op');
+		this.tips = Language.get(variable, 'opSub');
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -406,7 +406,10 @@ class Option extends FlxSpriteGroup
 		innerX = innerData;
 		if (type == TITLE) return;
 		this.x = followX + innerX;
-		if (specData != 0) this.select.x -= specData;
+		if (specData != 0) { 
+			this.select.x -= specData;
+			this.select.specX = specData;
+		}
 	}
 
 	public var followY:Float = 0;  //optioncata在主体的位置

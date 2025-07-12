@@ -6,46 +6,87 @@ class GamePlayGroup extends OptionCata
 	{
         super(X, Y, width, height);
 
-        var option:Option = new Option(this, TITLE, Language.get('GamePlay', 'op'), Language.get('GamePlay', 'opSub'));
+        var option:Option = new Option(this, 'GamePlay', TITLE);
         addOption(option);
 
-        var option:Option = new Option(this, 'downScroll', BOOL, Language.get('downScroll', 'op'), Language.get('downScroll', 'opSub'));
+        var option:Option = new Option(this, 'downScroll', BOOL);
+        addOption(option, true);
+
+        var option:Option = new Option(this, 'middleScroll', BOOL);
         addOption(option);
 
-        var option:Option = new Option(this, 'middleScroll', BOOL, Language.get('middleScroll', 'op'), Language.get('middleScroll', 'opSub'));
+        var option:Option = new Option(this, 'flipChart', BOOL);
+        addOption(option, true);
+
+        var option:Option = new Option(this, 'ghostTapping', BOOL);
         addOption(option);
 
-        var option:Option = new Option(this, 'flipChart', BOOL, Language.get('flipChart', 'op'), Language.get('flipChart', 'opSub'));
-        addOption(option);
+        var option:Option = new Option(this, 'guitarHeroSustains', BOOL);
+        addOption(option, true);
 
-        var option:Option = new Option(this, 'ghostTapping', BOOL, Language.get('ghostTapping', 'op'), Language.get('ghostTapping', 'opSub'));
-        addOption(option);
-
-        var option:Option = new Option(this, 'guitarHeroSustains', BOOL, Language.get('guitarHeroSustains', 'op'), Language.get('guitarHeroSustains', 'opSub'));
-        addOption(option);
-
-        var option:Option = new Option(this, 'noReset', BOOL, Language.get('noReset', 'op'), Language.get('noReset', 'opSub'));
+        var option:Option = new Option(this, 'noReset', BOOL);
         addOption(option);
 
         /////--Opponent--\\\\\
 
-        var option:Option = new Option(this, TEXT, Language.get('Opponent', 'op'), Language.get('Opponent', 'opSub'));
+        var option:Option = new Option(this, 'Opponent', TEXT);
 		addOption(option);
 
-        var option:Option = new Option(this, 'playOpponent', BOOL, Language.get('playOpponent', 'op'), Language.get('playOpponent', 'opSub'));
+        var option:Option = new Option(this, 'playOpponent', BOOL);
         addOption(option);
         
-        var option:Option = new Option(this, 'opponentCodeFix', BOOL, Language.get('opponentCodeFix', 'op'), Language.get('opponentCodeFix', 'opSub'));
-        addOption(option);
+        var option:Option = new Option(this, 'opponentCodeFix', BOOL);
+        addOption(option, true);
         
-        var option:Option = new Option(this, 'botOpponentFix', BOOL, Language.get('botOpponentFix', 'op'), Language.get('botOpponentFix', 'opSub'));
+        var option:Option = new Option(this, 'botOpponentFix', BOOL);
         addOption(option);
 
-        var option:Option = new Option(this, 'HealthDrainOPPO', BOOL, Language.get('HealthDrainOPPO', 'op'), Language.get('HealthDrainOPPO', 'opSub'));
+        var option:Option = new Option(this, 'HealthDrainOPPO', BOOL);
+        addOption(option, true);
+
+        var option:Option = new Option(this, 'HealthDrainOPPOMult', FLOAT, [0, 5, 1]);
         addOption(option);
 
-        var option:Option = new Option(this, 'HealthDrainOPPOMult', FLOAT, Language.get('HealthDrainOPPOMult', 'op'), Language.get('HealthDrainOPPOMult', 'opSub'), [0, 5, 1]);
+        var option:Option = new Option(this, 'judgement', TEXT);
+		addOption(option);
+
+        var option:Option = new Option(this, 'marvelousRating', BOOL);
+		addOption(option);
+
+		var option:Option = new Option(this, 'marvelousSprite', BOOL);
+		addOption(option, true);
+
+		var option:Option = new Option(this, 'ratingOffset', INT, [-1000, 1000, 'MS']);
+		addOption(option);
+
+		var option:Option = new Option(this, 'safeFrames', FLOAT, [0, 10, 1]);
+		addOption(option);
+
+		var option:Option = new Option(this, 'marvelousWindow', INT, [0, 166, 'MS']);
+		addOption(option);
+
+	    var option:Option = new Option(this, 'sickWindow', INT, [0, 166, 'MS']);
+		addOption(option);
+
+	    var option:Option = new Option(this, 'goodWindow', INT, [0, 166, 'MS']);
+		addOption(option);
+
+	    var option:Option = new Option(this, 'badWindow', INT, [0, 166, 'MS']);
+		addOption(option);
+
+        var option:Option = new Option(this, 'Gameplaybackend', TEXT);
+		addOption(option);
+
+        var option:Option = new Option(this, 'replayBot', BOOL);
         addOption(option);
+
+        var option:Option = new Option(this, 'fixLNL', BOOL);
+        addOption(option, true);
+
+        #if android
+		var option:Option = new Option(this, 'gameOverVibration', BOOL);
+		addOption(option);
+		#end
 
         changeHeight(0); //初始化真正的height
     }

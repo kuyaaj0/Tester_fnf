@@ -207,11 +207,11 @@ class OptionsState extends MusicBeatState
 			case 'Input':
 				obj = new InputGroup(outputX, outputY, outputWidth, outputHeight);
 			case 'Audio':
-				obj = new GeneralGroup(outputX, outputY, outputWidth, outputHeight);
+				obj = new AudioGroup(outputX, outputY, outputWidth, outputHeight);
 			case 'Graphics':
-				obj = new GeneralGroup(outputX, outputY, outputWidth, outputHeight);
+				obj = new GraphicsGroup(outputX, outputY, outputWidth, outputHeight);
 			case 'Maintenance':
-				obj = new GeneralGroup(outputX, outputY, outputWidth, outputHeight);
+				obj = new MaintenanceGroup(outputX, outputY, outputWidth, outputHeight);
 			default:
 		}
 		cataGroup.push(obj);

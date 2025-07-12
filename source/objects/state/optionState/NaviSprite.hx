@@ -62,7 +62,7 @@ class NaviSprite extends FlxSpriteGroup
 	{
 		super.update(elapsed);
 
-        var mouse = FlxG.mouse;
+        var mouse = OptionsState.instance.mouseEvent;
 
 		onFocus = mouse.overlaps(this);
 
