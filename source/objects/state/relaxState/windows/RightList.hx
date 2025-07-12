@@ -30,7 +30,7 @@ class RightList extends FlxSpriteGroup
     
     // 显示范围
     private var topBoundary:Float = 60;
-    private var bottomBoundary:Float = Math.floor(FlxG.height * 0.8) / 2;
+    private var bottomBoundary:Float = Math.floor(FlxG.height * 0.8);
     
     public function new(){
         super();
@@ -114,7 +114,7 @@ class RightList extends FlxSpriteGroup
         
         // 限制滚动范围
         var buttonCount = Lambda.count(RightButtons);
-        var maxScroll = Math.max(0, (buttonCount * (BUTTON_HEIGHT + BUTTON_SPACING)) - (bottomBoundary - topBoundary));
+        var maxScroll = Math.max(0, (buttonCount * (BUTTON_HEIGHT + BUTTON_SPACING)) + topBoundary));
         targetScrollY = FlxMath.bound(targetScrollY, 0, maxScroll);
         
         // 平滑滚动
