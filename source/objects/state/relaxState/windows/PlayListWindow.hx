@@ -72,14 +72,10 @@ class PlayListWindow extends FlxSpriteGroup
         rightButtons.y = 120;
         add(rightButtons);
         
-        rightButtons.cameras = [RelaxSubState.instance.ListCam];
-        
         leftButtons = new LeftList(rightButtons.nowChoose);
         leftButtons.x = hideXL;
         leftButtons.y = 120;
         add(leftButtons);
-        
-        leftButtons.cameras = [RelaxSubState.instance.ListCam];
         
         rightButtons.onButtonClicked = function(choose:Int){
             leftButtons.updateList(choose);
@@ -88,6 +84,11 @@ class PlayListWindow extends FlxSpriteGroup
         instance = this;
         
         camera = RelaxSubState.instance.camOption;
+        
+
+        rightButtons.cameras = [RelaxSubState.instance.ListCam];
+        leftButtons.cameras = [RelaxSubState.instance.ListCam];
+        rightButtons.elasticity = 0; // 禁用 FlxObject 的默认弹性
     }
     
     public function show():Void {
@@ -168,10 +169,7 @@ class PlayListWindow extends FlxSpriteGroup
     override public function update(elapsed:Float) {
         super.update(elapsed);
     
-        // 初始化弹性（只需设置一次，可以放在 create() 里）
-        rightButtons.elasticity = 0.3;
-        
-        // 鼠标按下时开始拖动
+        // 拖动逻辑
         if (FlxG.mouse.overlaps(rightRect) && FlxG.mouse.justPressed) {
             isDragging = true;
             dragStartY = FlxG.mouse.y;
@@ -179,17 +177,16 @@ class PlayListWindow extends FlxSpriteGroup
             velocityY = 0;
         }
     
-        // 鼠标释放时停止拖动
         if (FlxG.mouse.justReleased) {
             isDragging = false;
         }
     
-        // 拖动中：更新位置
+        // 拖动中
         if (isDragging) {
             var deltaY = FlxG.mouse.y - dragStartY;
             rightButtons.y = buttonsStartY + deltaY;
             
-            // 同步所有子元素的 y 值
+            // 同步所有子元素
             for (member in rightButtons.members) {
                 member.y = rightButtons.y;
             }
@@ -197,24 +194,44 @@ class PlayListWindow extends FlxSpriteGroup
             velocityY = (rightButtons.y - lastY) / elapsed;
             lastY = rightButtons.y;
         }
-        // 非拖动中：应用惯性 + 弹性
-        else if (velocityY != 0) {
-            rightButtons.y += velocityY * elapsed;
-            for (member in rightButtons.members) {
-                member.y = rightButtons.y;
+        // 惯性 + 弹性
+        else {
+            if (velocityY != 0) {
+                rightButtons.y += velocityY * elapsed;
+                
+                // 同步所有子元素
+                for (member in rightButtons.members) {
+                    member.y = rightButtons.y;
+                }
+                
+                // 计算边界外弹性阻力
+                var minY = 0;
+                var maxY = FlxG.height - rightButtons.height;
+                var beyondBoundary = false;
+                
+                // 超出顶部
+                if (rightButtons.y < minY) {
+                    var overflow = minY - rightButtons.y;
+                    rightButtons.y = minY - overflow * 0.3; // 弹性回拉
+                    beyondBoundary = true;
+                }
+                // 超出底部
+                else if (rightButtons.y > maxY) {
+                    var overflow = rightButtons.y - maxY;
+                    rightButtons.y = maxY + overflow * 0.3; // 弹性回拉
+                    beyondBoundary = true;
+                }
+                
+                // 速度处理
+                if (beyondBoundary) {
+                    velocityY *= -0.6; // 反弹力度（可调整）
+                } else {
+                    velocityY *= 0.95; // 正常惯性摩擦
+                }
+                
+                // 速度太小则停止
+                if (Math.abs(velocityY) < 0.5) velocityY = 0;
             }
-            
-            velocityY *= friction;
-            
-            // 弹性边界检查（FlxObject 的弹性会自动处理碰撞）
-            var minY:Float = 0;
-            var maxY:Float = FlxG.height - rightButtons.height;
-            
-            if (rightButtons.y < minY || rightButtons.y > maxY) {
-                velocityY *= -rightButtons.elasticity; // 使用父类的弹性系数
-            }
-            
-            if (Math.abs(velocityY) < 1) velocityY = 0;
         }
     }
     
