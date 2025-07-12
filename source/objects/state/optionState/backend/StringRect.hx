@@ -102,6 +102,7 @@ class StringRect extends FlxSpriteGroup{
             }
 
             follow.follow.optionAdjust(follow, -1 * (follow.select.bg.height + follow.inter));
+            isOpend = !isOpend;
         } else { //开启
             if (OptionsState.instance.cataCount.length < 1){ 
                 if (!OptionsState.instance.cataCount.contains(this)) OptionsState.instance.cataCount.push(this);
@@ -119,9 +120,9 @@ class StringRect extends FlxSpriteGroup{
                 }
 
                 follow.follow.optionAdjust(follow, follow.select.bg.height + follow.inter);
+                isOpend = !isOpend;
             }
         }
-        isOpend = !isOpend;
     }
 
     private function createButton(size:Float, color:Int) {

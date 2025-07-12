@@ -75,8 +75,8 @@ class NaviSprite extends FlxSpriteGroup
 
             if (mouse.pressed) {
                 onChoose = true;
-                if (this.scale.x > 0.9)
-                    this.scale.x = this.scale.y -= ((this.scale.x - 0.9) * (this.scale.x - 0.9) * 0.75);
+                //if (this.scale.x > 0.9)
+                   // this.scale.x = this.scale.y -= ((this.scale.x - 0.9) * (this.scale.x - 0.9) * 0.75);
             }
 
             if (mouse.justReleased) {
@@ -88,8 +88,8 @@ class NaviSprite extends FlxSpriteGroup
 
         if (!mouse.pressed)
         {
-            if (this.scale.x < 1)
-                this.scale.x = this.scale.y += ((1 - this.scale.x) * (1 - this.scale.x) * 0.75);
+            //if (this.scale.x < 1)
+                //this.scale.x = this.scale.y += ((1 - this.scale.x) * (1 - this.scale.x) * 0.75); //haxe太粑粑了
         }
 	}
 }
