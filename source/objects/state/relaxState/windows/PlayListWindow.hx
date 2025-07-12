@@ -82,14 +82,6 @@ class PlayListWindow extends FlxSpriteGroup
         instance = this;
         
         camera = RelaxSubState.instance.camOption;
-        
-        rightButtons.scrollFactor.set(1, 1); // 确保可以滚动
-        rightButtons.clipRect = new FlxRect(
-            rightRect.x,
-            rightLabel.y + rightLabel.height,  // 从 rightLabel 下方开始
-            rightRect.width,
-            rightRect.height - (rightLabel.y + rightLabel.height - rightRect.y)  // 剩余高度
-        );
     }
     
     public function show():Void {
@@ -171,7 +163,13 @@ class PlayListWindow extends FlxSpriteGroup
             if (FlxG.mouse.justPressed) {
                 isDragging = true;
                 dragStartY = FlxG.mouse.y;
-                buttonsStartY = rightButtons.y; // 记录初始Y（全局坐标）
+                // 记录每个按钮的初始 y 坐标（相对于 rightButtons）
+                buttonStartYs = [];
+                for (button in rightButtons.members) {
+                    if (button != null) {
+                        buttonStartYs.push(button.y);
+                    }
+                }
             }
         }
     
@@ -181,34 +179,32 @@ class PlayListWindow extends FlxSpriteGroup
     
         if (isDragging) {
             var dragOffset = FlxG.mouse.y - dragStartY; // 鼠标移动的偏移量（全局坐标）
-            var newY = buttonsStartY + dragOffset; // 新Y（全局坐标）
     
             // 计算可视区域高度（容器内部）
             var visibleHeight = Math.floor(FlxG.height * 0.8);
             var contentHeight = rightButtons.height; // 所有按钮的总高度
     
-            // 如果内容高度 <= 可视高度，不允许滚动，固定在顶部
+            // 如果内容高度 <= 可视高度，不允许滚动
             if (contentHeight <= visibleHeight) {
-                rightButtons.y = rightRect.y + (rightLabel.y + rightLabel.height - rightRect.y);
+                return; // 不执行滚动
             }
             // 否则，限制滚动范围
             else {
-                // 上边界：容器顶部（全局坐标）
-                var topBound = rightRect.y + (rightLabel.y + rightLabel.height - rightRect.y);
-                // 下边界：容器底部 - 内容高度（全局坐标）
-                var bottomBound = rightRect.y + rightRect.height - contentHeight;
+                // 最大允许拖动的偏移量（防止拖过头）
+                var maxOffset = 0; // 上边界：不能比初始位置更高
+                var minOffset = visibleHeight - contentHeight; // 下边界：确保最后一个按钮不会超出容器
     
-                rightButtons.y = Math.max(bottomBound, Math.min(topBound, newY));
+                dragOffset = Math.max(minOffset, Math.min(maxOffset, dragOffset));
+    
+                // 遍历每个按钮，应用相同的偏移量
+                for (i in 0...rightButtons.members.length) {
+                    var button = rightButtons.members[i];
+                    if (button != null && buttonStartYs[i] != null) {
+                        button.y = buttonStartYs[i] + dragOffset;
+                    }
+                }
             }
         }
-    
-        // 更新裁剪区域（确保超出部分不可见）
-        rightButtons.clipRect = new FlxRect(
-            rightRect.x,
-            rightLabel.y + rightLabel.height,
-            rightRect.width,
-            rightRect.height - (rightLabel.y + rightLabel.height - rightRect.y)
-        );
     }
     
     //找ai写的双击触发函数 --MaoPou
