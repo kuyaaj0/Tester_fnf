@@ -86,7 +86,7 @@ class RightList extends FlxSpriteGroup
         
         // 触摸/鼠标拖动
         if (FlxG.mouse.justPressed) {
-            if (FlxG.mouse.overlaps(this)) {
+            if (FlxG.mouse.overlaps(PlayListWindow.instance.rightRect)) {
                 isDragging = true;
                 lastMouseY = FlxG.mouse.y;
                 scrollSpeed = 0;
@@ -126,17 +126,13 @@ class RightList extends FlxSpriteGroup
             var yPos = BUTTON_PADDING_TOP + i * BUTTON_SPACING - scrollY;
             button.y = yPos;
             
-            // 计算alpha值
             var alpha = 1.0;
             
-            // 顶部淡出
             var upY:Float = topBoundary - i * BUTTON_SPACING;
+            var downY:Float = bottomBoundary - i * BUTTON_SPACING;
             if (yPos < upY) {
                 alpha = FlxMath.remapToRange(yPos, upY - 30, upY, 0, 1);
-            }
-            // 底部淡出
-            var downY:Float = bottomBoundary - i * BUTTON_SPACING;
-            else if (yPos > downY - BUTTON_HEIGHT) {
+            }else if (yPos > downY - BUTTON_HEIGHT) {
                 alpha = FlxMath.remapToRange(yPos, downY - BUTTON_HEIGHT, downY - BUTTON_HEIGHT + 30, 1, 0);
             }
             
