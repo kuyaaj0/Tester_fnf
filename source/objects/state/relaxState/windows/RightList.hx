@@ -4,7 +4,6 @@ import flixel.group.FlxSpriteGroup;
 import backend.relax.GetInit;
 import flixel.FlxG;
 import flixel.math.FlxMath;
-
 import Lambda;
 
 class RightList extends FlxSpriteGroup
@@ -21,12 +20,17 @@ class RightList extends FlxSpriteGroup
     private var isDragging:Bool = false;
     private var lastMouseY:Float = 0;
     private var scrollSpeed:Float = 0;
-    private var scrollFriction:Float = 0.9; // 滚动摩擦系数
+    private var scrollFriction:Float = 0.9;
+    
+    // 布局参数
+    private static final BUTTON_HEIGHT:Float = 40;
+    private static final BUTTON_SPACING:Float = 5;
+    private static final BUTTON_PADDING_TOP:Float = 0;
+    private static final BUTTON_WIDTH_PADDING:Float = 20;
     
     // 显示范围
     private var topBoundary:Float = 0;
     private var bottomBoundary:Float = Math.floor(FlxG.height * 0.8) - 10;
-    private var buttonHeight:Float = 45;
     
     public function new(){
         super();
@@ -37,12 +41,13 @@ class RightList extends FlxSpriteGroup
         clearButtons();
         
         var listCount = GetInit.getListNum();
-        var buttonWidth = FlxG.width * 0.3 - 10;
+        var buttonWidth = FlxG.width * 0.3 - BUTTON_WIDTH_PADDING;
         
         for (i in 0...listCount) {
-            var button = new ListButtons(10, i * buttonHeight, buttonWidth);
-            var listName = GetInit.getAllListName().get(i);
+            var yPos = BUTTON_PADDING_TOP + i * (BUTTON_HEIGHT + BUTTON_SPACING);
+            var button = new ListButtons(10, yPos, buttonWidth, BUTTON_HEIGHT);
             
+            var listName = GetInit.getAllListName().get(i);
             button.setText(listName != null ? listName : "Unnamed List");
             
             button.onClick = function() {
@@ -76,7 +81,7 @@ class RightList extends FlxSpriteGroup
         // 鼠标滚轮滚动
         var wheel = FlxG.mouse.wheel;
         if (wheel != 0) {
-            targetScrollY -= wheel * 60; // 调整滚动速度
+            targetScrollY -= wheel * 60;
         }
         
         // 触摸/鼠标拖动
@@ -107,9 +112,9 @@ class RightList extends FlxSpriteGroup
             scrollSpeed = 0;
         }
         
-        // 限制滚动范围 - 使用 count() 替代 size
+        // 限制滚动范围
         var buttonCount = Lambda.count(RightButtons);
-        var maxScroll = Math.max(0, (buttonCount * buttonHeight) - (bottomBoundary - topBoundary));
+        var maxScroll = Math.max(0, (buttonCount * (BUTTON_HEIGHT + BUTTON_SPACING)) - (bottomBoundary - topBoundary));
         targetScrollY = FlxMath.bound(targetScrollY, 0, maxScroll);
         
         // 平滑滚动
@@ -118,7 +123,7 @@ class RightList extends FlxSpriteGroup
     
     private function updateButtonPositions() {
         for (i => button in RightButtons) {
-            var yPos = i * buttonHeight - scrollY;
+            var yPos = BUTTON_PADDING_TOP + i * (BUTTON_HEIGHT + BUTTON_SPACING) - scrollY;
             button.y = yPos;
             
             // 计算alpha值
@@ -129,15 +134,15 @@ class RightList extends FlxSpriteGroup
                 alpha = FlxMath.remapToRange(yPos, topBoundary - 30, topBoundary, 0, 1);
             }
             // 底部淡出
-            else if (yPos > bottomBoundary - buttonHeight) {
-                alpha = FlxMath.remapToRange(yPos, bottomBoundary - buttonHeight, bottomBoundary - buttonHeight + 30, 1, 0);
+            else if (yPos > bottomBoundary - BUTTON_HEIGHT) {
+                alpha = FlxMath.remapToRange(yPos, bottomBoundary - BUTTON_HEIGHT, bottomBoundary - BUTTON_HEIGHT + 30, 1, 0);
             }
             
             alpha = FlxMath.bound(alpha, 0, 1);
             button.alpha = alpha;
             
             // 根据是否在可见范围内启用/禁用按钮
-            button.allowChoose = (yPos >= topBoundary - buttonHeight && yPos <= bottomBoundary);
+            button.allowChoose = (yPos >= topBoundary - BUTTON_HEIGHT && yPos <= bottomBoundary);
         }
     }
     
