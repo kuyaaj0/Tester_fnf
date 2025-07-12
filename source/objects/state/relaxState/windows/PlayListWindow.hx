@@ -82,6 +82,14 @@ class PlayListWindow extends FlxSpriteGroup
         instance = this;
         
         camera = RelaxSubState.instance.camOption;
+        
+        rightButtons.scrollFactor.set(1, 1); // 确保可以滚动
+        rightButtons.clipRect = new FlxRect(
+            rightRect.x,
+            rightLabel.y + rightLabel.height,  // 从 rightLabel 下方开始
+            rightRect.width,
+            rightRect.height - (rightLabel.y + rightLabel.height - rightRect.y)  // 剩余高度
+        );
     }
     
     public function show():Void {
@@ -151,13 +159,15 @@ class PlayListWindow extends FlxSpriteGroup
         }
     }
     
+    // 在类顶部添加这些变量
     private var isDragging:Bool = false;
     private var dragStartY:Float = 0;
     private var buttonsStartY:Float = 0;
 
     override public function update(elapsed:Float) {
         super.update(elapsed);
-        
+    
+        // 拖动逻辑
         if (FlxG.mouse.overlaps(rightRect)) {
             if (FlxG.mouse.justPressed) {
                 isDragging = true;
@@ -165,30 +175,55 @@ class PlayListWindow extends FlxSpriteGroup
                 buttonsStartY = rightButtons.y;
             }
         }
-        
+    
         if (FlxG.mouse.justReleased) {
             isDragging = false;
         }
-        
+    
         if (isDragging) {
             var dragOffset = FlxG.mouse.y - dragStartY;
             var newY = buttonsStartY + dragOffset;
-            
-            // 计算拖动边界
-            var visibleHeight = rightRect.height - (rightLabel.y + rightLabel.height - rightRect.y);
-            var minY = rightLabel.y + rightLabel.height - (rightButtons.height - visibleHeight);
-            var maxY = rightLabel.y + rightLabel.height;
-            
-            // 应用边界限制
-            rightButtons.y = Math.max(minY, Math.min(maxY, newY));
+    
+            // 限制拖动范围
+            var maxScroll = rightLabel.y + rightLabel.height;
+            var minScroll = rightRect.y + rightRect.height - rightButtons.height;
+            rightButtons.y = Math.max(minScroll, Math.min(maxScroll, newY));
         }
-        
-        // 更新裁剪区域位置（跟随滚动）
-        if (rightButtons.clipRect != null) {
-            rightButtons.clipRect.x = rightButtons.x;
-            rightButtons.clipRect.y = rightLabel.y + rightLabel.height;
-            rightButtons.clipRect.width = rightRect.width - 10;
-            rightButtons.clipRect.height = rightRect.height - (rightLabel.y + rightLabel.height - rightRect.y) - 10;
+    
+        // 精细裁剪：检查每个按钮是否部分可见
+        var visibleTop = rightLabel.y + rightLabel.height;
+        var visibleBottom = rightRect.y + rightRect.height;
+    
+        for (button in rightButtons.members) {
+            // 如果按钮完全不可见
+            if (button.y + button.height < visibleTop || button.y > visibleBottom) {
+                button.visible = false;
+            }
+            // 如果按钮部分可见（顶部被裁切）
+            else if (button.y < visibleTop) {
+                button.clipRect = new FlxRect(
+                    0,
+                    visibleTop - button.y,  // 裁掉顶部不可见部分
+                    button.width,
+                    button.height - (visibleTop - button.y)  // 剩余高度
+                );
+                button.visible = true;
+            }
+            // 如果按钮部分可见（底部被裁切）
+            else if (button.y + button.height > visibleBottom) {
+                button.clipRect = new FlxRect(
+                    0,
+                    0,
+                    button.width,
+                    visibleBottom - button.y  // 只显示到底部边界
+                );
+                button.visible = true;
+            }
+            // 完全可见
+            else {
+                button.clipRect = null;
+                button.visible = true;
+            }
         }
     }
     
