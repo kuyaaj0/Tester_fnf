@@ -154,8 +154,8 @@ class PlayListWindow extends FlxSpriteGroup
     }
     
     override public function update(elapsed:Float){
-        rightButtons.y += 5;
-        leftButtons.clipRect = rightButtons.clipRect = swagRect;
+        rightButtons.y += 1;
+        //leftButtons.clipRect = rightButtons.clipRect = swagRect;
     }
     
     //找ai写的双击触发函数 --MaoPou
