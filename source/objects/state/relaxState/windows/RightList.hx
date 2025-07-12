@@ -5,6 +5,8 @@ import backend.relax.GetInit;
 import flixel.FlxG;
 import flixel.math.FlxMath;
 
+import Lambda;
+
 class RightList extends FlxSpriteGroup
 {
     public var RightButtons:Map<Int, ListButtons> = new Map();
@@ -105,8 +107,9 @@ class RightList extends FlxSpriteGroup
             scrollSpeed = 0;
         }
         
-        // 限制滚动范围
-        var maxScroll = Math.max(0, (RightButtons.size * buttonHeight) - (bottomBoundary - topBoundary));
+        // 限制滚动范围 - 使用 count() 替代 size
+        var buttonCount = Lambda.count(RightButtons);
+        var maxScroll = Math.max(0, (buttonCount * buttonHeight) - (bottomBoundary - topBoundary));
         targetScrollY = FlxMath.bound(targetScrollY, 0, maxScroll);
         
         // 平滑滚动
