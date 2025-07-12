@@ -42,8 +42,6 @@ class PlayListWindow extends FlxSpriteGroup
         var height:Int = Math.floor(FlxG.height * 0.8);
         var cornerRadius:Int = 20;
         
-        
-        
         leftRect = new Rect(-width, 50, width, height, cornerRadius, cornerRadius, 0xFF24232C);
         rightRect = new Rect(FlxG.width, 50, width, height, cornerRadius, cornerRadius, 0xFF24232C);
         
@@ -84,11 +82,6 @@ class PlayListWindow extends FlxSpriteGroup
         instance = this;
         
         camera = RelaxSubState.instance.camOption;
-        
-
-        rightButtons.cameras = [RelaxSubState.instance.ListCam];
-        leftButtons.cameras = [RelaxSubState.instance.ListCam];
-        rightButtons.elasticity = 0; // 禁用 FlxObject 的默认弹性
     }
     
     public function show():Void {
@@ -158,80 +151,44 @@ class PlayListWindow extends FlxSpriteGroup
         }
     }
     
-    private var isDragging:Bool = false;       // 是否正在拖动
-    private var dragStartY:Float = 0;         // 拖动起始鼠标Y
-    private var buttonsStartY:Float = 0;      // 拖动起始按钮组Y
-    private var velocityY:Float = 0;          // 当前Y方向速度（用于惯性）
-    private var lastY:Float = 0;              // 上一帧的Y位置（计算速度）
-    //private var elasticity:Float = 0.3;       // 弹性系数 (0~1)
-    private var friction:Float = 0.95;        // 摩擦力 (0.9~0.99)
-    
+    private var isDragging:Bool = false;
+    private var dragStartY:Float = 0;
+    private var buttonsStartY:Float = 0;
+
     override public function update(elapsed:Float) {
         super.update(elapsed);
-    
-        // 拖动逻辑
-        if (FlxG.mouse.overlaps(rightRect) && FlxG.mouse.justPressed) {
-            isDragging = true;
-            dragStartY = FlxG.mouse.y;
-            buttonsStartY = rightButtons.y;
-            velocityY = 0;
+        
+        if (FlxG.mouse.overlaps(rightRect)) {
+            if (FlxG.mouse.justPressed) {
+                isDragging = true;
+                dragStartY = FlxG.mouse.y;
+                buttonsStartY = rightButtons.y;
+            }
         }
-    
+        
         if (FlxG.mouse.justReleased) {
             isDragging = false;
         }
-    
-        // 拖动中
+        
         if (isDragging) {
-            var deltaY = FlxG.mouse.y - dragStartY;
-            rightButtons.y = buttonsStartY + deltaY;
+            var dragOffset = FlxG.mouse.y - dragStartY;
+            var newY = buttonsStartY + dragOffset;
             
-            // 同步所有子元素
-            for (member in rightButtons.members) {
-                member.y = rightButtons.y;
-            }
+            // 计算拖动边界
+            var visibleHeight = rightRect.height - (rightLabel.y + rightLabel.height - rightRect.y);
+            var minY = rightLabel.y + rightLabel.height - (rightButtons.height - visibleHeight);
+            var maxY = rightLabel.y + rightLabel.height;
             
-            velocityY = (rightButtons.y - lastY) / elapsed;
-            lastY = rightButtons.y;
+            // 应用边界限制
+            rightButtons.y = Math.max(minY, Math.min(maxY, newY));
         }
-        // 惯性 + 弹性
-        else {
-            if (velocityY != 0) {
-                rightButtons.y += velocityY * elapsed;
-                
-                // 同步所有子元素
-                for (member in rightButtons.members) {
-                    member.y = rightButtons.y;
-                }
-                
-                // 计算边界外弹性阻力
-                var minY = 0;
-                var maxY = FlxG.height - rightButtons.height;
-                var beyondBoundary = false;
-                
-                // 超出顶部
-                if (rightButtons.y < minY) {
-                    var overflow = minY - rightButtons.y;
-                    rightButtons.y = minY - overflow * 0.3; // 弹性回拉
-                    beyondBoundary = true;
-                }
-                // 超出底部
-                else if (rightButtons.y > maxY) {
-                    var overflow = rightButtons.y - maxY;
-                    rightButtons.y = maxY + overflow * 0.3; // 弹性回拉
-                    beyondBoundary = true;
-                }
-                
-                // 速度处理
-                if (beyondBoundary) {
-                    velocityY *= -0.6; // 反弹力度（可调整）
-                } else {
-                    velocityY *= 0.95; // 正常惯性摩擦
-                }
-                
-                // 速度太小则停止
-                if (Math.abs(velocityY) < 0.5) velocityY = 0;
-            }
+        
+        // 更新裁剪区域位置（跟随滚动）
+        if (rightButtons.clipRect != null) {
+            rightButtons.clipRect.x = rightButtons.x;
+            rightButtons.clipRect.y = rightLabel.y + rightLabel.height;
+            rightButtons.clipRect.width = rightRect.width - 10;
+            rightButtons.clipRect.height = rightRect.height - (rightLabel.y + rightLabel.height - rightRect.y) - 10;
         }
     }
     
