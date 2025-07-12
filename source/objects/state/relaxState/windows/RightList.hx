@@ -2,20 +2,27 @@ package objects.state.relaxState.windows;
 
 import flixel.group.FlxSpriteGroup;
 import backend.relax.GetInit;
+import flixel.input.mouse.FlxMouseEventManager;
 
 class RightList extends FlxSpriteGroup
 {
     public var RightButtons:Map<Int, ListButtons> = new Map();
-    //按下按钮后的回调
     public var onButtonClicked:Int->Void = null;
-    // 列表更新完成后的回调
     public var onListUpdated:Void->Void = null;
     
     public var nowChoose:Int = 0;
     
+    private var isDragging:Bool = false;
+    private var dragOffsetY:Float = 0;
+    private var minY:Float = 0;
+    private var maxY:Float = 0;
+    private var originalY:Float = 0;
+    
     public function new(){
         super();
         updateList();
+        
+        FlxMouseEventManager.add(this, null, onMouseDown, onMouseUp, onMouseOver, onMouseOut);
     }
     
     public function updateList(){
@@ -24,6 +31,11 @@ class RightList extends FlxSpriteGroup
         var listCount = GetInit.getListNum();
         var buttonWidth = FlxG.width * 0.3 - 10;
         
+        var contentHeight = listCount * 45;
+        minY = Math.min(0, FlxG.height - contentHeight);
+        maxY = 0;
+        originalY = y;
+        
         for (i in 0...listCount) {
             var button = new ListButtons(10, i * 45, buttonWidth);
             var listName = GetInit.getAllListName().get(i);
@@ -31,8 +43,7 @@ class RightList extends FlxSpriteGroup
             button.setText(listName != null ? listName : "Unnamed List");
             
             button.onClick = function() {
-                if (onButtonClicked != null) {
-                    //按下按钮后的回调
+                if (onButtonClicked != null && !isDragging) {
                     onButtonClicked(i);
                     nowChoose = i;
                 }
@@ -42,75 +53,44 @@ class RightList extends FlxSpriteGroup
             add(button);
         }
         
-        // 列表更新完成后的回调
         if (onListUpdated != null) {
             onListUpdated();
         }
     }
     
-    override function update(elapsed:Float) {
+    private function onMouseDown(object:Dynamic):Void {
+        isDragging = true;
+        dragOffsetY = FlxG.mouse.y - y;
+    }
+    
+    private function onMouseUp(object:Dynamic):Void {
+        isDragging = false;
+    }
+    
+    private function onMouseOver(object:Dynamic):Void {}
+    private function onMouseOut(object:Dynamic):Void {}
+    
+    override function update(elapsed:Float){
         super.update(elapsed);
-    
-        // 拖动逻辑（鼠标在 RightList 上按下时）
-        if (FlxG.mouse.pressed && FlxG.mouse.overlaps(this)) {
-            // 计算鼠标移动的偏移量（基于速度 * 时间）
-            var deltaY = FlxG.mouse.velocity.y * elapsed;
-    
-            // 遍历所有按钮并调整 y 坐标
-            for (button in RightButtons) {
-                button.y += deltaY;
-            }
-    
-            // 限制整个列表的拖动范围（防止拖出屏幕）
-            constrainListPosition();
+        
+        if (isDragging) {
+            var targetY = FlxG.mouse.y - dragOffsetY;
+            y = Math.max(minY, Math.min(maxY, targetY));
         }
-    
-        // 更新按钮透明度（渐隐效果）
-        updateButtonsAlpha();
-    }
-    
-    /** 限制 RightList 的拖动范围 */
-    private function constrainListPosition() {
-        var minY = 0; // 最小 y 值（顶部边界）
-        var maxY = FlxG.height * 0.8 - getListHeight(); // 最大 y 值（底部边界）
-    
-        // 检查是否超出范围，并修正位置
-        var listY = getFirstButtonY(); // 获取第一个按钮的 y 值（代表列表位置）
-        if (listY < minY || listY > maxY) {
-            var offset = listY < minY ? minY - listY : maxY - listY;
+        
+        for (memb in RightButtons) {
+            var screenY = memb.y + this.y;
             
-            // 修正所有按钮的位置
-            for (button in RightButtons) {
-                button.y += offset;
+            if(screenY < 0) {
+                memb.alpha = 1 - (-screenY) / 10;
             }
-        }
-    }
-    
-    /** 获取第一个按钮的 y 坐标（用于判断列表位置） */
-    private function getFirstButtonY():Float {
-        return RightButtons.exists(0) ? RightButtons.get(0).y : 0;
-    }
-    
-    /** 计算列表总高度（所有按钮高度 + 间距） */
-    private function getListHeight():Float {
-        if (RightButtons.count() == 0) return 0;
-        var lastButton = RightButtons.get(RightButtons.count() - 1);
-        return lastButton.y + lastButton.height - getFirstButtonY();
-    }
-    
-    /** 更新按钮透明度（渐隐效果） */
-    private function updateButtonsAlpha() {
-        for (button in RightButtons) {
-            if (button.y < 0) {
-                button.alpha = 1 - button.y / 10;
-            } 
-            else if (button.y > Math.floor(FlxG.height * 0.8) - 10) {
-                button.alpha = 1 - (button.y - (Math.floor(FlxG.height * 0.8)) - 10) / 10;
-            } 
-            else {
-                button.alpha = 1;
+            else if(screenY > Math.floor(FlxG.height * 0.8) - 10) {
+                memb.alpha = 1 - (screenY - (Math.floor(FlxG.height * 0.8) - 10)) / 10;
+            } else {
+                memb.alpha = 1;
             }
-            button.allowChoose = (button.alpha > 0);
+            
+            memb.allowChoose = memb.alpha > 0;
         }
     }
     
@@ -120,5 +100,10 @@ class RightList extends FlxSpriteGroup
             button.destroy();
         }
         RightButtons.clear();
+    }
+    
+    override public function destroy():Void {
+        FlxMouseEventManager.remove(this);
+        super.destroy();
     }
 }
