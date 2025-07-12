@@ -195,27 +195,32 @@ class PlayListWindow extends FlxSpriteGroup
         var visibleBottom = rightRect.y + rightRect.height;
     
         for (button in rightButtons.members) {
-            // 如果按钮完全不可见
-            if (button.y + button.height < visibleTop || button.y > visibleBottom) {
+            // 计算按钮的全局坐标（相对于 rightRect）
+            var buttonGlobalY = rightButtons.y + button.y;
+    
+            // 如果按钮完全不可见（在可视区域外）
+            if (buttonGlobalY + button.height < visibleTop || buttonGlobalY > visibleBottom) {
                 button.visible = false;
             }
             // 如果按钮部分可见（顶部被裁切）
-            else if (button.y < visibleTop) {
+            else if (buttonGlobalY < visibleTop) {
+                var clipHeight = (buttonGlobalY + button.height) - visibleTop;
                 button.clipRect = new FlxRect(
                     0,
-                    visibleTop - button.y,  // 裁掉顶部不可见部分
+                    button.height - clipHeight,  // 裁掉顶部不可见部分
                     button.width,
-                    button.height - (visibleTop - button.y)  // 剩余高度
+                    clipHeight  // 剩余可见高度
                 );
                 button.visible = true;
             }
             // 如果按钮部分可见（底部被裁切）
-            else if (button.y + button.height > visibleBottom) {
+            else if (buttonGlobalY + button.height > visibleBottom) {
+                var clipHeight = visibleBottom - buttonGlobalY;
                 button.clipRect = new FlxRect(
                     0,
                     0,
                     button.width,
-                    visibleBottom - button.y  // 只显示到底部边界
+                    clipHeight  // 只显示到底部边界
                 );
                 button.visible = true;
             }
