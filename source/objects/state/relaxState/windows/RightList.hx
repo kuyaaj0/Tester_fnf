@@ -52,8 +52,27 @@ class RightList extends FlxSpriteGroup
         }
     }
     
+    var saveY:Float;
+    var moveData:Float;
+    
     override function update(elapsed:Float){
         super.update(elapsed);
+        
+        if (FlxG.mouse.overlaps(this) && FlxG.mouse.pressed) {
+            if(FlxG.mouse.justPressed) saveY = FlxG.mouse.y;
+            
+            moveData = FlxG.mouse.y - saveY;
+            saveY = FlxG.mouse.y;
+            
+            for(i in members){
+                if(i.y > i.baseY){
+                    i.y = i.baseY;
+                }else if(members[0].y < -(this.height - Math.floor(FlxG.height * 0.8))){
+                    i.y = i.baseY - (this.height - Math.floor(FlxG.height * 0.8));
+                }
+                i.y += moveData;
+            }
+        }
     }
     
     public function clearButtons() {
