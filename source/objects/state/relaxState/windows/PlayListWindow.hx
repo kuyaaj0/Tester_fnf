@@ -34,8 +34,6 @@ class PlayListWindow extends FlxSpriteGroup
     
     public var nowChoose:Array<Int> = [0, 0];
     
-    var swagRect = new FlxRect(0, 115, FlxG.width, FlxG.height);
-    
     public function new()
     {
         super();
@@ -156,8 +154,45 @@ class PlayListWindow extends FlxSpriteGroup
     override public function update(elapsed:Float){
         super.update(elapsed);
         
-        rightButtons.y += 1;
-        //leftButtons.clipRect = rightButtons.clipRect = swagRect;
+        for (str in rightButtons.members) {
+            changeRect(str, 115, Math.floor(FlxG.height * 0.8));
+        }
+    }
+    
+    function changeRect(str:ListButtons, startY:Float, overY:Float) { //ai真的太好用了喵 --狐月影
+        // 获取选项矩形的顶部和底部坐标（相对于父容器）
+        var optionTop = str.y;
+        var optionBottom = str.y + str.height;
+        
+        // 计算实际可见区域
+        var visibleTop = Math.max(optionTop, startY);    // 可见顶部取两者最大值
+        var visibleBottom = Math.min(optionBottom, overY); // 可见底部取两者最小值
+        
+        // 完全不可见的情况（在背景上方或下方）
+        if (visibleBottom <= startY || visibleTop >= overY) {
+            str.visible = false;
+            str.allowChoose = false;
+            return;
+        }
+        
+        // 设置可见性
+        str.visible = true;
+        str.allowChoose = true;
+
+        // 计算裁剪参数（基于局部坐标系）
+        var clipY = Math.max(0, startY - optionTop);  // 裁剪上边距
+        var clipHeight = visibleBottom - visibleTop;  // 可见高度
+        
+        // 创建/更新裁剪矩形
+        var swagRect = str.clipRect;
+        if (swagRect == null) {
+            swagRect = new FlxRect(0, clipY, str.width, clipHeight);
+        } else {
+            swagRect.set(0, clipY, str.width, clipHeight);
+        }
+        
+        // 应用裁剪
+        str.clipRect = swagRect;
     }
     
     //找ai写的双击触发函数 --MaoPou
