@@ -44,7 +44,7 @@ class RightList extends FlxSpriteGroup
         var buttonWidth = FlxG.width * 0.3 - BUTTON_WIDTH_PADDING;
         
         for (i in 0...listCount) {
-            var yPos = BUTTON_PADDING_TOP + i * (BUTTON_HEIGHT + BUTTON_SPACING) - 45;
+            var yPos = BUTTON_PADDING_TOP + i * BUTTON_SPACING;
             var button = new ListButtons(10, yPos, buttonWidth, BUTTON_HEIGHT);
             
             var listName = GetInit.getAllListName().get(i);
@@ -123,7 +123,7 @@ class RightList extends FlxSpriteGroup
     
     private function updateButtonPositions() {
         for (i => button in RightButtons) {
-            var yPos = BUTTON_PADDING_TOP + i * (BUTTON_HEIGHT + BUTTON_SPACING) - scrollY;
+            var yPos = BUTTON_PADDING_TOP + i * BUTTON_SPACING - scrollY;
             button.y = yPos;
             
             // 计算alpha值
