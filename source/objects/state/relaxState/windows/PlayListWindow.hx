@@ -33,14 +33,21 @@ class PlayListWindow extends FlxSpriteGroup
     var showXR:Float;
     
     public var nowChoose:Array<Int> = [0, 0];
+    public var ListCam:FlxCamera; //干脆用相机切
     
     public function new()
     {
         super();
-
+		
         var width:Int = Math.floor(FlxG.width * 0.3);
         var height:Int = Math.floor(FlxG.height * 0.8);
         var cornerRadius:Int = 20;
+        
+        ListCam = new FlxCamera();
+		ListCam.bgColor.alpha = 0;
+		ListCam.height = height;
+		ListCam.y = 120;
+		FlxG.cameras.add(ListCam, false);
         
         leftRect = new Rect(-width, 50, width, height, cornerRadius, cornerRadius, 0xFF24232C);
         rightRect = new Rect(FlxG.width, 50, width, height, cornerRadius, cornerRadius, 0xFF24232C);
@@ -70,10 +77,14 @@ class PlayListWindow extends FlxSpriteGroup
         rightButtons.y = 120;
         add(rightButtons);
         
+        rightButtons.camera = ListCam;
+        
         leftButtons = new LeftList(rightButtons.nowChoose);
         leftButtons.x = hideXL;
         leftButtons.y = 120;
         add(leftButtons);
+        
+        leftButtons.camera = ListCam;
         
         rightButtons.onButtonClicked = function(choose:Int){
             leftButtons.updateList(choose);
@@ -151,48 +162,74 @@ class PlayListWindow extends FlxSpriteGroup
         }
     }
     
-    override public function update(elapsed:Float){
-        super.update(elapsed);
-        
-        for (str in rightButtons.RightButtons) {
-            changeRect(str, 115, Math.floor(FlxG.height * 0.8));
-        }
-    }
+    private var isDragging:Bool = false;       // 是否正在拖动
+    private var dragStartY:Float = 0;         // 拖动起始鼠标Y
+    private var buttonsStartY:Float = 0;      // 拖动起始按钮组Y
+    private var velocityY:Float = 0;          // 当前Y方向速度（用于惯性）
+    private var lastY:Float = 0;              // 上一帧的Y位置（计算速度）
+    private var elasticity:Float = 0.3;       // 弹性系数 (0~1)
+    private var friction:Float = 0.95;        // 摩擦力 (0.9~0.99)
     
-    function changeRect(str:ListButtons, startY:Float, overY:Float) { //ai真的太好用了喵 --狐月影
-        // 获取选项矩形的顶部和底部坐标（相对于父容器）
-        var optionTop = str.y;
-        var optionBottom = str.y + str.height;
-        
-        // 计算实际可见区域
-        var visibleTop = Math.max(optionTop, startY);    // 可见顶部取两者最大值
-        var visibleBottom = Math.min(optionBottom, overY); // 可见底部取两者最小值
-        
-        // 完全不可见的情况（在背景上方或下方）
-        if (visibleBottom <= startY || visibleTop >= overY) {
-            str.visible = false;
-            str.allowChoose = false;
-            return;
+    override public function update(elapsed:Float) {
+        super.update(elapsed);
+    
+        // 鼠标按下时开始拖动
+        if (FlxG.mouse.overlaps(rightRect) && FlxG.mouse.justPressed) {
+            isDragging = true;
+            dragStartY = FlxG.mouse.y;
+            buttonsStartY = rightButtons.y;
+            velocityY = 0; // 拖动开始时重置速度
         }
-        
-        // 设置可见性
-        str.visible = true;
-        str.allowChoose = true;
-
-        // 计算裁剪参数（基于局部坐标系）
-        var clipY = Math.max(0, startY - optionTop);  // 裁剪上边距
-        var clipHeight = visibleBottom - visibleTop;  // 可见高度
-        
-        // 创建/更新裁剪矩形
-        var swagRect = str.clipRect;
-        if (swagRect == null) {
-            swagRect = new FlxRect(0, clipY, str.width, clipHeight);
-        } else {
-            swagRect.set(0, clipY, str.width, clipHeight);
+    
+        // 鼠标释放时停止拖动
+        if (FlxG.mouse.justReleased) {
+            isDragging = false;
         }
-        
-        // 应用裁剪
-        str.clipRect = swagRect;
+    
+        // 拖动中：更新位置
+        if (isDragging) {
+            var deltaY = FlxG.mouse.y - dragStartY;
+            var newY = buttonsStartY + deltaY;
+            
+            // 更新整个组的 y，并同步所有子元素
+            rightButtons.y = newY;
+            for (member in rightButtons.members) {
+                member.y = newY; // 或者 member.y += deltaY 取决于你的需求
+            }
+            
+            // 计算速度（用于惯性）
+            velocityY = (newY - lastY) / elapsed;
+            lastY = newY;
+        }
+        // 非拖动中：应用惯性 + 弹性边界
+        else {
+            if (velocityY != 0) {
+                // 应用惯性
+                rightButtons.y += velocityY * elapsed;
+                for (member in rightButtons.members) {
+                    member.y = rightButtons.y;
+                }
+                
+                // 摩擦力减速
+                velocityY *= friction;
+                
+                // 弹性边界检查
+                var minY:Float = 0;
+                var maxY:Float = FlxG.height - rightButtons.height;
+                
+                if (rightButtons.y < minY) {
+                    rightButtons.y = minY + (rightButtons.y - minY) * elasticity;
+                    velocityY *= -elasticity; // 反弹
+                }
+                else if (rightButtons.y > maxY) {
+                    rightButtons.y = maxY + (rightButtons.y - maxY) * elasticity;
+                    velocityY *= -elasticity; // 反弹
+                }
+                
+                // 速度太小则停止
+                if (Math.abs(velocityY) < 1) velocityY = 0;
+            }
+        }
     }
     
     //找ai写的双击触发函数 --MaoPou

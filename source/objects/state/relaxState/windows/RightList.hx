@@ -48,6 +48,10 @@ class RightList extends FlxSpriteGroup
         }
     }
     
+    override function update(elapsed:Float){
+        super.update(elapsed);
+    }
+    
     public function clearButtons() {
         for (button in RightButtons) {
             remove(button);
