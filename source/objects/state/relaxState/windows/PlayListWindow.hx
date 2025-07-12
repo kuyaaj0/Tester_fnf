@@ -178,28 +178,23 @@ class PlayListWindow extends FlxSpriteGroup
         }
     
         if (isDragging) {
-            var dragOffset = FlxG.mouse.y - dragStartY; // 鼠标移动的偏移量（全局坐标）
-    
-            // 计算可视区域高度（容器内部）
+            var dragOffset = FlxG.mouse.y - dragStartY;
+            
+            // 计算可视区域高度
             var visibleHeight = Math.floor(FlxG.height * 0.8);
-            var contentHeight = rightButtons.height; // 所有按钮的总高度
-    
-            // 如果内容高度 <= 可视高度，不允许滚动
+            var contentHeight = rightButtons.height;
+            
             if (contentHeight <= visibleHeight) {
-                return; // 不执行滚动
+                return;
             }
-            // 否则，限制滚动范围
             else {
-                // 最大允许拖动的偏移量（防止拖过头）
-                var maxOffset = 0; // 上边界：不能比初始位置更高
-                var minOffset = visibleHeight - contentHeight; // 下边界：确保最后一个按钮不会超出容器
-    
+                var maxOffset = 0;
+                var minOffset = visibleHeight - contentHeight;
                 dragOffset = Math.max(minOffset, Math.min(maxOffset, dragOffset));
-    
-                // 遍历每个按钮，应用相同的偏移量
+                
                 for (i in 0...rightButtons.members.length) {
                     var button = rightButtons.members[i];
-                    if (button != null && buttonStartYs[i] != null) {
+                    if (button != null && i < buttonStartYs.length) {  // 修改这里
                         button.y = buttonStartYs[i] + dragOffset;
                     }
                 }
