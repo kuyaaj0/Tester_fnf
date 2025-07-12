@@ -2,6 +2,7 @@ package objects.state.relaxState.windows;
 
 import flixel.group.FlxSpriteGroup;
 import backend.relax.GetInit;
+import flixel.input.mouse.FlxMouseEventManager;
 
 class RightList extends FlxSpriteGroup
 {
@@ -11,17 +12,17 @@ class RightList extends FlxSpriteGroup
     
     public var nowChoose:Int = 0;
     
-    // 拖动相关变量
     private var isDragging:Bool = false;
     private var dragOffsetY:Float = 0;
     private var minY:Float = 0;
     private var maxY:Float = 0;
     private var originalY:Float = 0;
-    private var lastMouseY:Float = 0;
     
     public function new(){
         super();
         updateList();
+        
+        FlxMouseEventManager.add(this, null, onMouseDown, onMouseUp, onMouseOver, onMouseOut);
     }
     
     public function updateList(){
@@ -30,7 +31,6 @@ class RightList extends FlxSpriteGroup
         var listCount = GetInit.getListNum();
         var buttonWidth = FlxG.width * 0.3 - 10;
         
-        // 计算内容高度
         var contentHeight = listCount * 45;
         minY = Math.min(0, FlxG.height - contentHeight);
         maxY = 0;
@@ -44,7 +44,6 @@ class RightList extends FlxSpriteGroup
             
             button.onClick = function() {
                 if (onButtonClicked != null && !isDragging) {
-                    // 只有不在拖动时才触发点击
                     onButtonClicked(i);
                     nowChoose = i;
                 }
@@ -59,36 +58,28 @@ class RightList extends FlxSpriteGroup
         }
     }
     
+    private function onMouseDown(object:Dynamic):Void {
+        isDragging = true;
+        dragOffsetY = FlxG.mouse.y - y;
+    }
+    
+    private function onMouseUp(object:Dynamic):Void {
+        isDragging = false;
+    }
+    
+    private function onMouseOver(object:Dynamic):Void {}
+    private function onMouseOut(object:Dynamic):Void {}
+    
     override function update(elapsed:Float){
         super.update(elapsed);
         
-        // 鼠标按下检测
-        if (FlxG.mouse.justPressed) {
-            // 检查是否点击了这个列表
-            if (FlxG.mouse.x > x && FlxG.mouse.x < x + width && 
-                FlxG.mouse.y > y && FlxG.mouse.y < y + height) {
-                isDragging = true;
-                dragOffsetY = FlxG.mouse.y - y;
-                lastMouseY = FlxG.mouse.y;
-            }
-        }
-        
-        // 鼠标释放检测
-        if (FlxG.mouse.justReleased) {
-            isDragging = false;
-        }
-        
-        // 处理拖动
-        if (isDragging && FlxG.mouse.pressed) {
-            var deltaY = FlxG.mouse.y - lastMouseY;
-            var targetY = y + deltaY;
+        if (isDragging) {
+            var targetY = FlxG.mouse.y - dragOffsetY;
             y = Math.max(minY, Math.min(maxY, targetY));
-            lastMouseY = FlxG.mouse.y;
         }
         
-        // 更新按钮透明度
         for (memb in RightButtons) {
-            var screenY = memb.y + this.y; // 考虑父级的y位置
+            var screenY = memb.y + this.y;
             
             if(screenY < 0) {
                 memb.alpha = 1 - (-screenY) / 10;
@@ -109,5 +100,10 @@ class RightList extends FlxSpriteGroup
             button.destroy();
         }
         RightButtons.clear();
+    }
+    
+    override public function destroy():Void {
+        FlxMouseEventManager.remove(this);
+        super.destroy();
     }
 }
