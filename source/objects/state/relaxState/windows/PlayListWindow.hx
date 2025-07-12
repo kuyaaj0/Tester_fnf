@@ -183,51 +183,53 @@ class PlayListWindow extends FlxSpriteGroup
         if (isDragging) {
             var dragOffset = FlxG.mouse.y - dragStartY;
             var newY = buttonsStartY + dragOffset;
-    
+            
             // 限制拖动范围
-            var maxScroll = rightLabel.y + rightLabel.height;
-            var minScroll = rightRect.y + rightRect.height - rightButtons.height;
-            rightButtons.y = Math.max(minScroll, Math.min(maxScroll, newY));
+            var maxY = rightLabel.y + rightLabel.height + 10; // 上边界
+            var minY = rightRect.y + rightRect.height - rightButtons.height - 10; // 下边界
+            rightButtons.y = Math.max(minY, Math.min(maxY, newY));
         }
     
-        // 精细裁剪：检查每个按钮是否部分可见
+        // 更新裁剪区域
         var visibleTop = rightLabel.y + rightLabel.height;
         var visibleBottom = rightRect.y + rightRect.height;
-    
+        
+        // 更新整个rightButtons的裁剪区域
+        rightButtons.clipRect = new FlxRect(
+            rightRect.x,
+            visibleTop,
+            rightRect.width,
+            visibleBottom - visibleTop
+        );
+        
+        // 单独处理每个按钮的可见性
         for (button in rightButtons.members) {
-            // 计算按钮的全局坐标（相对于 rightRect）
-            var buttonGlobalY = rightButtons.y + button.y;
-    
-            // 如果按钮完全不可见（在可视区域外）
-            if (buttonGlobalY + button.height < visibleTop || buttonGlobalY > visibleBottom) {
+            if (button == null) continue;
+            
+            // 计算按钮在屏幕中的绝对位置
+            var buttonTop = rightButtons.y + button.y;
+            var buttonBottom = buttonTop + button.height;
+            
+            // 如果按钮完全不可见
+            if (buttonBottom < visibleTop || buttonTop > visibleBottom) {
                 button.visible = false;
-            }
-            // 如果按钮部分可见（顶部被裁切）
-            else if (buttonGlobalY < visibleTop) {
-                var clipHeight = (buttonGlobalY + button.height) - visibleTop;
-                button.clipRect = new FlxRect(
-                    0,
-                    button.height - clipHeight,  // 裁掉顶部不可见部分
-                    button.width,
-                    clipHeight  // 剩余可见高度
-                );
+            } else {
                 button.visible = true;
-            }
-            // 如果按钮部分可见（底部被裁切）
-            else if (buttonGlobalY + button.height > visibleBottom) {
-                var clipHeight = visibleBottom - buttonGlobalY;
-                button.clipRect = new FlxRect(
-                    0,
-                    0,
-                    button.width,
-                    clipHeight  // 只显示到底部边界
-                );
-                button.visible = true;
-            }
-            // 完全可见
-            else {
-                button.clipRect = null;
-                button.visible = true;
+                
+                // 计算按钮需要被裁剪的部分
+                var clipTop = Math.max(0, visibleTop - buttonTop);
+                var clipBottom = Math.max(0, buttonBottom - visibleBottom);
+                
+                if (clipTop > 0 || clipBottom > 0) {
+                    button.clipRect = new FlxRect(
+                        0, 
+                        clipTop,
+                        button.width,
+                        button.height - clipTop - clipBottom
+                    );
+                } else {
+                    button.clipRect = null;
+                }
             }
         }
     }
