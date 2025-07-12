@@ -24,7 +24,7 @@ class RightList extends FlxSpriteGroup
     
     // 布局参数
     private static final BUTTON_HEIGHT:Float = 40;
-    private static final BUTTON_SPACING:Float = 45;
+    private static final BUTTON_SPACING:Float = 5;
     private static final BUTTON_PADDING_TOP:Float = 120;
     private static final BUTTON_WIDTH_PADDING:Float = 20;
     
