@@ -167,18 +167,21 @@ class PlayListWindow extends FlxSpriteGroup
     private var buttonsStartY:Float = 0;      // 拖动起始按钮组Y
     private var velocityY:Float = 0;          // 当前Y方向速度（用于惯性）
     private var lastY:Float = 0;              // 上一帧的Y位置（计算速度）
-    private var elasticity:Float = 0.3;       // 弹性系数 (0~1)
+    //private var elasticity:Float = 0.3;       // 弹性系数 (0~1)
     private var friction:Float = 0.95;        // 摩擦力 (0.9~0.99)
     
     override public function update(elapsed:Float) {
         super.update(elapsed);
     
+        // 初始化弹性（只需设置一次，可以放在 create() 里）
+        rightButtons.elasticity = 0.3;
+        
         // 鼠标按下时开始拖动
         if (FlxG.mouse.overlaps(rightRect) && FlxG.mouse.justPressed) {
             isDragging = true;
             dragStartY = FlxG.mouse.y;
             buttonsStartY = rightButtons.y;
-            velocityY = 0; // 拖动开始时重置速度
+            velocityY = 0;
         }
     
         // 鼠标释放时停止拖动
@@ -189,46 +192,34 @@ class PlayListWindow extends FlxSpriteGroup
         // 拖动中：更新位置
         if (isDragging) {
             var deltaY = FlxG.mouse.y - dragStartY;
-            var newY = buttonsStartY + deltaY;
+            rightButtons.y = buttonsStartY + deltaY;
             
-            // 更新整个组的 y，并同步所有子元素
-            rightButtons.y = newY;
+            // 同步所有子元素的 y 值
             for (member in rightButtons.members) {
-                member.y = newY; // 或者 member.y += deltaY 取决于你的需求
+                member.y = rightButtons.y;
             }
             
-            // 计算速度（用于惯性）
-            velocityY = (newY - lastY) / elapsed;
-            lastY = newY;
+            velocityY = (rightButtons.y - lastY) / elapsed;
+            lastY = rightButtons.y;
         }
-        // 非拖动中：应用惯性 + 弹性边界
-        else {
-            if (velocityY != 0) {
-                // 应用惯性
-                rightButtons.y += velocityY * elapsed;
-                for (member in rightButtons.members) {
-                    member.y = rightButtons.y;
-                }
-                
-                // 摩擦力减速
-                velocityY *= friction;
-                
-                // 弹性边界检查
-                var minY:Float = 0;
-                var maxY:Float = FlxG.height - rightButtons.height;
-                
-                if (rightButtons.y < minY) {
-                    rightButtons.y = minY + (rightButtons.y - minY) * elasticity;
-                    velocityY *= -elasticity; // 反弹
-                }
-                else if (rightButtons.y > maxY) {
-                    rightButtons.y = maxY + (rightButtons.y - maxY) * elasticity;
-                    velocityY *= -elasticity; // 反弹
-                }
-                
-                // 速度太小则停止
-                if (Math.abs(velocityY) < 1) velocityY = 0;
+        // 非拖动中：应用惯性 + 弹性
+        else if (velocityY != 0) {
+            rightButtons.y += velocityY * elapsed;
+            for (member in rightButtons.members) {
+                member.y = rightButtons.y;
             }
+            
+            velocityY *= friction;
+            
+            // 弹性边界检查（FlxObject 的弹性会自动处理碰撞）
+            var minY:Float = 0;
+            var maxY:Float = FlxG.height - rightButtons.height;
+            
+            if (rightButtons.y < minY || rightButtons.y > maxY) {
+                velocityY *= -rightButtons.elasticity; // 使用父类的弹性系数
+            }
+            
+            if (Math.abs(velocityY) < 1) velocityY = 0;
         }
     }
     
