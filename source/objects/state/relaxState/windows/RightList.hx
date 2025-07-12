@@ -114,7 +114,7 @@ class RightList extends FlxSpriteGroup
         
         // 限制滚动范围
         var buttonCount = Lambda.count(RightButtons);
-        var maxScroll = Math.max(0, (buttonCount * (BUTTON_HEIGHT + BUTTON_SPACING)) + topBoundary));
+        var maxScroll = Math.max(0, (buttonCount * (BUTTON_HEIGHT + BUTTON_SPACING)) + topBoundary);
         targetScrollY = FlxMath.bound(targetScrollY, 0, maxScroll);
         
         // 平滑滚动
