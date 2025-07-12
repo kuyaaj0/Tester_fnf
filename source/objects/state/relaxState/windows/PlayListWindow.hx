@@ -159,7 +159,6 @@ class PlayListWindow extends FlxSpriteGroup
         }
     }
     
-    // 在类顶部添加这些变量
     private var isDragging:Bool = false;
     private var dragStartY:Float = 0;
     private var buttonsStartY:Float = 0;
@@ -172,7 +171,7 @@ class PlayListWindow extends FlxSpriteGroup
             if (FlxG.mouse.justPressed) {
                 isDragging = true;
                 dragStartY = FlxG.mouse.y;
-                buttonsStartY = rightButtons.y;
+                buttonsStartY = rightButtons.y; // 记录初始Y（全局坐标）
             }
         }
     
@@ -181,57 +180,35 @@ class PlayListWindow extends FlxSpriteGroup
         }
     
         if (isDragging) {
-            var dragOffset = FlxG.mouse.y - dragStartY;
-            var newY = buttonsStartY + dragOffset;
-            
-            // 限制拖动范围
-            var maxY = rightLabel.y + rightLabel.height + 10; // 上边界
-            var minY = rightRect.y + rightRect.height - rightButtons.height - 10; // 下边界
-            rightButtons.y = Math.max(minY, Math.min(maxY, newY));
-        }
+            var dragOffset = FlxG.mouse.y - dragStartY; // 鼠标移动的偏移量（全局坐标）
+            var newY = buttonsStartY + dragOffset; // 新Y（全局坐标）
     
-        // 更新裁剪区域
-        var visibleTop = rightLabel.y + rightLabel.height;
-        var visibleBottom = rightRect.y + rightRect.height;
-        
-        // 更新整个rightButtons的裁剪区域
-        rightButtons.clipRect = new FlxRect(
-            rightRect.x,
-            visibleTop,
-            rightRect.width,
-            visibleBottom - visibleTop
-        );
-        
-        // 单独处理每个按钮的可见性
-        for (button in rightButtons.members) {
-            if (button == null) continue;
-            
-            // 计算按钮在屏幕中的绝对位置
-            var buttonTop = rightButtons.y + button.y;
-            var buttonBottom = buttonTop + button.height;
-            
-            // 如果按钮完全不可见
-            if (buttonBottom < visibleTop || buttonTop > visibleBottom) {
-                button.visible = false;
-            } else {
-                button.visible = true;
-                
-                // 计算按钮需要被裁剪的部分
-                var clipTop = Math.max(0, visibleTop - buttonTop);
-                var clipBottom = Math.max(0, buttonBottom - visibleBottom);
-                
-                if (clipTop > 0 || clipBottom > 0) {
-                    button.clipRect = new FlxRect(
-                        0, 
-                        clipTop,
-                        button.width,
-                        button.height - clipTop - clipBottom
-                    );
-                } else {
-                    button.clipRect = null;
-                }
+            // 计算可视区域高度（容器内部）
+            var visibleHeight = Math.floor(FlxG.height * 0.8);
+            var contentHeight = rightButtons.height; // 所有按钮的总高度
+    
+            // 如果内容高度 <= 可视高度，不允许滚动，固定在顶部
+            if (contentHeight <= visibleHeight) {
+                rightButtons.y = rightRect.y + (rightLabel.y + rightLabel.height - rightRect.y);
+            }
+            // 否则，限制滚动范围
+            else {
+                // 上边界：容器顶部（全局坐标）
+                var topBound = rightRect.y + (rightLabel.y + rightLabel.height - rightRect.y);
+                // 下边界：容器底部 - 内容高度（全局坐标）
+                var bottomBound = rightRect.y + rightRect.height - contentHeight;
+    
+                rightButtons.y = Math.max(bottomBound, Math.min(topBound, newY));
             }
         }
+    
+        // 更新裁剪区域（确保超出部分不可见）
+        rightButtons.clipRect = new FlxRect(
+            rightRect.x,
+            rightLabel.y + rightLabel.height,
+            rightRect.width,
+            rightRect.height - (rightLabel.y + rightLabel.height - rightRect.y)
+        );
     }
     
     //找ai写的双击触发函数 --MaoPou
