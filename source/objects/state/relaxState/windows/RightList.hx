@@ -25,12 +25,12 @@ class RightList extends FlxSpriteGroup
     // 布局参数
     private static final BUTTON_HEIGHT:Float = 40;
     private static final BUTTON_SPACING:Float = 5;
-    private static final BUTTON_PADDING_TOP:Float = 0;
+    private static final BUTTON_PADDING_TOP:Float = 120;
     private static final BUTTON_WIDTH_PADDING:Float = 20;
     
     // 显示范围
-    private var topBoundary:Float = 0;
-    private var bottomBoundary:Float = Math.floor(FlxG.height * 0.8) - 10;
+    private var topBoundary:Float = 120;
+    private var bottomBoundary:Float = 110 + Math.floor(FlxG.height * 0.8);
     
     public function new(){
         super();
@@ -44,7 +44,7 @@ class RightList extends FlxSpriteGroup
         var buttonWidth = FlxG.width * 0.3 - BUTTON_WIDTH_PADDING;
         
         for (i in 0...listCount) {
-            var yPos = BUTTON_PADDING_TOP + i * (BUTTON_HEIGHT + BUTTON_SPACING);
+            var yPos = BUTTON_PADDING_TOP + i * (BUTTON_HEIGHT + BUTTON_SPACING) - 45;
             var button = new ListButtons(10, yPos, buttonWidth, BUTTON_HEIGHT);
             
             var listName = GetInit.getAllListName().get(i);
@@ -95,7 +95,7 @@ class RightList extends FlxSpriteGroup
         
         if (isDragging && FlxG.mouse.pressed) {
             var deltaY = FlxG.mouse.y - lastMouseY;
-            targetScrollY += deltaY;
+            targetScrollY -= deltaY;
             scrollSpeed = deltaY;
             lastMouseY = FlxG.mouse.y;
         }
