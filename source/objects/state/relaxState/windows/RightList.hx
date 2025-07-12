@@ -30,7 +30,7 @@ class RightList extends FlxSpriteGroup
     
     // 显示范围
     private var topBoundary:Float = 60;
-    private var bottomBoundary:Float = Math.floor(FlxG.height * 0.8);
+    private var bottomBoundary:Float = Math.floor(FlxG.height * 0.8) / 2;
     
     public function new(){
         super();
@@ -130,7 +130,7 @@ class RightList extends FlxSpriteGroup
             var alpha = 1.0;
             
             // 顶部淡出
-            if (yPos < topBoundary) {
+            if (yPos < topBoundary - i * BUTTON_SPACING) {
                 alpha = FlxMath.remapToRange(yPos, topBoundary - 30, topBoundary, 0, 1);
             }
             // 底部淡出
