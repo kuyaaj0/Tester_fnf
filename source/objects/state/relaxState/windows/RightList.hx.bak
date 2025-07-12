@@ -29,8 +29,8 @@ class RightList extends FlxSpriteGroup
     private static final BUTTON_WIDTH_PADDING:Float = 20;
     
     // 显示范围
-    private var topBoundary:Float = 60;
-    private var bottomBoundary:Float = Math.floor(FlxG.height * 0.8);
+    private var topBoundary:Float = 120;
+    private var bottomBoundary:Float = 110 + Math.floor(FlxG.height * 0.8);
     
     public function new(){
         super();
