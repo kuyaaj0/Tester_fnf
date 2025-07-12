@@ -153,7 +153,7 @@ class PlayListWindow extends FlxSpriteGroup
     
     private var isDragging:Bool = false;
     private var dragStartY:Float = 0;
-    private var buttonsStartY:Float = 0;
+    private var buttonStartYs:Array<Float> = [];
 
     override public function update(elapsed:Float) {
         super.update(elapsed);

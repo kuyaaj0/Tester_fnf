@@ -54,6 +54,9 @@ class RightList extends FlxSpriteGroup
         for (memb in RightButtons){
             if(memb.y < 0) memb.alpha = 1 - memb.y / 10;
             else if(memb.y > Math.floor(FlxG.height * 0.8) - 10) memb.alpha = 1 - (memb.y - (Math.floor(FlxG.height * 0.8)) - 10) / 10;
+            
+            if(memb.alpha = 0) memb.allowChoose = false;
+            else memb.allowChoose = true;
         }
     }
     
