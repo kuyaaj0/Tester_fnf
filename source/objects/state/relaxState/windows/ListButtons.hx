@@ -6,6 +6,7 @@ import flixel.util.FlxColor;
 import flixel.math.FlxRect;
 import flixel.math.FlxMath;
 import flixel.util.FlxSpriteUtil;
+import flixel.FlxG;
 
 class ListButtons extends FlxSpriteGroup
 {
@@ -20,10 +21,12 @@ class ListButtons extends FlxSpriteGroup
     private var isPressed:Bool = false;
     
     public var allowChoose:Bool = true;
+    public var baseY:Float = 0; // 添加baseY属性
     
     public function new(x:Float = 0, y:Float = 0, width:Float = 180, height:Float = 40, label:String = "")
     {
         super();
+        this.baseY = y; // 设置基准Y位置
         
         background = new FlxSprite(x,y);
         background.makeGraphic(Std.int(width), Std.int(height), FlxColor.TRANSPARENT, true);

@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.math.FlxMath;
 import flixel.group.FlxSpriteGroup;
 import backend.relax.GetInit;
+import flixel.util.FlxDestroyUtil;
 
 class RightList extends FlxSpriteGroup
 {
@@ -20,7 +21,8 @@ class RightList extends FlxSpriteGroup
     private var inertiaTimer:Float = 0;
     
     // 渐变区域大小
-    private var fadeZone:Float = 50; // 渐变区域高度
+    private var fadeZone:Float = 10; // 渐变区域高度
+    private var buttonCount:Int = 0; // 按钮数量
     
     public function new(){
         super();
@@ -31,6 +33,7 @@ class RightList extends FlxSpriteGroup
         clearButtons();
         
         var listCount = GetInit.getListNum();
+        buttonCount = listCount; // 保存按钮数量
         var buttonWidth = FlxG.width * 0.3 - 10;
         
         for (i in 0...listCount) {
@@ -38,6 +41,7 @@ class RightList extends FlxSpriteGroup
             var listName = GetInit.getAllListName().get(i);
             
             button.setText(listName != null ? listName : "Unnamed List");
+            button.baseY = i * 45; // 设置基准Y位置
             
             button.onClick = function() {
                 if (onButtonClicked != null) {
@@ -104,7 +108,7 @@ class RightList extends FlxSpriteGroup
         }
         
         // 限制滚动范围
-        var maxScroll = Math.max(0, (RightButtons.size * 45) - FlxG.height);
+        var maxScroll = Math.max(0, (buttonCount * 45) - FlxG.height);
         scrollOffset = FlxMath.bound(scrollOffset, -maxScroll, 0);
     }
     
@@ -122,14 +126,15 @@ class RightList extends FlxSpriteGroup
             var topAlpha = FlxMath.remapToRange(buttonBottom, topEdge, topEdge + fadeZone, 0, 1);
             var bottomAlpha = FlxMath.remapToRange(buttonTop, bottomEdge - fadeZone, bottomEdge, 1, 0);
             
-            button.alpha = FlxMath.bound(FlxMath.min(topAlpha, bottomAlpha), 0, 1);
+            var alpha = Math.min(topAlpha, bottomAlpha);
+            button.alpha = Math.max(0, Math.min(1, alpha)); // 确保在0-1之间
         }
     }
     
     public function clearButtons() {
         for (button in RightButtons) {
             remove(button);
-            button.destroy();
+            FlxDestroyUtil.destroy(button);
         }
         RightButtons.clear();
     }
