@@ -32,8 +32,8 @@ class NaviSprite extends FlxSpriteGroup
         specRect = new Rect(0, 0, 5, height * 0.5, 5, 5, EngineSet.mainColor);
         specRect.x += height * 0.25;
         specRect.y += height * 0.25;
-		specRect.alpha = 0;
-		specRect.scale.y = 0;
+		specRect.alpha = 1;
+		specRect.scale.y = 1;
 		specRect.antialiasing = ClientPrefs.data.antialiasing;
 		add(specRect);
 

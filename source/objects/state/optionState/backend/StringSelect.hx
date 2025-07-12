@@ -182,7 +182,7 @@ class ChooseRect extends FlxSpriteGroup {
 
         optionSort = sort;
 
-        bg = new Rect(0, 0, width, height, height / 5, height / 5, EngineSet.mainColor, 0.3);
+        bg = new Rect(0, 0, width, height, height / 5, height / 5, EngineSet.mainColor, 0);
         add(bg);
 
         textDis = new FlxText(0, 0, 0, name, Std.int(height * 0.15));
@@ -191,7 +191,7 @@ class ChooseRect extends FlxSpriteGroup {
 		textDis.antialiasing = ClientPrefs.data.antialiasing;
         textDis.y += (height - textDis.height) * 0.5;
 		add(textDis);
-        textDis.alpha = 0.1;
+        textDis.alpha = 0;
 
         if (name == follow.follow.getValue()) setAlpha = 0.1; //标亮之前的设置
     }

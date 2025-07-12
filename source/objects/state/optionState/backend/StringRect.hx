@@ -83,6 +83,7 @@ class StringRect extends FlxSpriteGroup{
         if (alphaTween.length > 0) {
             for (tween in alphaTween) 
                 if (tween != null) tween.cancel();
+            if (OptionsState.instance.cataCount.contains(this) && !isOpend) OptionsState.instance.cataCount.remove(this);
         }
 
         if (isOpend) { //关闭
@@ -102,21 +103,23 @@ class StringRect extends FlxSpriteGroup{
 
             follow.follow.optionAdjust(follow, -1 * (follow.select.bg.height + follow.inter));
         } else { //开启
-            if (!OptionsState.instance.cataCount.contains(this)) OptionsState.instance.cataCount.push(this);
-            disText.text = 'Tap to close';
-            dis.flipY = false;
+            if (OptionsState.instance.cataCount.length < 1){ 
+                if (!OptionsState.instance.cataCount.contains(this)) OptionsState.instance.cataCount.push(this);
+                disText.text = 'Tap to close';
+                dis.flipY = false;
 
-            follow.select.active = follow.select.visible = true;
-            var tween = FlxTween.tween(follow.select.bg, {alpha: 0.1}, 0.6, {ease: FlxEase.expoIn, onComplete: function(twn:FlxTween){ } });
-            alphaTween.push(tween);
-            var tween = FlxTween.tween(follow.select.slider, {alpha: 0.8}, 0.6, {ease: FlxEase.expoIn});
-            alphaTween.push(tween);
-            for (i in 0...follow.select.optionSprites.length) {
-                var tween = FlxTween.tween(follow.select.optionSprites[i].textDis, {alpha: 1}, 0.6, {ease: FlxEase.expoIn, onComplete: function(twn:FlxTween){ follow.select.optionSprites[i].allowUpdate = true;} });
+                follow.select.active = follow.select.visible = true;
+                var tween = FlxTween.tween(follow.select.bg, {alpha: 0.1}, 0.6, {ease: FlxEase.expoIn, onComplete: function(twn:FlxTween){ } });
                 alphaTween.push(tween);
-            }
+                var tween = FlxTween.tween(follow.select.slider, {alpha: 0.8}, 0.6, {ease: FlxEase.expoIn});
+                alphaTween.push(tween);
+                for (i in 0...follow.select.optionSprites.length) {
+                    var tween = FlxTween.tween(follow.select.optionSprites[i].textDis, {alpha: 1}, 0.6, {ease: FlxEase.expoIn, onComplete: function(twn:FlxTween){ follow.select.optionSprites[i].allowUpdate = true;} });
+                    alphaTween.push(tween);
+                }
 
-            follow.follow.optionAdjust(follow, follow.select.bg.height + follow.inter);
+                follow.follow.optionAdjust(follow, follow.select.bg.height + follow.inter);
+            }
         }
         isOpend = !isOpend;
     }

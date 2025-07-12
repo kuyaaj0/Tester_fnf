@@ -415,6 +415,7 @@ class Option extends FlxSpriteGroup
 	public var followY:Float = 0;  //optioncata在主体的位置
 	public var innerY:Float = 0; //optioncata内部位置
 	public var yOff:Float = 0; //用于图形在cata内部位移
+	public var sameY:Bool = false; //用于string展开兼容
 	public var yTween:FlxTween = null;
 	public function changeY(data:Float, isMain:Bool = true, time:Float = 0.6) {
 		var output = isMain ? followY : yOff;

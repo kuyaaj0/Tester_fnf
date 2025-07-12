@@ -35,6 +35,7 @@ class OptionCata extends FlxSpriteGroup
 			putX += (this.width - this.width / 2 / 50) / 2;
 			putY -= optionArray[optionArray.length - 1].saveHeight;
 		}
+		tar.sameY = sameY; //用于string展开的时候兼容
 		add(tar);
 
 		var specX:Float = 0;
@@ -73,7 +74,7 @@ class OptionCata extends FlxSpriteGroup
 		for (op in 0...optionArray.length) {
 			if (str == optionArray[op]) {
 				start = op;
-				if (start != (optionArray.length - 1) && str.type == STRING && optionArray[start + 1].type == STRING && (start + 1) % 2 == 1)
+				if (start != (optionArray.length - 1) && str.type == STRING && !str.sameY && optionArray[start + 1].sameY)
 					start++;
 			}
 
