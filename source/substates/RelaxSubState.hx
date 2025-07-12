@@ -46,6 +46,7 @@ class RelaxSubState extends MusicBeatSubstate
 	var camText:FlxCamera;
 	var camHUD:FlxCamera;
 	public var camOption:FlxCamera;
+	public var ListCam:FlxCamera; //干脆用相机切
 	var camVpad:FlxCamera;
 	
 	private var currentBPM:Float = 100;
@@ -405,6 +406,12 @@ class RelaxSubState extends MusicBeatSubstate
 		FlxG.cameras.add(camHUD, false);
 		FlxG.cameras.add(camOption, false);
 		FlxG.cameras.add(camVpad, false);
+		
+		ListCam = new FlxCamera();
+		ListCam.bgColor.alpha = 0;
+		ListCam.height = Math.floor(FlxG.height * 0.8);
+		ListCam.y = 120;
+		FlxG.cameras.add(ListCam, false);
 		
 		virtualPad.cameras = [camVpad];
 

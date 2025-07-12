@@ -33,7 +33,6 @@ class PlayListWindow extends FlxSpriteGroup
     var showXR:Float;
     
     public var nowChoose:Array<Int> = [0, 0];
-    public var ListCam:FlxCamera; //干脆用相机切
     
     public function new()
     {
@@ -43,11 +42,7 @@ class PlayListWindow extends FlxSpriteGroup
         var height:Int = Math.floor(FlxG.height * 0.8);
         var cornerRadius:Int = 20;
         
-        ListCam = new FlxCamera();
-		ListCam.bgColor.alpha = 0;
-		ListCam.height = height;
-		ListCam.y = 120;
-		FlxG.cameras.add(ListCam, false);
+        
         
         leftRect = new Rect(-width, 50, width, height, cornerRadius, cornerRadius, 0xFF24232C);
         rightRect = new Rect(FlxG.width, 50, width, height, cornerRadius, cornerRadius, 0xFF24232C);
@@ -77,14 +72,14 @@ class PlayListWindow extends FlxSpriteGroup
         rightButtons.y = 120;
         add(rightButtons);
         
-        rightButtons.camera = ListCam;
+        rightButtons.cameras = [RelaxSubState.instance.ListCam];
         
         leftButtons = new LeftList(rightButtons.nowChoose);
         leftButtons.x = hideXL;
         leftButtons.y = 120;
         add(leftButtons);
         
-        leftButtons.camera = ListCam;
+        leftButtons.cameras = [RelaxSubState.instance.ListCam];
         
         rightButtons.onButtonClicked = function(choose:Int){
             leftButtons.updateList(choose);
