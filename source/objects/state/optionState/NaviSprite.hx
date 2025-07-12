@@ -56,8 +56,7 @@ class NaviSprite extends FlxSpriteGroup
     }
 
     public var onFocus:Bool = false;
-    public var onPress:Bool = false;
-    public var onChoose:Bool = false;
+    public var cataChoose:Bool = false;
     override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -66,17 +65,19 @@ class NaviSprite extends FlxSpriteGroup
 
 		onFocus = mouse.overlaps(this);
 
+        if (cataChoose) {
+            if (specRect.alpha < 1)  specRect.alpha += EngineSet.FPSfix(0.12);
+		    if (specRect.scale.y < 1) specRect.scale.y += EngineSet.FPSfix(0.12);
+        } else {
+            if (specRect.alpha > 0)  specRect.alpha -= EngineSet.FPSfix(0.12);
+		    if (specRect.scale.y > 0) specRect.scale.y -= EngineSet.FPSfix(0.12);
+        }
+
 		if (onFocus) {
             if (background.alpha < 0.2) background.alpha += EngineSet.FPSfix(0.015);
 
             if (mouse.justPressed) {
                 
-            }
-
-            if (mouse.pressed) {
-                onChoose = true;
-                //if (this.scale.x > 0.9)
-                   // this.scale.x = this.scale.y -= ((this.scale.x - 0.9) * (this.scale.x - 0.9) * 0.75);
             }
 
             if (mouse.justReleased) {

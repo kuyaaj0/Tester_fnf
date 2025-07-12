@@ -112,7 +112,6 @@ class OptionsState extends MusicBeatState
 								cataMoveEvent);
 		add(cataMove);
 		cataMoveEvent(true);
-		//cataMove.allowUpdate = false;
 			
 		/////////////////////////////////////////////////////////////
 
@@ -162,6 +161,19 @@ class OptionsState extends MusicBeatState
 
 		if (cataCount.length > 0) cataMove.inputAllow = false;
 		else cataMove.inputAllow = true;
+
+		var posi:Int = -1;
+		for (cata in 0...cataGroup.length - 1) {
+			if (cataGroup[cata].y < FlxG.height / 2 && cataGroup[cata].y + cataGroup[cata].bg.realHeight > FlxG.height / 2) {
+				posi = cata;
+				break;
+			}
+		}
+
+		for (spr in 0...naviSpriteGroup.length -1) {
+			if (spr == posi) naviSpriteGroup[spr].cataChoose = true;
+			else naviSpriteGroup[spr].cataChoose = false;
+		}
 	}
 
 	override function closeSubState()
