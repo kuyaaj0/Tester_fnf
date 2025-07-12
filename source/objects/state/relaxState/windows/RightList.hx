@@ -130,19 +130,21 @@ class RightList extends FlxSpriteGroup
             var alpha = 1.0;
             
             // 顶部淡出
-            if (yPos < topBoundary - i * BUTTON_SPACING) {
-                alpha = FlxMath.remapToRange(yPos, topBoundary - 30, topBoundary, 0, 1);
+            var upY:Float = topBoundary - i * BUTTON_SPACING;
+            if (yPos < upY) {
+                alpha = FlxMath.remapToRange(yPos, upY - 30, upY, 0, 1);
             }
             // 底部淡出
-            else if (yPos > bottomBoundary - BUTTON_HEIGHT) {
-                alpha = FlxMath.remapToRange(yPos, bottomBoundary - BUTTON_HEIGHT, bottomBoundary - BUTTON_HEIGHT + 30, 1, 0);
+            var downY:Float = bottomBoundary - i * BUTTON_SPACING;
+            else if (yPos > downY - BUTTON_HEIGHT) {
+                alpha = FlxMath.remapToRange(yPos, downY - BUTTON_HEIGHT, downY - BUTTON_HEIGHT + 30, 1, 0);
             }
             
             alpha = FlxMath.bound(alpha, 0, 1);
             button.alpha = alpha;
             
             // 根据是否在可见范围内启用/禁用按钮
-            button.allowChoose = (yPos >= topBoundary - BUTTON_HEIGHT && yPos <= bottomBoundary);
+            button.allowChoose = (alpha > 0.4);
         }
     }
     
