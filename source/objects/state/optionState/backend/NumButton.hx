@@ -81,7 +81,7 @@ class NumButton extends FlxSpriteGroup {
         initData();
     }
 
-    function initData() {
+    public function initData() {
         var percent = (follow.defaultValue - min) / (max - min);
         rectUpdate(percent);
     }

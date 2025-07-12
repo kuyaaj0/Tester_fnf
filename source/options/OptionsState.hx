@@ -42,6 +42,7 @@ class OptionsState extends MusicBeatState
 
 	var specBG:Rect;
 	var searchButton:SearchButton;
+	var resetButton:ResetButton;
 	
 	override function create()
 	{
@@ -143,8 +144,9 @@ class OptionsState extends MusicBeatState
 
 		searchButton = new SearchButton(specBG.x + specBG.height * 0.2, specBG.height * 0.2, specBG.width * 0.5, specBG.height * 0.6);
 		add(searchButton);
-		
-		
+
+		resetButton = new ResetButton(specBG.x + specBG.height * 0.2 * 2 + searchButton.width, specBG.height * 0.2, specBG.width - (specBG.height * 0.2 * 3 + searchButton.width), specBG.height * 0.6);
+		add(resetButton);
 
 		var backShape = new GeneralBack(0, 720 - 72, UIScale.adjust(FlxG.width * 0.2), UIScale.adjust(FlxG.height * 0.1), Language.get('back', 'ma'), EngineSet.mainColor, backMenu);
 		add(backShape);
@@ -257,23 +259,24 @@ class OptionsState extends MusicBeatState
 			if (tween != null) tween.cancel();
 		}
 
-		
+		var newPoint:Float = 0;
 		if (!specOpen) {
-			specOpen = true;
-			var newPoint = FlxG.width;
-			var tween = FlxTween.tween(specBG, {x: newPoint}, specTime, {ease: FlxEase.expoInOut});
-			specTween.push(tween);
-			var tween = FlxTween.tween(searchButton, {x: newPoint + specBG.height * 0.2}, specTime, {ease: FlxEase.expoInOut});
-			specTween.push(tween);
-			
+			newPoint = FlxG.width;
+			cataMove.moveLimit[1] = 30;
 		} else {
-			specOpen = false;
-			var newPoint = UIScale.adjust(FlxG.width * 0.2);
-			var tween = FlxTween.tween(specBG, {x: newPoint}, specTime, {ease: FlxEase.expoInOut});
-			specTween.push(tween);
-			var tween = FlxTween.tween(searchButton, {x: newPoint + specBG.height * 0.2}, specTime, {ease: FlxEase.expoInOut});
-			specTween.push(tween);
+			newPoint = UIScale.adjust(FlxG.width * 0.2);
+			cataMove.moveLimit[1] = 100;
 		}
+
+		var tween = FlxTween.tween(specBG, {x: newPoint}, specTime, {ease: FlxEase.expoInOut});
+		specTween.push(tween);
+		var tween = FlxTween.tween(searchButton, {x: newPoint + specBG.height * 0.2}, specTime, {ease: FlxEase.expoInOut});
+		specTween.push(tween);
+		var tween = FlxTween.tween(resetButton, {x: newPoint + specBG.height * 0.2 + searchButton.width + specBG.height * 0.2}, specTime, {ease: FlxEase.expoInOut});
+		specTween.push(tween);
+		
+	
+		specOpen = !specOpen;
 	}
 
 	public function moveState(type:Int)
@@ -296,6 +299,16 @@ class OptionsState extends MusicBeatState
 				openSubState(new MobileExtraControl());
 			case 6: // CopyStates
 				LoadingState.loadAndSwitchState(new CopyState(true));
+		}
+	}
+
+	public function resetData()
+	{
+		for (spr in 0...naviSpriteGroup.length - 1) {
+			if (naviSpriteGroup[spr].cataChoose == true) {
+				cataGroup[spr].resetData();
+				break;
+			}
 		}
 	}
 

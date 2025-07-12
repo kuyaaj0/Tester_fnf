@@ -1,16 +1,14 @@
 package objects.state.optionState;
 
-class ResetRect extends FlxSpriteGroup
+class ResetButton extends FlxSpriteGroup
 {
 	var rect:Rect;
-	var follow:OptionCata;
 
 	public function new(x:Float, y:Float, width:Float, height:Float)
 	{
 		super(x, y);
 
-		rect = new Rect(0, 0, 550, 50, 20, 20);
-		rect.color = 0x24232C;
+		rect = new Rect(0, 0, width, height, height / 5, height / 5, OptionsState.instance.mainColor, 1);
 		add(rect);
 
 		var text = new FlxText(0, 0, 0, Language.get('Reset'), 25);
@@ -20,7 +18,6 @@ class ResetRect extends FlxSpriteGroup
 		text.x += rect.width / 2 - text.width / 2;
 		add(text);
 
-		this.follow = point;
 	}
 
 	public var onFocus:Bool = false;
@@ -29,25 +26,19 @@ class ResetRect extends FlxSpriteGroup
 	{
 		super.update(elapsed);
 
-		if (OptionsState.instance.avgSpeed > 0.1)
-			return;
+		var mouse = OptionsState.instance.mouseEvent;
 
-		onFocus = FlxG.mouse.overlaps(this);
+		onFocus = mouse.overlaps(this);
 
 		if (onFocus)
 		{
-			rect.color = 0x53b7ff;
-			if (FlxG.mouse.justReleased)
-				onClick();
+			rect.color = EngineSet.mainColor;
+			if (mouse.justReleased)
+				OptionsState.instance.resetData();
 		}
 		else
 		{
-			rect.color = 0x24232C;
+			rect.color = OptionsState.instance.mainColor;
 		}
-	}
-
-	function onClick()
-	{
-		follow.resetData();
 	}
 }

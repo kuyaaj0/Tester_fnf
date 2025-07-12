@@ -75,10 +75,12 @@ class Option extends FlxSpriteGroup
 					defaultValue = 0;
 			case STRING:
 				strGroup = data;
-				if (data.length > 0)
-					defaultValue = data[0];
-				if (defaultValue == null)
-					defaultValue = '';
+				if (strGroup.indexOf(defaultValue) == -1) {
+					if (data.length > 0)
+						defaultValue = data[0];
+					if (defaultValue == null)
+						defaultValue = '';
+				}
 			default:
 		}
 
@@ -376,15 +378,25 @@ class Option extends FlxSpriteGroup
 
 	public function resetData()
 	{
-		if (variable == '')
+		if (variable == '' || type == STATE ||  type == TEXT || type == TITLE)
 			return;
-		Reflect.setProperty(ClientPrefs.data, variable, Reflect.getProperty(ClientPrefs.defaultData, variable));
-		defaultValue = Reflect.getProperty(ClientPrefs.defaultData, variable);
+		try {
+			Reflect.setProperty(ClientPrefs.data, variable, Reflect.getProperty(ClientPrefs.defaultData, variable));
+			defaultValue = Reflect.getProperty(ClientPrefs.defaultData, variable);
+		}
+
 		switch (type)
 		{
-			
+			case BOOL:
+				boolButton.updateDisplay();
+			case INT, FLOAT, PERCENT:
+				numButton.initData();
+				updateDisText();
+			case STRING:
+				updateDisText();
 			default:
 		}
+		change();
 	}
 
 	////////////////////////////////////////////////

@@ -59,25 +59,28 @@ class BoolButton extends FlxSpriteGroup {
         }
     }
 
-    var moveTween:FlxTween;
     function change(data:Bool) {
         // Only proceed if value is actually changing
         if (follow.defaultValue == data) return;
         
         follow.defaultValue = data;
         follow.setValue(data);
+
+        updateDisplay();
         
-        trace( follow.defaultValue);
-        
+        follow.change();
+    }
+
+    var moveTween:FlxTween;
+    public function updateDisplay()
+    {
         if (moveTween != null) moveTween.cancel();
-        var targetX = data ? bg.width / 2 + 1 : 2;
+        var targetX = follow.defaultValue ? bg.width / 2 + 1 : 2;
         moveTween = FlxTween.tween(dis, { x: follow.followX + follow.innerX + innerX + targetX}, 0.2, { ease: FlxEase.quadOut });
         
         // Tween the background color
-        var targetColor = data ? 0x63FF75 : 0xFF6363;
+        var targetColor = follow.defaultValue ? 0x63FF75 : 0xFF6363;
         //FlxTween.color(bg, 0.2, bg.color, targetColor, { ease: FlxEase.quadOut });
         bg.color = targetColor;  //为什么几把不能用tween
-        
-        follow.change();
     }
 }
