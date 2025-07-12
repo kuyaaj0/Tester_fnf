@@ -151,55 +151,11 @@ class PlayListWindow extends FlxSpriteGroup
         }
     }
     
-    private var isDragging:Bool = false;
-    private var dragStartY:Float = 0;
-    private var buttonStartYs:Array<Float> = [];
+    var saveMouseY:Int = 0;
+	var moveData:Int = 0;
 
     override public function update(elapsed:Float) {
         super.update(elapsed);
-    
-        // 拖动逻辑
-        if (FlxG.mouse.overlaps(rightRect)) {
-            if (FlxG.mouse.justPressed) {
-                isDragging = true;
-                dragStartY = FlxG.mouse.y;
-                // 记录每个按钮的初始 y 坐标（相对于 rightButtons）
-                buttonStartYs = [];
-                for (button in rightButtons.members) {
-                    if (button != null) {
-                        buttonStartYs.push(button.y);
-                    }
-                }
-            }
-        }
-    
-        if (FlxG.mouse.justReleased) {
-            isDragging = false;
-        }
-    
-        if (isDragging) {
-            var dragOffset = FlxG.mouse.y - dragStartY;
-            
-            // 计算可视区域高度
-            var visibleHeight = Math.floor(FlxG.height * 0.8);
-            var contentHeight = rightButtons.height;
-            
-            if (contentHeight <= visibleHeight) {
-                return;
-            }
-            else {
-                var maxOffset = 0;
-                var minOffset = visibleHeight - contentHeight;
-                dragOffset = Math.max(minOffset, Math.min(maxOffset, dragOffset));
-                
-                for (i in 0...rightButtons.members.length) {
-                    var button = rightButtons.members[i];
-                    if (button != null && i < buttonStartYs.length) {  // 修改这里
-                        button.y = buttonStartYs[i] + dragOffset;
-                    }
-                }
-            }
-        }
     }
     
     //找ai写的双击触发函数 --MaoPou
