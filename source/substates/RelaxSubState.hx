@@ -121,7 +121,7 @@ class RelaxSubState extends MusicBeatSubstate
 		    if(songInfo.sound.length > 1){
 		        for (i in 1...songInfo.sound.length - 1){
 		            var ExSound:FlxSound = new FlxSound();
-		            ExSound.loadEmbedded(i);
+		            ExSound.loadEmbedded(songInfo.sound[i]);
 		            SoundGroup.add(ExSound);
 		            ExSound.play();
 		        }
