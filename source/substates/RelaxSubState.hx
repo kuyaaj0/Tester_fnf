@@ -893,14 +893,15 @@ class RelaxSubState extends MusicBeatSubstate
 
 	public function OtherListLoad(data:Array<Int> = null){
 	    try{
+	        if(data[0] >= GetInit.getListNum())
+    	        data[0] = GetInit.getListNum() - 1;
+    	        
+    	    SongsArray = GetInit.getList(data[0]);
+    	    
     	    if(data[1] >= SongsArray.list.length){
     	        data[1] = SongsArray.list.length - 1;
     	    }
-    	    if(data[0] >= GetInit.getListNum())
-    	        data[0] = GetInit.getListNum() - 1;
-    	        
     	    nowChoose = data;
-    	    SongsArray = GetInit.getList(data[0]);
     	    loadSongs(SongsArray.list[data[1]]);
 	    }
 	}
