@@ -149,7 +149,7 @@ class RelaxSubState extends MusicBeatSubstate
             }
             
             // 设置所有音频的完成回调
-            for (i in 0...currentSounds.length) {
+            for (i in 0...(currentSounds.length - 1)) {
                 currentSounds[i].onComplete = function() {
                     soundCompletionFlags[i] = true;
                     
