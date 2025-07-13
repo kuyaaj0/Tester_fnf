@@ -19,8 +19,8 @@ class ListButtons extends FlxSpriteGroup
     private var background:FlxSprite;
     private var text:FlxText;
     
-    public var onClick:Void->Void = null;
-    public var unClick:Void->Void = null;
+    public var onClick:ListButtons->Void = null;
+    public var unClick:ListButtons->Void = null;
     public var isPressed:Bool = false;
     public var isChoose:Bool = false;
     public var allowChoose:Bool = true;
