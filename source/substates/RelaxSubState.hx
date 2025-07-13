@@ -258,12 +258,6 @@ class RelaxSubState extends MusicBeatSubstate
                 recordPicture = null;
             }
             
-            if (audio != null) {
-                remove(audio);
-                audio.destroy();
-                audio = null;
-            }
-            
             var backgroundImage = (songInfo.background != null && songInfo.background.length > 0) ? songInfo.background[0] : null;
             var recordImage = (songInfo.record != null && songInfo.record.length > 0) ? songInfo.record[0] : null;
             
@@ -839,11 +833,6 @@ class RelaxSubState extends MusicBeatSubstate
         returnToPool(recordPicture);
         returnToPool(oldBackendPicture);
         returnToPool(oldRecordPicture);
-        
-        if (audio != null) {
-            audio.destroy();
-            audio = null;
-        }
         
         if (SoundGroup != null) {
             SoundGroup.pause();
