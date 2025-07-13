@@ -15,7 +15,7 @@ class AudioDisplayExpand extends AudioDisplay.AudioDisplay
         // 调用父类构造函数，传入null或第一个声音
         super(snd != null && snd.length > 0 ? snd[0] : null, X, Y, Width, Height, line, gap, Color, symmetry);
         
-        this.soundArray = snd;
+        this.soundArray = snd != null ? snd : [];
         
         // 为每个声音创建分析器
         if (snd != null)
@@ -116,7 +116,7 @@ class AudioDisplayExpand extends AudioDisplay.AudioDisplay
     public function changeAnalyzers(sounds:Array<FlxSound>)
     {
         analyzers = [];
-        soundArray = sounds;
+        soundArray = sounds != null ? sounds : [];
         
         if (sounds != null)
         {
@@ -148,12 +148,12 @@ class AudioCircleDisplayExpand extends AudioDisplay.AudioCircleDisplay
     private var analyzers:Array<SpectralAnalyzer> = [];
     
     // 修改构造函数以接受声音数组
-    public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor,Radius:Float = 50, symmetry:Bool = true, Number:Int = 3)
-	{
+    public function new(snd:Array<FlxSound> = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, Radius:Float = 50, symmetry:Bool = true, Number:Int = 3)
+    {
         // 调用父类构造函数，传入null或第一个声音
-        super(snd != null && snd.length > 0 ? snd[0] : null, X, Y, Width, Height, line, gap, Color, symmetry);
+        super(snd != null && snd.length > 0 ? snd[0] : null, X, Y, Width, Height, line, gap, Color, Radius, symmetry, Number);
         
-        this.soundArray = snd;
+        this.soundArray = snd != null ? snd : [];
         
         // 为每个声音创建分析器
         if (snd != null)
@@ -254,7 +254,7 @@ class AudioCircleDisplayExpand extends AudioDisplay.AudioCircleDisplay
     public function changeAnalyzers(sounds:Array<FlxSound>)
     {
         analyzers = [];
-        soundArray = sounds;
+        soundArray = sounds != null ? sounds : [];
         
         if (sounds != null)
         {
