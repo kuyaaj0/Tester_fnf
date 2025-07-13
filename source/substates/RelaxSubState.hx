@@ -104,7 +104,6 @@ class RelaxSubState extends MusicBeatSubstate
                 }
             }
             SoundGroup.sounds = []; // 清空数组
-            SoundGroup.destroy(); // 销毁组
         }
         
         SoundGroup = new FlxSoundGroup();
