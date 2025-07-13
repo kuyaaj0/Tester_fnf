@@ -148,8 +148,8 @@ class AudioCircleDisplayExpand extends AudioDisplay.AudioCircleDisplay
     private var analyzers:Array<SpectralAnalyzer> = [];
     
     // 修改构造函数以接受声音数组
-    public function new(snd:Array<FlxSound> = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, symmetry:Bool = false)
-    {
+    public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor,Radius:Float = 50, symmetry:Bool = true, Number:Int = 3)
+	{
         // 调用父类构造函数，传入null或第一个声音
         super(snd != null && snd.length > 0 ? snd[0] : null, X, Y, Width, Height, line, gap, Color, symmetry);
         

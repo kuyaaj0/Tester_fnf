@@ -318,7 +318,6 @@ class RelaxSubState extends MusicBeatSubstate
 			46, 
 			4, 
 			FlxColor.WHITE,
-			150
 		);
 		
 		audio.alpha = 0;
