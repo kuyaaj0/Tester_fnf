@@ -30,7 +30,7 @@ class RightList extends FlxSpriteGroup
     
     // 显示范围
     private var topBoundary:Float = 60;
-    private var bottomBoundary:Float = Math.floor(FlxG.height * 0.8);
+    private var bottomBoundary:Float = Math.floor(FlxG.height * 0.8) - 5;
     
     public function new(){
         super();
