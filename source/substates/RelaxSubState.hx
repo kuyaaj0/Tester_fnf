@@ -5,7 +5,7 @@ import objects.state.relaxState.ButtonSprite;
 import objects.state.relaxState.TopButtons;
 import objects.state.relaxState.SongInfoDisplay;
 import objects.state.relaxState.ControlButtons;
-import objects.state.relaxState.windows.PlayListWindow;
+import objects.state.relaxState.windows.PlayListWindow; //未完工
 
 import openfl.filters.BlurFilter;
 import openfl.display.Shape;
@@ -31,9 +31,6 @@ import backend.relax.GetInit.SongInfo;
 
 class RelaxSubState extends MusicBeatSubstate
 {
-    static var spritePool:Array<FlxSprite> = [];
-    static var soundPool:Array<FlxSound> = [];
-    
     public static var instance:RelaxSubState;
     
 	public var SongsArray:SongLists = {
@@ -91,186 +88,190 @@ class RelaxSubState extends MusicBeatSubstate
 		SoundGroup = new FlxSoundGroup();
 		addVirtualPad(NONE, B);
 	}
+
 	/**
-     * 加载新歌曲
-     * @param songInfo 歌曲信息
-     */
-    public function loadSongs(songInfo:SongInfo = null):Void 
-    {
-        if (isTransitioning || songInfo == null) return;
-        isTransitioning = true;
-    
-        // 1. 停止当前音乐和音效
-        FlxG.sound.music.stop();
-        SoundGroup.pause();
-        
-        // 回收音效到对象池
-        for (sound in SoundGroup.sounds) {
-            sound.stop();
-            returnToPoolSound(sound);
-        }
-        SoundGroup.sounds = [];
-    
-        // 2. 保存旧对象引用（用于淡出动画）
-        var oldBackend = backendPicture;
-        var oldRecord = recordPicture;
-        
-        // 3. 从对象池获取新对象
-        backendPicture = getSpriteFromPool();
-        recordPicture = getSpriteFromPool();
-    
-        // 4. 设置新背景图片
-        if (songInfo.background != null && songInfo.background.length > 0) 
-        {
-            backendPicture.loadGraphic(songInfo.background[0]);
-            backendPicture.antialiasing = ClientPrefs.data.antialiasing;
-            backendPicture.scale.set(1.1, 1.1);
-            backendPicture.updateHitbox();
-            backendPicture.screenCenter();
-            backendPicture.cameras = [camBack];
-            backendPicture.alpha = 0;
-            add(backendPicture);
-    
-            if (bgBlur) {
-                var blurFilter = new BlurFilter(10, 10, 1);
-                var filterFrames = FlxFilterFrames.fromFrames(
-                    backendPicture.frames, 
-                    backendPicture.frameWidth, 
-                    backendPicture.frameHeight, 
-                    [blurFilter]
-                );
-                filterFrames.applyToSprite(backendPicture);
-            }
-        }
-    
-        // 5. 设置新唱片图片
-        var actualRecordImage = (songInfo.record != null && songInfo.record.length > 0) 
-            ? songInfo.record[0] 
-            : ((songInfo.background != null && songInfo.background.length > 0) ? songInfo.background[0] : null);
-        
-        if (actualRecordImage != null) 
-        {
-            recordPicture.loadGraphic(actualRecordImage);
-            recordPicture.antialiasing = ClientPrefs.data.antialiasing;
-            updatePictureScale();
-            recordPicture.cameras = [camPic];
-            recordPicture.alpha = 0;
-            recordPicture.angle = 0;
-            add(recordPicture);
-        }
-    
-        // 6. 保持原有音频可视化（不修改）
-        audio.alpha = 0; // 重置透明度用于淡入
-    
-        // 7. 播放新音乐
-        if (songInfo.sound != null && songInfo.sound.length > 0) 
-        {
-            // 主音轨
-            FlxG.sound.playMusic(songInfo.sound[0], 1);
-            FlxG.sound.music.onComplete = nextSong;
-    
-            // 附加音效（使用对象池）
-            if (songInfo.sound.length > 1) {
-                for (i in 1...songInfo.sound.length) {
-                    var sound = getSoundFromPool();
-                    sound.loadEmbedded(songInfo.sound[i]);
-                    SoundGroup.add(sound);
-                    sound.play();
-                }
-            }
-    
-            // 更新时间显示
-            songInfoDisplay.songLengthText.text = "0:00 / 0:00";
-            songInfoDisplay.songLengthText.screenCenter(X);
-        }
-    
-        // 8. 更新歌曲信息
-        currentBPM = songInfo.bpm > 0 ? songInfo.bpm : 100;
-        beatTime = 60 / currentBPM;
-        beatTimer = 0;
-        songInfoDisplay.updateSongInfo(
-            songInfo,
-            controlButtons.MiddleButton.x,
-            controlButtons.MiddleButton.y,
-            controlButtons.MiddleButton.width,
-            controlButtons.MiddleButton.height
-        );
-    
-        // 9. 执行过渡动画
-        fadeInNewElements(() -> {
-            fadeOutOldElements(oldBackend, oldRecord, () -> {
-                isTransitioning = false;
-                if (pendingSongIndex != -1) {
-                    var index = pendingSongIndex;
-                    pendingSongIndex = -1;
-                    loadSongs(SongsArray.list[index]);
-                }
-            });
-        });
-    }
-    
-    /**
-     * 淡入新元素
-     */
-    private function fadeInNewElements(onComplete:Void->Void):Void
-    {
-        var elements = [
-            { obj: backendPicture, targetAlpha: 1.0 },
-            { obj: recordPicture, targetAlpha: 1.0 },
-            { obj: audio, targetAlpha: 0.7 }
-        ].filter(item -> item.obj != null);
-        
-        var completed = 0;
-        for (item in elements) 
-        {
-            FlxTween.tween(item.obj, { alpha: item.targetAlpha }, transitionTime, {
-                ease: FlxEase.quadOut,
-                onComplete: () -> {
-                    if (++completed >= elements.length) onComplete();
-                }
-            });
-            
-            // 唱片旋转动画
-            if (item.obj == recordPicture) {
-                FlxTween.tween(item.obj, { angle: 360 }, transitionTime, { ease: FlxEase.quadOut });
-            }
-        }
-        
-        if (elements.length == 0) onComplete();
-    }
-    
-    /**
-     * 淡出旧元素
-     */
-    private function fadeOutOldElements(oldBackend:FlxSprite, oldRecord:FlxSprite, onComplete:Void->Void):Void
-    {
-        var elements = [
-            { obj: oldBackend, angle: oldBackend != null ? oldBackend.angle + 180 : 0 },
-            { obj: oldRecord, angle: oldRecord != null ? oldRecord.angle + 180 : 0 }
-        ].filter(item -> item.obj != null);
-        
-        var completed = 0;
-        for (item in elements) 
-        {
-            FlxTween.tween(item.obj, { 
-                alpha: 0,
-                angle: item.angle
-            }, transitionTime, {
-                ease: FlxEase.quadIn,
-                onComplete: () -> {
-                    remove(item.obj);
-                    if (item.obj == oldBackend || item.obj == oldRecord) {
-                        returnToPool(item.obj); // 回收到对象池
-                    } else {
-                        item.obj.destroy(); // 非池化对象直接销毁
-                    }
-                    if (++completed >= elements.length) onComplete();
-                }
-            });
-        }
-        
-        if (elements.length == 0) onComplete();
-    }
+	 *	@param	songInfo	歌曲信息
+	**/
+	public function loadSongs(songInfo:SongInfo = null):Void {
+		if (isTransitioning || songInfo == null) return;
+		isTransitioning = true;
+		
+		if (songInfo.background != null && songInfo.background.length > 0) {
+			for (bg in songInfo.background) {
+				Paths.image(bg);
+			}
+		}
+		
+		if (songInfo.record != null && songInfo.record.length > 0) {
+			for (rec in songInfo.record) {
+				Paths.image(rec);
+			}
+		}
+		
+		if (songInfo.sound != null && songInfo.sound.length > 0) {
+			for (snd in songInfo.sound) {
+				Paths.music(snd);
+			}
+		}
+		
+		FlxG.sound.music.stop();
+		SoundGroup.pause();
+		SoundGroup.sounds = [];
+		if (songInfo.sound != null && songInfo.sound.length > 0) {
+		    if(songInfo.sound.length > 1){
+		        for (i in 1...songInfo.sound.length - 1){
+		            var ExSound:FlxSound = new FlxSound();
+		            ExSound.loadEmbedded(songInfo.sound[i]);
+		            SoundGroup.add(ExSound);
+		            ExSound.play();
+		        }
+		    }
+		    
+			FlxG.sound.playMusic(songInfo.sound[0], 1);
+			FlxG.sound.music.onComplete = () -> {
+				nextSong();
+			};
+			
+			if (songInfoDisplay.songLengthText != null) {
+				songInfoDisplay.songLengthText.text = "0:00 / 0:00";
+				songInfoDisplay.songLengthText.screenCenter(X);
+			}
+		}
+		
+		if (backendPicture != null) {
+			oldBackendPicture = backendPicture;
+			backendPicture = null;
+		}
+		
+		if (recordPicture != null) {
+			oldRecordPicture = recordPicture;
+			recordPicture = null;
+		}
+		
+		if (audio != null) {
+			audio = null;
+		}
+		
+		var backgroundImage:FlxGraphicAsset = (songInfo.background != null && songInfo.background.length > 0) ? songInfo.background[0] : null;
+		var recordImage:FlxGraphicAsset = (songInfo.record != null && songInfo.record.length > 0) ? songInfo.record[0] : null;
+		
+		createNewElements(backgroundImage, recordImage);
+		applyBlurFilter();
+		
+		updateSongInfoDisplay(songInfo);
+		
+		var allComplete:Bool = false;
+		var newElementsComplete:Bool = false;
+		var oldElementsComplete:Bool = false;
+		
+		function checkAllComplete() {
+			if (newElementsComplete && oldElementsComplete && !allComplete) {
+				allComplete = true;
+				isTransitioning = false;
+				
+				if (pendingSongIndex != -1) {
+					var indexToLoad = pendingSongIndex;
+					pendingSongIndex = -1;
+					
+					new FlxTimer().start(0.1, function(_) {
+						if (indexToLoad >= 0 && indexToLoad < SongsArray.list.length) {
+							currentSongIndex = indexToLoad;
+							loadSongs(SongsArray.list[currentSongIndex]);
+						}
+					});
+				}
+			}
+		}
+		
+		fadeInNewElements(() -> {
+			newElementsComplete = true;
+			checkAllComplete();
+		});
+		
+		fadeOutOldElements(() -> {
+			oldElementsComplete = true;
+			checkAllComplete();
+		});
+	}
+
+	private function fadeOutOldElements(onComplete:Void->Void):Void {
+		var tweenCount = 0;
+		var totalTweens = 0;
+		
+		if (oldBackendPicture != null) totalTweens++;
+		if (oldRecordPicture != null) totalTweens++;
+		
+		if (totalTweens == 0) {
+			onComplete();
+			return;
+		}
+		
+		function checkComplete() {
+			tweenCount++;
+			if (tweenCount >= totalTweens) {
+				onComplete();
+			}
+		}
+		
+		if (oldBackendPicture != null) {
+			FlxTween.tween(oldBackendPicture, {alpha: 0}, transitionTime, {
+				ease: FlxEase.quadIn,
+				onComplete: function(twn:FlxTween) {
+					remove(oldBackendPicture);
+					oldBackendPicture.destroy();
+					oldBackendPicture.kill();
+					oldBackendPicture = null;
+					checkComplete();
+				}
+			});
+		}
+		
+		if (oldRecordPicture != null) {
+			FlxTween.tween(oldRecordPicture, {alpha: 0, angle: 180}, transitionTime, {
+				ease: FlxEase.quadIn,
+				onComplete: function(twn:FlxTween) {
+					remove(oldRecordPicture);
+					oldRecordPicture.destroy();
+					oldRecordPicture.kill();
+					oldRecordPicture = null;
+					checkComplete();
+				}
+			});
+		}
+	}
+	
+	private function createNewElements(background:FlxGraphicAsset, recordImage:FlxGraphicAsset):Void {
+		if (background != null) {
+			backendPicture = new FlxSprite().loadGraphic(background);
+			backendPicture.antialiasing = ClientPrefs.data.antialiasing;
+			backendPicture.scale.set(1.1,1.1);
+			backendPicture.updateHitbox();
+			backendPicture.screenCenter();
+			backendPicture.cameras = [camBack];
+			backendPicture.alpha = 0;
+			add(backendPicture);
+		}
+
+		audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
+									  500, 100, 46, 4, FlxColor.WHITE, 150);
+		audio.alpha = 0;
+		audio.cameras = [camBack];
+		add(audio);
+
+		var actualRecordImage:FlxGraphicAsset = recordImage;
+		if (actualRecordImage == null && background != null) {
+			actualRecordImage = background;
+		}
+		
+		if (actualRecordImage != null) {
+			recordPicture = new FlxSprite().loadGraphic(actualRecordImage);
+			recordPicture.antialiasing = ClientPrefs.data.antialiasing;
+			updatePictureScale();
+			recordPicture.cameras = [camPic];
+			recordPicture.alpha = 0;
+			add(recordPicture);
+		}
+	}
 	
 	/**
 	 * 更新歌曲信息显示
@@ -553,17 +554,73 @@ class RelaxSubState extends MusicBeatSubstate
 		recordPicture.screenCenter();
 	}
 
-	override function destroy() {
-        // 清理对象池
-        for (sprite in spritePool) {
-            sprite.destroy();
-        }
-        spritePool = [];
-        
-        for (sound in soundPool) {
-            sound.destroy();
-        }
-        soundPool = [];
+	override function destroy()
+	{
+		if (songInfoDisplay.songNameTween != null && songInfoDisplay.songNameTween.active) {
+			songInfoDisplay.songNameTween.cancel();
+			songInfoDisplay.songNameTween = null;
+		}
+		
+		if (topTrapezoidTween != null && topTrapezoidTween.active) {
+			topTrapezoidTween.cancel();
+			topTrapezoidTween = null;
+		}
+		
+		if (backendPicture != null) {
+			backendPicture.destroy();
+			backendPicture = null;
+		}
+		
+		if (recordPicture != null) {
+			recordPicture.destroy();
+			recordPicture = null;
+		}
+		
+		if (audio != null) {
+			audio.destroy();
+			audio = null;
+		}
+		
+		if (oldBackendPicture != null) {
+			oldBackendPicture.destroy();
+			oldBackendPicture = null;
+		}
+		
+		if (oldRecordPicture != null) {
+			oldRecordPicture.destroy();
+			oldRecordPicture = null;
+		}
+		
+		if (controlButtons != null) {
+			controlButtons.destroy();
+			controlButtons = null;
+		}
+		
+		if (topButtons != null) {
+			topButtons.destroy();
+			topButtons = null;
+		}
+		
+		if (songInfoDisplay != null) {
+			songInfoDisplay.destroy();
+			songInfoDisplay = null;
+		}
+		
+		if (circleMask != null) {
+			circleMask = null;
+		}
+		
+		if (topTrapezoid != null) {
+			topTrapezoid.destroy();
+			topTrapezoid = null;
+		}
+
+		currentSongIndex = 0;
+		pendingSongIndex = -1;
+		SongsArray = {
+			name: "Unknown",
+			list: []
+		};
 		
 		super.destroy();
 	}
@@ -827,41 +884,4 @@ class RelaxSubState extends MusicBeatSubstate
     	    loadSongs(SongsArray.list[data[1]]);
 	    }
 	}
-	
-	static function getSpriteFromPool():FlxSprite {
-        while (spritePool.length > 0) {
-            var sprite = spritePool.pop();
-            if (sprite != null && sprite.graphic != null) {
-                sprite.revive();
-                return sprite;
-            }
-        }
-        return new FlxSprite();
-    }
-    
-    static function returnToPool(sprite:FlxSprite) {
-        if (sprite != null) {
-            sprite.kill();
-            spritePool.push(sprite);
-        }
-    }
-    
-    static function getSoundFromPool():FlxSound {
-        while (soundPool.length > 0) {
-            var sound = soundPool.pop();
-            if (sound != null) {
-                sound.revive();
-                return sound;
-            }
-        }
-        return new FlxSound();
-    }
-    
-    static function returnToPoolSound(sound:FlxSound) {
-        if (sound != null) {
-            sound.stop();
-            sound.kill();
-            soundPool.push(sound);
-        }
-    }
 }
