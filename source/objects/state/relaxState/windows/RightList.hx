@@ -58,7 +58,7 @@ class RightList extends FlxSpriteGroup
                 }
             };
             
-            button.onClick = function(bto:ListButtons) {
+            button.unClick = function(bto:ListButtons) {
                 if (onButtonClicked != null && FlxG.mouse.overlaps(this)) {
                     bto.isChoose = false;
                 }
