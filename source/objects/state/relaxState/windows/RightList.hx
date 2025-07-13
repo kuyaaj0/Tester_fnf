@@ -50,7 +50,7 @@ class RightList extends FlxSpriteGroup
             var listName = GetInit.getAllListName().get(i);
             button.setText(listName != null ? listName : "Unnamed List");
             
-            button.onClick = function(bto) {
+            button.onClick = function(bto:ListButtons) {
                 if (onButtonClicked != null) {
                     onButtonClicked(i);
                     nowChoose = i;
@@ -58,7 +58,7 @@ class RightList extends FlxSpriteGroup
                 }
             };
             
-            button.onClick = function(bto) {
+            button.onClick = function(bto:ListButtons) {
                 if (onButtonClicked != null && FlxG.mouse.overlaps(this)) {
                     bto.isChoose = false;
                 }
