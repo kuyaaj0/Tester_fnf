@@ -223,7 +223,7 @@ class RelaxSubState extends MusicBeatSubstate
                 }
             }
             
-            FlxG.camera.list[0].flash(FlxColor.BLACK, 0.3, null, true);
+            FlxG.camera.flash(FlxColor.BLACK, 0.3, null, true);
             
             FlxG.sound.music.stop();
             SoundGroup.pause();
@@ -846,10 +846,8 @@ class RelaxSubState extends MusicBeatSubstate
         }
         
         if (SoundGroup != null) {
-            for (sound in SoundGroup.sounds) {
-                returnToPoolSound(sound);
-            }
-            SoundGroup.destroy();
+            SoundGroup.pause();
+            SoundGroup.sounds = [];
         }
         
         if (circleMask != null) {
