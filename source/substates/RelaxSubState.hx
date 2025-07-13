@@ -1,11 +1,11 @@
 package substates;
 
-import objects.AudioDisplay.AudioCircleDisplay;
 import objects.state.relaxState.ButtonSprite;
 import objects.state.relaxState.TopButtons;
 import objects.state.relaxState.SongInfoDisplay;
 import objects.state.relaxState.ControlButtons;
-import objects.state.relaxState.windows.PlayListWindow; //未完工
+import objects.state.relaxState.windows.PlayListWindow;
+import objects.AudioDisplayExpand.AudioCircleDisplayExpand;
 
 import openfl.filters.BlurFilter;
 import openfl.display.Shape;
@@ -17,7 +17,7 @@ import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
-//import flixel.sound.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.system.FlxAssets.FlxSoundAsset;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxTimer;
@@ -46,7 +46,6 @@ class RelaxSubState extends MusicBeatSubstate
 	var camText:FlxCamera;
 	var camHUD:FlxCamera;
 	public var camOption:FlxCamera;
-	public var ListCam:FlxCamera; //干脆用相机切
 	var camVpad:FlxCamera;
 	
 	private var currentBPM:Float = 100;
@@ -60,12 +59,11 @@ class RelaxSubState extends MusicBeatSubstate
 	var circleMask:Shape;
 	
 	var backendPicture:FlxSprite;
-	var audio:AudioCircleDisplay;
+	var multiAudioDisplay:AudioCircleDisplayExpand;
 	var recordPicture:FlxSprite;
 	
 	var oldBackendPicture:FlxSprite;
 	var oldRecordPicture:FlxSprite;
-	var oldAudio:AudioCircleDisplay;
 
 	var transitionTime:Float = 0.5;
 	var isTransitioning:Bool = false;
@@ -78,6 +76,9 @@ class RelaxSubState extends MusicBeatSubstate
 	public var songInfoDisplay:SongInfoDisplay;
 	
 	public var playListWindow:PlayListWindow;
+	
+	// 存储当前播放的所有声音
+	private var currentSounds:Array<FlxSound> = [];
 
 	public function new()
 	{
@@ -93,6 +94,15 @@ class RelaxSubState extends MusicBeatSubstate
 	public function loadSongs(songInfo:SongInfo = null):Void {
 		if (isTransitioning || songInfo == null) return;
 		isTransitioning = true;
+		
+		// 停止并清理当前所有声音
+		for (sound in currentSounds) {
+			if (sound != null) {
+				sound.stop();
+				sound.destroy();
+			}
+		}
+		currentSounds = [];
 		
 		if (songInfo.background != null && songInfo.background.length > 0) {
 			for (bg in songInfo.background) {
@@ -112,12 +122,16 @@ class RelaxSubState extends MusicBeatSubstate
 			}
 		}
 		
-		FlxG.sound.music.stop();
+		// 加载多个音频
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
-			FlxG.sound.playMusic(songInfo.sound[0], 1);
-			FlxG.sound.music.onComplete = () -> {
-				nextSong();
-			};
+			for (sndPath in songInfo.sound) {
+				var sound = FlxG.sound.load(Paths.music(sndPath));
+				sound.play();
+				sound.onComplete = () -> {
+					nextSong();
+				};
+				currentSounds.push(sound);
+			}
 			
 			if (songInfoDisplay.songLengthText != null) {
 				songInfoDisplay.songLengthText.text = "0:00 / 0:00";
@@ -135,9 +149,11 @@ class RelaxSubState extends MusicBeatSubstate
 			recordPicture = null;
 		}
 		
-		if (audio != null) {
-			oldAudio = audio;
-			audio = null;
+		// 创建/更新音频显示
+		if (multiAudioDisplay != null) {
+			remove(multiAudioDisplay);
+			multiAudioDisplay.destroy();
+			multiAudioDisplay = null;
 		}
 		
 		var backgroundImage:FlxGraphicAsset = (songInfo.background != null && songInfo.background.length > 0) ? songInfo.background[0] : null;
@@ -182,65 +198,6 @@ class RelaxSubState extends MusicBeatSubstate
 		});
 	}
 
-	private function fadeOutOldElements(onComplete:Void->Void):Void {
-		var tweenCount = 0;
-		var totalTweens = 0;
-		
-		if (oldBackendPicture != null) totalTweens++;
-		if (oldRecordPicture != null) totalTweens++;
-		if (oldAudio != null) totalTweens++;
-		
-		if (totalTweens == 0) {
-			onComplete();
-			return;
-		}
-		
-		function checkComplete() {
-			tweenCount++;
-			if (tweenCount >= totalTweens) {
-				onComplete();
-			}
-		}
-		
-		if (oldBackendPicture != null) {
-			FlxTween.tween(oldBackendPicture, {alpha: 0}, transitionTime, {
-				ease: FlxEase.quadIn,
-				onComplete: function(twn:FlxTween) {
-					remove(oldBackendPicture);
-					oldBackendPicture.destroy();
-					oldBackendPicture.kill();
-					oldBackendPicture = null;
-					checkComplete();
-				}
-			});
-		}
-		
-		if (oldRecordPicture != null) {
-			FlxTween.tween(oldRecordPicture, {alpha: 0, angle: 180}, transitionTime, {
-				ease: FlxEase.quadIn,
-				onComplete: function(twn:FlxTween) {
-					remove(oldRecordPicture);
-					oldRecordPicture.destroy();
-					oldRecordPicture.kill();
-					oldRecordPicture = null;
-					checkComplete();
-				}
-			});
-		}
-		
-		if (oldAudio != null) {
-			FlxTween.tween(oldAudio, {alpha: 0}, transitionTime, {
-				ease: FlxEase.quadIn,
-				onComplete: function(twn:FlxTween) {
-					remove(oldAudio);
-					oldAudio.destroy();
-					oldAudio = null;
-					checkComplete();
-				}
-			});
-		}
-	}
-	
 	private function createNewElements(background:FlxGraphicAsset, recordImage:FlxGraphicAsset):Void {
 		if (background != null) {
 			backendPicture = new FlxSprite().loadGraphic(background);
@@ -253,11 +210,21 @@ class RelaxSubState extends MusicBeatSubstate
 			add(backendPicture);
 		}
 
-		audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
-									  500, 100, 46, 4, FlxColor.WHITE, 150);
-		audio.alpha = 0;
-		audio.cameras = [camBack];
-		add(audio);
+		// 创建多音频显示器
+		multiAudioDisplay = new AudioCircleDisplayExpand(
+			currentSounds, 
+			FlxG.width / 2, 
+			FlxG.height / 2,
+			500, 
+			100, 
+			46, 
+			4, 
+			FlxColor.WHITE,
+			true
+		);
+		multiAudioDisplay.alpha = 0;
+		multiAudioDisplay.cameras = [camBack];
+		add(multiAudioDisplay);
 
 		var actualRecordImage:FlxGraphicAsset = recordImage;
 		if (actualRecordImage == null && background != null) {
@@ -273,45 +240,14 @@ class RelaxSubState extends MusicBeatSubstate
 			add(recordPicture);
 		}
 	}
-	
-	/**
-	 * 更新歌曲信息显示
-	 * @param songInfo 歌曲信息
-	 */
-	private function updateSongInfoDisplay(songInfo:SongInfo):Void {
-		if (songInfo == null) return;
-		
-		currentBPM = songInfo.bpm > 0 ? songInfo.bpm : 100;
-		beatTime = 60 / currentBPM;
-		beatTimer = 0;
-		
-		songInfoDisplay.updateSongInfo(
-			songInfo, 
-			controlButtons.MiddleButton.x, 
-			controlButtons.MiddleButton.y, 
-			controlButtons.MiddleButton.width, 
-			controlButtons.MiddleButton.height
-		);
-	}
-		
-	private function applyBlurFilter():Void {
-		if (backendPicture != null && bgBlur) {
-			var blurFilter:BlurFilter = new BlurFilter(10, 10, 1);
-			var filterFrames = FlxFilterFrames.fromFrames(backendPicture.frames, 
-														Std.int(backendPicture.width), 
-														Std.int(backendPicture.height), 
-														[blurFilter]);
-			filterFrames.applyToSprite(backendPicture, false, true);
-		}
-	}
-	
+
 	private function fadeInNewElements(onComplete:Void->Void):Void {
 		var tweenCount = 0;
 		var totalTweens = 0;
 		
 		if (backendPicture != null) totalTweens++;
 		if (recordPicture != null) totalTweens++;
-		if (audio != null) totalTweens++;
+		if (multiAudioDisplay != null) totalTweens++;
 		
 		if (totalTweens == 0) {
 			onComplete();
@@ -339,230 +275,30 @@ class RelaxSubState extends MusicBeatSubstate
 			});
 		}
 		
-		if (audio != null) {
-			FlxTween.tween(audio, {alpha: 0.7}, transitionTime, {
+		if (multiAudioDisplay != null) {
+			FlxTween.tween(multiAudioDisplay, {alpha: 0.7}, transitionTime, {
 				ease: FlxEase.quadOut,
 				onComplete: function(_) checkComplete()
 			});
 		}
 	}
 
-	var topTrapezoid:FlxSprite;
-	var hideTimer:Float = 0;
-	var waitingToHide:Bool = false;
-	var topTrapezoidTween:FlxTween = null;
-	var isTweening:Bool = false;
-
-	private function drawTrapezoid(topWidth:Float, height:Float):Void {
-		var bottomWidth = topWidth * 0.8;
-		var sideSlope = (topWidth - bottomWidth) / 2;
-		
-		topTrapezoid.makeGraphic(Std.int(topWidth), Std.int(height), FlxColor.TRANSPARENT, true);
-		
-		var vertices = [
-			new FlxPoint(0, 0),
-			new FlxPoint(topWidth, 0),
-			new FlxPoint(topWidth - sideSlope, height), 
-			new FlxPoint(sideSlope, height)
-		];
-		FlxSpriteUtil.drawPolygon(topTrapezoid, vertices, 0xFF24232C);
-	}
-
-	private function createTopButtons():Void {
-		topButtons = new TopButtons();
-		
-		// 设置相机
-		for (member in topButtons.members) {
-			if (member != null) {
-				member.cameras = [camOption];
-			}
-		}
-		
-		add(topButtons);
-	}
-
-	override function create()
-	{
-	    instance = this;
-		camBack = new FlxCamera();
-		camPic = new FlxCamera();
-		camText = new FlxCamera();
-		camHUD = new FlxCamera();
-		camVpad = new FlxCamera();
-
-		camHUD.bgColor.alpha = 0;
-		camPic.bgColor.alpha = 0;
-		camText.bgColor.alpha = 0;
-		camBack.bgColor.alpha = 0;
-		camVpad.bgColor.alpha = 0;
-
-		camOption = new FlxCamera();
-		camOption.bgColor.alpha = 0;
-		camOption.y = 0;
-
-		FlxG.cameras.add(camBack, false);
-		FlxG.cameras.add(camPic, false);
-		FlxG.cameras.add(camText, false);
-		FlxG.cameras.add(camHUD, false);
-		FlxG.cameras.add(camOption, false);
-		FlxG.cameras.add(camVpad, false);
-		
-		ListCam = new FlxCamera();
-		ListCam.bgColor.alpha = 0;
-		ListCam.height = Math.floor(FlxG.height * 0.8);
-		ListCam.y = 120;
-		FlxG.cameras.add(ListCam, false);
-		
-		virtualPad.cameras = [camVpad];
-
-		topTrapezoid = new FlxSprite();
-		drawTrapezoid(FlxG.width * 0.7, 40);
-		topTrapezoid.y = 0;
-		topTrapezoid.x = (FlxG.width - topTrapezoid.width) / 2;
-		topTrapezoid.scrollFactor.set();
-		topTrapezoid.cameras = [camOption];
-		add(topTrapezoid);
-		camOption.y = -topTrapezoid.height;
-
-		createTopButtons();
-		
-		defaultZoom = 1.0;
-		camPic.zoom = defaultZoom;
-
-		super.create();
-
-		createButtons();
-
-		// 创建歌曲信息显示
-		songInfoDisplay = new SongInfoDisplay();
-		add(songInfoDisplay.songNameText);
-		add(songInfoDisplay.writerText);
-		add(songInfoDisplay.songLengthText);
-		
-		songInfoDisplay.songNameText.cameras = [camText];
-		songInfoDisplay.writerText.cameras = [camText];
-		songInfoDisplay.songLengthText.cameras = [camHUD];
-
-
-		circleMask = new Shape();
-		updateMask();
-
-		initSongsList(0);
-		
-		if (SongsArray.list.length > 0) {
-			currentSongIndex = 0;
-			pendingSongIndex = -1;
-			loadSongs(SongsArray.list[0]);
-		}
-		
-		playListWindow = new PlayListWindow();
-		for (i in playListWindow.members){
-		    i.cameras = [camOption];
-		}
-		add(playListWindow);
-		
-		var DebugText:FlxText = new FlxText(0, 0, FlxG.width, SongsArray.name, 25);
-		DebugText.font = Paths.font('Lang-ZH.ttf');
-		add(DebugText);
-		DebugText.cameras = [camHUD];
-	}
-
-	function createButtons(){
-		controlButtons = new ControlButtons();
-		
-		add(controlButtons.LeftButton);
-		add(controlButtons.MiddleButton);
-		add(controlButtons.RightButton);
-		
-		controlButtons.LeftButton.cameras = [camHUD];
-		controlButtons.MiddleButton.cameras = [camHUD];
-		controlButtons.RightButton.cameras = [camHUD];
-		
-		controlButtons.LeftButton.pixelPerfectPosition = true;
-		controlButtons.RightButton.pixelPerfectPosition = true;
-		controlButtons.MiddleButton.pixelPerfectPosition = true;
-	}
-	
-	private function initSongsList(ListNum:Int = 0):Void {
-		SongsArray = GetInit.getList(ListNum);
-	}
-	/**
-	 * 切换到下一首歌曲
-	 */
-	private function nextSong():Void {
-		if (SongsArray.list.length <= 1) return;
-		
-		var nextIndex = (currentSongIndex + 1) % SongsArray.list.length;
-		
-		if (isTransitioning) {
-			pendingSongIndex = nextIndex;
-			return;
-		}
-		
-		currentSongIndex = nextIndex;
-		loadSongs(SongsArray.list[currentSongIndex]);
-	}
-	
-	/**
-	 * 切换到上一首歌曲
-	 */
-	private function prevSong():Void {
-		if (SongsArray.list.length <= 1) return;
-		
-		var prevIndex = (currentSongIndex - 1 + SongsArray.list.length) % SongsArray.list.length;
-		
-		if (isTransitioning) {
-			pendingSongIndex = prevIndex;
-			return;
-		}
-		
-		currentSongIndex = prevIndex;
-		loadSongs(SongsArray.list[currentSongIndex]);
-	}
-
-	private function updateMask():Void
-	{
-		if (circleMask == null) {
-			circleMask = new Shape();
-		}
-		
-		var maxRadius:Float = Math.min(FlxG.stage.stageWidth, FlxG.stage.stageHeight) / 2;
-		maskRadius = Math.min(maskRadius, maxRadius);
-		
-		circleMask.graphics.clear();
-		circleMask.graphics.beginFill(0xFFFFFF);
-		
-		var scaledRadius:Float = Math.min(
-			maskRadius * (FlxG.stage.stageHeight / FlxG.height), 
-			maskRadius * (FlxG.stage.stageWidth / FlxG.width)
-		);
-		
-		circleMask.graphics.drawCircle(
-			FlxG.stage.stageWidth / 2, 
-			FlxG.stage.stageHeight / 2, 
-			scaledRadius
-		);
-		circleMask.graphics.endFill();
-
-		camPic.flashSprite.mask = circleMask;
-		camText.flashSprite.mask = circleMask;
-	}
-
-	private function updatePictureScale():Void
-	{
-		if (recordPicture == null) return;
-		
-		var scaleX:Float = (maskRadius * 2) / recordPicture.width;
-		var scaleY:Float = (maskRadius * 2) / recordPicture.height;
-		var scale:Float = Math.max(scaleX, scaleY);
-
-		recordPicture.scale.set(scale, scale);
-		recordPicture.updateHitbox();
-		recordPicture.screenCenter();
-	}
-
 	override function destroy()
 	{
+		// 清理声音数组
+		for (sound in currentSounds) {
+			if (sound != null) {
+				sound.stop();
+				sound.destroy();
+			}
+		}
+		currentSounds = [];
+		
+		if (multiAudioDisplay != null) {
+			multiAudioDisplay.destroy();
+			multiAudioDisplay = null;
+		}
+		
 		if (songInfoDisplay.songNameTween != null && songInfoDisplay.songNameTween.active) {
 			songInfoDisplay.songNameTween.cancel();
 			songInfoDisplay.songNameTween = null;
@@ -583,11 +319,6 @@ class RelaxSubState extends MusicBeatSubstate
 			recordPicture = null;
 		}
 		
-		if (audio != null) {
-			audio.destroy();
-			audio = null;
-		}
-		
 		if (oldBackendPicture != null) {
 			oldBackendPicture.destroy();
 			oldBackendPicture = null;
@@ -596,11 +327,6 @@ class RelaxSubState extends MusicBeatSubstate
 		if (oldRecordPicture != null) {
 			oldRecordPicture.destroy();
 			oldRecordPicture = null;
-		}
-		
-		if (oldAudio != null) {
-			oldAudio.destroy();
-			oldAudio = null;
 		}
 		
 		if (controlButtons != null) {
@@ -636,7 +362,7 @@ class RelaxSubState extends MusicBeatSubstate
 		
 		super.destroy();
 	}
-
+	
 	private function handleTopTrapezoidVisibility(nearTop:Bool, elapsed:Float):Void {
 		if (nearTop) {
 			if (waitingToHide) {
@@ -880,15 +606,17 @@ class RelaxSubState extends MusicBeatSubstate
 
 	public function OtherListLoad(data:Array<Int> = null){
 	    try{
+	        if(data[0] >= GetInit.getListNum())
+    	        data[0] = GetInit.getListNum() - 1;
+    	
+    	    SongsArray = GetInit.getList(data[0]);
+    	    
     	    if(data[1] >= SongsArray.list.length){
     	        data[1] = SongsArray.list.length - 1;
     	    }
-    	    if(data[0] >= GetInit.getListNum())
-    	        data[0] = GetInit.getListNum() - 1;
-    	        
     	    nowChoose = data;
     	    currentSongIndex = data[1];
-    	    SongsArray = GetInit.getList(data[0]);
+    	    
     	    loadSongs(SongsArray.list[data[1]]);
 	    }
 	}
