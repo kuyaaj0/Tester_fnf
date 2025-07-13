@@ -71,7 +71,7 @@ class AudioDisplayExpand extends FlxSpriteGroup
 		    for (group in sndAnalyzer){
 		       sum += group.getLevels()[i];
 		    }
-		    bruh.push(sum / sndAnalyzer[0].length)
+		    bruh.push(sum / sndAnalyzer[0].length);
 		}
 
 		getValues = bruh;
