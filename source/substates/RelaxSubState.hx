@@ -96,6 +96,19 @@ class RelaxSubState extends MusicBeatSubstate
 		if (isTransitioning || songInfo == null) return;
 		isTransitioning = true;
 		
+		if (SoundGroup != null) {
+            for (sound in SoundGroup.sounds) {
+                if (sound != null) {
+                    sound.stop();
+                    sound.destroy();
+                }
+            }
+            SoundGroup.sounds = []; // 清空数组
+            SoundGroup.destroy(); // 销毁组
+        }
+        
+        SoundGroup = new FlxSoundGroup();
+		
 		if (songInfo.background != null && songInfo.background.length > 0) {
 			for (bg in songInfo.background) {
 				Paths.image(bg);
@@ -116,7 +129,6 @@ class RelaxSubState extends MusicBeatSubstate
 		
 		FlxG.sound.music.stop();
 		SoundGroup.pause();
-		SoundGroup.sounds = [];
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
 		    if(songInfo.sound.length > 1){
 		        for (i in 1...songInfo.sound.length - 1){
