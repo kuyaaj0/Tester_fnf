@@ -116,17 +116,13 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 		
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
-            var sound = cachedSounds.get(songInfo.sound[0]);
-            FlxG.sound.playMusic(sound, 1);
-            FlxG.sound.music.onComplete = nextSong;
-            
             if (songInfo.sound.length > 1) {
-                Sound1.loadEmbedded(songInfo.sound[1]);
+                Sound1.loadEmbedded(songInfo.sound[1], false, true);
                 Sound1.play();
             }
             
             if (songInfo.sound.length > 2) {
-                Sound2.loadEmbedded(songInfo.sound[2]);
+                Sound2.loadEmbedded(songInfo.sound[2], false, true);
                 Sound2.play();
             }
         }
