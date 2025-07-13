@@ -3,214 +3,291 @@ package objects;
 import flixel.sound.FlxSound;
 import funkin.vis.dsp.SpectralAnalyzer;
 
-class AudioDisplayExpand extends AudioDisplay
+class AudioDisplayExpand extends FlxSpriteGroup
 {
-    // 存储多个分析器
-    private var analyzers:Array<SpectralAnalyzer> = [];
-    
-    public function new(sounds:Array<FlxSound> = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, symmetry:Bool = false)
-    {
-        // 调用父类构造函数，传入第一个有效音频或null
-        super(getFirstValidSound(sounds), X, Y, Width, Height, line, gap, Color, symmetry);
-        
-        // 延迟初始化分析器（等待音频加载）
-        FlxG.signals.postUpdate.addOnce(() -> {
-            if (sounds != null) {
-                for (sound in sounds) {
-                    addSoundAnalyzer(sound, line);
-                }
-            }
-        });
-    }
+    var analyzer:SpectralAnalyzer;
 
-    // 辅助方法：获取第一个有效的音频
-    static function getFirstValidSound(sounds:Array<FlxSound>):FlxSound 
-    {
-        if (sounds == null) return null;
-        for (sound in sounds) {
-            if (isSoundValid(sound)) return sound;
-        }
-        return null;
-    }
+	public var snd:Array<FlxSound> = [];
+	public var sndAnalyzer:Array<SpectralAnalyzer> =[];
 
-    // 辅助方法：检查音频是否有效
-    static function isSoundValid(sound:FlxSound):Bool 
-    {
-        if (sound == null) return false;
-        @:privateAccess
-        return sound._channel != null && sound._channel.__audioSource != null;
-    }
+	var _height:Int;
+	var line:Int;
 
-    // 添加单个音频分析器
-    function addSoundAnalyzer(sound:FlxSound, line:Int):Void 
-    {
-        if (!isSoundValid(sound)) return;
-        
-        @:privateAccess
-        var analyzer = new SpectralAnalyzer(
-            sound._channel.__audioSource, 
-            Std.int(line * 1 + Math.abs(0.05 * (4 - ClientPrefs.data.audioDisplayQuality))), 
-            1, 
-            5
-        );
-        analyzer.fftN = 256 * ClientPrefs.data.audioDisplayQuality;
-        analyzers.push(analyzer);
-    }
+    public function new(snd:Array<FlxSound> = [], X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, symmetry:Bool = false)
+	{
+	    super(X, Y);
 
-    override function update(elapsed:Float)
-    {
-        if (stopUpdate) return;
+		this.snd = snd;
+		this.line = line;
+		this.symmetry = symmetry;
 
-        if (saveTime < ClientPrefs.data.audioDisplayUpdate)
-        {
-            saveTime += elapsed * 1000;
-            updateLine(elapsed);
-            return;
-        }
-        saveTime = 0;
+		for (i in 0...line)
+		{
+			var newLine = new FlxSprite().makeGraphic(Std.int(Width / line - gap), 1, Color);
+			newLine.x = (Width / line) * i;
+			add(newLine);
+		}
 
-        // 计算所有分析器的平均值
-        if (analyzers.length > 0)
-        {
-            var combinedValues:Array<funkin.vis.dsp.Bar> = null;
-            for (analyzer in analyzers)
-            {
-                var currentValues = analyzer.getLevels();
-                if (combinedValues == null)
-                {
-                    combinedValues = currentValues.copy();
-                }
-                else 
-                {
-                    for (i in 0...combinedValues.length)
-                    {
-                        if (i < currentValues.length) combinedValues[i].value += currentValues[i].value;
-                    }
-                }
-            }
-            
-            if (combinedValues != null)
-            {
-                for (value in combinedValues) value.value /= analyzers.length;
-                getValues = combinedValues;
-            }
-        }
-        
-        updateLine(elapsed);
-        super.update(elapsed);
-    }
+		_height = Height;
+		@:privateAccess
+		if(snd.length > 0){
+		    for (sound in snd){
+		        if (snd != null)
+        		{
+        			analyzer = new SpectralAnalyzer(snd._channel.__audioSource, Std.int(line * 1 + Math.abs(0.05 * (4 - ClientPrefs.data.audioDisplayQuality))), 1, 5);
+        			analyzer.fftN = 256 * ClientPrefs.data.audioDisplayQuality;
+        			sndAnalyzer.push(analyzer);
+        		}
+		    }
+		}
+	}
+	
+	public var stopUpdate:Bool = false;
 
-    // 更新音频分析方法（兼容单个和多个音频）
-    public function changeAnalyzers(sounds:Array<FlxSound>):Void
-    {
-        analyzers = [];
-        if (sounds != null) 
-        {
-            for (sound in sounds) 
-            {
-                addSoundAnalyzer(sound, line);
-            }
-            snd = getFirstValidSound(sounds); // 更新父类的当前音频引用
-        }
-        stopUpdate = false;
-    }
+	var saveTime:Float = 0;
+	var getValues:Array<funkin.vis.dsp.Bar>;
 
-    // 保持对父类方法的兼容
-    override public function changeAnalyzer(sound:FlxSound):Void
-    {
-        changeAnalyzers(sound != null ? [sound] : null);
-    }
+	override function update(elapsed:Float)
+	{
+		if (stopUpdate)
+			return;
+
+		if (saveTime < ClientPrefs.data.audioDisplayUpdate)
+		{
+			saveTime += (elapsed * 1000);
+
+			updateLine(elapsed);
+			return;
+		}
+		else
+		{
+			saveTime = 0;
+		}
+		
+		var bruh:Array<funkin.vis.dsp.Bar> =[];
+		
+		for (i in 0...(sndAnalyzer[0].length - 1)){
+		    var sum = 0.0;
+		    for (group in sndAnalyzer){
+		       sum += group.getLevels()[i];
+		    }
+		    bruh.push(sum / sndAnalyzer[0].length)
+		}
+
+		getValues = bruh;
+		
+		updateLine(elapsed);
+
+		super.update(elapsed);
+	}
+
+	function addAnalyzer(snd:FlxSound)
+	{
+		@:privateAccess
+		if (snd != null && analyzer == null)
+		{
+			analyzer = new SpectralAnalyzer(snd._channel.__audioSource, Std.int(line * 1 + Math.abs(0.05 * (4 - ClientPrefs.data.audioDisplayQuality))), 1, 5);
+			analyzer.fftN = 256 * ClientPrefs.data.audioDisplayQuality;
+		}
+	}
+
+	var animFrame:Int = 0;
+
+	function updateLine(elapsed:Float)
+	{
+		if (getValues == null)
+			return;
+
+		for (i in 0...members.length)
+		{
+			if (i >= members.length / 2 && symmetry)
+			{
+				animFrame = Math.round(getValues[members.length - 1 - i].value * _height);
+			}
+			else
+			{
+				animFrame = Math.round(getValues[i].value * _height);
+			}
+
+			animFrame = Math.round(animFrame * FlxG.sound.volume);
+
+			members[i].scale.y = FlxMath.lerp(animFrame, members[i].scale.y, Math.exp(-elapsed * 16));
+			if (members[i].scale.y < _height / 40)
+				members[i].scale.y = _height / 40;
+			
+			members[i].y = this.y - members[i].scale.y / 2;
+		}
+	}
+
+	public function changeAnalyzer(snd:FlxSound)
+	{
+		@:privateAccess
+		analyzer.changeSnd(snd._channel.__audioSource);
+
+		stopUpdate = false;
+	}
+
+	public function clearUpdate()
+	{
+		for (i in 0...members.length)
+		{
+			members[i].scale.y = _height / 40;
+			members[i].y = this.y - members[i].scale.y / 2;
+		}
+	}
 }
 
-class AudioCircleDisplayExpand extends AudioCircleDisplay
+class AudioCircleDisplayExpand extends FlxSpriteGroup
 {
-    private var analyzers:Array<SpectralAnalyzer> = [];
-    
-    public function new(sounds:Array<FlxSound> = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, Radius:Float = 50, symmetry:Bool = true, Number:Int = 3)
-    {
-        // 调用父类构造函数
-        super(getFirstValidSound(sounds), X, Y, Width, Height, line, gap, Color, Radius, symmetry, Number);
-        
-        // 延迟初始化分析器
-        FlxG.signals.postUpdate.addOnce(() -> {
-            if (sounds != null) {
-                for (sound in sounds) {
-                    addSoundAnalyzer(sound, line);
-                }
-            }
-        });
-    }
+	var analyzer:SpectralAnalyzer;
 
-    static function getFirstValidSound(sounds:Array<FlxSound>):FlxSound {
-        if (sounds == null) return null;
-        for (sound in sounds) {
-            @:privateAccess
-            if (sound._channel?.__audioSource != null) return sound;
-        }
-        return null;
-    }
+	public var snd:FlxSound;
 
-    static function isSoundValid(sound:FlxSound):Bool 
-    {
-        if (sound == null) return false;
-        @:privateAccess
-        return sound._channel != null && sound._channel.__audioSource != null;
-    }
+	var _height:Int;
+	public var line:Int;
 
-    function addSoundAnalyzer(sound:FlxSound, line:Int):Void 
-    {
-        if (!isSoundValid(sound)) return;
-        
-        @:privateAccess
-        var analyzer = new SpectralAnalyzer(
-            sound._channel.__audioSource, 
-            Std.int(line * 1 + Math.abs(0.05 * (4 - ClientPrefs.data.audioDisplayQuality))), 
-            1, 
-            5
-        );
-        analyzer.fftN = 256 * ClientPrefs.data.audioDisplayQuality;
-        analyzers.push(analyzer);
-    }
+	public var Radius:Float = 0;
+	
+	var symmetry:Bool = true;
+	var Number:Int = 1;
+	
+	public var snd:Array<FlxSound> = [];
+	public var sndAnalyzer:Array<SpectralAnalyzer> =[];
 
-    override function update(elapsed:Float) {
-        if (stopUpdate) return;
+	public function new(snd:Array<FlxSound> = [], X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, symmetry:Bool = true, Number:Int = 3;)
+	{
+		super(X, Y);
 
-        if (saveTime < ClientPrefs.data.audioDisplayUpdate) {
-            saveTime += elapsed * 1000;
-            updateLine(elapsed);
-            return;
-        }
-        saveTime = 0;
+		this.snd = snd;
+		this.line = line;
+		this.Radius = Radius;
+		this.symmetry = symmetry;
+		if (Number < 1)
+			Number = 1;
 
-        // 多音频频谱平均计算
-        if (analyzers.length > 0) {
-            var combinedValues = analyzers[0].getLevels().copy();
-            for (i in 1...analyzers.length) {
-                var values = analyzers[i].getLevels();
-                for (j in 0...combinedValues.length) {
-                    if (j < values.length) combinedValues[j].value += values[j].value;
-                }
-            }
-            for (value in combinedValues) value.value /= analyzers.length;
-            getValues = combinedValues;
-        }
-        
-        updateLine(elapsed);
-        super.update(elapsed);
-    }
+		this.Number = Number;
 
-    public function changeAnalyzers(sounds:Array<FlxSound>):Void {
-        analyzers = [];
-        if (sounds != null) {
-            for (sound in sounds) {
-                addSoundAnalyzer(sound, line);
-            }
-            snd = getFirstValidSound(sounds);
-        }
-        stopUpdate = false;
-    }
+		for (i in 0...line * Number)
+		{
+			var newLine = new FlxSprite().makeGraphic(gap, 1, Color);
+			var angle = (360 / (line * Number)) * i;
+			newLine.angle = angle;
+			newLine.origin.y = 1;
+			var correctedAngle = angle - 90;
+			var radians = correctedAngle * Math.PI / 180;
+			var moveX = Math.cos(radians) * Radius;
+			var moveY = Math.sin(radians) * Radius;
+			newLine.x += moveX;
+			newLine.y += moveY;
+			add(newLine);
+		}
+		_height = Height;
+		@:privateAccess
+		
+		if(snd.length > 0){
+		    for (sound in snd){
+		        if (snd != null)
+        		{
+        			analyzer = new SpectralAnalyzer(snd._channel.__audioSource, Std.int(line * 1 + Math.abs(0.05 * (4 - ClientPrefs.data.audioDisplayQuality))), 1, 5);
+        			analyzer.fftN = 256 * ClientPrefs.data.audioDisplayQuality;
+        			sndAnalyzer.push(analyzer);
+        		}
+		    }
+		}
+	}
 
-    override public function changeAnalyzer(sound:FlxSound):Void {
-        changeAnalyzers(sound != null ? [sound] : null);
-    }
+	public var stopUpdate:Bool = false;
+
+	var saveTime:Float = 0;
+	var getValues:Array<funkin.vis.dsp.Bar>;
+
+	override function update(elapsed:Float)
+	{
+		if (stopUpdate)
+			return;
+
+		if (saveTime < ClientPrefs.data.audioDisplayUpdate)
+		{
+			saveTime += (elapsed * 1000);
+
+			updateLine(elapsed);
+			return;
+		}
+		else
+		{
+			saveTime = 0;
+		}
+
+		var bruh:Array<funkin.vis.dsp.Bar> =[];
+		
+		for (i in 0...(sndAnalyzer[0].length - 1)){
+		    var sum = 0.0;
+		    for (group in sndAnalyzer){
+		       sum += group.getLevels()[i];
+		    }
+		    bruh.push(sum / sndAnalyzer[0].length)
+		}
+
+		getValues = bruh;
+		updateLine(elapsed);
+
+		super.update(elapsed);
+	}
+
+	function addAnalyzer(snd:FlxSound)
+	{
+		@:privateAccess
+		if (snd != null && analyzer == null)
+		{
+			analyzer = new SpectralAnalyzer(snd._channel.__audioSource, Std.int(line * 1 + Math.abs(0.05 * (4 - ClientPrefs.data.audioDisplayQuality))), 1, 5);
+			analyzer.fftN = 256 * ClientPrefs.data.audioDisplayQuality;
+		}
+	}
+
+	var animFrame:Int = 0;
+
+	function updateLine(elapsed:Float)
+	{
+		if (getValues == null)
+			return;
+
+		for (i in 0...line)
+		{
+			if (i >= line / 2 && symmetry)
+			{
+				animFrame = Math.round(getValues[line - i].value * _height);
+			}
+			else
+			{
+				animFrame = Math.round(getValues[i].value * _height);
+			}
+
+			animFrame = Math.round(animFrame * FlxG.sound.volume);
+
+			for (i1 in 0...Number)
+			{
+				var nowLine:Int = i + (i1 * line);
+				members[nowLine].scale.y = FlxMath.lerp(animFrame, members[nowLine].scale.y, Math.exp(-elapsed * 16));
+				if (members[nowLine].scale.y < _height / 40)
+					members[nowLine].scale.y = _height / 40;
+			}
+		}
+	}
+
+	public function changeAnalyzer(snd:FlxSound)
+	{
+		@:privateAccess
+		analyzer.changeSnd(snd._channel.__audioSource);
+
+		stopUpdate = false;
+	}
+
+	public function clearUpdate()
+	{
+		for (i in 0...members.length)
+		{
+			members[i].scale.y = _height / 40;
+			members[i].y = this.y - members[i].scale.y / 2;
+		}
+	}
 }

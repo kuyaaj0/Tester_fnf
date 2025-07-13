@@ -5,7 +5,7 @@ import objects.state.relaxState.ButtonSprite;
 import objects.state.relaxState.TopButtons;
 import objects.state.relaxState.SongInfoDisplay;
 import objects.state.relaxState.ControlButtons;
-import objects.state.relaxState.windows.PlayListWindow; //未完工
+import objects.state.relaxState.windows.PlayListWindow;
 
 import openfl.filters.BlurFilter;
 import openfl.display.Shape;
@@ -46,7 +46,6 @@ class RelaxSubState extends MusicBeatSubstate
 	var camText:FlxCamera;
 	var camHUD:FlxCamera;
 	public var camOption:FlxCamera;
-	public var ListCam:FlxCamera; //干脆用相机切
 	var camVpad:FlxCamera;
 	
 	private var currentBPM:Float = 100;
