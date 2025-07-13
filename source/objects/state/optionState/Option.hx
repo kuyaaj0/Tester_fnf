@@ -124,7 +124,7 @@ class Option extends FlxSpriteGroup
 			case STRING:
 				addString();
 			case TEXT:
-				addTip();
+				addCata();
 			case TITLE:
 				addTitle();
 			case STATE:
@@ -224,7 +224,7 @@ class Option extends FlxSpriteGroup
 
 	var tipsLight:Rect;
 	var tipsText:FlxText;
-	function addTip()
+	function addCata()
 	{
 		tipsText = new FlxText(0, 0, 0, description, Std.int(follow.width / 10));
 		tipsText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(follow.width / 45), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
@@ -306,10 +306,12 @@ class Option extends FlxSpriteGroup
 	var baseTar:FlxText;
 	var baseLine:Rect;
 	var baseDesc:FlxText;
+	var mult:Float = 1; //一些数据需要保持一致
 	function baseBGAdd(double:Bool = false)
 	{
-		var mult:Float = 1; //一些数据需要保持一致
+		
 		if (double) mult = 2;
+		else mult = 1;
 
 		var calcWidth:Float = 0;
 		if (!double) calcWidth = follow.bg.realWidth * ((1 - (1 / 2 / 50 * 3)) / 2);
@@ -397,6 +399,40 @@ class Option extends FlxSpriteGroup
 			default:
 		}
 		change();
+	}
+
+	public function changeLanguage() {
+		this.description = Language.get(variable, 'op');
+		this.tips = Language.get(variable, 'opSub');
+		alreadyShow = false;
+		switch (type)
+		{
+			case BOOL:
+				baseChangeLanguage();
+			case INT, FLOAT, PERCENT:
+				baseChangeLanguage();
+			case STRING:
+				baseChangeLanguage();
+			case TITLE:
+				title.text = description;
+				title.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(follow.width / 30), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+				title.borderStyle = NONE;
+			case TEXT:
+				tipsText.text = description;
+				tipsText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(follow.width / 45), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+				tipsText.borderStyle = NONE;
+			default:
+		}
+	}
+
+	function baseChangeLanguage() {
+		baseTar.text = 'Target: ' + variable;
+		baseTar.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.width / 30 / mult), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+		baseTar.borderStyle = NONE;
+
+		baseDesc.text = description;
+		baseDesc.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.width / 25 / mult), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+		baseDesc.borderStyle = NONE;
 	}
 
 	////////////////////////////////////////////////

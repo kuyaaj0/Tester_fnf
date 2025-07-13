@@ -10,22 +10,22 @@ class GamePlayGroup extends OptionCata
         addOption(option);
 
         var option:Option = new Option(this, 'downScroll', BOOL);
-        addOption(option, true);
+        addOption(option);
 
         var option:Option = new Option(this, 'middleScroll', BOOL);
-        addOption(option);
+        addOption(option, true);
 
         var option:Option = new Option(this, 'flipChart', BOOL);
-        addOption(option, true);
+        addOption(option);
 
         var option:Option = new Option(this, 'ghostTapping', BOOL);
-        addOption(option);
-
-        var option:Option = new Option(this, 'guitarHeroSustains', BOOL);
         addOption(option, true);
 
-        var option:Option = new Option(this, 'noReset', BOOL);
+        var option:Option = new Option(this, 'guitarHeroSustains', BOOL);
         addOption(option);
+
+        var option:Option = new Option(this, 'noReset', BOOL);
+        addOption(option, true);
 
         /////--Opponent--\\\\\
 

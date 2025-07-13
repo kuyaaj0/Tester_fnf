@@ -27,12 +27,12 @@ class AlphaText extends FlxSpriteGroup
 
     public function setFormat(?Font:String = null, Size:Int = 8, Color:FlxColor = FlxColor.WHITE, ?Alignment:FlxTextAlign, ?BorderStyle:FlxTextBorderStyle,
 			BorderColor:FlxColor = FlxColor.TRANSPARENT, EmbeddedFont:Bool = true) {
-            if (Font == null) Font =  Paths.font(Language.get('fontName', 'ma') + '.ttf');
-        mainText.setFormat(Font, Size, Color, Alignment, BorderStyle, BorderColor, EmbeddedFont);
-        minorText.setFormat(Font, Size, Color, Alignment, BorderStyle, BorderColor, EmbeddedFont);
+                if (Font == null) Font =  Paths.font(Language.get('fontName', 'ma') + '.ttf');
+                mainText.setFormat(Font, Size, Color, Alignment, BorderStyle, BorderColor, EmbeddedFont);
+                minorText.setFormat(Font, Size, Color, Alignment, BorderStyle, BorderColor, EmbeddedFont);
 
-        mainText.borderStyle = NONE;
-        minorText.borderStyle = NONE;
+                mainText.borderStyle = NONE;
+                minorText.borderStyle = NONE;
     }
 
     var mainTween:FlxTween;

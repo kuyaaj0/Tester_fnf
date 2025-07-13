@@ -155,8 +155,12 @@ class StringSelect extends FlxSpriteGroup
         str.clipRect = swagRect;
     }
     
-    private function updateSelection(index:Int):Void
+    public function updateSelection(index:Int):Void
     {
+        for (i in 0...optionSprites.length) {
+            if (i == index) optionSprites[i].setAlpha = 0.1;
+            else optionSprites[i].setAlpha = 0;
+        }
     }
 }
 
@@ -171,7 +175,7 @@ class ChooseRect extends FlxSpriteGroup {
 
     var name:String;
 
-    var setAlpha:Float = 0;
+    public var setAlpha:Float = 0;
 
     ///////////////////////////////////////////////////////////////////////////////
 
@@ -223,6 +227,7 @@ class ChooseRect extends FlxSpriteGroup {
                 follow.follow.setValue(name);
                 follow.follow.updateDisText();
                 follow.follow.change();
+                follow.updateSelection(optionSort);
                 follow.follow.stringRect.change(); //关闭设置了喵
             }
         } else {

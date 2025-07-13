@@ -5,8 +5,11 @@ class TipButton extends FlxSpriteGroup
     public var background:RoundRect;
     public var textDis:AlphaText;
 
+    var saveHeight:Float;
     public function new(X:Float, Y:Float, width:Float, height:Float) {
         super(X, Y);
+
+        this.saveHeight = height;
         
         background = new RoundRect(0, 0, width, height, height / 5, LEFT_UP, EngineSet.mainColor);
         background.alpha = 0.3;
@@ -32,10 +35,14 @@ class TipButton extends FlxSpriteGroup
 
     public function changeText(newText:String, ?time = 0.4) {
         textDis.changeText(newText, time * 1.2);
-        var newWidth = textDis.minorText.textField.textWidth + background.mainRound * 2;
+        //var newWidth = textDis.minorText.textField.textWidth + background.mainRound * 2;
 
-        background.changeWidth(newWidth, time, 'expoInOut');
-        var newHeight = textDis.minorText.textField.textHeight + background.mainRound;
-        background.changeHeight(newHeight, time, 'expoInOut');
+        //background.changeWidth(newWidth, time, 'expoInOut');
+        //var newHeight = textDis.minorText.textField.textHeight + background.mainRound;
+        //background.changeHeight(newHeight, time, 'expoInOut');
+    }
+
+    public function changeLanguage() {
+        textDis.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(saveHeight * 0.32), EngineSet.mainColor, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
     }
 }

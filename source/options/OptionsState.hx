@@ -304,12 +304,20 @@ class OptionsState extends MusicBeatState
 
 	public function resetData()
 	{
-		for (spr in 0...naviSpriteGroup.length - 1) {
+		for (spr in 0...naviSpriteGroup.length) {
 			if (naviSpriteGroup[spr].cataChoose == true) {
 				cataGroup[spr].resetData();
 				break;
 			}
 		}
+	}
+
+	public function changeLanguage() {
+		for (spr in 0...naviSpriteGroup.length) {
+				naviSpriteGroup[spr].changeLanguage();
+				cataGroup[spr].changeLanguage();
+		}
+		tipButton.changeLanguage();
 	}
 
 	public static var stateType:Int = 0; //检测到底退回到哪个界面

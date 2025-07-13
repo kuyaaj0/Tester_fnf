@@ -17,6 +17,8 @@ class NaviSprite extends FlxSpriteGroup
     var mainWidth:Float;
     var mainHeight:Float;
 
+    var name:String;
+
     ///////////////////////////////////////////////////////////////////////////////
 
     public function new(X:Float, Y:Float, width:Float, height:Float, name:String, sort:Int, modsAdd:Bool = false) {
@@ -25,6 +27,8 @@ class NaviSprite extends FlxSpriteGroup
 
         mainWidth = width;
         mainHeight = height;
+
+        this.name = name;
 
         background = new Rect(0, 0, width, height, height / 5, height / 5, EngineSet.mainColor, 0.0000001);
         add(background);
@@ -93,4 +97,10 @@ class NaviSprite extends FlxSpriteGroup
                 //this.scale.x = this.scale.y += ((1 - this.scale.x) * (1 - this.scale.x) * 0.75); //haxe太粑粑了
         }
 	}
+
+    public function changeLanguage() {
+        textDis.text = Language.get(name, 'op');
+        textDis.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(height * 0.25), EngineSet.mainColor, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        textDis.borderStyle = NONE;
+    }
 }

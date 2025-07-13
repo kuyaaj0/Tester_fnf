@@ -70,6 +70,12 @@ class OptionCata extends FlxSpriteGroup
 			option.resetData();
 	}
 
+	public function changeLanguage() {
+		for (option in optionArray) {
+			option.changeLanguage();
+		}
+	}
+
 	public function changeHeight(time:Float = 0.6) {
 		bg.changeHeight(heightSet + heightSetOffset, time, 'expoInOut');
 	}

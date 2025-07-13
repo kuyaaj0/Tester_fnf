@@ -85,6 +85,8 @@ class GeneralGroup extends OptionCata
 		return output;
 	}
 
+	///////////////////////////////////////////////////////////////
+
 	function onChangeFramerate()
 	{
 		if (ClientPrefs.data.framerate > FlxG.drawFramerate)
@@ -112,9 +114,7 @@ class GeneralGroup extends OptionCata
 	function onChangeLanguage()
 	{
 		Language.resetData();
-		FlxTransitionableState.skipNextTransIn = true;
-		FlxTransitionableState.skipNextTransOut = true;
-		MusicBeatState.switchState(new OptionsState());
+		OptionsState.instance.changeLanguage();
 	}
 
 	function onChangeGcZone()
