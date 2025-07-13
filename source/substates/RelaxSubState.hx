@@ -85,6 +85,7 @@ class RelaxSubState extends MusicBeatSubstate
 		super();
         FlxG.state.persistentUpdate = false;
 		FlxG.sound.music.stop();
+		Paths.clearUnusedMemory();
 		addVirtualPad(NONE, B);
 	}
 
@@ -94,6 +95,8 @@ class RelaxSubState extends MusicBeatSubstate
 	public function loadSongs(songInfo:SongInfo = null):Void {
 		if (isTransitioning || songInfo == null) return;
 		isTransitioning = true;
+		
+		Paths.clearUnusedMemory();
 
 		if (songInfo.background != null && songInfo.background.length > 0) {
 			for (bg in songInfo.background) {
