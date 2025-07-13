@@ -154,7 +154,7 @@ class AudioCircleDisplayExpand extends FlxSpriteGroup
 	public var snd:Array<FlxSound> = [];
 	public var sndAnalyzer:Array<SpectralAnalyzer> =[];
 
-	public function new(snd:Array<FlxSound> = [], X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, symmetry:Bool = true, Number:Int = 3;)
+	public function new(snd:Array<FlxSound> = [], X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor, symmetry:Bool = true, Number:Int = 3)
 	{
 		super(X, Y);
 
