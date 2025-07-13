@@ -6,11 +6,13 @@ import flixel.FlxG;
 import flixel.math.FlxMath;
 import Lambda;
 
-class LeftList extends FlxSpriteGroup
+class RightList extends FlxSpriteGroup
 {
-    public var LeftButtons:Map<Int, ListButtons> = new Map();
+    public var RightButtons:Map<Int, ListButtons> = new Map();
     public var onButtonClicked:Int->Void = null;
     public var onListUpdated:Void->Void = null;
+    
+    public var nowChoose:Int = 0;
     
     // 滚动相关变量
     private var scrollY:Float = 0;
@@ -30,33 +32,32 @@ class LeftList extends FlxSpriteGroup
     private var topBoundary:Float = 60;
     private var bottomBoundary:Float = Math.floor(FlxG.height * 0.8);
     
-    public function new(nowChoose:Int = 0){
+    public function new(){
         super();
-        updateList(nowChoose);
+        updateList();
     }
     
-    public function updateList(nowChoose:Int = 0){
+    public function updateList(){
         clearButtons();
         
-        var songList = GetInit.getList(nowChoose).list; // 获取当前歌单的歌曲列表
+        var listCount = GetInit.getListNum();
         var buttonWidth = FlxG.width * 0.3 - BUTTON_WIDTH_PADDING;
         
-        for (i in 0...songList.length) {
+        for (i in 0...listCount) {
             var yPos = BUTTON_PADDING_TOP + i * BUTTON_SPACING;
             var button = new ListButtons(10, yPos, buttonWidth, BUTTON_HEIGHT);
             
-            button.setText(songList[i].name != null ? songList[i].name : "未知歌曲");
+            var listName = GetInit.getAllListName().get(i);
+            button.setText(listName != null ? listName : "Unnamed List");
             
             button.onClick = function() {
                 if (onButtonClicked != null) {
                     onButtonClicked(i);
+                    nowChoose = i;
                 }
-                // 向PlayListWindow发送双击请求
-                PlayListWindow.instance.nowChoose = [nowChoose, i];
-                PlayListWindow.instance.handleDoubleClickCheck();
             };
             
-            LeftButtons.set(i, button);
+            RightButtons.set(i, button);
             add(button);
         }
         
@@ -148,10 +149,10 @@ class LeftList extends FlxSpriteGroup
     }
     
     public function clearButtons() {
-        for (button in LeftButtons) {
+        for (button in RightButtons) {
             remove(button);
             button.destroy();
         }
-        LeftButtons.clear();
+        RightButtons.clear();
     }
 }
