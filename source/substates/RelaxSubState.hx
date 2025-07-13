@@ -1,6 +1,6 @@
 package substates;
 
-import objects.AudioDisplay.AudioCircleDisplay;
+import objects.AudioDisplayExpand.AudioCircleDisplayExpand;
 import objects.state.relaxState.ButtonSprite;
 import objects.state.relaxState.TopButtons;
 import objects.state.relaxState.SongInfoDisplay;
