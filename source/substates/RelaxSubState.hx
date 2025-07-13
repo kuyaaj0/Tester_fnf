@@ -769,7 +769,7 @@ class RelaxSubState extends MusicBeatSubstate
 				
 				if (FlxG.sound.music.playing) {
 					FlxG.sound.music.pause();
-					SoundGroup.pause()
+					SoundGroup.pause();
 				} else {
 					FlxG.sound.music.play();
 					SoundGroup.resume();
