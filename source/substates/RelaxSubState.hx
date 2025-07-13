@@ -204,7 +204,20 @@ class RelaxSubState extends MusicBeatSubstate
         
         isTransitioning = true;
         
+        // 先停止并清理现有资源
+        FlxG.sound.music.stop();
+        SoundGroup.pause();
+        SoundGroup.clear();
+        
+        // 清理旧的显示对象
+        if (audio != null) {
+            remove(audio);
+            audio.destroy();
+            audio = null;
+        }
+        
         Thread.create(() -> {
+            // 预加载资源
             if (songInfo.background != null) {
                 for (bg in songInfo.background) {
                     Paths.image(bg);
@@ -225,205 +238,160 @@ class RelaxSubState extends MusicBeatSubstate
             
             FlxG.camera.flash(FlxColor.BLACK, 0.3, null, true);
             
-            FlxG.sound.music.stop();
-            SoundGroup.pause();
-            SoundGroup.sounds = [];
+            // 创建新资源
+            var newBackendPicture:FlxSprite = null;
+            var newRecordPicture:FlxSprite = null;
+            var newAudio:AudioCircleDisplay = null;
+            
+            if (songInfo.background != null && songInfo.background.length > 0) {
+                newBackendPicture = getSpriteFromPool();
+                newBackendPicture.loadGraphic(songInfo.background[0]);
+                newBackendPicture.antialiasing = ClientPrefs.data.antialiasing;
+                newBackendPicture.scale.set(1.1, 1.1);
+                newBackendPicture.updateHitbox();
+                newBackendPicture.screenCenter();
+                newBackendPicture.cameras = [camBack];
+                newBackendPicture.alpha = 0;
+            }
+            
+            if (songInfo.record != null && songInfo.record.length > 0) {
+                newRecordPicture = getSpriteFromPool();
+                newRecordPicture.loadGraphic(songInfo.record[0]);
+                newRecordPicture.antialiasing = ClientPrefs.data.antialiasing;
+                newRecordPicture.cameras = [camPic];
+                newRecordPicture.alpha = 0;
+            }
             
             if (songInfo.sound != null && songInfo.sound.length > 0) {
-                if (songInfo.sound.length > 1) {
-                    for (i in 1...songInfo.sound.length - 1) {
-                        var ExSound = getSoundFromPool();
-                        ExSound.loadEmbedded(songInfo.sound[i]);
-                        SoundGroup.add(ExSound);
-                        ExSound.play();
-                    }
-                }
-                
                 FlxG.sound.playMusic(songInfo.sound[0], 1);
                 FlxG.sound.music.onComplete = nextSong;
                 
-                if (songInfoDisplay.songLengthText != null) {
-                    songInfoDisplay.songLengthText.text = "0:00 / 0:00";
-                    songInfoDisplay.songLengthText.screenCenter(X);
+                newAudio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
+                                                500, 100, 46, 4, FlxColor.WHITE, 150);
+                newAudio.alpha = 0;
+                newAudio.cameras = [camBack];
+            }
+            
+            // 在主线程执行添加和动画
+            FlxG.camera.list.splice(FlxG.camera.list.indexOf(camBack), 1);
+            FlxG.camera.list.splice(FlxG.camera.list.indexOf(camPic), 1);
+            
+            FlxG.calls.push(function() {
+                // 添加新元素
+                if (newBackendPicture != null) {
+                    add(newBackendPicture);
+                    if (bgBlur) {
+                        var blurFilter = new BlurFilter(10, 10, 1);
+                        var filterFrames = FlxFilterFrames.fromFrames(newBackendPicture.frames, 
+                                                                    Std.int(newBackendPicture.width), 
+                                                                    Std.int(newBackendPicture.height), 
+                                                                    [blurFilter]);
+                        filterFrames.applyToSprite(newBackendPicture, false, true);
+                    }
                 }
-            }
-            
-            if (backendPicture != null) {
-                oldBackendPicture = backendPicture;
-                backendPicture = null;
-            }
-            
-            if (recordPicture != null) {
-                oldRecordPicture = recordPicture;
-                recordPicture = null;
-            }
-            
-            var backgroundImage = (songInfo.background != null && songInfo.background.length > 0) ? songInfo.background[0] : null;
-            var recordImage = (songInfo.record != null && songInfo.record.length > 0) ? songInfo.record[0] : null;
-            
-            if (backgroundImage != null) {
-                backendPicture = getSpriteFromPool();
-                backendPicture.loadGraphic(backgroundImage);
-                backendPicture.antialiasing = ClientPrefs.data.antialiasing;
-                backendPicture.scale.set(1.1, 1.1);
-                backendPicture.updateHitbox();
-                backendPicture.screenCenter();
-                backendPicture.cameras = [camBack];
-                backendPicture.alpha = 0;
-                add(backendPicture);
-            }
-
-            audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
-                                        500, 100, 46, 4, FlxColor.WHITE, 150);
-            audio.alpha = 0;
-            audio.cameras = [camBack];
-            add(audio);
-
-            var actualRecordImage = recordImage;
-            if (actualRecordImage == null && backgroundImage != null) {
-                actualRecordImage = backgroundImage;
-            }
-            
-            if (actualRecordImage != null) {
-                recordPicture = getSpriteFromPool();
-                recordPicture.loadGraphic(actualRecordImage);
-                recordPicture.antialiasing = ClientPrefs.data.antialiasing;
-                updatePictureScale();
-                recordPicture.cameras = [camPic];
-                recordPicture.alpha = 0;
-                add(recordPicture);
-            }
-            
-            if (bgBlur && backendPicture != null) {
-                var blurFilter:BlurFilter = new BlurFilter(10, 10, 1);
-                var filterFrames = FlxFilterFrames.fromFrames(backendPicture.frames, 
-                                                            Std.int(backendPicture.width), 
-                                                            Std.int(backendPicture.height), 
-                                                            [blurFilter]);
-                filterFrames.applyToSprite(backendPicture, false, true);
-            }
-            
-            currentBPM = songInfo.bpm > 0 ? songInfo.bpm : 100;
-            beatTime = 60 / currentBPM;
-            beatTimer = 0;
-            
-            songInfoDisplay.updateSongInfo(
-                songInfo, 
-                controlButtons.MiddleButton.x, 
-                controlButtons.MiddleButton.y, 
-                controlButtons.MiddleButton.width, 
-                controlButtons.MiddleButton.height
-            );
-            
-            var allComplete = false;
-            var newElementsComplete = false;
-            var oldElementsComplete = false;
-            
-            function checkAllComplete() {
-                if (newElementsComplete && oldElementsComplete && !allComplete) {
-                    allComplete = true;
-                    isTransitioning = false;
-                    
-                    if (pendingSongIndex != -1) {
-                        var indexToLoad = pendingSongIndex;
-                        pendingSongIndex = -1;
+                
+                if (newAudio != null) {
+                    add(newAudio);
+                }
+                
+                if (newRecordPicture != null) {
+                    add(newRecordPicture);
+                    updatePictureScale();
+                }
+                
+                // 淡入新元素
+                var tweenCount = 0;
+                var totalTweens = [newBackendPicture, newAudio, newRecordPicture].filter(obj -> obj != null).length;
+                
+                function checkNewComplete() {
+                    if (++tweenCount >= totalTweens) {
+                        // 淡出旧元素
+                        var oldTweenCount = 0;
+                        var totalOldTweens = [backendPicture, audio, recordPicture].filter(obj -> obj != null).length;
                         
-                        new FlxTimer().start(0.1, function(_) {
-                            if (indexToLoad >= 0 && indexToLoad < SongsArray.list.length) {
-                                currentSongIndex = indexToLoad;
-                                loadSongs(SongsArray.list[currentSongIndex]);
+                        function checkOldComplete() {
+                            if (++oldTweenCount >= totalOldTweens) {
+                                // 清理旧资源
+                                if (backendPicture != null) {
+                                    remove(backendPicture);
+                                    returnToPool(backendPicture);
+                                }
+                                if (audio != null) {
+                                    remove(audio);
+                                    audio.destroy();
+                                }
+                                if (recordPicture != null) {
+                                    remove(recordPicture);
+                                    returnToPool(recordPicture);
+                                }
+                                
+                                // 更新引用
+                                backendPicture = newBackendPicture;
+                                audio = newAudio;
+                                recordPicture = newRecordPicture;
+                                
+                                isTransitioning = false;
+                                
+                                if (pendingSongIndex != -1) {
+                                    var indexToLoad = pendingSongIndex;
+                                    pendingSongIndex = -1;
+                                    loadSongs(SongsArray.list[indexToLoad]);
+                                }
                             }
+                        }
+                        
+                        if (totalOldTweens > 0) {
+                            if (backendPicture != null) {
+                                FlxTween.tween(backendPicture, {alpha: 0}, transitionTime, {
+                                    ease: FlxEase.quadIn,
+                                    onComplete: checkOldComplete
+                                });
+                            }
+                            if (audio != null) {
+                                FlxTween.tween(audio, {alpha: 0}, transitionTime, {
+                                    ease: FlxEase.quadIn,
+                                    onComplete: checkOldComplete
+                                });
+                            }
+                            if (recordPicture != null) {
+                                FlxTween.tween(recordPicture, {alpha: 0}, transitionTime, {
+                                    ease: FlxEase.quadIn,
+                                    onComplete: checkOldComplete
+                                });
+                            }
+                        } else {
+                            checkOldComplete();
+                        }
+                    }
+                }
+                
+                if (totalTweens > 0) {
+                    if (newBackendPicture != null) {
+                        FlxTween.tween(newBackendPicture, {alpha: 1}, transitionTime, {
+                            ease: FlxEase.quadOut,
+                            onComplete: checkNewComplete
                         });
                     }
-                }
-            }
-            
-            var tweenCount = 0;
-            var totalTweens = 0;
-            
-            if (backendPicture != null) totalTweens++;
-            if (recordPicture != null) totalTweens++;
-            if (audio != null) totalTweens++;
-            
-            if (totalTweens > 0) {
-                function checkNewComplete() {
-                    tweenCount++;
-                    if (tweenCount >= totalTweens) {
-                        newElementsComplete = true;
-                        checkAllComplete();
+                    if (newAudio != null) {
+                        FlxTween.tween(newAudio, {alpha: 0.7}, transitionTime, {
+                            ease: FlxEase.quadOut,
+                            onComplete: checkNewComplete
+                        });
                     }
-                }
-                
-                if (backendPicture != null) {
-                    var tween = FlxTween.tween(backendPicture, {alpha: 1}, transitionTime, {
-                        ease: FlxEase.quadOut,
-                        onComplete: function(_) checkNewComplete()
-                    });
-                    transitionTweens.push(tween);
-                }
-                
-                if (recordPicture != null) {
-                    var tween = FlxTween.tween(recordPicture, {alpha: 1, angle: 360}, transitionTime, {
-                        ease: FlxEase.quadOut,
-                        onComplete: function(_) checkNewComplete()
-                    });
-                    transitionTweens.push(tween);
-                }
-                
-                if (audio != null) {
-                    var tween = FlxTween.tween(audio, {alpha: 0.7}, transitionTime, {
-                        ease: FlxEase.quadOut,
-                        onComplete: function(_) checkNewComplete()
-                    });
-                    transitionTweens.push(tween);
-                }
-            } else {
-                newElementsComplete = true;
-                checkAllComplete();
-            }
-            
-            tweenCount = 0;
-            totalTweens = 0;
-            
-            if (oldBackendPicture != null) totalTweens++;
-            if (oldRecordPicture != null) totalTweens++;
-            
-            if (totalTweens > 0) {
-                function checkOldComplete() {
-                    tweenCount++;
-                    if (tweenCount >= totalTweens) {
-                        oldElementsComplete = true;
-                        checkAllComplete();
+                    if (newRecordPicture != null) {
+                        FlxTween.tween(newRecordPicture, {alpha: 1, angle: 360}, transitionTime, {
+                            ease: FlxEase.quadOut,
+                            onComplete: checkNewComplete
+                        });
                     }
+                } else {
+                    checkNewComplete();
                 }
                 
-                if (oldBackendPicture != null) {
-                    var tween = FlxTween.tween(oldBackendPicture, {alpha: 0}, transitionTime, {
-                        ease: FlxEase.quadIn,
-                        onComplete: function(twn:FlxTween) {
-                            returnToPool(oldBackendPicture);
-                            oldBackendPicture = null;
-                            checkOldComplete();
-                        }
-                    });
-                    transitionTweens.push(tween);
-                }
-                
-                if (oldRecordPicture != null) {
-                    var tween = FlxTween.tween(oldRecordPicture, {alpha: 0, angle: 180}, transitionTime, {
-                        ease: FlxEase.quadIn,
-                        onComplete: function(twn:FlxTween) {
-                            returnToPool(oldRecordPicture);
-                            oldRecordPicture = null;
-                            checkOldComplete();
-                        }
-                    });
-                    transitionTweens.push(tween);
-                }
-            } else {
-                oldElementsComplete = true;
-                checkAllComplete();
-            }
+                // 重新添加相机
+                FlxG.cameras.add(camBack, false);
+                FlxG.cameras.add(camPic, false);
+            });
         });
     }
 
@@ -773,10 +741,12 @@ class RelaxSubState extends MusicBeatSubstate
     
     static function getSpriteFromPool():FlxSprite 
     {
-        if (spritePool.length > 0) {
+        while (spritePool.length > 0) {
             var sprite = spritePool.pop();
-            sprite.revive();
-            return sprite;
+            if (sprite != null && sprite.graphic != null) {
+                sprite.revive();
+                return sprite;
+            }
         }
         return new FlxSprite();
     }
@@ -785,6 +755,10 @@ class RelaxSubState extends MusicBeatSubstate
     {
         if (sprite != null) {
             sprite.kill();
+            if (sprite.graphic != null) {
+                sprite.graphic.bitmap.dispose();
+                sprite.graphic.destroy();
+            }
             spritePool.push(sprite);
         }
     }
@@ -821,33 +795,27 @@ class RelaxSubState extends MusicBeatSubstate
     {
         cleanupTransitionTweens();
         
-        if (songInfoDisplay.songNameTween != null && songInfoDisplay.songNameTween.active) {
-            songInfoDisplay.songNameTween.cancel();
+        // 清理声音资源
+        if (FlxG.sound.music != null) {
+            FlxG.sound.music.stop();
+            FlxG.sound.music.destroy();
         }
-        
-        if (topTrapezoidTween != null && topTrapezoidTween.active) {
-            topTrapezoidTween.cancel();
-        }
-        
-        returnToPool(backendPicture);
-        returnToPool(recordPicture);
-        returnToPool(oldBackendPicture);
-        returnToPool(oldRecordPicture);
         
         if (SoundGroup != null) {
-            SoundGroup.pause();
-            SoundGroup.sounds = [];
+            SoundGroup.destroy();
+            SoundGroup = null;
         }
         
-        if (circleMask != null) {
-            circleMask = null;
+        // 清理显示对象
+        var toDestroy = [backendPicture, recordPicture, oldBackendPicture, oldRecordPicture, audio];
+        for (obj in toDestroy) {
+            if (obj != null) {
+                if (contains(obj)) remove(obj);
+                obj.destroy();
+            }
         }
         
-        if (topTrapezoid != null) {
-            topTrapezoid.destroy();
-            topTrapezoid = null;
-        }
-        
+        // 清理对象池
         for (sprite in spritePool) {
             sprite.destroy();
         }
@@ -858,15 +826,11 @@ class RelaxSubState extends MusicBeatSubstate
         }
         soundPool = [];
         
-        currentSongIndex = 0;
-        pendingSongIndex = -1;
-        SongsArray = { name: "Unknown", list: [] };
-        
-        lastMousePos.put();
-        mousePosCache.put();
-        centerPoint.put();
-        
-        instance = null;
+        // 其他清理
+        if (circleMask != null) {
+            circleMask.graphics.clear();
+            circleMask = null;
+        }
         
         super.destroy();
     }
