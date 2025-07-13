@@ -141,7 +141,7 @@ class RelaxSubState extends MusicBeatSubstate
             
             // 找到最长的音频
             var maxLength:Float = 0;
-            for (i in 0...currentSounds.length) {
+            for (i in 0...(currentSounds.length - 1)) {
                 if (currentSounds[i].length > maxLength) {
                     maxLength = currentSounds[i].length;
                     longestSoundIndex = i;
