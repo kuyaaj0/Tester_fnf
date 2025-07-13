@@ -6,13 +6,11 @@ import flixel.FlxG;
 import flixel.math.FlxMath;
 import Lambda;
 
-class RightList extends FlxSpriteGroup
+class LeftList extends FlxSpriteGroup
 {
-    public var RightButtons:Map<Int, ListButtons> = new Map();
+    public var LeftButtons:Map<Int, ListButtons> = new Map();
     public var onButtonClicked:Int->Void = null;
     public var onListUpdated:Void->Void = null;
-    
-    public var nowChoose:Int = 0;
     
     // 滚动相关变量
     private var scrollY:Float = 0;
@@ -32,32 +30,33 @@ class RightList extends FlxSpriteGroup
     private var topBoundary:Float = 60;
     private var bottomBoundary:Float = Math.floor(FlxG.height * 0.8);
     
-    public function new(){
+    public function new(nowChoose:Int = 0){
         super();
-        updateList();
+        updateList(nowChoose);
     }
     
-    public function updateList(){
+    public function updateList(nowChoose:Int = 0){
         clearButtons();
         
-        var listCount = GetInit.getListNum();
+        var songList = GetInit.getList(nowChoose).list; // 获取当前歌单的歌曲列表
         var buttonWidth = FlxG.width * 0.3 - BUTTON_WIDTH_PADDING;
         
-        for (i in 0...listCount) {
+        for (i in 0...songList.length) {
             var yPos = BUTTON_PADDING_TOP + i * BUTTON_SPACING;
             var button = new ListButtons(10, yPos, buttonWidth, BUTTON_HEIGHT);
             
-            var listName = GetInit.getAllListName().get(i);
-            button.setText(listName != null ? listName : "Unnamed List");
+            button.setText(songList[i].name != null ? songList[i].name : "未知歌曲");
             
             button.onClick = function() {
                 if (onButtonClicked != null) {
                     onButtonClicked(i);
-                    nowChoose = i;
                 }
+                // 向PlayListWindow发送双击请求
+                PlayListWindow.instance.nowChoose = [nowChoose, i];
+                PlayListWindow.instance.handleDoubleClickCheck();
             };
             
-            RightButtons.set(i, button);
+            LeftButtons.set(i, button);
             add(button);
         }
         
@@ -112,12 +111,17 @@ class RightList extends FlxSpriteGroup
             scrollSpeed = 0;
         }
         
-        // 限制滚动范围
         var buttonCount = Lambda.count(RightButtons);
-        var maxScroll = Math.max(0, (buttonCount * (BUTTON_HEIGHT + BUTTON_SPACING)) + topBoundary);
-        targetScrollY = FlxMath.bound(targetScrollY, 0, maxScroll);
+        var contentHeight = buttonCount * (BUTTON_HEIGHT + BUTTON_SPACING) + BUTTON_PADDING_TOP;
+        var visibleHeight = bottomBoundary - topBoundary;
         
-        // 平滑滚动
+        if (contentHeight > visibleHeight) {
+            var maxScroll = contentHeight - visibleHeight;
+            targetScrollY = FlxMath.bound(targetScrollY, 0, maxScroll);
+        } else {
+            targetScrollY = 0;
+        }
+        
         scrollY = FlxMath.lerp(scrollY, targetScrollY, 0.2);
     }
     
@@ -129,7 +133,7 @@ class RightList extends FlxSpriteGroup
             var alpha = 1.0;
             
             var upY:Float = topBoundary - i * BUTTON_SPACING;
-            var downY:Float = bottomBoundary - i * BUTTON_SPACING;
+            var downY:Float = bottomBoundary - (i + 1) * BUTTON_SPACING;
             if (yPos < upY) {
                 alpha = FlxMath.remapToRange(yPos, upY - 30, upY, 0, 1);
             }else if (yPos > downY - BUTTON_HEIGHT) {
@@ -139,16 +143,15 @@ class RightList extends FlxSpriteGroup
             alpha = FlxMath.bound(alpha, 0, 1);
             button.alpha = alpha;
             
-            // 根据是否在可见范围内启用/禁用按钮
             button.allowChoose = (alpha > 0.4);
         }
     }
     
     public function clearButtons() {
-        for (button in RightButtons) {
+        for (button in LeftButtons) {
             remove(button);
             button.destroy();
         }
-        RightButtons.clear();
+        LeftButtons.clear();
     }
 }
