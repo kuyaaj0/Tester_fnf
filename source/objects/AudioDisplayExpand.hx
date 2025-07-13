@@ -150,17 +150,25 @@ class AudioCircleDisplayExpand extends AudioCircleDisplay
         return null;
     }
 
-    function addSoundAnalyzer(sound:FlxSound, line:Int):Void {
+    static function isSoundValid(sound:FlxSound):Bool 
+    {
+        if (sound == null) return false;
         @:privateAccess
-        if (sound._channel?.__audioSource == null) return;
+        return sound._channel != null && sound._channel.__audioSource != null;
+    }
+
+    function addSoundAnalyzer(sound:FlxSound, line:Int):Void 
+    {
+        if (!isSoundValid(sound)) return;
         
+        @:privateAccess
         var analyzer = new SpectralAnalyzer(
-            sound._channel.__audioSource,
-            Std.int(line * 1 + Math.abs(0.05 * (4 - ClientPrefs.data.audioDisplayQuality))),
-            1,
+            sound._channel.__audioSource, 
+            Std.int(line * 1 + Math.abs(0.05 * (4 - ClientPrefs.data.audioDisplayQuality))), 
+            1, 
             5
         );
-        analyzer.fftN = 1024 * ClientPrefs.data.audioDisplayQuality;
+        analyzer.fftN = 256 * ClientPrefs.data.audioDisplayQuality;
         analyzers.push(analyzer);
     }
 
