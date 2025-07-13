@@ -11,6 +11,8 @@ import flixel.FlxG;
 class ListButtons extends FlxSpriteGroup
 {
     public static final DEFAULT_COLOR:FlxColor = 0xFF5C5970;
+    public static final PRESSED_COLOR:FlxColor = 0xFF908BB0;
+    public static final CHOOSEN_COLOR:FlxColor = 0xFF7A75A0;
     public static final CORNER_RADIUS:Float = 8;
     public static final PADDING:Float = 10;
     
@@ -18,10 +20,15 @@ class ListButtons extends FlxSpriteGroup
     private var text:FlxText;
     
     public var onClick:Void->Void = null;
-    private var isPressed:Bool = false;
-    
+    public var unClick:Void->Void = null;
+    public var isPressed:Bool = false;
+    public var isChoose:Bool = false;
     public var allowChoose:Bool = true;
     
+    private var currentColor:FlxColor = DEFAULT_COLOR;
+    private var targetColor:FlxColor = DEFAULT_COLOR;
+    private var colorLerpSpeed:Float = 0.2;
+
     public function new(x:Float = 0, y:Float = 0, width:Float = 180, height:Float = 40, label:String = "")
     {
         super();
@@ -47,21 +54,38 @@ class ListButtons extends FlxSpriteGroup
         }
         
         if (isPressed && FlxG.mouse.justReleased) {
-            if (onClick != null) onClick();
+            if (onClick != null) onClick(this);
             isPressed = false;
         }
         
-        if(isPressed) setColor(0xFF908BB0);
-        else setColor(0xFF5C5970);
+        if (!FlxG.mouse.overlaps(this) && FlxG.mouse.justPressed) {
+            if (unClick != null) unClick(this);
+        }
+        
+        if(isChoose) {
+            targetColor = CHOOSEN_COLOR;
+        } else {
+            targetColor = isPressed ? PRESSED_COLOR : DEFAULT_COLOR;
+        }
+        
+        if (currentColor != targetColor) {
+            currentColor = FlxColor.interpolate(currentColor, targetColor, colorLerpSpeed);
+            applyColor();
+        }
+    }
+    
+    private function applyColor():Void
+    {
+        FlxSpriteUtil.drawRoundRect(background, 0, 0, background.width, background.height, CORNER_RADIUS, CORNER_RADIUS, currentColor);
+    }
+    
+    public function setColor(color:FlxColor):Void
+    {
+        targetColor = color;
     }
     
     public function setText(newText:String):Void
     {
         text.text = newText;
-    }
-    
-    public function setColor(color:FlxColor):Void
-    {
-        FlxSpriteUtil.drawRoundRect(background, 0, 0, background.width, background.height, CORNER_RADIUS, CORNER_RADIUS, color);
     }
 }

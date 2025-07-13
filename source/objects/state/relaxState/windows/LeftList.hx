@@ -45,7 +45,7 @@ class LeftList extends FlxSpriteGroup
             var yPos = BUTTON_PADDING_TOP + i * BUTTON_SPACING;
             var button = new ListButtons(10, yPos, buttonWidth, BUTTON_HEIGHT);
             
-            button.setText(songList[i].name != null ? songList[i].name : "未知歌曲");
+            button.setText(songList[i].name != null ? songList[i].name : "unknown");
             
             button.onClick = function() {
                 if (onButtonClicked != null) {

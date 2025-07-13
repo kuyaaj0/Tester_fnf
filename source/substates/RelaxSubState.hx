@@ -37,7 +37,7 @@ class RelaxSubState extends MusicBeatSubstate
 		name: "Unknown",
 		list: []
 	};
-	private var currentSongIndex:Int = 0;
+	public var currentSongIndex:Int = 0; //当前播放的歌曲在歌单的位置，nowChoose的第二个值
 	private var pendingSongIndex:Int = -1;
 	
 	public var nowChoose:Array<Int> = [0,0];
