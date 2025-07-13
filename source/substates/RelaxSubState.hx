@@ -77,15 +77,14 @@ class RelaxSubState extends MusicBeatSubstate
 	public var songInfoDisplay:SongInfoDisplay;
 	
 	public var playListWindow:PlayListWindow;
-	
-	public var SoundGroup:FlxSoundGroup;
+	public var Sound1:FlxSound = new FlxSound();
+	public var Sound2:FlxSound = new FlxSound();
 
 	public function new()
 	{
 		super();
         FlxG.state.persistentUpdate = false;
 		FlxG.sound.music.stop();
-		SoundGroup = new FlxSoundGroup();
 		addVirtualPad(NONE, B);
 	}
 
@@ -95,19 +94,7 @@ class RelaxSubState extends MusicBeatSubstate
 	public function loadSongs(songInfo:SongInfo = null):Void {
 		if (isTransitioning || songInfo == null) return;
 		isTransitioning = true;
-		
-		if (SoundGroup != null) {
-            for (sound in SoundGroup.sounds) {
-                if (sound != null) {
-                    sound.stop();
-                    sound.destroy();
-                }
-            }
-            SoundGroup.sounds = []; // 清空数组
-        }
-        
-        SoundGroup = new FlxSoundGroup();
-		
+
 		if (songInfo.background != null && songInfo.background.length > 0) {
 			for (bg in songInfo.background) {
 				Paths.image(bg);
@@ -121,27 +108,28 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 		
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
-			for (snd in songInfo.sound) {
-				Paths.music(snd);
+			for (snd in 0...songInfo.sound.length - 1) {
+				Paths.music(songInfo.sound[snd]);
 			}
 		}
 		
 		FlxG.sound.music.stop();
-		SoundGroup.pause();
+		Sound1.destroy();
+		Sound2.destroy();
+
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
-		    if(songInfo.sound.length > 1){
-		        for (i in 1...songInfo.sound.length - 1){
-		            var ExSound:FlxSound = new FlxSound();
-		            ExSound.loadEmbedded(songInfo.sound[i]);
-		            SoundGroup.add(ExSound);
-		            ExSound.play();
-		        }
-		    }
-		    
 			FlxG.sound.playMusic(songInfo.sound[0], 1);
 			FlxG.sound.music.onComplete = () -> {
 				nextSong();
 			};
+			if (songInfo.sound.length > 1){
+			    Sound1.loadEmbedded(songInfo.sound[1]);
+			    Sound1.play();
+			}
+			if (songInfo.sound.length > 2){
+			    Sound2.loadEmbedded(songInfo.sound[2]);
+			    Sound2.play();
+			}
 			
 			if (songInfoDisplay.songLengthText != null) {
 				songInfoDisplay.songLengthText.text = "0:00 / 0:00";
@@ -780,10 +768,12 @@ class RelaxSubState extends MusicBeatSubstate
 				
 				if (FlxG.sound.music.playing) {
 					FlxG.sound.music.pause();
-					SoundGroup.pause();
+					Sound1.pause();
+					Sound2.pause();
 				} else {
 					FlxG.sound.music.play();
-					SoundGroup.resume();
+					Sound1.play();
+					Sound2.play();
 				}
 			}
 			else if (isOverRight) {
