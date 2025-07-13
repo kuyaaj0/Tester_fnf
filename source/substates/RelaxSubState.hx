@@ -1,11 +1,11 @@
 package substates;
 
-import objects.AudioDisplayExpand.AudioCircleDisplayExpand;
+import objects.AudioDisplay.AudioCircleDisplay;
 import objects.state.relaxState.ButtonSprite;
 import objects.state.relaxState.TopButtons;
 import objects.state.relaxState.SongInfoDisplay;
 import objects.state.relaxState.ControlButtons;
-import objects.state.relaxState.windows.PlayListWindow;
+import objects.state.relaxState.windows.PlayListWindow; //未完工
 
 import openfl.filters.BlurFilter;
 import openfl.display.Shape;
@@ -17,7 +17,8 @@ import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
-//import flixel.sound.FlxSound;
+import flixel.sound.FlxSound;
+import flixel.sound.FlxSoundGroup;
 import flixel.system.FlxAssets.FlxSoundAsset;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxTimer;
@@ -64,7 +65,6 @@ class RelaxSubState extends MusicBeatSubstate
 	
 	var oldBackendPicture:FlxSprite;
 	var oldRecordPicture:FlxSprite;
-	var oldAudio:AudioCircleDisplay;
 
 	var transitionTime:Float = 0.5;
 	var isTransitioning:Bool = false;
@@ -78,164 +78,121 @@ class RelaxSubState extends MusicBeatSubstate
 	
 	public var playListWindow:PlayListWindow;
 	
-	private var currentSounds:Array<FlxSound> = [];
-	
-	private var longestSoundIndex:Int = 0;
-    private var soundCompletionFlags:Array<Bool> = [];
+	public var SoundGroup:FlxSoundGroup;
 
 	public function new()
 	{
 		super();
         FlxG.state.persistentUpdate = false;
 		FlxG.sound.music.stop();
+		SoundGroup = new FlxSoundGroup();
 		addVirtualPad(NONE, B);
 	}
 
-    /**
-     * 加载歌曲
-     * @param songInfo 歌曲信息
-     */
-    public function loadSongs(songInfo:SongInfo = null):Void {
-        if (isTransitioning || songInfo == null) return;
-        isTransitioning = true;
-        
-        // 停止并清理当前所有声音
-        for (sound in currentSounds) {
-            if (sound != null) {
-                sound.stop();
-                sound.destroy();
-            }
-        }
-        currentSounds = [];
-        soundCompletionFlags = [];
-        longestSoundIndex = 0;
-        
-        // 预加载资源
-        if (songInfo.background != null && songInfo.background.length > 0) {
-            for (bg in songInfo.background) {
-                Paths.image(bg);
-            }
-        }
-        
-        if (songInfo.record != null && songInfo.record.length > 0) {
-            for (rec in songInfo.record) {
-                Paths.image(rec);
-            }
-        }
-        
-        if (songInfo.sound != null && songInfo.sound.length > 0) {
-            for (snd in songInfo.sound) {
-                Paths.music(snd);
-            }
-        }
-        
-        // 加载多个音频
-        if (songInfo.sound != null && songInfo.sound.length > 0) {
-            // 先加载所有声音
-            for (sndPath in songInfo.sound) {
-                var sound = FlxG.sound.load(Paths.music(sndPath));
-                currentSounds.push(sound);
-                soundCompletionFlags.push(false);
-            }
-            
-            // 找到最长的音频
-            var maxLength:Float = 0;
-            for (i in 0...(currentSounds.length - 1)) {
-                if (currentSounds[i].length > maxLength) {
-                    maxLength = currentSounds[i].length;
-                    longestSoundIndex = i;
-                }
-            }
-            
-            // 设置所有音频的完成回调
-            for (i in 0...(currentSounds.length - 1)) {
-                currentSounds[i].onComplete = function() {
-                    soundCompletionFlags[i] = true;
-                    
-                    // 只有当最长音频完成时才切换歌曲
-                    if (i == longestSoundIndex) {
-                        // 检查所有音频是否都完成了
-                        var allComplete = true;
-                        for (flag in soundCompletionFlags) {
-                            if (!flag) {
-                                allComplete = false;
-                                break;
-                            }
-                        }
-                        
-                        if (allComplete) {
-                            nextSong();
-                        }
-                    }
-                };
-                
-                // 播放音频
-                currentSounds[i].play();
-            }
-            
-            if (songInfoDisplay.songLengthText != null) {
-                songInfoDisplay.songLengthText.text = "0:00 / 0:00";
-                songInfoDisplay.songLengthText.screenCenter(X);
-            }
-        }
-        
-        // 处理旧元素
-        if (backendPicture != null) {
-            oldBackendPicture = backendPicture;
-            backendPicture = null;
-        }
-        
-        if (recordPicture != null) {
-            oldRecordPicture = recordPicture;
-            recordPicture = null;
-        }
-        
-        if (audio != null) {
-            oldAudio = audio;
-            audio = null;
-        }
-        
-        var backgroundImage:FlxGraphicAsset = (songInfo.background != null && songInfo.background.length > 0) ? songInfo.background[0] : null;
-        var recordImage:FlxGraphicAsset = (songInfo.record != null && songInfo.record.length > 0) ? songInfo.record[0] : null;
-        
-        createNewElements(backgroundImage, recordImage);
-        applyBlurFilter();
-        
-        updateSongInfoDisplay(songInfo);
-        
-        var allComplete:Bool = false;
-        var newElementsComplete:Bool = false;
-        var oldElementsComplete:Bool = false;
-        
-        function checkAllComplete() {
-            if (newElementsComplete && oldElementsComplete && !allComplete) {
-                allComplete = true;
-                isTransitioning = false;
-                
-                if (pendingSongIndex != -1) {
-                    var indexToLoad = pendingSongIndex;
-                    pendingSongIndex = -1;
-                    
-                    new FlxTimer().start(0.1, function(_) {
-                        if (indexToLoad >= 0 && indexToLoad < SongsArray.list.length) {
-                            currentSongIndex = indexToLoad;
-                            loadSongs(SongsArray.list[currentSongIndex]);
-                        }
-                    });
-                }
-            }
-        }
-        
-        fadeInNewElements(() -> {
-            newElementsComplete = true;
-            checkAllComplete();
-        });
-        
-        fadeOutOldElements(() -> {
-            oldElementsComplete = true;
-            checkAllComplete();
-        });
-    }
+	/**
+	 *	@param	songInfo	歌曲信息
+	**/
+	public function loadSongs(songInfo:SongInfo = null):Void {
+		if (isTransitioning || songInfo == null) return;
+		isTransitioning = true;
+		
+		if (songInfo.background != null && songInfo.background.length > 0) {
+			for (bg in songInfo.background) {
+				Paths.image(bg);
+			}
+		}
+		
+		if (songInfo.record != null && songInfo.record.length > 0) {
+			for (rec in songInfo.record) {
+				Paths.image(rec);
+			}
+		}
+		
+		if (songInfo.sound != null && songInfo.sound.length > 0) {
+			for (snd in songInfo.sound) {
+				Paths.music(snd);
+			}
+		}
+		
+		FlxG.sound.music.stop();
+		SoundGroup.pause();
+		SoundGroup.sounds = [];
+		if (songInfo.sound != null && songInfo.sound.length > 0) {
+		    if(songInfo.sound.length > 1){
+		        for (i in 1...songInfo.sound.length - 1){
+		            var ExSound:FlxSound = new FlxSound();
+		            ExSound.loadEmbedded(i);
+		            SoundGroup.add(ExSound);
+		            ExSound.play();
+		        }
+		    }
+		    
+			FlxG.sound.playMusic(songInfo.sound[0], 1);
+			FlxG.sound.music.onComplete = () -> {
+				nextSong();
+			};
+			
+			if (songInfoDisplay.songLengthText != null) {
+				songInfoDisplay.songLengthText.text = "0:00 / 0:00";
+				songInfoDisplay.songLengthText.screenCenter(X);
+			}
+		}
+		
+		if (backendPicture != null) {
+			oldBackendPicture = backendPicture;
+			backendPicture = null;
+		}
+		
+		if (recordPicture != null) {
+			oldRecordPicture = recordPicture;
+			recordPicture = null;
+		}
+		
+		if (audio != null) {
+			audio = null;
+		}
+		
+		var backgroundImage:FlxGraphicAsset = (songInfo.background != null && songInfo.background.length > 0) ? songInfo.background[0] : null;
+		var recordImage:FlxGraphicAsset = (songInfo.record != null && songInfo.record.length > 0) ? songInfo.record[0] : null;
+		
+		createNewElements(backgroundImage, recordImage);
+		applyBlurFilter();
+		
+		updateSongInfoDisplay(songInfo);
+		
+		var allComplete:Bool = false;
+		var newElementsComplete:Bool = false;
+		var oldElementsComplete:Bool = false;
+		
+		function checkAllComplete() {
+			if (newElementsComplete && oldElementsComplete && !allComplete) {
+				allComplete = true;
+				isTransitioning = false;
+				
+				if (pendingSongIndex != -1) {
+					var indexToLoad = pendingSongIndex;
+					pendingSongIndex = -1;
+					
+					new FlxTimer().start(0.1, function(_) {
+						if (indexToLoad >= 0 && indexToLoad < SongsArray.list.length) {
+							currentSongIndex = indexToLoad;
+							loadSongs(SongsArray.list[currentSongIndex]);
+						}
+					});
+				}
+			}
+		}
+		
+		fadeInNewElements(() -> {
+			newElementsComplete = true;
+			checkAllComplete();
+		});
+		
+		fadeOutOldElements(() -> {
+			oldElementsComplete = true;
+			checkAllComplete();
+		});
+	}
 
 	private function fadeOutOldElements(onComplete:Void->Void):Void {
 		var tweenCount = 0;
@@ -243,7 +200,6 @@ class RelaxSubState extends MusicBeatSubstate
 		
 		if (oldBackendPicture != null) totalTweens++;
 		if (oldRecordPicture != null) totalTweens++;
-		if (oldAudio != null) totalTweens++;
 		
 		if (totalTweens == 0) {
 			onComplete();
@@ -282,18 +238,6 @@ class RelaxSubState extends MusicBeatSubstate
 				}
 			});
 		}
-		
-		if (oldAudio != null) {
-			FlxTween.tween(oldAudio, {alpha: 0}, transitionTime, {
-				ease: FlxEase.quadIn,
-				onComplete: function(twn:FlxTween) {
-					remove(oldAudio);
-					oldAudio.destroy();
-					oldAudio = null;
-					checkComplete();
-				}
-			});
-		}
 	}
 	
 	private function createNewElements(background:FlxGraphicAsset, recordImage:FlxGraphicAsset):Void {
@@ -308,17 +252,8 @@ class RelaxSubState extends MusicBeatSubstate
 			add(backendPicture);
 		}
 
-		audio = new AudioCircleDisplayExpand(
-			currentSounds, 
-			FlxG.width / 2, 
-			FlxG.height / 2,
-			500, 
-			100, 
-			46, 
-			4, 
-			FlxColor.WHITE,
-		);
-		
+		audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
+									  500, 100, 46, 4, FlxColor.WHITE, 150);
 		audio.alpha = 0;
 		audio.cameras = [camBack];
 		add(audio);
@@ -470,12 +405,6 @@ class RelaxSubState extends MusicBeatSubstate
 		FlxG.cameras.add(camHUD, false);
 		FlxG.cameras.add(camOption, false);
 		FlxG.cameras.add(camVpad, false);
-		
-		ListCam = new FlxCamera();
-		ListCam.bgColor.alpha = 0;
-		ListCam.height = Math.floor(FlxG.height * 0.8);
-		ListCam.y = 120;
-		FlxG.cameras.add(ListCam, false);
 		
 		virtualPad.cameras = [camVpad];
 
@@ -662,11 +591,6 @@ class RelaxSubState extends MusicBeatSubstate
 			oldRecordPicture = null;
 		}
 		
-		if (oldAudio != null) {
-			oldAudio.destroy();
-			oldAudio = null;
-		}
-		
 		if (controlButtons != null) {
 			controlButtons.destroy();
 			controlButtons = null;
@@ -690,14 +614,6 @@ class RelaxSubState extends MusicBeatSubstate
 			topTrapezoid.destroy();
 			topTrapezoid = null;
 		}
-		
-		for (sound in currentSounds) {
-			if (sound != null) {
-				sound.stop();
-				sound.destroy();
-			}
-		}
-		currentSounds = [];
 
 		currentSongIndex = 0;
 		pendingSongIndex = -1;
@@ -763,149 +679,147 @@ class RelaxSubState extends MusicBeatSubstate
 	var clickOption:Bool = false;
 	var clickLock:Bool = false;
 	
-	override function update(elapsed:Float) {
-        super.update(elapsed);
-        updateMask();
-        
-        // 更新背景图片位置
-        if (backendPicture != null && !isTransitioning) {
-            var mouseX = FlxG.mouse.getScreenPosition(camHUD).x;
-            var mouseY = FlxG.mouse.getScreenPosition(camHUD).y;
-            var centerX = FlxG.width / 2;
-            var centerY = FlxG.height / 2;
-            
-            var targetOffsetX = (mouseX - centerX) * 0.01;
-            var targetOffsetY = (mouseY - centerY) * 0.01;
-            
-            var currentOffsetX = backendPicture.x - (centerX - backendPicture.width / 2);
-            var currentOffsetY = backendPicture.y - (centerY - backendPicture.height / 2);
-            
-            var smoothX = FlxMath.lerp(currentOffsetX, targetOffsetX, bgFollowSmooth);
-            var smoothY = FlxMath.lerp(currentOffsetY, targetOffsetY, bgFollowSmooth);
-            
-            backendPicture.x = centerX - backendPicture.width / 2 + smoothX;
-            backendPicture.y = centerY - backendPicture.height / 2 + smoothY;
-        }
-    
-        // 更新歌曲长度显示（以最长音频为准）
-        if (currentSounds.length > 0 && currentSounds[longestSoundIndex] != null) {
-            var currentTime:Float = currentSounds[longestSoundIndex].time / 1000;
-            var totalTime:Float = currentSounds[longestSoundIndex].length / 1000;
-            
-            songInfoDisplay.updateSongLength(currentTime, totalTime);
-            
-            songInfoDisplay.updateSongLengthPosition(
-                controlButtons.MiddleButton.x,
-                controlButtons.MiddleButton.y,
-                controlButtons.MiddleButton.width,
-                controlButtons.MiddleButton.height
-            );
-        }
-    
-        var mousePos = FlxG.mouse.getScreenPosition(camHUD);
-        var nearTop = mousePos.y < 50;
-        handleTopTrapezoidVisibility(nearTop, elapsed);
-    
-        songInfoDisplay.writerText.y = songInfoDisplay.songNameText.y + songInfoDisplay.songNameText.height + 10;
-        
-        songInfoDisplay.updateSongLengthPosition(
-            controlButtons.MiddleButton.x,
-            controlButtons.MiddleButton.y,
-            controlButtons.MiddleButton.width,
-            controlButtons.MiddleButton.height
-        );
-        
-        // 节拍处理（以第一个音频为准）
-        if (enableBpmZoom && currentSounds.length > 0 && currentSounds[0] != null && currentSounds[0].playing) {
-            beatTimer += elapsed;
-            
-            if (beatTimer >= beatTime) {
-                beatTimer -= beatTime;
-                onBPMBeat();
-            }
-        }
-        
-        if (FlxG.keys.justPressed.LEFT) {
-            prevSong();
-        }
-        else if (FlxG.keys.justPressed.RIGHT) {
-            nextSong();
-        }
-        
-        var mousePos = FlxG.mouse.getScreenPosition(camHUD);
-        var isOverLeft = controlButtons.isMouseOverLeftButton(mousePos);
-        var isOverMiddle = controlButtons.isMouseOverMiddleButton(mousePos);
-        var isOverRight = controlButtons.isMouseOverRightButton(mousePos);
-    
-        var isOverList = topButtons.isMouseOverListButton(mousePos);
-        var isOverSetting = topButtons.isMouseOverSettingButton(mousePos);
-        var isOverRock = topButtons.isMouseOverLockButton(mousePos);
-        
-        controlButtons.setButtonAlphas(isOverLeft, isOverMiddle, isOverRight);
-        topButtons.setButtonAlphas(isOverList, isOverSetting, isOverRock, clickList, clickOption, clickLock);
-        
-        if (FlxG.mouse.justPressed) {
-            if (isOverLeft) {
-                FlxG.sound.play(Paths.sound('scrollMenu'), 0.7);
-                controlButtons.animateLeftButtonPress(0.1);
-                prevSong();
-            }
-            else if (isOverMiddle && currentSounds.length > 0 && currentSounds[0] != null) {
-                FlxG.sound.play(Paths.sound('scrollMenu'), 0.7);
-                
-                if (currentSounds[0].playing) {
-                    for (sound in currentSounds) {
-                        sound.pause();
-                    }
-                } else {
-                    for (sound in currentSounds) {
-                        sound.play();
-                    }
-                }
-            }
-            else if (isOverRight) {
-                FlxG.sound.play(Paths.sound('scrollMenu'), 0.7);
-                controlButtons.animateRightButtonPress(0.1);
-                nextSong();
-            }
-            else if (isOverList) {
-                clickList = !clickList;
-                if (clickList && clickOption)
-                    clickOption = !clickList;
-                    playListWindow.toggle();
-            }
-            else if (isOverSetting) {
-                clickOption = !clickOption;
-                if (clickList && clickOption)
-                    clickList = !clickOption;
-                    playListWindow.Hidding = false;
-                    playListWindow.hide();
-                trace('setting');
-            }
-            else if (isOverRock) {
-                clickLock = !clickLock;
-                camVpad.alpha = clickLock ? 0 : 1;
-            }
-        }
-        
-        if (recordPicture != null && !isTransitioning && enableRecordRotation) {
-            recordPicture.angle += elapsed * 20;
-            if (recordPicture.angle >= 360) recordPicture.angle -= 360;
-        }
-    
-        if (FlxG.keys.justPressed.B) {
-            enableBpmZoom = !enableBpmZoom;
-            if (!enableBpmZoom) {
-                camPic.zoom = defaultZoom;
-            }
-        }
-        
-        if (controls.BACK) {
-            removeVirtualPad();
-            FlxG.sound.playMusic(Paths.music('freakyMenu'));
-            close();
-        }
-    }
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+		updateMask();
+		
+		if (backendPicture != null && !isTransitioning) {
+			var mouseX = FlxG.mouse.getScreenPosition(camHUD).x;
+			var mouseY = FlxG.mouse.getScreenPosition(camHUD).y;
+			var centerX = FlxG.width / 2;
+			var centerY = FlxG.height / 2;
+			
+			var targetOffsetX = (mouseX - centerX) * 0.01;
+			var targetOffsetY = (mouseY - centerY) * 0.01;
+			
+			var currentOffsetX = backendPicture.x - (centerX - backendPicture.width / 2);
+			var currentOffsetY = backendPicture.y - (centerY - backendPicture.height / 2);
+			
+			var smoothX = FlxMath.lerp(currentOffsetX, targetOffsetX, bgFollowSmooth);
+			var smoothY = FlxMath.lerp(currentOffsetY, targetOffsetY, bgFollowSmooth);
+			
+			backendPicture.x = centerX - backendPicture.width / 2 + smoothX;
+			backendPicture.y = centerY - backendPicture.height / 2 + smoothY;
+		}
+
+		var mousePos = FlxG.mouse.getScreenPosition(camHUD);
+		var nearTop = mousePos.y < 50;
+		handleTopTrapezoidVisibility(nearTop, elapsed);
+
+		songInfoDisplay.writerText.y = songInfoDisplay.songNameText.y + songInfoDisplay.songNameText.height + 10;
+		
+		songInfoDisplay.updateSongLengthPosition(
+			controlButtons.MiddleButton.x,
+			controlButtons.MiddleButton.y,
+			controlButtons.MiddleButton.width,
+			controlButtons.MiddleButton.height
+		);
+		
+		if (enableBpmZoom && FlxG.sound.music != null && FlxG.sound.music.playing) {
+			beatTimer += elapsed;
+			
+			if (beatTimer >= beatTime) {
+				beatTimer -= beatTime;
+				onBPMBeat();
+			}
+		}
+		
+		if (FlxG.sound.music != null) {
+			var currentTime:Float = FlxG.sound.music.time / 1000;
+			var totalTime:Float = FlxG.sound.music.length / 1000;
+			
+			songInfoDisplay.updateSongLength(currentTime, totalTime);
+			
+			songInfoDisplay.updateSongLengthPosition(
+				controlButtons.MiddleButton.x,
+				controlButtons.MiddleButton.y,
+				controlButtons.MiddleButton.width,
+				controlButtons.MiddleButton.height
+			);
+		}
+
+		if (FlxG.keys.justPressed.LEFT) {
+			prevSong();
+		}
+		else if (FlxG.keys.justPressed.RIGHT) {
+			nextSong();
+		}
+		
+		var mousePos = FlxG.mouse.getScreenPosition(camHUD);
+		var isOverLeft = controlButtons.isMouseOverLeftButton(mousePos);
+		var isOverMiddle = controlButtons.isMouseOverMiddleButton(mousePos);
+		var isOverRight = controlButtons.isMouseOverRightButton(mousePos);
+
+		var isOverList = topButtons.isMouseOverListButton(mousePos);
+		var isOverSetting = topButtons.isMouseOverSettingButton(mousePos);
+		var isOverRock = topButtons.isMouseOverLockButton(mousePos);
+		
+		controlButtons.setButtonAlphas(isOverLeft, isOverMiddle, isOverRight);
+		topButtons.setButtonAlphas(isOverList, isOverSetting, isOverRock, clickList, clickOption, clickLock);
+		
+		if (FlxG.mouse.justPressed) {
+			if (isOverLeft) {
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.7);
+				controlButtons.animateLeftButtonPress(0.1);
+				prevSong();
+			}
+			else if (isOverMiddle && FlxG.sound.music != null) {
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.7);
+				
+				if (FlxG.sound.music.playing) {
+					FlxG.sound.music.pause();
+					SoundGroup.pause()
+				} else {
+					FlxG.sound.music.play();
+					SoundGroup.resume();
+				}
+			}
+			else if (isOverRight) {
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.7);
+				controlButtons.animateRightButtonPress(0.1);
+				nextSong();
+			}
+			else if (isOverList) {
+				clickList = !clickList;
+				if (clickList && clickOption)
+					clickOption = !clickList;
+					playListWindow.toggle();
+			}
+			else if (isOverSetting) {
+				clickOption = !clickOption;
+				if (clickList && clickOption)
+					clickList = !clickOption;
+					playListWindow.Hidding = false;
+					playListWindow.hide();
+				trace('setting');
+			}
+			else if (isOverRock) {
+				clickLock = !clickLock;
+				camVpad.alpha = clickLock ? 0 : 1;
+			}
+		}
+		
+		if (recordPicture != null && !isTransitioning && enableRecordRotation)
+		{
+			recordPicture.angle += elapsed * 20;
+			if (recordPicture.angle >= 360) recordPicture.angle -= 360;
+		}
+
+		if (FlxG.keys.justPressed.B)
+		{
+			enableBpmZoom = !enableBpmZoom;
+			if (!enableBpmZoom) {
+				camPic.zoom = defaultZoom;
+			}
+		}
+		
+		if (controls.BACK) {
+		    removeVirtualPad();
+		    FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			close();
+		}
+	}
 
 	var beatTimess:Int = 0;
 	var helpBool:Bool = false;
@@ -960,14 +874,13 @@ class RelaxSubState extends MusicBeatSubstate
     	        data[0] = GetInit.getListNum() - 1;
     	        
     	    SongsArray = GetInit.getList(data[0]);
-    	        
+    	    
     	    if(data[1] >= SongsArray.list.length){
     	        data[1] = SongsArray.list.length - 1;
     	    }
     	    
     	    nowChoose = data;
     	    currentSongIndex = data[1];
-    	    
     	    loadSongs(SongsArray.list[data[1]]);
 	    }
 	}
