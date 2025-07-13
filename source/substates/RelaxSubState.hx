@@ -17,8 +17,7 @@ import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
-import flixel.sound.FlxSound;
-import flixel.sound.FlxSoundGroup;
+//import flixel.sound.FlxSound;
 import flixel.system.FlxAssets.FlxSoundAsset;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxTimer;
@@ -37,7 +36,7 @@ class RelaxSubState extends MusicBeatSubstate
 		name: "Unknown",
 		list: []
 	};
-	public var currentSongIndex:Int = 0; //当前播放的歌曲在歌单的位置，nowChoose的第二个值
+	private var currentSongIndex:Int = 0;
 	private var pendingSongIndex:Int = -1;
 	
 	public var nowChoose:Array<Int> = [0,0];
@@ -65,6 +64,7 @@ class RelaxSubState extends MusicBeatSubstate
 	
 	var oldBackendPicture:FlxSprite;
 	var oldRecordPicture:FlxSprite;
+	var oldAudio:AudioCircleDisplay;
 
 	var transitionTime:Float = 0.5;
 	var isTransitioning:Bool = false;
@@ -77,15 +77,15 @@ class RelaxSubState extends MusicBeatSubstate
 	public var songInfoDisplay:SongInfoDisplay;
 	
 	public var playListWindow:PlayListWindow;
-	public var Sound1:FlxSound = new FlxSound();
-	public var Sound2:FlxSound = new FlxSound();
+	
+	var Sound1:FlxSound = new FlxSound();
+	var Sound2:FlxSound = new FlxSound();
 
 	public function new()
 	{
 		super();
         FlxG.state.persistentUpdate = false;
 		FlxG.sound.music.stop();
-		Paths.clearUnusedMemory();
 		addVirtualPad(NONE, B);
 	}
 
@@ -95,9 +95,8 @@ class RelaxSubState extends MusicBeatSubstate
 	public function loadSongs(songInfo:SongInfo = null):Void {
 		if (isTransitioning || songInfo == null) return;
 		isTransitioning = true;
-		
-		Paths.clearUnusedMemory();
-
+		Sound1.destroy();
+		Sound2.destroy();
 		if (songInfo.background != null && songInfo.background.length > 0) {
 			for (bg in songInfo.background) {
 				Paths.image(bg);
@@ -111,28 +110,33 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 		
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
-			for (snd in 0...songInfo.sound.length - 1) {
-				Paths.music(songInfo.sound[snd]);
+			for (snd in songInfo.sound) {
+				Paths.music(snd);
 			}
 		}
 		
+		if (songInfo.sound != null && songInfo.sound.length > 0) {
+            var sound = cachedSounds.get(songInfo.sound[0]);
+            FlxG.sound.playMusic(sound, 1);
+            FlxG.sound.music.onComplete = nextSong;
+            
+            if (songInfo.sound.length > 1) {
+                Sound1.loadEmbedded(songInfo.sound[1]);
+                Sound1.play();
+            }
+            
+            if (songInfo.sound.length > 2) {
+                Sound2.loadEmbedded(songInfo.sound[2]);
+                Sound2.play();
+            }
+        }
+		
 		FlxG.sound.music.stop();
-		Sound1.destroy();
-		Sound2.destroy();
-
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
 			FlxG.sound.playMusic(songInfo.sound[0], 1);
 			FlxG.sound.music.onComplete = () -> {
 				nextSong();
 			};
-			if (songInfo.sound.length > 1){
-			    Sound1.loadEmbedded(songInfo.sound[1]);
-			    Sound1.play();
-			}
-			if (songInfo.sound.length > 2){
-			    Sound2.loadEmbedded(songInfo.sound[2]);
-			    Sound2.play();
-			}
 			
 			if (songInfoDisplay.songLengthText != null) {
 				songInfoDisplay.songLengthText.text = "0:00 / 0:00";
@@ -151,6 +155,7 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 		
 		if (audio != null) {
+			oldAudio = audio;
 			audio = null;
 		}
 		
@@ -202,6 +207,7 @@ class RelaxSubState extends MusicBeatSubstate
 		
 		if (oldBackendPicture != null) totalTweens++;
 		if (oldRecordPicture != null) totalTweens++;
+		if (oldAudio != null) totalTweens++;
 		
 		if (totalTweens == 0) {
 			onComplete();
@@ -236,6 +242,18 @@ class RelaxSubState extends MusicBeatSubstate
 					oldRecordPicture.destroy();
 					oldRecordPicture.kill();
 					oldRecordPicture = null;
+					checkComplete();
+				}
+			});
+		}
+		
+		if (oldAudio != null) {
+			FlxTween.tween(oldAudio, {alpha: 0}, transitionTime, {
+				ease: FlxEase.quadIn,
+				onComplete: function(twn:FlxTween) {
+					remove(oldAudio);
+					oldAudio.destroy();
+					oldAudio = null;
 					checkComplete();
 				}
 			});
@@ -593,6 +611,11 @@ class RelaxSubState extends MusicBeatSubstate
 			oldRecordPicture = null;
 		}
 		
+		if (oldAudio != null) {
+			oldAudio.destroy();
+			oldAudio = null;
+		}
+		
 		if (controlButtons != null) {
 			controlButtons.destroy();
 			controlButtons = null;
@@ -874,17 +897,14 @@ class RelaxSubState extends MusicBeatSubstate
 
 	public function OtherListLoad(data:Array<Int> = null){
 	    try{
-	        if(data[0] >= GetInit.getListNum())
-    	        data[0] = GetInit.getListNum() - 1;
-    	        
-    	    SongsArray = GetInit.getList(data[0]);
-    	    
     	    if(data[1] >= SongsArray.list.length){
     	        data[1] = SongsArray.list.length - 1;
     	    }
-    	    
+    	    if(data[0] >= GetInit.getListNum())
+    	        data[0] = GetInit.getListNum() - 1;
+    	        
     	    nowChoose = data;
-    	    currentSongIndex = data[1];
+    	    SongsArray = GetInit.getList(data[0]);
     	    loadSongs(SongsArray.list[data[1]]);
 	    }
 	}
