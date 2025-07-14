@@ -140,9 +140,10 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	public var RotateSpeed:Float = 1;
 	public var FluentMode:Bool = false;
 	public var rate:Float = 10;    // 每秒转动次数
+	public var rateNum:Int = 5; //每次转动的跳过条数
 	
-	var LineX:Array<Float> = [];
-	var LineY:Array<Float> = [];
+	var LineX:Float;
+	var LineY:Float;
 	
 	public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor,Radius:Float = 50, symmetry:Bool = true, Number:Int = 3)
 	{
@@ -157,8 +158,8 @@ class AudioCircleDisplay extends FlxSpriteGroup
 
 		this.Number = Number;
 		
-		LineX = [];
-		LineY = [];
+		LineX = X;
+		LineY = Y;
 
 		for (i in 0...line * Number)
 		{
@@ -173,8 +174,6 @@ class AudioCircleDisplay extends FlxSpriteGroup
 			newLine.x += moveX;
 			newLine.y += moveY;
 			add(newLine);
-			LineX.push(newLine.x);
-			LineY.push(newLine.y);
 		}
 		_height = Height;
 		@:privateAccess
@@ -220,8 +219,8 @@ class AudioCircleDisplay extends FlxSpriteGroup
     			var radians = correctedAngle * Math.PI / 180;
     			var moveX = Math.cos(radians) * Radius;
     			var moveY = Math.sin(radians) * Radius;
-    			members[newLine].x = LineX[newLine] + moveX;
-    			members[newLine].y = LineY[newLine] + moveY;
+    			members[newLine].x = LineX + moveX;
+    			members[newLine].y = LineY + moveY;
     	    }
 		}
 
@@ -229,10 +228,14 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	}
 	
 	function updateAngle(){
-	    FlxTimer.wait(1 / rate, () -> updateAngle()); //需要等待循环执行
-	    if (!FluentMode && LineX.length == LineY.length && LineY.length == members.length){
+	    FlxTimer.wait(1 / rate, () -> {
+	        if(members != null)
+	            updateAngle();
+	    }); //需要等待循环执行
+	    
+	    if (!FluentMode && members != null){
 	        for (newLine in members){
-		        newLine.angle += 360 / (line * Number);
+		        newLine.angle += 360 / (line * Number) * rateNum;
 		    }
 		}
 	}
