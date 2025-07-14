@@ -146,6 +146,8 @@ import states.TitleState;
 
 	public var language:String = 'English';
 
+	public var developerMode:Bool = false;
+
 	public var arrowRGB:Array<Array<FlxColor>> = [
 		[0xFFC24B99, 0xFFFFFFFF, 0xFF3C1F56],
 		[0xFF00FFFF, 0xFFFFFFFF, 0xFF1542B7],

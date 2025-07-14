@@ -324,7 +324,7 @@ class Option extends FlxSpriteGroup
 		baseBG = new Rect(0, 0, calcWidth, calcHeight, calcWidth / 75 / mult, calcWidth / 75 / mult, 0xffffff, 0.1);
 		add(baseBG);
 
-		baseTar = new FlxText(0, 0, 0, 'Target: ' + variable, Std.int(baseBG.width / 20 / mult));
+		baseTar = new FlxText(0, 0, 0, Language.get('Target', 'op') + ': ' + variable, Std.int(baseBG.width / 20 / mult));
 		baseTar.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.width / 30 / mult), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         baseTar.antialiasing = ClientPrefs.data.antialiasing;
 		baseTar.borderStyle = NONE;
@@ -426,7 +426,7 @@ class Option extends FlxSpriteGroup
 	}
 
 	function baseChangeLanguage() {
-		baseTar.text = 'Target: ' + variable;
+		baseTar.text = Language.get('Target', 'op') + ': ' + variable;
 		baseTar.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.width / 30 / mult), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
 		baseTar.borderStyle = NONE;
 

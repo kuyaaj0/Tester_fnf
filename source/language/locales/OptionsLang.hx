@@ -11,7 +11,7 @@ class OptionsLang
 		if (getValue == null)
 			getValue = defaultData.get(value);
 		if (getValue == null)
-			getValue = value + ' (missed interpret)';
+			getValue = ClientPrefs.data.developerMode ? value + ' (missed interpret)' : value;
 		return getValue;
 	}
 
