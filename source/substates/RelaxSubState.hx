@@ -5,7 +5,7 @@ import objects.state.relaxState.ButtonSprite;
 import objects.state.relaxState.TopButtons;
 import objects.state.relaxState.SongInfoDisplay;
 import objects.state.relaxState.ControlButtons;
-import objects.state.relaxState.windows.PlayListWindow; //未完工
+import objects.state.relaxState.windows.PlayListWindow;
 
 import openfl.filters.BlurFilter;
 import openfl.display.Shape;
@@ -17,7 +17,7 @@ import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
-//import flixel.sound.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.system.FlxAssets.FlxSoundAsset;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxTimer;
@@ -828,6 +828,12 @@ class RelaxSubState extends MusicBeatSubstate
 			recordPicture.angle += elapsed * 20;
 			if (recordPicture.angle >= 360) recordPicture.angle -= 360;
 		}
+		
+		if (audio != null && !isTransitioning)
+		{
+		    audio.angle += elapsed * 20;
+			if (audio.angle >= 360) audio.angle -= 360;
+		}
 
 		if (FlxG.keys.justPressed.B)
 		{
@@ -839,6 +845,8 @@ class RelaxSubState extends MusicBeatSubstate
 		
 		if (controls.BACK) {
 		    removeVirtualPad();
+		    Sound1.destroy();
+		    Sound2.destroy();
 		    FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			close();
 		}
