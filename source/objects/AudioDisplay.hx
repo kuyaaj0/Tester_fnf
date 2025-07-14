@@ -208,7 +208,6 @@ class AudioCircleDisplay extends FlxSpriteGroup
 		updateLine(elapsed);
 		if (Rotate){
 		    for (newLine in members){
-		        updateAngle(newLine);
 		        if (FluentMode){
 		            newLine.angle += elapsed * RotateSpeed * 20;
 		        }
