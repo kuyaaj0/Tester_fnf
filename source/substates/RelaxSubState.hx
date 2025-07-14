@@ -102,19 +102,7 @@ class RelaxSubState extends MusicBeatSubstate
 				Paths.image(bg);
 			}
 		}
-		
-		if (songInfo.record != null && songInfo.record.length > 0) {
-			for (rec in songInfo.record) {
-				Paths.image(rec);
-			}
-		}
-		
-		if (songInfo.sound != null && songInfo.sound.length > 0) {
-			for (snd in songInfo.sound) {
-				Paths.music(snd);
-			}
-		}
-		
+
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
             if (songInfo.sound.length > 1) {
                 Sound1.loadEmbedded(songInfo.sound[1], false, true);
