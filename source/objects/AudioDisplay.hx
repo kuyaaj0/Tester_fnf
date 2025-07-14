@@ -138,6 +138,10 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	
 	public var Rotate:Bool = true;
 	public var RotateSpeed:Float = 1;
+	public var FluentMode:Bool = false;
+	public var rate:Float = 20;    // 每秒调用次数
+	
+	var LineXY:Map<FlxSprite, Dynamic> = new Map();
 	
 	public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor,Radius:Float = 50, symmetry:Bool = true, Number:Int = 3)
 	{
@@ -165,6 +169,7 @@ class AudioCircleDisplay extends FlxSpriteGroup
 			newLine.x += moveX;
 			newLine.y += moveY;
 			add(newLine);
+			LineXY.set(newLine, {x: newLine.x, y: newLine.y});
 		}
 		_height = Height;
 		@:privateAccess
@@ -179,6 +184,21 @@ class AudioCircleDisplay extends FlxSpriteGroup
 
 	var saveTime:Float = 0;
 	var getValues:Array<funkin.vis.dsp.Bar>;
+
+    private var _timer:Float = 0.0;
+    private var _minInterval = 0.001; // 最小间隔保护
+    
+    public function tick(dt:Float):Bool {
+        if (rate <= 0) return false; // 防止除零
+        
+        _timer += dt;
+        var interval = Math.max(1.0 / rate, _minInterval);
+        if (_timer >= interval) {
+            _timer = 0.0;
+            return true;
+        }
+        return false;
+    }
 
 	override function update(elapsed:Float)
 	{
@@ -201,13 +221,19 @@ class AudioCircleDisplay extends FlxSpriteGroup
 		updateLine(elapsed);
 		if (Rotate){
 		    for (newLine in members){
-		        newLine.angle += elapsed * RotateSpeed * 20;
+		        if (FluentMode){
+		            newLine.angle += elapsed * RotateSpeed * 20;
+		        }else{
+		            if (tick(elapsed)){
+		                newLine.angle += 360 / (line * Number);
+		            }
+		        }
     		    var correctedAngle = newLine.angle - 90;
     			var radians = correctedAngle * Math.PI / 180;
     			var moveX = Math.cos(radians) * Radius;
     			var moveY = Math.sin(radians) * Radius;
-    			newLine.x = moveX;
-    			newLine.y = moveY;
+    			newLine.x = LineXY.get(newLine).x + moveX;
+    			newLine.y = LineXY.get(newLine).y + moveY;
     	    }
 		}
 
