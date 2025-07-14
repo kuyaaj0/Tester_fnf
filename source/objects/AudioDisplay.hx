@@ -200,15 +200,15 @@ class AudioCircleDisplay extends FlxSpriteGroup
 		getValues = analyzer.getLevels();
 		updateLine(elapsed);
 		if (Rotate){
-		    members.angle += elapsed * RotateSpeed * 20;
 		    for (newLine in members){
+		        newLine.angle += elapsed * RotateSpeed * 20;
     		    var correctedAngle = newLine.angle - 90;
     			var radians = correctedAngle * Math.PI / 180;
     			var moveX = Math.cos(radians) * Radius;
     			var moveY = Math.sin(radians) * Radius;
     			newLine.x += moveX;
     			newLine.y += moveY;
-    		}
+    	    }
 		}
 
 		super.update(elapsed);

@@ -96,7 +96,7 @@ class RelaxSubState extends MusicBeatSubstate
 	    var error:String = "";
 	    if (NowInfo.sound.length > 0){
 	        for (i in NowInfo.sound){
-	            if (!FileSystem.exists(i)){  //以防外一如果有一个歌曲不存在就终止加载
+	            if (!FileSystem.exists(i)){  //以防万一如果有一个歌曲不存在就终止加载
 	                error += "can't find '" + i + "'\n";
 	            }
 	        }
@@ -104,7 +104,7 @@ class RelaxSubState extends MusicBeatSubstate
 	    
 	    if (NowInfo.background.length > 0){
 	        for (i in NowInfo.background){
-	            if (!FileSystem.exists(i)){  //以防外一如果有一个背景不存在就终止加载
+	            if (!FileSystem.exists(i)){  //以防万一如果有一个背景不存在就终止加载
 	                error += "can't find '" + i + "'\n";
 	            }
 	        }
@@ -112,7 +112,7 @@ class RelaxSubState extends MusicBeatSubstate
 	    
 	    if (NowInfo.record.length > 0){
 	        for (i in NowInfo.record){
-	            if (!FileSystem.exists(i)){  //以防外一如果有一个曲绘唱片不存在就终止加载
+	            if (!FileSystem.exists(i)){  //以防万一如果有一个曲绘唱片不存在就终止加载
 	                error += "can't find '" + i + "'\n";
 	            }
 	        }
