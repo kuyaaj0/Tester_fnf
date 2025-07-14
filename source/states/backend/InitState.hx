@@ -121,7 +121,7 @@ class InitState extends MusicBeatState
 		}
 		#end
 	
-		Language.resetData();
+		
 	
 		Highscore.load();
 

@@ -1,6 +1,6 @@
 package language.locales;
 
-class MainMenuLang
+class OptionsTipLang
 {
 	static var data:Map<String, String> = [];
 	static var defaultData:Map<String, String> = [];
@@ -20,7 +20,7 @@ class MainMenuLang
 		data.clear();
 		defaultData.clear();
 		
-		var minorPath:String = '/mainmenu';
+		var minorPath:String = '/optionsTip';
 		var directoryPath:Array<String> = [Paths.getPath('language') + '/' + 'English' + minorPath];
 
 		var path = Paths.getPath('language') + '/' + ClientPrefs.data.language + minorPath;

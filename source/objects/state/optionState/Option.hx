@@ -58,7 +58,7 @@ class Option extends FlxSpriteGroup
 		this.variable = variable;
 		this.type = type;
 		this.description = Language.get(variable, 'op');
-		this.tips = Language.get(variable, 'opSub');
+		this.tips = Language.get(variable, 'opTip');
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 

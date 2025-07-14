@@ -1,25 +1,15 @@
 package language.locales;
 
-import haxe.Json;
-
-typedef MainData =
-{
-	languageName:String,
-	fontName:String,
-	play:String,
-	back:String
-}
-
 class MainLang
 {
-	static var data:MainData;
-	static var defaultData:MainData;
+	static var data:Map<String, String> = [];
+	static var defaultData:Map<String, String> = [];
 
 	static public function get(value:String):String
 	{
-		var getValue:String = Reflect.getProperty(data, value);
+		var getValue:String = data.get(value);
 		if (getValue == null)
-			getValue = Reflect.getProperty(defaultData, value);
+			getValue = defaultData.get(value);
 		if (getValue == null)
 			getValue = value + ' (missed interpret)';
 		return getValue;
@@ -27,9 +17,16 @@ class MainLang
 
 	static public function updateLang()
 	{
-		if (FileSystem.exists(Paths.getPath('language') + '/' + 'English' + '/main.json'))
-			data = defaultData = Json.parse(Paths.getTextFromFile('language/' + 'English' + '/main.json'));
-		if (FileSystem.exists(Paths.getPath('language') + '/' + ClientPrefs.data.language + '/main.json'))
-			data = Json.parse(Paths.getTextFromFile('language/' + ClientPrefs.data.language + '/main.json'));
+		data.clear();
+		defaultData.clear();
+		
+		var minorPath:String = '/main';
+		var directoryPath:Array<String> = [Paths.getPath('language') + '/' + 'English' + minorPath];
+
+		var path = Paths.getPath('language') + '/' + ClientPrefs.data.language + minorPath;
+		if (!FileSystem.exists(path)) directoryPath.push(Paths.getPath('language') + '/' + 'English' + minorPath);
+		else directoryPath.push(path);
+
+		Language.setupData(MainMenuLang, directoryPath);
 	}
 }

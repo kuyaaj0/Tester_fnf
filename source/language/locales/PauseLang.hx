@@ -1,29 +1,15 @@
 package language.locales;
 
-import haxe.Json;
-
-typedef PauseData =
-{
-	restart:String,
-	continues:String,
-	difficulty:String,
-	editor:String,
-	options:String,
-	exit:String,
-	back:String,
-	debug:String,
-}
-
 class PauseLang
 {
-	static var data:PauseData;
-	static var defaultData:PauseData;
+	static var data:Map<String, String> = [];
+	static var defaultData:Map<String, String> = [];
 
 	static public function get(value:String):String
 	{
-		var getValue:String = Reflect.getProperty(data, value);
+		var getValue:String = data.get(value);
 		if (getValue == null)
-			getValue = Reflect.getProperty(defaultData, value);
+			getValue = defaultData.get(value);
 		if (getValue == null)
 			getValue = value + ' (missed interpret)';
 		return getValue;
@@ -31,9 +17,16 @@ class PauseLang
 
 	static public function updateLang()
 	{
-		if (FileSystem.exists(Paths.getPath('language') + '/' + 'English' + '/pause.json'))
-			data = defaultData = Json.parse(Paths.getTextFromFile('language/' + 'English' + '/pause.json'));
-		if (FileSystem.exists(Paths.getPath('language') + '/' + ClientPrefs.data.language + '/pause.json'))
-			data = Json.parse(Paths.getTextFromFile('language/' + ClientPrefs.data.language + '/pause.json'));
+		data.clear();
+		defaultData.clear();
+		
+		var minorPath:String = '/pause';
+		var directoryPath:Array<String> = [Paths.getPath('language') + '/' + 'English' + minorPath];
+
+		var path = Paths.getPath('language') + '/' + ClientPrefs.data.language + minorPath;
+		if (!FileSystem.exists(path)) directoryPath.push(Paths.getPath('language') + '/' + 'English' + minorPath);
+		else directoryPath.push(path);
+
+		Language.setupData(MainMenuLang, directoryPath);
 	}
 }

@@ -29,17 +29,17 @@ class GetInit
     static public function getListNum():Int{
         var listNum:Int = 0;
         listArray = [];
-        if (!FileSystem.exists('assets/shared/Playlists/')){
-            FileSystem.createDirectory('assets/shared/Playlists/');
+        if (!FileSystem.exists('assets/shared/playlists/')){
+            FileSystem.createDirectory('assets/shared/playlists/');
             return listNum;
         }
           
-        var contents:Array<String> = FileSystem.readDirectory("assets/shared/Playlists/");
+        var contents:Array<String> = FileSystem.readDirectory("assets/shared/playlists/");
         if (contents.length == 0) 
             return listNum;
             
         for (item in contents){
-            var listFile:String = 'assets/shared/Playlists/' + item + '/List.json';
+            var listFile:String = 'assets/shared/playlists/' + item + '/List.json';
             if(FileSystem.exists(listFile))
                 listNum++;
                 listArray.push(File.getContent(listFile));
