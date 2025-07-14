@@ -139,9 +139,10 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	public var Rotate:Bool = true;
 	public var RotateSpeed:Float = 1;
 	public var FluentMode:Bool = false;
-	public var rate:Float = 30;    // 每秒转动次数
+	public var rate:Float = 10;    // 每秒转动次数
 	
-	var LineXY:Map<FlxSprite, Dynamic> = new Map();
+	var LineX:Array<Float> = [];
+	var LineY:Array<Float> = [];
 	
 	public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor,Radius:Float = 50, symmetry:Bool = true, Number:Int = 3)
 	{
@@ -155,6 +156,9 @@ class AudioCircleDisplay extends FlxSpriteGroup
 			Number = 1;
 
 		this.Number = Number;
+		
+		LineX = [];
+		LineY = [];
 
 		for (i in 0...line * Number)
 		{
@@ -169,7 +173,8 @@ class AudioCircleDisplay extends FlxSpriteGroup
 			newLine.x += moveX;
 			newLine.y += moveY;
 			add(newLine);
-			LineXY.set(newLine, {x: X + moveX, y: Y + moveY});
+			LineX.push(newLine.x);
+			LineY.push(newLine.y);
 		}
 		_height = Height;
 		@:privateAccess
@@ -207,16 +212,16 @@ class AudioCircleDisplay extends FlxSpriteGroup
 		getValues = analyzer.getLevels();
 		updateLine(elapsed);
 		if (Rotate){
-		    for (newLine in members){
+		    for (newLine in 0...(members.length - 1)){
 		        if (FluentMode){
-		            newLine.angle += elapsed * RotateSpeed * 20;
+		            members[newLine].angle += elapsed * RotateSpeed * 20;
 		        }
-    		    var correctedAngle = newLine.angle - 90;
+    		    var correctedAngle = members[newLine].angle - 90;
     			var radians = correctedAngle * Math.PI / 180;
     			var moveX = Math.cos(radians) * Radius;
     			var moveY = Math.sin(radians) * Radius;
-    			newLine.x = LineXY.get(newLine).x + moveX;
-    			newLine.y = LineXY.get(newLine).y + moveY;
+    			members[newLine].x = LineX[newLine] + moveX;
+    			members[newLine].y = LineY[newLine] + moveY;
     	    }
 		}
 
@@ -225,7 +230,7 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	
 	function updateAngle(){
 	    FlxTimer.wait(1 / rate, () -> updateAngle()); //需要等待循环执行
-	    if (!FluentMode){
+	    if (!FluentMode && LineX.length == LineY.length && LineY.length == members.length){
 	        for (newLine in members){
 		        newLine.angle += 360 / (line * Number);
 		    }
