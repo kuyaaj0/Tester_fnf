@@ -3,8 +3,8 @@
 	"list": [
 		{
 			"name": "Aimai Attitude",
-			"sound": ["assets/shared/Playlists/example/songs/Aimai-Attitude.ogg"],
-			"background": ["assets/shared/Playlists/example/art/Aimai-Attitude.png"],
+			"sound": ["assets/shared/playlists/example/songs/Aimai-Attitude.ogg"],
+			"background": ["assets/shared/playlists/example/art/Aimai-Attitude.png"],
 			"record": null,
 			"backendVideo": null,
 			"bpm": 200,
@@ -12,8 +12,8 @@
 		},
 		{
 		    "name": "Wellerman",
-			"sound": ["assets/shared/Playlists/example/songs/Wellerman.ogg"],
-			"background": ["assets/shared/Playlists/example/art/Wellerman.png"],
+			"sound": ["assets/shared/playlists/example/songs/Wellerman.ogg"],
+			"background": ["assets/shared/playlists/example/art/Wellerman.png"],
 			"record": null,
 			"backendVideo": null,
 			"bpm": 110,

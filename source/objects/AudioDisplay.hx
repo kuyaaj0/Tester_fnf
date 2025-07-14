@@ -135,6 +135,9 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	
 	var symmetry:Bool = true;
 	var Number:Int = 1;
+	
+	public var Rotate:Bool = true;
+	public var RotateSpeed:Float = 1;
 
 	public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor,Radius:Float = 50, symmetry:Bool = true, Number:Int = 3)
 	{
@@ -196,6 +199,17 @@ class AudioCircleDisplay extends FlxSpriteGroup
 
 		getValues = analyzer.getLevels();
 		updateLine(elapsed);
+		if (Rotate){
+		    members.angle += elapsed * RotateSpeed * 20;
+		    for (newLine in members){
+    		    var correctedAngle = newLine.angle - 90;
+    			var radians = correctedAngle * Math.PI / 180;
+    			var moveX = Math.cos(radians) * Radius;
+    			var moveY = Math.sin(radians) * Radius;
+    			newLine.x += moveX;
+    			newLine.y += moveY;
+    		}
+		}
 
 		super.update(elapsed);
 	}

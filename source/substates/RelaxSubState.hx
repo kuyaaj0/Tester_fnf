@@ -80,6 +80,8 @@ class RelaxSubState extends MusicBeatSubstate
 	
 	var Sound1:FlxSound = new FlxSound();
 	var Sound2:FlxSound = new FlxSound();
+	
+	var DebugText:FlxText;
 
 	public function new()
 	{
@@ -88,20 +90,55 @@ class RelaxSubState extends MusicBeatSubstate
 		FlxG.sound.music.stop();
 		addVirtualPad(NONE, B);
 	}
+	
+	public function inspectFile(NowInfo:SongInfo):Array<Dynamic>{
+	    var result:Array<Dynamic> = [];
+	    var error:String = "";
+	    if (NowInfo.sound.length > 0){
+	        for (i in NowInfo.sound){
+	            if (!FileSystem.exists(i)){  //以防外一如果有一个歌曲不存在就终止加载
+	                error += "can't find '" + i + "'\n";
+	            }
+	        }
+	    }
+	    
+	    if (NowInfo.background.length > 0){
+	        for (i in NowInfo.background){
+	            if (!FileSystem.exists(i)){  //以防外一如果有一个背景不存在就终止加载
+	                error += "can't find '" + i + "'\n";
+	            }
+	        }
+	    }
+	    
+	    if (NowInfo.record.length > 0){
+	        for (i in NowInfo.record){
+	            if (!FileSystem.exists(i)){  //以防外一如果有一个曲绘唱片不存在就终止加载
+	                error += "can't find '" + i + "'\n";
+	            }
+	        }
+	    }
+	    
+	    result = [true, ""];
+	    if (error != "") result = [false, error];
+	    
+	    return result;
+	}
 
 	/**
 	 *	@param	songInfo	歌曲信息
 	**/
 	public function loadSongs(songInfo:SongInfo = null):Void {
 		if (isTransitioning || songInfo == null) return;
+		var res:Array<Dynamic> = inspectFile(songInfo);
+		if (!res[0]){
+		    DebugText.text = res[1];
+		    return;
+		}
+		
+		
 		isTransitioning = true;
 		Sound1.destroy();
 		Sound2.destroy();
-		if (songInfo.background != null && songInfo.background.length > 0) {
-			for (bg in songInfo.background) {
-				Paths.image(bg);
-			}
-		}
 
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
             if (songInfo.sound.length > 1) {
@@ -458,7 +495,7 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 		add(playListWindow);
 		
-		var DebugText:FlxText = new FlxText(0, 0, FlxG.width, SongsArray.name, 25);
+	    DebugText = new FlxText(0, 0, FlxG.width, SongsArray.name, 25);
 		DebugText.font = Paths.font('Lang-ZH.ttf');
 		add(DebugText);
 		DebugText.cameras = [camHUD];
