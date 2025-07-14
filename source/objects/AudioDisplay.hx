@@ -164,7 +164,7 @@ class AudioCircleDisplay extends FlxSpriteGroup
 		for (i in 0...line * Number)
 		{
 			var newLine = new FlxSprite().makeGraphic(gap, 1, Color);
-			var angle = (360 / (line * Number)) * i;
+			var angle = (360 / (line * Number)) * i + 1;
 			newLine.angle = angle;
 			newLine.origin.y = 1;
 			var correctedAngle = angle - 90;
@@ -190,6 +190,9 @@ class AudioCircleDisplay extends FlxSpriteGroup
 
 	var saveTime:Float = 0;
 	var getValues:Array<funkin.vis.dsp.Bar>;
+	
+	var _angleUpdateAccumulator:Float = 0;
+    var _angleUpdateInterval:Float = 1 / rate;
 
 	override function update(elapsed:Float)
 	{
@@ -210,39 +213,31 @@ class AudioCircleDisplay extends FlxSpriteGroup
 
 		getValues = analyzer.getLevels();
 		updateLine(elapsed);
-        if (Rotate) {
-            var totalMembers = members.length - 1;
-            for (i in 0...totalMembers) {
-                var angleOffset = 360 * (i / totalMembers);
-                if (FluentMode) {
-                    members[i].angle += elapsed * RotateSpeed * 20;
-                }
-                
-                var correctedAngle = members[i].angle + angleOffset - 90;
-                var radians = correctedAngle * Math.PI / 180;
-                var moveX = Math.cos(radians) * Radius;
-                var moveY = Math.sin(radians) * Radius;
-                members[i].x = LineX + moveX;
-                members[i].y = LineY + moveY;
-            }
-        }
+        if (Rotate){
+		    for (newLine in 0...(members.length - 1)){
+		        if (FluentMode){
+		            members[newLine].angle += elapsed * RotateSpeed * 20;
+		        }else{
+                    _angleUpdateAccumulator += elapsed;
+                    
+                    while (_angleUpdateAccumulator >= _angleUpdateInterval) {
+                        _angleUpdateAccumulator -= _angleUpdateInterval;
+                        
+                        for (newLine in members) {
+                            newLine.angle += 360 / (line * Number) * rateNum;
+                        }
+                    }
+		        }
+    		    var correctedAngle = members[newLine].angle - 90;
+    			var radians = correctedAngle * Math.PI / 180;
+    			var moveX = Math.cos(radians) * Radius;
+    			var moveY = Math.sin(radians) * Radius;
+    			members[newLine].x = LineX + moveX;
+    			members[newLine].y = LineY + moveY;
+    	    }
+		}
         
 		super.update(elapsed);
-	}
-	
-	function updateAngle(){
-	    try{
-	        FlxTimer.wait(1 / rate, () -> {
-    	        if(members != null)
-    	            updateAngle();
-    	    }); //需要等待循环执行
-    	    
-    	    if (!FluentMode && members != null){
-    	        for (newLine in members){
-    		        newLine.angle += 360 / (line * Number) * rateNum;
-    		    }
-    		}
-	    }
 	}
 
 	function addAnalyzer(snd:FlxSound)
