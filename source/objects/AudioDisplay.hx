@@ -139,7 +139,7 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	public var Rotate:Bool = true;
 	public var RotateSpeed:Float = 1;
 	public var FluentMode:Bool = false;
-	public var rate:Float = 20;    // 每秒调用次数
+	public var rate:Float = 30;    // 每秒转动次数
 	
 	var LineXY:Map<FlxSprite, Dynamic> = new Map();
 	
@@ -169,14 +169,14 @@ class AudioCircleDisplay extends FlxSpriteGroup
 			newLine.x += moveX;
 			newLine.y += moveY;
 			add(newLine);
-			LineXY.set(newLine, {x: newLine.x, y: newLine.y});
+			LineXY.set(newLine, {x: X + moveX, y: Y + moveY});
 		}
 		_height = Height;
 		@:privateAccess
 		if (snd != null)
 		{
 			analyzer = new SpectralAnalyzer(snd._channel.__audioSource, Std.int(line * 1 + Math.abs(0.05 * (4 - ClientPrefs.data.audioDisplayQuality))), 1, 5);
-			analyzer.fftN = 1024 * ClientPrefs.data.audioDisplayQuality;
+			analyzer.fftN = 256 * ClientPrefs.data.audioDisplayQuality;
 		}
 	}
 
@@ -184,21 +184,6 @@ class AudioCircleDisplay extends FlxSpriteGroup
 
 	var saveTime:Float = 0;
 	var getValues:Array<funkin.vis.dsp.Bar>;
-
-    private var _timer:Float = 0.0;
-    private var _minInterval = 0.001; // 最小间隔保护
-    
-    public function tick(dt:Float):Bool {
-        if (rate <= 0) return false; // 防止除零
-        
-        _timer += dt;
-        var interval = Math.max(1.0 / rate, _minInterval);
-        if (_timer >= interval) {
-            _timer = 0.0;
-            return true;
-        }
-        return false;
-    }
 
 	override function update(elapsed:Float)
 	{
@@ -221,12 +206,9 @@ class AudioCircleDisplay extends FlxSpriteGroup
 		updateLine(elapsed);
 		if (Rotate){
 		    for (newLine in members){
+		        updateAngle(newLine);
 		        if (FluentMode){
 		            newLine.angle += elapsed * RotateSpeed * 20;
-		        }else{
-		            if (tick(elapsed)){
-		                newLine.angle += 360 / (line * Number);
-		            }
 		        }
     		    var correctedAngle = newLine.angle - 90;
     			var radians = correctedAngle * Math.PI / 180;
@@ -238,6 +220,15 @@ class AudioCircleDisplay extends FlxSpriteGroup
 		}
 
 		super.update(elapsed);
+	}
+	
+	function updateAngle(){
+	    FlxTimer.wait(1 / rate, () -> updateAngle()); //需要等待循环执行
+	    if (!FluentMode){
+	        for (newLine in members){
+		        newLine.angle += 360 / (line * Number);
+		    }
+		}
 	}
 
 	function addAnalyzer(snd:FlxSound)
