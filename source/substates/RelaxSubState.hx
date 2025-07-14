@@ -828,12 +828,6 @@ class RelaxSubState extends MusicBeatSubstate
 			recordPicture.angle += elapsed * 20;
 			if (recordPicture.angle >= 360) recordPicture.angle -= 360;
 		}
-		
-		if (audio != null && !isTransitioning)
-		{
-		    audio.angle += elapsed * 20;
-			if (audio.angle >= 360) audio.angle -= 360;
-		}
 
 		if (FlxG.keys.justPressed.B)
 		{
