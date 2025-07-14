@@ -182,8 +182,6 @@ class AudioCircleDisplay extends FlxSpriteGroup
 			analyzer = new SpectralAnalyzer(snd._channel.__audioSource, Std.int(line * 1 + Math.abs(0.05 * (4 - ClientPrefs.data.audioDisplayQuality))), 1, 5);
 			analyzer.fftN = 256 * ClientPrefs.data.audioDisplayQuality;
 		}
-		
-		updateAngle();
 	}
 
 	public var stopUpdate:Bool = false;
@@ -192,8 +190,7 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	var getValues:Array<funkin.vis.dsp.Bar>;
 	
 	var _angleUpdateAccumulator:Float = 0;
-    var _angleUpdateInterval:Float = 1 / rate;
-
+    
 	override function update(elapsed:Float)
 	{
 		if (stopUpdate)
@@ -218,6 +215,8 @@ class AudioCircleDisplay extends FlxSpriteGroup
 		        if (FluentMode){
 		            members[newLine].angle += elapsed * RotateSpeed * 20;
 		        }else{
+		            var _angleUpdateInterval:Float = 1 / rate;
+
                     _angleUpdateAccumulator += elapsed;
                     
                     while (_angleUpdateAccumulator >= _angleUpdateInterval) {
