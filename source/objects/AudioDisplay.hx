@@ -231,16 +231,18 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	}
 	
 	function updateAngle(){
-	    FlxTimer.wait(1 / rate, () -> {
-	        if(members != null)
-	            updateAngle();
-	    }); //需要等待循环执行
-	    
-	    if (!FluentMode && members != null){
-	        for (newLine in members){
-		        newLine.angle += 360 / (line * Number) * rateNum;
-		    }
-		}
+	    try{
+	        FlxTimer.wait(1 / rate, () -> {
+    	        if(members != null)
+    	            updateAngle();
+    	    }); //需要等待循环执行
+    	    
+    	    if (!FluentMode && members != null){
+    	        for (newLine in members){
+    		        newLine.angle += 360 / (line * Number) * rateNum;
+    		    }
+    		}
+	    }
 	}
 
 	function addAnalyzer(snd:FlxSound)
