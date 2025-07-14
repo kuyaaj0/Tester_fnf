@@ -140,12 +140,12 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	public var RotateSpeed:Float = 1;
 	public var FluentMode:Bool = false;
 	public var rate:Float = 10;    // 每秒转动次数
-	public var rateNum:Int = 5; //每次转动的跳过条数
+	public var rateNum:Int = -20; //每次转动的跳过条数
 	
 	var LineX:Float;
 	var LineY:Float;
 	
-	public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor,Radius:Float = 50, symmetry:Bool = true, Number:Int = 3)
+	public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor,Radius:Float = 40, symmetry:Bool = false, Number:Int = 5)
 	{
 		super(X, Y);
 
@@ -210,20 +210,23 @@ class AudioCircleDisplay extends FlxSpriteGroup
 
 		getValues = analyzer.getLevels();
 		updateLine(elapsed);
-		if (Rotate){
-		    for (newLine in 0...(members.length - 1)){
-		        if (FluentMode){
-		            members[newLine].angle += elapsed * RotateSpeed * 20;
-		        }
-    		    var correctedAngle = members[newLine].angle - 90;
-    			var radians = correctedAngle * Math.PI / 180;
-    			var moveX = Math.cos(radians) * Radius;
-    			var moveY = Math.sin(radians) * Radius;
-    			members[newLine].x = LineX + moveX;
-    			members[newLine].y = LineY + moveY;
-    	    }
-		}
-
+        if (Rotate) {
+            var totalMembers = members.length - 1;
+            for (i in 0...totalMembers) {
+                var angleOffset = 360 * (i / totalMembers);
+                if (FluentMode) {
+                    members[i].angle += elapsed * RotateSpeed * 20;
+                }
+                
+                var correctedAngle = members[i].angle + angleOffset - 90;
+                var radians = correctedAngle * Math.PI / 180;
+                var moveX = Math.cos(radians) * Radius;
+                var moveY = Math.sin(radians) * Radius;
+                members[i].x = LineX + moveX;
+                members[i].y = LineY + moveY;
+            }
+        }
+        
 		super.update(elapsed);
 	}
 	
