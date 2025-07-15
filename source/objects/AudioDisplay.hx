@@ -188,9 +188,8 @@ class AudioCircleDisplay extends FlxSpriteGroup
 
 	var saveTime:Float = 0;
 	var getValues:Array<funkin.vis.dsp.Bar>;
+	var nowTime:Float = 0;
 	
-	var _angleUpdateAccumulator:Float = 0;
-    
 	override function update(elapsed:Float)
 	{
 		if (stopUpdate)
@@ -210,22 +209,18 @@ class AudioCircleDisplay extends FlxSpriteGroup
 
 		getValues = analyzer.getLevels();
 		updateLine(elapsed);
+		nowTime += elapsed;
         if (Rotate){
 		    for (newLine in 0...(members.length - 1)){
 		        if (FluentMode){
 		            members[newLine].angle += elapsed * RotateSpeed * 20;
 		        }else{
-		            var _angleUpdateInterval:Float = 1 / rate;
-
-                    _angleUpdateAccumulator += elapsed;
-                    
-                    while (_angleUpdateAccumulator >= _angleUpdateInterval) {
-                        _angleUpdateAccumulator -= _angleUpdateInterval;
-                        
-                        for (newLine in members) {
+		            if (nowTime >= 1 / rate){
+		                nowTime = 0;
+		                for (newLine in members) {
                             newLine.angle += 360 / (line * Number) * rateNum;
                         }
-                    }
+		            }
 		        }
     		    var correctedAngle = members[newLine].angle - 90;
     			var radians = correctedAngle * Math.PI / 180;
