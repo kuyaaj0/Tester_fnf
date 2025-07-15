@@ -239,8 +239,8 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	var animFrame:Int = 0;
 
     var rotationOffset:Float = 0;      // 自动旋转的偏移量
-    var rotationSpeed:Float = 1;      // 基础旋转速度（可调快）
-    var stepSize:Int = 20;             // 每次跳跃的频段数
+    var rotationSpeed:Float = 2;      // 基础旋转速度（可调快）
+    var stepSize:Int = 5;             // 每次跳跃的频段数
     
     function updateLine(elapsed:Float) {
         if (getValues == null) return;
