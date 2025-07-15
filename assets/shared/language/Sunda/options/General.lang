@@ -1,0 +1,14 @@
+Reset => Reset
+General => Umum
+
+framerate => Ubah FPS
+language => Ganti basa
+colorblindMode => Mode buta warna
+lowQuality => Kualitas rendah
+gameQuality => Kualitas game
+antialiasing => Antialiasing
+flashing => Lampu kedip
+shaders => Shaders
+cacheOnGPU => Cache GPU
+autoPause => Otomatis pause
+gcFreeZone => Tunda bersihkan RAM

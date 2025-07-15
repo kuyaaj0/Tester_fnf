@@ -1,0 +1,8 @@
+Gameplay => 游玩设置
+
+downScroll => 箭头下滚
+middleScroll => 箭头居中
+flipChart => 铺面翻转
+ghostTapping => 无键误触算Miss
+guitarHeroSustains => 长键断连不可续
+noReset => R键直接死亡

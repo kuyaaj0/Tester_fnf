@@ -1,0 +1,7 @@
+Opponent => 对手设置
+
+playOpponent => 游玩对方铺面
+opponentCodeFix => 判定函数交换
+botOpponentFix => 模拟AI对手
+HealthDrainOPPO => 对手推条
+HealthDrainOPPOMult => 对手推条系数

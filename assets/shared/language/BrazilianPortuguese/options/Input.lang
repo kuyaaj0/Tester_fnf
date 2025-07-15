@@ -1,0 +1,13 @@
+Input => Entrada
+
+ControlsSubState => Configuração de controles
+TouchMain => Toque - Principal
+needMobileControl => Controles móveis
+controlsAlpha => Transparência dos controles
+TouchGame => Toque - Jogo
+MobileControlSelectSubState => Tipo de controle
+dynamicColors => Cores dinâmicas
+hitboxLocation => Localização da hitbox
+playControlsAlpha => Transparência em jogo
+extraKey => Tecla extra
+MobileExtraControl => Controle extra móvel

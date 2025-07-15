@@ -1,0 +1,11 @@
+Skin => 皮肤设置
+
+Note => 箭头皮肤设置
+noteSkin => 类型
+noteRGB => 启用着色器
+NotesSubState => 颜色设置
+Splash => 溅射皮肤设置
+splashSkin => 类型
+splashRGB => 启用着色器
+showSplash => 显示
+splashAlpha => 透明度

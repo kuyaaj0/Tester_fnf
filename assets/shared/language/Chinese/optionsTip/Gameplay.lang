@@ -1,0 +1,8 @@
+Gameplay => 游玩设置
+
+downScroll => 箭头改为从上往下滚动
+middleScroll => 将箭头居中放置
+flipChart => 铺面箭头翻转
+ghostTapping => 当没有箭头时按下会Miss
+guitarHeroSustains => 如果长箭断了，则无法再次触发
+noReset => 按 R 键会立刻死亡

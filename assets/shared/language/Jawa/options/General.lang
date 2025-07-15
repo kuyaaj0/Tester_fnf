@@ -1,0 +1,14 @@
+Reset => Ngreset
+General => Umum
+
+framerate => Ganti FPS
+language => Ganti basa
+colorblindMode => Mode buta warna
+lowQuality => Kualitas rendah
+gameQuality => Kualitas game
+antialiasing => Antialiasing
+flashing => Lampu kedip
+shaders => Shaders
+cacheOnGPU => Cache GPU
+autoPause => Auto pause
+gcFreeZone => Delay GC

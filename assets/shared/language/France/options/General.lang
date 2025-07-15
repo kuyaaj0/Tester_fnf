@@ -1,0 +1,14 @@
+Reset => Remise à zéro
+General => Général
+
+framerate => Plafond de FPS
+language => Langue du moteur
+colorblindMode => Filtre daltonien
+lowQuality => Qualité basse
+gameQuality => Qualité du jeu
+antialiasing => Anticrénelage
+flashing => Lumières clignotantes
+shaders => Shaders
+cacheOnGPU => Cache GPU
+autoPause => Pause automatique
+gcFreeZone => Zone libre GC

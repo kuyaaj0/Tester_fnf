@@ -1,0 +1,14 @@
+Reset => 数据重置
+General => 常规设置
+
+framerate => 更改帧数上限
+language => 切换语言
+colorblindMode => 色盲滤镜
+lowQuality => 低质量模式
+gameQuality => 更改屏幕的游戏画面质量
+antialiasing => 使用抗锯齿，提高图形质量，但性能略有下降
+flashing => 允许可能导致引发癫痫的特效使用
+shaders => 启用着色器
+cacheOnGPU => 允许将 GPU 用于缓存纹理，从而减少 RAM 使用率
+autoPause => 当游戏未在前台时自动停止游戏
+gcFreeZone => 暂停大部分运存清理以减少游玩时突然的卡顿和解决因运存过高导致的清理内存泄漏崩溃问题

@@ -1,0 +1,11 @@
+UserInterface => Interface do Usuário
+UserInterfaceTitle => Interface do Usuário
+CustomFade => Fade personalizado
+CustomFadeSound => Volume do fade
+CustomFadeText => Texto do fade
+skipTitleVideo => Pular vídeo inicial
+audioDisplayQuality => Qualidade de áudio
+audioDisplayUpdate => Atualização de áudio
+freeplayOld => Modo livre antigo
+resultsScreen => Tela de resultados
+loadingScreen => Tela de carregamento

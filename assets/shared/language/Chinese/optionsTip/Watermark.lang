@@ -1,0 +1,10 @@
+Watermark => 水印设置
+
+FPScounter => 数据显示
+showFPS => 显示帧数
+showExtra => 显示更多性能数值
+rainbowFPS => 字体颜色跟随帧数进行变化
+memoryType => 运存展示数据类型
+FPSScale => 大小
+showWatermark => 显示水印
+WatermarkScale => 大小

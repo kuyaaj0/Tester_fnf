@@ -1,0 +1,14 @@
+Reset => Atur Ulang
+General => Umum
+
+framerate => Batas FPS
+language => Bahasa mesin
+colorblindMode => Filter buta warna
+lowQuality => Kualitas rendah
+gameQuality => Kualitas permainan
+antialiasing => Antialiasing
+flashing => Lampu berkedip
+shaders => Shader
+cacheOnGPU => Cache GPU
+autoPause => Pause otomatis
+gcFreeZone => Zona bebas GC

@@ -1,0 +1,14 @@
+Reset => Reset
+General => General
+
+framerate => Framerate Cap
+language => Engine Language
+colorblindMode => Colorblind Filter
+lowQuality => Low Quality
+gameQuality => Game Quality
+antialiasing => Anti-Aliasing
+flashing => Flashing Lights
+shaders => Shaders
+cacheOnGPU => GPU Caching
+autoPause => Auto Pause
+gcFreeZone => GC Free Zone

@@ -1,0 +1,14 @@
+Reset => 초기화
+General => 일반
+
+framerate => FPS 설정
+language => 언어 변경
+colorblindMode => 색맹 모드
+lowQuality => 저화질
+gameQuality => 화질 설정
+antialiasing => 안티앨리어싱
+flashing => 화면 깜빡임
+shaders => 셰이더
+cacheOnGPU => GPU 캐시
+autoPause => 자동 일시정지
+gcFreeZone => GC 지연

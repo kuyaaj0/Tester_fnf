@@ -1,0 +1,15 @@
+Reset => Återställer
+General => Allmänt
+
+framerate => Ändra din FPS-gräns
+language => Ändra motorspråk
+colorblindMode => Colorblind-filter mer spelbart för personer med färgblindhet
+lowQuality => Stäng av vissa objekt på scener
+gameQuality => Ändra spelkvalitet för skärm
+antialiasing => Växla mellan antialiasing, vilket förbättrar grafikkvaliteten med en liten prestandaförlust
+flashing => Blinkande lampor som kan orsaka epileptiska anfall och överansträngning
+shaders => Shaders används för vissa visuella effekter
+cacheOnGPU => Gör att GPU:n kan användas för att cachelagra texturer, vilket minskar RAM-användningen
+autoPause => Stoppar spelet när det är ofokuserat
+gcFreeZone => Avbryta större delen av RAM-rensningen för att minska plötslig fördröjning under spelet
+och lösa problemet med minnesläckage kraschar orsakade av överdriven RAM-användning.

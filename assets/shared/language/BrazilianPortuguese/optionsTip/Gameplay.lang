@@ -1,0 +1,8 @@
+Gameplay => Jogabilidade
+
+downScroll => Notas descem em vez de subirem, simples assim
+middleScroll => Coloca sua pista no centro ou na direita
+flipChart => Inverte a tabela para jogar
+ghostTapping => Ativar/desativar se apertar uma direção quando não há nota conta como erro
+guitarHeroSustains => Notas longas não podem ser pressionadas se você errar
+noReset => Ativar/desativar pressionar R para game over
