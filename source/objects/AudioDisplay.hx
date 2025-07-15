@@ -238,8 +238,9 @@ class AudioCircleDisplay extends FlxSpriteGroup
 
 	var animFrame:Int = 0;
 
-	var rotationOffset:Float = 0;  // 存储旋转位置（浮点型更平滑）
-    var rotationSpeed:Float = 0.3; // 控制旋转速度（越大越快）
+    var rotationOffset:Float = 0;      // 自动旋转的偏移量
+    var rotationSpeed:Float = 1;      // 基础旋转速度（可调快）
+    var stepSize:Int = 20;             // 每次跳跃的频段数
     
     function updateLine(elapsed:Float) {
         if (getValues == null) return;
@@ -247,22 +248,17 @@ class AudioCircleDisplay extends FlxSpriteGroup
         rotationOffset = (rotationOffset + rotationSpeed) % line;
         
         for (i in 0...line) {
-            var floatIndex = (i + rotationOffset) % line;
-            var idx1 = Math.floor(floatIndex); // 前一个索引
-            var idx2 = (idx1 + 1) % line;     // 后一个索引
-            var alpha = floatIndex - idx1;     // 插值比例 (0~1)
-            
-            var value:Float;
+            var discreteOffset = Math.floor(rotationOffset / stepSize) * stepSize;
+            var rotatedIndex = (i + discreteOffset) % line;
+
             if (i >= line / 2 && symmetry) {
-                var symIdx1 = (line - idx1) % line;
-                var symIdx2 = (line - idx2) % line;
-                value = getValues[symIdx1].value * (1 - alpha) + getValues[symIdx2].value * alpha;
+                animFrame = Math.round(getValues[(line - rotatedIndex) % line].value * _height);
             } else {
-                value = getValues[idx1].value * (1 - alpha) + getValues[idx2].value * alpha;
+                animFrame = Math.round(getValues[rotatedIndex].value * _height);
             }
             
-            animFrame = Math.round(value * _height * FlxG.sound.volume);
-            
+            animFrame = Math.round(animFrame * FlxG.sound.volume);
+
             for (i1 in 0...Number) {
                 var nowLine = i + (i1 * line);
                 members[nowLine].scale.y = FlxMath.lerp(
@@ -276,7 +272,7 @@ class AudioCircleDisplay extends FlxSpriteGroup
             }
         }
     }
-
+    
 	public function changeAnalyzer(snd:FlxSound)
 	{
 		@:privateAccess

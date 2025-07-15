@@ -888,7 +888,7 @@ class RelaxSubState extends MusicBeatSubstate
 		helpBool = !helpBool;
 		
 		topButtons.handleBeatAnimation(helpBool, beatTime);
-		
+		/*
 		if(helpBool){
 			Main.watermark.scaleX = ClientPrefs.data.WatermarkScale + 0.1;
 			Main.watermark.scaleY = ClientPrefs.data.WatermarkScale - 0.1;
@@ -900,7 +900,7 @@ class RelaxSubState extends MusicBeatSubstate
 		FlxTween.tween(Main.watermark, {scaleX: ClientPrefs.data.WatermarkScale, scaleY: ClientPrefs.data.WatermarkScale}, beatTime * 0.5, {
 			ease: FlxEase.quadOut
 		});
-
+		*/
 		if(beatTimess == 4)
 		{
 			beatTimess = 0;
