@@ -1,0 +1,13 @@
+Input => Inmatning
+
+ControlsSubState => Kontroller
+TouchMain => Touch-huvud
+needMobileControl => Pekskärmskontroll
+controlsAlpha => Genomskinlighet
+TouchGame => Touch-spel
+MobileControlSelectSubState => Kontrolltyp
+dynamicColors => Dynamiska färger
+hitboxLocation => Hitbox-plats
+playControlsAlpha => Kontrolltyp
+extraKey => Extraknapp
+MobileExtraControl => Extraknappsinmatning

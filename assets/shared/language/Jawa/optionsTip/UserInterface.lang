@@ -1,0 +1,11 @@
+UserInterface => AntarmukaPangguna
+UserInterfaceTitle => Antarmuka Pangguna
+CustomFade => Tipe adat luntur
+CustomFadeSound => Volume swara luntur khusus
+CustomFadeText => Teks luntur khusus katon
+skipTitleVideo => Ngliwati video intro
+audioDisplayQuality => Kualitas analitis data musik
+audioDisplayUpdate => Interval reaksi saka analyzer musik
+freeplayOld => Gunakake psych freeplay
+resultsScreen => Bukak Layar Asil ing pungkasan lagu
+loadingScreen => Tambah NgemotKelambu kanggo DolananKahanan

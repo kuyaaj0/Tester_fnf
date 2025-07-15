@@ -1,0 +1,8 @@
+Gameplay => Jeu
+
+downScroll => Les notes vont vers le bas au lieu d'aller vers le haut, c'est assez simple
+middleScroll => Placez votre voie au centre ou à droite
+flipChart => Tableau à feuilles mobiles pour le jeu
+ghostTapping => Compter comme un échec le fait d'appuyer sur une entrée directionnelle alors qu'il n'y a pas de flèche.
+guitarHeroSustains => Les notes d'attente ne peuvent pas être appuyées si vous manquez une note.
+noReset => Appuyer sur R pour basculer dans le jeu

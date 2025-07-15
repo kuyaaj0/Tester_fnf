@@ -1,0 +1,11 @@
+Skin => Skin
+
+Note => Note
+noteSkin => Skin note
+noteRGB => RGB note
+NotesSubState => Configuration couleur
+Splash => Éclaboussure
+splashSkin => Skin éclaboussure
+splashRGB => RGB éclaboussure
+showSplash => Afficher
+splashAlpha => Transparence

@@ -1,0 +1,8 @@
+Gameplay => Spelupplägg
+
+downScroll => Noter går ner istället för upp, enkelt nog
+middleScroll => Placera din fil i mitten eller till höger
+flipChart => Blädderblock för spel
+ghostTapping => Växla räkningen av att trycka på en riktningsinmatning när ingen pil finns där som en miss
+guitarHeroSustains => Hold Notes kan inte tryckas om du missar
+noReset => Tryck på R för att växla till gameover

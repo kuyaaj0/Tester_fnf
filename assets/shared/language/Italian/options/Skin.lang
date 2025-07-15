@@ -1,0 +1,11 @@
+Skin => Skin
+
+Note => Nota
+noteSkin => Skin nota
+noteRGB => RGB nota
+NotesSubState => Impostazione colore
+Splash => Splash
+splashSkin => Skin splash
+splashRGB => RGB splash
+showSplash => Mostra
+splashAlpha => Alfa

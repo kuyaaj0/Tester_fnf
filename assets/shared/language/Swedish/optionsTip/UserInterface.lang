@@ -1,0 +1,11 @@
+UserInterface => Användarinriktning
+UserInterfaceTitle => Användargränssnitt
+CustomFade => Anpassad typ av uttoning
+CustomFadeSound => Anpassad volym för uttoningsljud
+CustomFadeText => Anpassad uttoning av text synlig
+skipTitleVideo => Hoppa över introvideo
+audioDisplayQuality => Den analytiska kvaliteten på musikdata
+audioDisplayUpdate => Reaktionsintervallet för musikanalysatorn
+freeplayOld => Använda psyk freeplay
+resultsScreen => Öppna resultatskärmen vid slutet av låten
+loadingScreen => Lägg till en LoadingScreen för PlayState

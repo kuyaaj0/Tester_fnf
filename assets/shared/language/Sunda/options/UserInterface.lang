@@ -1,0 +1,11 @@
+UserInterface => UI
+UserInterfaceTitle => Antarmuka
+CustomFade => Custom fade
+CustomFadeSound => Volume fade
+CustomFadeText => Teks fade
+skipTitleVideo => Lewati intro
+audioDisplayQuality => Kualitas audio
+audioDisplayUpdate => Update audio
+freeplayOld => Freeplay lama
+resultsScreen => Layar hasil
+loadingScreen => Layar loading

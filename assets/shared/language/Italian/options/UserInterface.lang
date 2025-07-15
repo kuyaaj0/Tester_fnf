@@ -1,0 +1,11 @@
+UserInterface => Interfaccia utente
+UserInterfaceTitle => Interfaccia utente
+CustomFade => Fade personalizzato
+CustomFadeSound => Volume fade
+CustomFadeText => Testo fade visibile
+skipTitleVideo => Salta video intro
+audioDisplayQuality => Qualità analisi audio
+audioDisplayUpdate => Intervallo analizzatore
+freeplayOld => Freeplay vecchio
+resultsScreen => Schermata risultati
+loadingScreen => Schermata caricamento
