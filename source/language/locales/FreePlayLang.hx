@@ -7,11 +7,19 @@ class FreePlayLang
 
 	static public function get(value:String):String
 	{
-		var getValue:String = data.get(value);
-		if (getValue == null)
-			getValue = defaultData.get(value);
-		if (getValue == null)
+		var getValue:String = '';
+		if (data.get(value) != null) {
+			getValue = data.get(value);
+			return getValue;
+		}
+		else if (defaultData.get(value) != null) {
+			getValue = data.get(value);
+			return getValue;
+		}
+		else {
 			getValue = ClientPrefs.data.developerMode ? value + ' (missed interpret)' : value;
+			return getValue;
+		}
 		return getValue;
 	}
 
@@ -24,9 +32,9 @@ class FreePlayLang
 		var directoryPath:Array<String> = [Paths.getPath('language') + '/' + 'English' + minorPath];
 
 		var path = Paths.getPath('language') + '/' + ClientPrefs.data.language + minorPath;
-		if (!FileSystem.exists(path)) directoryPath.push(Paths.getPath('language') + '/' + 'English' + minorPath);
+		if (!FileSystem.isDirectory(path)) directoryPath.push(Paths.getPath('language') + '/' + 'English' + minorPath);
 		else directoryPath.push(path);
 
-		Language.setupData(MainMenuLang, directoryPath);
+		Language.setupData(FreePlayLang, directoryPath);
 	}
 }

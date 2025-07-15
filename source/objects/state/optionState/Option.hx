@@ -403,7 +403,7 @@ class Option extends FlxSpriteGroup
 
 	public function changeLanguage() {
 		this.description = Language.get(variable, 'op');
-		this.tips = Language.get(variable, 'opSub');
+		this.tips = Language.get(variable, 'opTip');
 		alreadyShow = false;
 		switch (type)
 		{
