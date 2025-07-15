@@ -188,7 +188,6 @@ class AudioCircleDisplay extends FlxSpriteGroup
 
 	var saveTime:Float = 0;
 	var getValues:Array<funkin.vis.dsp.Bar>;
-	var nowTime:Float = 0;
 	
 	override function update(elapsed:Float)
 	{
@@ -209,18 +208,11 @@ class AudioCircleDisplay extends FlxSpriteGroup
 
 		getValues = analyzer.getLevels();
 		updateLine(elapsed);
-		nowTime += elapsed;
+
         if (Rotate){
 		    for (newLine in 0...(members.length - 1)){
 		        if (FluentMode){
 		            members[newLine].angle += elapsed * RotateSpeed * 20;
-		        }else{
-		            if (nowTime >= 1 / rate){
-		                nowTime = 0;
-		                for (newLine in members) {
-                            newLine.angle += 360 / (line * Number) * rateNum;
-                        }
-		            }
 		        }
     		    var correctedAngle = members[newLine].angle - 90;
     			var radians = correctedAngle * Math.PI / 180;
@@ -246,33 +238,44 @@ class AudioCircleDisplay extends FlxSpriteGroup
 
 	var animFrame:Int = 0;
 
-	function updateLine(elapsed:Float)
-	{
-		if (getValues == null)
-			return;
-
-		for (i in 0...line)
-		{
-			if (i >= line / 2 && symmetry)
-			{
-				animFrame = Math.round(getValues[line - i].value * _height);
-			}
-			else
-			{
-				animFrame = Math.round(getValues[i].value * _height);
-			}
-
-			animFrame = Math.round(animFrame * FlxG.sound.volume);
-
-			for (i1 in 0...Number)
-			{
-				var nowLine:Int = i + (i1 * line);
-				members[nowLine].scale.y = FlxMath.lerp(animFrame, members[nowLine].scale.y, Math.exp(-elapsed * 16));
-				if (members[nowLine].scale.y < _height / 40)
-					members[nowLine].scale.y = _height / 40;
-			}
-		}
-	}
+	var rotationOffset:Float = 0;  // 存储旋转位置（浮点型更平滑）
+    var rotationSpeed:Float = 0.3; // 控制旋转速度（越大越快）
+    
+    function updateLine(elapsed:Float) {
+        if (getValues == null) return;
+        
+        rotationOffset = (rotationOffset + rotationSpeed) % line;
+        
+        for (i in 0...line) {
+            var floatIndex = (i + rotationOffset) % line;
+            var idx1 = Math.floor(floatIndex); // 前一个索引
+            var idx2 = (idx1 + 1) % line;     // 后一个索引
+            var alpha = floatIndex - idx1;     // 插值比例 (0~1)
+            
+            var value:Float;
+            if (i >= line / 2 && symmetry) {
+                var symIdx1 = (line - idx1) % line;
+                var symIdx2 = (line - idx2) % line;
+                value = getValues[symIdx1].value * (1 - alpha) + getValues[symIdx2].value * alpha;
+            } else {
+                value = getValues[idx1].value * (1 - alpha) + getValues[idx2].value * alpha;
+            }
+            
+            animFrame = Math.round(value * _height * FlxG.sound.volume);
+            
+            for (i1 in 0...Number) {
+                var nowLine = i + (i1 * line);
+                members[nowLine].scale.y = FlxMath.lerp(
+                    animFrame, 
+                    members[nowLine].scale.y, 
+                    Math.exp(-elapsed * 16)
+                );
+                if (members[nowLine].scale.y < _height / 40) {
+                    members[nowLine].scale.y = _height / 40;
+                }
+            }
+        }
+    }
 
 	public function changeAnalyzer(snd:FlxSound)
 	{
