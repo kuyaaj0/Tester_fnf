@@ -3,6 +3,7 @@ package substates;
 import objects.AudioDisplay.AudioCircleDisplay;
 import objects.state.relaxState.*;
 import objects.state.relaxState.windows.PlayListWindow;
+import objects.state.relaxState.SongLyrics;
 
 import openfl.filters.BlurFilter;
 import openfl.display.Shape;
@@ -75,6 +76,9 @@ class RelaxSubState extends MusicBeatSubstate
 	public var songInfoDisplay:SongInfoDisplay;
 	
 	public var playListWindow:PlayListWindow;
+	
+	// 添加歌词显示实例
+	public var songLyrics:SongLyrics;
 	
 	var Sound1:FlxSound = new FlxSound();
 	var Sound2:FlxSound = new FlxSound();

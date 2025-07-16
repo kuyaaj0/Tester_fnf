@@ -13,6 +13,7 @@ typedef SongInfo = {
 	sound: Array<FlxSoundAsset>, 			// 音频资源
 	background: Array<FlxGraphicAsset>, 	// 背景图像
 	record: Array<FlxGraphicAsset>, 		// 唱片图像
+    lyrics: String,                         // 歌词
 	backendVideo: FlxGraphicAsset, 			// 背景视频
 	bpm: Float, 							// 每分钟节拍数
 	writer: String 							// 作曲家
@@ -21,6 +22,11 @@ typedef SongInfo = {
 typedef SongLists = {
 	name: String,
 	list: Array<SongInfo>
+};
+
+typedef SongLyrics = {
+    font: String,
+    lyrics: Array<Dynamic>
 };
 
 class GetInit
@@ -106,5 +112,34 @@ class GetInit
             }
         }
         return listss;
+    }
+
+    static public function getSongLyrics(songInfo:SongInfo):Array<Dynamic>{
+        var lyricsMap:Map<Int, String> = new Map<Int, String>();
+        
+        var lyricsPath:String = songInfo.lyrics;
+        
+        if(lyricsPath == null) return [null,lyricsMap];
+        
+        if(FileSystem.exists(lyricsPath)){
+            try {
+                var content:String = File.getContent(lyricsPath);
+                
+                var lyricsData:SongLyrics = Json.parse(content);
+                
+                for (lyricEntry in lyricsData.lyrics) {
+                    var timestamp:Int = Std.int(lyricEntry[0]);
+                    var text:String = lyricEntry[1];
+                    lyricsMap.set(timestamp, text);
+                }
+
+                return [lyricsData.font,lyricsMap];
+            } catch (e:Dynamic) {
+                trace('Error parsing lyrics file: ${e}');
+                return [null,lyricsMap];
+            }
+        }else{
+            return [null,lyricsMap];
+        }
     }
 }
