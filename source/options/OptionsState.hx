@@ -43,7 +43,8 @@ class OptionsState extends MusicBeatState
 	var specBG:Rect;
 	var searchButton:SearchButton;
 	var resetButton:ResetButton;
-	
+	var backButton:GeneralBack;
+
 	override function create()
 	{
 		persistentUpdate = persistentDraw = true;
@@ -148,9 +149,8 @@ class OptionsState extends MusicBeatState
 		resetButton = new ResetButton(specBG.x + specBG.height * 0.2 * 2 + searchButton.width, specBG.height * 0.2, specBG.width - (specBG.height * 0.2 * 3 + searchButton.width), specBG.height * 0.6);
 		add(resetButton);
 
-		var backShape = new GeneralBack(0, 720 - 72, UIScale.adjust(FlxG.width * 0.2), UIScale.adjust(FlxG.height * 0.1), Language.get('back', 'ma'), EngineSet.mainColor, backMenu);
-		add(backShape);
-		
+		backButton = new GeneralBack(0, 720 - 72, UIScale.adjust(FlxG.width * 0.2), UIScale.adjust(FlxG.height * 0.1), Language.get('back', 'ma'), EngineSet.mainColor, backMenu);
+		add(backButton);
 
 		super.create();
 	}
@@ -182,6 +182,12 @@ class OptionsState extends MusicBeatState
 	{
 		super.closeSubState();
 		persistentUpdate = true;
+	}
+
+	public function startSearch(text:String, time = 0.6) {
+		for (cata in cataGroup) {
+			cata.startSearch(text, time);
+		}
 	}
 
 	public function changeCata(sort:Int) {
@@ -318,6 +324,9 @@ class OptionsState extends MusicBeatState
 				cataGroup[spr].changeLanguage();
 		}
 		tipButton.changeLanguage();
+		resetButton.changeLanguage();
+		searchButton.changeLanguage();
+		backButton.changeLanguage();
 	}
 
 	public static var stateType:Int = 0; //检测到底退回到哪个界面
