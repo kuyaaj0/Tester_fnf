@@ -14,7 +14,7 @@ import openfl.utils.Assets;
 class SongLyric extends FlxSpriteGroup
 {
     public var getL:Array<Dynamic> = [];
-    public var Lyrics:Map<Float, String> = new Map<Float, String>();
+    public var Lyrics:Map<Int, String> = new Map<Int, String>();
     public var font:String = "";
     public var NowLyrics:FlxText;
     
@@ -50,7 +50,7 @@ class SongLyric extends FlxSpriteGroup
     
     var lastLyrics:String = "";
 
-    public function updateNowLyrics(nowTime:Float = 0){
+    public function updateNowLyrics(nowTime:Int = 0){
         if (Lyrics.get(nowTime) != null && lastLyrics != Lyrics.get(nowTime)){
             lastLyrics != Lyrics.get(nowTime);
             NowLyrics.text = Lyrics.get(nowTime);

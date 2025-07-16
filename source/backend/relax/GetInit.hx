@@ -115,7 +115,7 @@ class GetInit
     }
 
     static public function getSongLyrics(songInfo:SongInfo):Array<Dynamic>{
-        var lyricsMap:Map<Float, String> = new Map<Float, String>();
+        var lyricsMap:Map<Int, String> = new Map<Int, String>();
         
         var lyricsPath:String = songInfo.lyrics;
         
@@ -128,7 +128,7 @@ class GetInit
                 var lyricsData:SongLyrics = Json.parse(content);
                 
                 for (lyricEntry in lyricsData.lyrics) {
-                    var timestamp:Float = lyricEntry[0];
+                    var timestamp:Int = Std.int(lyricEntry[0]);
                     var text:String = lyricEntry[1];
                     lyricsMap.set(timestamp, text);
                 }
