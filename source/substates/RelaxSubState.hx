@@ -801,7 +801,7 @@ class RelaxSubState extends MusicBeatSubstate
 			var currentTime:Float = FlxG.sound.music.time / 1000;
 			var totalTime:Float = FlxG.sound.music.length / 1000;
 			
-			songLyrics.updateNowLyrics(FlxG.sound.music.time);
+			songLyrics.updateNowLyrics(Std.int(FlxG.sound.music.time));
 			
 			songInfoDisplay.updateSongLength(currentTime, totalTime);
 			
