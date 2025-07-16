@@ -3,7 +3,6 @@ package substates;
 import objects.AudioDisplay.AudioCircleDisplay;
 import objects.state.relaxState.*;
 import objects.state.relaxState.windows.PlayListWindow;
-import objects.state.relaxState.SongLyrics;
 
 import openfl.filters.BlurFilter;
 import openfl.display.Shape;
@@ -74,7 +73,7 @@ class RelaxSubState extends MusicBeatSubstate
 	public var topButtons:TopButtons;
 	public var backButtons:BackButtons;
 	public var songInfoDisplay:SongInfoDisplay;
-	public var songLyrics:SongLyrics;
+	public var songLyrics:SongLyric;
 	
 	public var playListWindow:PlayListWindow;
 	
@@ -154,7 +153,7 @@ class RelaxSubState extends MusicBeatSubstate
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
 			FlxG.sound.playMusic(songInfo.sound[0], 1);
 			if (songLyrics == null){
-			    songLyrics = new SongLyrics(songInfo);
+			    songLyrics = new SongLyric(songInfo);
 			    for (member in songLyrics.members){
 			        member.cameras = [camHUD];
 			    }

@@ -11,7 +11,7 @@ import openfl.text.TextFormat;
 import openfl.text.Font;
 import openfl.utils.Assets;
 
-class SongLyrics extends FlxSpriteGroup
+class SongLyric extends FlxSpriteGroup
 {
     public var getL:Array<Dynamic> = [];
     public var Lyrics:Map<Int, String> = new Map<Int, String>();
