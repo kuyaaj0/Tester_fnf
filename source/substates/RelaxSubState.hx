@@ -153,7 +153,7 @@ class RelaxSubState extends MusicBeatSubstate
 		FlxG.sound.music.stop();
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
 			FlxG.sound.playMusic(songInfo.sound[0], 1);
-			if (songLyrics == null)
+			if (songLyrics == null){
 			    songLyrics = new SongLyrics(songInfo);
 			    for (member in songLyrics.members){
 			        member.cameras = [camHUD];
@@ -161,8 +161,9 @@ class RelaxSubState extends MusicBeatSubstate
 			    add(songLyrics);
 			    songLyrics.x = (FlxG.width - songLyrics.width) / 2;
 			    songLyrics.y = FlxG.height * 0.7;
-			else
+			}else{
 			    songLyrics.LoadLyrics(songInfo);
+			}
 			FlxG.sound.music.onComplete = () -> {
 				nextSong();
 			};
