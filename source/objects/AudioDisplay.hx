@@ -136,16 +136,16 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	var symmetry:Bool = true;
 	var Number:Int = 1;
 	
-	public var Rotate:Bool = true;
+	public var Rotate:Bool = false;
 	public var RotateSpeed:Float = 1;
-	public var FluentMode:Bool = false;
+	public var FluentMode:Bool = true;
 	public var rate:Float = 10;    // 每秒转动次数
 	public var rateNum:Int = -20; //每次转动的跳过条数
 	
 	var LineX:Float;
 	var LineY:Float;
 	
-	public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor,Radius:Float = 40, symmetry:Bool = false, Number:Int = 5)
+	public function new(snd:FlxSound = null, X:Float = 0, Y:Float = 0, Width:Int, Height:Int, line:Int, gap:Int, Color:FlxColor,Radius:Float = 40, symmetry:Bool = true, Number:Int = 5)
 	{
 		super(X, Y);
 
@@ -239,38 +239,63 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	var animFrame:Int = 0;
 
     var rotationOffset:Float = 0;      // 自动旋转的偏移量
-    var rotationSpeed:Float = 2;      // 基础旋转速度（可调快）
+    var rotationSpeed:Float = 20;      // 基础旋转速度（可调快）
     var stepSize:Int = 5;             // 每次跳跃的频段数
     
     function updateLine(elapsed:Float) {
         if (getValues == null) return;
         
-        rotationOffset = (rotationOffset + rotationSpeed) % line;
+		if (!FluentMode){
+			rotationOffset = (rotationOffset + rotationSpeed * elapsed) % line;
         
-        for (i in 0...line) {
-            var discreteOffset = Math.floor(rotationOffset / stepSize) * stepSize;
-            var rotatedIndex = (i + discreteOffset) % line;
+			for (i in 0...line) {
+				var discreteOffset = Math.floor(rotationOffset / stepSize) * stepSize;
+				var rotatedIndex = (i + discreteOffset) % line;
 
-            if (i >= line / 2 && symmetry) {
-                animFrame = Math.round(getValues[(line - rotatedIndex) % line].value * _height);
-            } else {
-                animFrame = Math.round(getValues[rotatedIndex].value * _height);
-            }
-            
-            animFrame = Math.round(animFrame * FlxG.sound.volume);
+				if (i >= line / 2 && symmetry) {
+					animFrame = Math.round(getValues[(line - rotatedIndex) % line].value * _height);
+				} else {
+					animFrame = Math.round(getValues[rotatedIndex].value * _height);
+				}
+				
+				animFrame = Math.round(animFrame * FlxG.sound.volume);
 
-            for (i1 in 0...Number) {
-                var nowLine = i + (i1 * line);
-                members[nowLine].scale.y = FlxMath.lerp(
-                    animFrame, 
-                    members[nowLine].scale.y, 
-                    Math.exp(-elapsed * 16)
-                );
-                if (members[nowLine].scale.y < _height / 40) {
-                    members[nowLine].scale.y = _height / 40;
-                }
-            }
-        }
+				for (i1 in 0...Number) {
+					var nowLine = i + (i1 * line);
+					members[nowLine].scale.y = FlxMath.lerp(
+						animFrame, 
+						members[nowLine].scale.y, 
+						Math.exp(-elapsed * 16)
+					);
+					if (members[nowLine].scale.y < _height / 40) {
+						members[nowLine].scale.y = _height / 40;
+					}
+				}
+			}
+		}else{
+			for (i in 0...line)
+			{
+				if (i >= line / 2 && symmetry)
+				{
+					animFrame = Math.round(getValues[line - i].value * _height);
+				}
+				else
+				{
+					animFrame = Math.round(getValues[i].value * _height);
+				}
+
+				animFrame = Math.round(animFrame * FlxG.sound.volume);
+
+				for (i1 in 0...Number)
+				{
+					var nowLine:Int = i + (i1 * line);
+					members[nowLine].scale.y = FlxMath.lerp(animFrame, members[nowLine].scale.y, Math.exp(-elapsed * 16));
+					if (members[nowLine].scale.y < _height / 40)
+						members[nowLine].scale.y = _height / 40;
+				}
+			}
+		}
+        
     }
     
 	public function changeAnalyzer(snd:FlxSound)

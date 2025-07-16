@@ -1,10 +1,7 @@
 package substates;
 
 import objects.AudioDisplay.AudioCircleDisplay;
-import objects.state.relaxState.ButtonSprite;
-import objects.state.relaxState.TopButtons;
-import objects.state.relaxState.SongInfoDisplay;
-import objects.state.relaxState.ControlButtons;
+import objects.state.relaxState.*;
 import objects.state.relaxState.windows.PlayListWindow;
 
 import openfl.filters.BlurFilter;
@@ -74,6 +71,7 @@ class RelaxSubState extends MusicBeatSubstate
 	
 	public var controlButtons:ControlButtons;
 	public var topButtons:TopButtons;
+	public var backButtons:BackButtons;
 	public var songInfoDisplay:SongInfoDisplay;
 	
 	public var playListWindow:PlayListWindow;
@@ -88,7 +86,6 @@ class RelaxSubState extends MusicBeatSubstate
 		super();
         FlxG.state.persistentUpdate = false;
 		FlxG.sound.music.stop();
-		addVirtualPad(NONE, B);
 	}
 	
 	public function inspectFile(NowInfo:SongInfo):Array<Dynamic>{
@@ -421,6 +418,23 @@ class RelaxSubState extends MusicBeatSubstate
 		add(topButtons);
 	}
 
+	private function createBackButtons():Void {
+		backButtons = new BackButtons();
+
+		for (member in backButtons.members) {
+			if (member != null) {
+				member.cameras = [camVpad];
+			}
+		}
+		
+		add(backButtons);
+		backButtons.y = FlxG.height - backButtons.height;
+
+		backButtons.back = function() {
+			close();
+		}
+	}
+
 	override function create()
 	{
 	    instance = this;
@@ -447,7 +461,7 @@ class RelaxSubState extends MusicBeatSubstate
 		FlxG.cameras.add(camOption, false);
 		FlxG.cameras.add(camVpad, false);
 		
-		virtualPad.cameras = [camVpad];
+		//virtualPad.cameras = [camVpad];
 
 		topTrapezoid = new FlxSprite();
 		drawTrapezoid(FlxG.width * 0.7, 40);
@@ -459,6 +473,7 @@ class RelaxSubState extends MusicBeatSubstate
 		camOption.y = -topTrapezoid.height;
 
 		createTopButtons();
+		createBackButtons();
 		
 		defaultZoom = 1.0;
 		camPic.zoom = defaultZoom;

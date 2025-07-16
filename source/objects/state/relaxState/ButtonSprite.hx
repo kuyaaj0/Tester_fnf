@@ -15,7 +15,7 @@ class ButtonSprite extends FlxSprite
     * @param shortSide 短边长度
     * @param direction 梯形方向
     */
-   public function new(X:Float = 0, Y:Float = 0, width:Int = 100, height:Int = 50, shortSide:Int = 50, direction:String = "right")
+    public function new(X:Float = 0, Y:Float = 0, width:Int = 100, height:Int = 50, shortSide:Int = 50, direction:String = "right")
     {
         super(X, Y);
         
