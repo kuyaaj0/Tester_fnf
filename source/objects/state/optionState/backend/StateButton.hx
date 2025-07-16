@@ -2,7 +2,7 @@ package objects.state.optionState.backend;
 
 class StateButton extends FlxSpriteGroup{
     public var bg:Rect;
-	var stateName:FlxText;
+	public var stateName:FlxText;
 
     var follow:Option;
 
@@ -25,11 +25,19 @@ class StateButton extends FlxSpriteGroup{
 	}
 
     var colorChange:Bool = false;
+    var timeCalc:Float;
     override function update(elapsed:Float) {
         super.update(elapsed);
+
+        timeCalc += elapsed;
         
-        //if (!allowUpdate) return;
-        
+        if (!follow.allowUpdate) {
+            timeCalc = 0;
+            return;
+        }
+
+        if (timeCalc < 0.6) return;
+
         var mouse = OptionsState.instance.mouseEvent;
 
         if (mouse.overlaps(bg)) {

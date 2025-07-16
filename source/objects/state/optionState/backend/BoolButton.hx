@@ -31,9 +31,10 @@ class BoolButton extends FlxSpriteGroup {
     }
 
     public var allowUpdate:Bool = true;
-
     override function update(elapsed:Float) {
         super.update(elapsed);
+
+        if (!follow.allowUpdate) return;
         
         if (!allowUpdate) return;
         

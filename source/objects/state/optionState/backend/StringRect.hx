@@ -4,9 +4,9 @@ import openfl.display.Shape;
 import openfl.display.BitmapData;
 
 class StringRect extends FlxSpriteGroup{
-    var bg:Rect;
-    var dis:FlxSprite;
-    var disText:FlxText;
+    public var bg:Rect;
+    public var dis:FlxSprite;
+    public var disText:FlxText;
 
     var follow:Option;
 
@@ -45,10 +45,20 @@ class StringRect extends FlxSpriteGroup{
     }
 
     public var allowUpdate:Bool = true;
+    var timeCalc:Float;
     override function update(elapsed:Float) {
         super.update(elapsed);
+
+        timeCalc += elapsed;
+
+        if (!follow.allowUpdate) {
+            timeCalc = 0;
+            return;
+        }
         
         if (!allowUpdate) return;
+
+        if (timeCalc < 0.6) return;
         
         var mouse = OptionsState.instance.mouseEvent;
 

@@ -29,6 +29,7 @@ class SearchButton extends FlxSpriteGroup
 				tapText.visible = true;
 			else
 				tapText.visible = false;
+			startSearch(cur);
 		}
 		add(search);
 
@@ -43,5 +44,24 @@ class SearchButton extends FlxSpriteGroup
 	override function update(e:Float)
 	{
 		super.update(e);
+	}
+
+	var timer:FlxTimer = null;
+	public function startSearch(text:String)
+	{
+		if (OptionsState.instance.cataCount.length > 0) return;
+		
+		if (timer != null) timer.cancel();
+		timer = new FlxTimer().start(0.2, function(tmr:FlxTimer)
+		{
+			OptionsState.instance.startSearch(text);
+		});
+	} 
+
+	public function changeLanguage() {
+		tapText.text = Language.get('tapToSearch', 'fp');
+		tapText.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
+
+		search.textObj.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
 	}
 }

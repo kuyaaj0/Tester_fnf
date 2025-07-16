@@ -50,7 +50,7 @@ class NaviSprite extends FlxSpriteGroup
         icon.y += height * 0.1;
         add(icon);
 
-        textDis = new FlxText(0, 0, 0, name, Std.int(height * 0.15));
+        textDis = new FlxText(0, 0, 0, Language.get(name, 'op'), Std.int(height * 0.15));
 		textDis.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(height * 0.25), EngineSet.mainColor, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         textDis.borderStyle = NONE;
 		textDis.antialiasing = ClientPrefs.data.antialiasing;

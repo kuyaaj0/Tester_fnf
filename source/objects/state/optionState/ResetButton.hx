@@ -3,6 +3,7 @@ package objects.state.optionState;
 class ResetButton extends FlxSpriteGroup
 {
 	var rect:Rect;
+	var text:FlxText;
 
 	public function new(x:Float, y:Float, width:Float, height:Float)
 	{
@@ -11,7 +12,7 @@ class ResetButton extends FlxSpriteGroup
 		rect = new Rect(0, 0, width, height, height / 5, height / 5, OptionsState.instance.mainColor, 1);
 		add(rect);
 
-		var text = new FlxText(0, 0, 0, Language.get('Reset'), 25);
+		text = new FlxText(0, 0, 0, Language.get('Reset'), 25);
 		text.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
 		text.antialiasing = ClientPrefs.data.antialiasing;
 		text.y += rect.height / 2 - text.height / 2;
@@ -40,5 +41,10 @@ class ResetButton extends FlxSpriteGroup
 		{
 			rect.color = OptionsState.instance.mainColor;
 		}
+	}
+
+	public function changeLanguage() {
+		text.text = Language.get('Reset', 'op');
+		text.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
 	}
 }

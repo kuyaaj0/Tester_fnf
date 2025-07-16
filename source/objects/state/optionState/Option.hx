@@ -124,7 +124,7 @@ class Option extends FlxSpriteGroup
 			case STRING:
 				addString();
 			case TEXT:
-				addCata();
+				addTip();
 			case TITLE:
 				addTitle();
 			case STATE:
@@ -134,7 +134,8 @@ class Option extends FlxSpriteGroup
 	}
 
 	var overlopCheck:Float;
-	var alreadyShow:Bool = false;
+	var alreadyShowTip:Bool = false;
+	public var allowUpdate:Bool = true; //仅仅用于搜索全局禁止更新(代码作用于option的其他子类)
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -142,18 +143,20 @@ class Option extends FlxSpriteGroup
 		followX = follow.mainX;
 		followY = follow.mainY;
 
+		if (!allowUpdate) return;
+
 		var mouse = FlxG.mouse;
        
         if (mouse.overlaps(this)) {
 			overlopCheck += elapsed;
 		} else {
 			overlopCheck = 0;
-			alreadyShow = false;
+			alreadyShowTip = false;
 		}
 
-		if (overlopCheck >= 0.2 && !alreadyShow) {
+		if (overlopCheck >= 0.2 && !alreadyShowTip) {
 			OptionsState.instance.changeTip(tips);
-			alreadyShow = true;
+			alreadyShowTip = true;
 		}
 	}
 
@@ -224,10 +227,10 @@ class Option extends FlxSpriteGroup
 
 	var tipsLight:Rect;
 	var tipsText:FlxText;
-	function addCata()
+	function addTip()
 	{
 		tipsText = new FlxText(0, 0, 0, description, Std.int(follow.width / 10));
-		tipsText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(follow.width / 45), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+		tipsText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(follow.bg.realWidth / 45), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         tipsText.antialiasing = ClientPrefs.data.antialiasing;
 		tipsText.borderStyle = NONE;
 		tipsText.active = false;
@@ -254,7 +257,7 @@ class Option extends FlxSpriteGroup
 	function addTitle()
 	{
 		title = new FlxText(0, 0, 0, description, Std.int(follow.width / 10));
-		title.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(follow.width / 30), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+		title.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(follow.bg.realWidth / 30), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         title.antialiasing = ClientPrefs.data.antialiasing;
 		title.borderStyle = NONE;
 		title.x += follow.bg.mainRound;
@@ -404,7 +407,7 @@ class Option extends FlxSpriteGroup
 	public function changeLanguage() {
 		this.description = Language.get(variable, 'op');
 		this.tips = Language.get(variable, 'opTip');
-		alreadyShow = false;
+		alreadyShowTip = false;
 		switch (type)
 		{
 			case BOOL:
@@ -415,11 +418,11 @@ class Option extends FlxSpriteGroup
 				baseChangeLanguage();
 			case TITLE:
 				title.text = description;
-				title.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(follow.width / 30), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+				title.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(follow.bg.realWidth / 30), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
 				title.borderStyle = NONE;
 			case TEXT:
 				tipsText.text = description;
-				tipsText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(follow.width / 45), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+				tipsText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(follow.bg.realWidth / 45), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
 				tipsText.borderStyle = NONE;
 			default:
 		}
@@ -433,6 +436,13 @@ class Option extends FlxSpriteGroup
 		baseDesc.text = description;
 		baseDesc.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(baseBG.width / 25 / mult), 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
 		baseDesc.borderStyle = NONE;
+	}
+
+	public function startSearch(text:String):Bool {
+		if (variable.indexOf(text) != -1) return true;
+		if (description.indexOf(text) != -1) return true;
+		if (tips.indexOf(text) != -1) return true;
+		return false;
 	}
 
 	////////////////////////////////////////////////
@@ -477,5 +487,117 @@ class Option extends FlxSpriteGroup
 		followY = data;
 		innerY = innerData;
 		this.y = followY + innerY;
+	}
+
+	////////////////////////////////////////////////////////////////////
+
+	public var alphaTween:Array<FlxTween> = [];
+	public function changeAlpha(isAdd:Bool, time:Float = 0.6) { //无敌了haxeflixel，flxspritegroup你妈炸了
+		if (alphaTween.length > 0) {
+			for (tween in alphaTween) {
+				if (tween != null) tween.cancel();
+			}
+		}
+
+		if (isAdd) {
+			switch (type)
+			{
+				case BOOL:
+					baseChangeAlpha(isAdd, time);
+					var tween = FlxTween.tween(boolButton, {alpha: 1}, time, {ease: FlxEase.expoIn});
+					alphaTween.push(tween);
+				case INT, FLOAT, PERCENT:
+					baseChangeAlpha(isAdd, time);
+					var tween = FlxTween.tween(valueText, {alpha: 0.3}, time, {ease: FlxEase.expoIn});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(numButton.addButton, {alpha: 1}, time, {ease: FlxEase.expoIn});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(numButton.deleteButton, {alpha: 1}, time, {ease: FlxEase.expoIn});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(numButton.moveBG, {alpha: 0.4}, time, {ease: FlxEase.expoIn});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(numButton.moveDis, {alpha: 1}, time, {ease: FlxEase.expoIn});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(numButton.rod, {alpha: 1}, time, {ease: FlxEase.expoIn});
+					alphaTween.push(tween);
+				case STRING:
+					baseChangeAlpha(isAdd, time);
+					var tween = FlxTween.tween(valueText, {alpha: 0.3}, time, {ease: FlxEase.expoIn});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(stringRect.bg, {alpha: 0.3}, time, {ease: FlxEase.expoIn});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(stringRect.dis, {alpha: 0.3}, time, {ease: FlxEase.expoIn});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(stringRect.disText, {alpha: 0.3}, time, {ease: FlxEase.expoIn});
+					alphaTween.push(tween);
+				case STATE:
+					var tween = FlxTween.tween(stateButton.bg, {alpha: 0.5}, time, {ease: FlxEase.expoIn});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(stateButton.stateName, {alpha: 0.8}, time, {ease: FlxEase.expoIn});
+					alphaTween.push(tween);
+				default:
+			}
+		} else {
+			switch (type)
+			{
+				case BOOL:
+					baseChangeAlpha(isAdd, time);
+					var tween = FlxTween.tween(boolButton, {alpha: 0}, time, {ease: FlxEase.expoOut});
+					alphaTween.push(tween);
+				case INT, FLOAT, PERCENT:
+					baseChangeAlpha(isAdd, time);
+					var tween = FlxTween.tween(valueText, {alpha: 0}, time, {ease: FlxEase.expoOut});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(numButton.addButton, {alpha: 0}, time, {ease: FlxEase.expoOut});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(numButton.deleteButton, {alpha: 0}, time, {ease: FlxEase.expoOut});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(numButton.moveBG, {alpha: 0}, time, {ease: FlxEase.expoOut});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(numButton.moveDis, {alpha: 0}, time, {ease: FlxEase.expoOut});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(numButton.rod, {alpha: 0}, time, {ease: FlxEase.expoOut});
+					alphaTween.push(tween);
+				case STRING:
+					baseChangeAlpha(isAdd, time);
+					var tween = FlxTween.tween(valueText, {alpha: 0}, time, {ease: FlxEase.expoOut});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(stringRect.bg, {alpha: 0}, time, {ease: FlxEase.expoOut});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(stringRect.dis, {alpha: 0}, time, {ease: FlxEase.expoOut});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(stringRect.disText, {alpha: 0}, time, {ease: FlxEase.expoOut});
+					alphaTween.push(tween);
+				case STATE:
+					var tween = FlxTween.tween(stateButton.bg, {alpha: 0}, time, {ease: FlxEase.expoOut});
+					alphaTween.push(tween);
+					var tween = FlxTween.tween(stateButton.stateName, {alpha: 0}, time, {ease: FlxEase.expoOut});
+					alphaTween.push(tween);
+				default:
+			}
+		}
+	}
+
+	public function baseChangeAlpha(isAdd:Bool, time) {
+		if (isAdd) {
+			var tween = FlxTween.tween(baseBG, {alpha: 0.1}, time, {ease: FlxEase.expoIn});
+			alphaTween.push(tween);
+			var tween = FlxTween.tween(baseTar, {alpha: 0.3}, time, {ease: FlxEase.expoIn});
+			alphaTween.push(tween);
+			var tween = FlxTween.tween(baseLine, {alpha: 0.3}, time, {ease: FlxEase.expoIn});
+			alphaTween.push(tween);
+			var tween = FlxTween.tween(baseDesc, {alpha: 1}, time, {ease: FlxEase.expoIn});
+			alphaTween.push(tween);
+			
+		} else {
+			var tween = FlxTween.tween(baseBG, {alpha: 0}, time, {ease: FlxEase.expoOut});
+			alphaTween.push(tween);
+			var tween = FlxTween.tween(baseTar, {alpha: 0}, time, {ease: FlxEase.expoOut});
+			alphaTween.push(tween);
+			var tween = FlxTween.tween(baseLine, {alpha: 0}, time, {ease: FlxEase.expoOut});
+			alphaTween.push(tween);
+			var tween = FlxTween.tween(baseDesc, {alpha: 0}, time, {ease: FlxEase.expoOut});
+			alphaTween.push(tween);
+		}
 	}
 }

@@ -208,6 +208,10 @@ class ChooseRect extends FlxSpriteGroup {
     override function update(elapsed:Float) {
         super.update(elapsed);
 
+        if (!follow.allowUpdate) {
+            return;
+        }
+
         var mouse = OptionsState.instance.mouseEvent;
 
 		onFocus = mouse.overlaps(this);
