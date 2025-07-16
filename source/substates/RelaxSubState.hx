@@ -74,11 +74,9 @@ class RelaxSubState extends MusicBeatSubstate
 	public var topButtons:TopButtons;
 	public var backButtons:BackButtons;
 	public var songInfoDisplay:SongInfoDisplay;
+	public var songLyrics:SongLyrics;
 	
 	public var playListWindow:PlayListWindow;
-	
-	// 添加歌词显示实例
-	public var songLyrics:SongLyrics;
 	
 	var Sound1:FlxSound = new FlxSound();
 	var Sound2:FlxSound = new FlxSound();
@@ -136,7 +134,6 @@ class RelaxSubState extends MusicBeatSubstate
 		    return;
 		}
 		
-		
 		isTransitioning = true;
 		Sound1.destroy();
 		Sound2.destroy();
@@ -156,6 +153,16 @@ class RelaxSubState extends MusicBeatSubstate
 		FlxG.sound.music.stop();
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
 			FlxG.sound.playMusic(songInfo.sound[0], 1);
+			if (songLyrics == null)
+			    songLyrics = new SongLyrics(songInfo);
+			    for (member in songLyrics.members){
+			        member.cameras = [camHUD];
+			    }
+			    add(songLyrics);
+			    songLyrics.x = (FlxG.width - songLyrics.width) / 2;
+			    songLyrics.y = FlxG.height * 0.7;
+			else
+			    songLyrics.LoadLyrics(songInfo);
 			FlxG.sound.music.onComplete = () -> {
 				nextSong();
 			};
@@ -793,6 +800,8 @@ class RelaxSubState extends MusicBeatSubstate
 		if (FlxG.sound.music != null) {
 			var currentTime:Float = FlxG.sound.music.time / 1000;
 			var totalTime:Float = FlxG.sound.music.length / 1000;
+			
+			songLyrics.updateNowLyrics(FlxG.sound.music.time);
 			
 			songInfoDisplay.updateSongLength(currentTime, totalTime);
 			
