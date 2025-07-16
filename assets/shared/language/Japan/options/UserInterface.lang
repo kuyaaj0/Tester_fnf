@@ -1,0 +1,11 @@
+UserInterface => ユーザーインターフェース
+UserInterfaceTitle => ユーザーインターフェース
+CustomFade => カスタムフェード
+CustomFadeSound => フェード音量
+CustomFadeText => フェード文字表示
+skipTitleVideo => イントロ動画スキップ
+audioDisplayQuality => 音楽解析品質
+audioDisplayUpdate => 解析間隔
+freeplayOld => 旧フリープレイ
+resultsScreen => 結果画面
+loadingScreen => ローディング画面

@@ -1,0 +1,13 @@
+Input => Ngasupkeun
+
+ControlsSubState => Setélan kontrol
+TouchMain => Toél-Utama
+needMobileControl => Rojongan kontrol touch
+controlsAlpha => Kontrol alfa
+TouchGame => Toél-Kaulinan
+MobileControlSelectSubState => Jenis kontrol
+dynamicColors => Warnadinamis
+hitboxLocation => Hitbox lokasi konci tambahan
+playControlsAlpha => Kontrol alfa
+extraKey => ExtraKey pikeun input husus
+MobileExtraControl => Setélan input ExtraKey

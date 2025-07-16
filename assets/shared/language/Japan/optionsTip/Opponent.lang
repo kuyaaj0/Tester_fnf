@@ -1,0 +1,7 @@
+Opponent => 対戦相手
+
+playOpponent => 対戦相手としてプレー
+opponentCodeFix => GoodNoteHit そして opponentNoteHit 機能交換の努力
+botOpponentFix => スクリプトは、あなたがボットを開くと思った
+HealthDrainOPPO => 対戦モードでのヘルドレイン
+HealthDrainOPPOMult => 対戦モードでのヘルスドレイン倍率

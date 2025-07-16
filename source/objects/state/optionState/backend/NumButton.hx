@@ -10,12 +10,12 @@ class NumButton extends FlxSpriteGroup {
     var innerX:Float; //该摁键在option的x
     var innerY:Float; //该摁键在option的y
 
-    var deleteButton:FlxSprite;
-    var addButton:FlxSprite;
+    public var deleteButton:FlxSprite;
+    public var addButton:FlxSprite;
 
-    var moveBG:Rect;
-    var moveDis:Rect;
-    var rod:Rect;
+    public var moveBG:Rect;
+    public var moveDis:Rect;
+    public var rod:Rect;
 	
     var max:Float;
     var min:Float;
@@ -48,7 +48,7 @@ class NumButton extends FlxSpriteGroup {
                          deleteButton.height * 0.5, 
                          deleteButton.height * 0.5 * 0.5, 
                          deleteButton.height * 0.5 * 0.5,
-                         0x000000,
+                         0xFF000000,
                          0.4
                          );
         moveBG.y += (height - moveBG.height) / 2;
@@ -97,6 +97,8 @@ class NumButton extends FlxSpriteGroup {
     override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+        if (!follow.allowUpdate) return;
 
         var mouse = FlxG.mouse;
 

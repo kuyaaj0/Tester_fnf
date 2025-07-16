@@ -1,0 +1,7 @@
+Opponent => Avversario
+
+playOpponent => Gioca come avversario
+opponentCodeFix => Scambio funzioni giudizio
+botOpponentFix => Simulazione bot avversario
+HealthDrainOPPO => Drenaggio salute (avversario)
+HealthDrainOPPOMult => Moltiplicatore drenaggio

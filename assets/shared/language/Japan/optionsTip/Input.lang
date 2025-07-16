@@ -1,0 +1,13 @@
+Input => インプット
+
+ControlsSubState => コントロールの設定
+TouchMain => タッチメイン
+needMobileControl => タッチ・コントロール対応
+controlsAlpha => コントロール・アルファ
+TouchGame => タッチゲーム
+MobileControlSelectSubState => 制御タイプ
+dynamicColors => ダイナミックカラー
+hitboxLocation => ヒットボックスの追加キーの位置
+playControlsAlpha => コントロール・アルファ
+extraKey => 特殊入力用ExtraKey
+MobileExtraControl => エクストラキー入力設定

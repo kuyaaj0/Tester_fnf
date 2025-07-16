@@ -1,0 +1,7 @@
+Opponent => Adversaire
+
+playOpponent => Jouer en tant qu'adversaire
+opponentCodeFix => Effort d'échange des fonctions GoodNoteHit et opponentNoteHit
+botOpponentFix => Le script pensera que vous ouvrez le bot
+HealthDrainOPPO => Drain de santé en mode adversaire
+HealthDrainOPPOMult => Multiplicateur de drain de santé en mode adversaire

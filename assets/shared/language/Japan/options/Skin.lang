@@ -1,0 +1,11 @@
+Skin => スキン
+
+Note => ノート
+noteSkin => ノートスキン
+noteRGB => ノートRGB
+NotesSubState => 色設定
+Splash => スプラッシュ
+splashSkin => スプラッシュスキン
+splashRGB => スプラッシュRGB
+showSplash => 表示
+splashAlpha => 透明度

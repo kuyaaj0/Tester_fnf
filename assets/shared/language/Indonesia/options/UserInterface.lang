@@ -1,0 +1,11 @@
+UserInterface => Antarmuka pengguna
+UserInterfaceTitle => Antarmuka pengguna
+CustomFade => Pudar khusus
+CustomFadeSound => Volume pudar
+CustomFadeText => Teks pudar terlihat
+skipTitleVideo => Lewati video intro
+audioDisplayQuality => Kualitas analisis audio
+audioDisplayUpdate => Interval analisis
+freeplayOld => Mode bebas lama
+resultsScreen => Layar hasil
+loadingScreen => Layar muat

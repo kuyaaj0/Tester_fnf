@@ -1,0 +1,13 @@
+Input => Ingång
+
+ControlsSubState => Inställning av kontroller
+TouchMain => Touch-Huvud
+needMobileControl => Stöd för pekskärmskontroll
+controlsAlpha => Kontrollera alfa
+TouchGame => Touch-Spel
+MobileControlSelectSubState => Typ av kontroller
+dynamicColors => dynamiskaFärger
+hitboxLocation => Hitbox extra nyckelplats
+playControlsAlpha => Typ av kontroller
+extraKey => Extraknapp för specialinmatning
+MobileExtraControl => Inställning av ExtraKey-ingång

@@ -11,10 +11,13 @@ class GeneralBack extends FlxSpriteGroup
 	var saveColor:FlxColor = 0;
 	var saveColor2:FlxColor = 0;
 
+	var saveString = '';
+
 	public function new(X:Float, Y:Float, width:Float = 0, height:Float = 0, texts:String = '', color:FlxColor = FlxColor.WHITE, onClick:Void->Void = null,
 			flipButton:Bool = false)
 	{
 		super(X, Y);
+		this.saveString = texts;
 
 		background = new Rect(0, 0, width, height);
 		background.color = color;
@@ -28,7 +31,7 @@ class GeneralBack extends FlxSpriteGroup
 			button.flipX = true;
 		add(button);
 
-		text = new FlxText(40, 0, 0, texts, 25);
+		text = new FlxText(40, 0, 0, Language.get(texts, 'ma'), 25);
 		text.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
 		text.antialiasing = ClientPrefs.data.antialiasing;
 		add(text);
@@ -73,5 +76,10 @@ class GeneralBack extends FlxSpriteGroup
 				background.color = saveColor;
 			}
 		}
+	}
+
+	public function changeLanguage() {
+		text.text = saveString;
+		text.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
 	}
 }

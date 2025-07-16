@@ -1,0 +1,8 @@
+Gameplay => ゲームプレイ
+
+downScroll => 音符は上ではなく下に移動する。
+middleScroll => 車線を中央または右側に置く
+flipChart => プレイ用フリップチャート
+ghostTapping => 矢印がないときに方向入力を押すことをミスとしてカウントするかどうかを切り替える。
+guitarHeroSustains => ホールドノートは、ミスすると押せなくなる
+noReset => トゥーグルがRを押してゲームオーバー

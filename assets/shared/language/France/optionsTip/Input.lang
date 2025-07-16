@@ -1,0 +1,13 @@
+Input => Entrée
+
+ControlsSubState => Configuration des contrôles
+TouchMain => Touche-Principale
+needMobileControl => Prise en charge des commandes tactiles
+controlsAlpha => Contrôle alpha
+TouchGame => Jeu-Tactile
+MobileControlSelectSubState => Type de contrôle
+dynamicColors => couleursDynamiques
+hitboxLocation => Emplacement des touches supplémentaires de la boîte à outils
+playControlsAlpha => Contrôle alpha
+extraKey => ExtraKey pour une entrée spéciale
+MobileExtraControl => Configuration de l'entrée ExtraKey

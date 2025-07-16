@@ -1,0 +1,11 @@
+Skin => Pelle
+
+Note => Nota
+noteSkin => Cambiare la pelle della nota corrente
+noteRGB => RGB per la nota
+NotesSubState => Nota impostazione colore
+Splash => Schizzo
+splashSkin => Cambiare lo schizzoPelle attuale
+splashRGB => RGB per gli spruzzi
+showSplash => Mostra sul giudice malato/meraviglioso
+splashAlpha => Alfa

@@ -1,0 +1,8 @@
+Gameplay => Gioco
+
+downScroll => Le note vanno verso il basso anziché verso l'alto, in modo abbastanza semplice
+middleScroll => Collocate la vostra corsia al centro o a destra.
+flipChart => Lavagna a fogli mobili per il gioco
+ghostTapping => Conta la pressione di un input direzionale quando non è presente alcuna freccia come una mancanza
+guitarHeroSustains => Le note di attesa non possono essere premute se si perde l'occasione
+noReset => Alterna la pressione di R al gameover

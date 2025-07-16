@@ -11,6 +11,7 @@ class OptionCata extends FlxSpriteGroup
 	public var heightSetOffset:Float = 0; //用于特殊的高度处理
 
 	public var optionArray:Array<Option> = [];
+	public var saveArray:Array<Option> = []; //用于保存最初所有的option
 
 	public var bg:RoundRect;
 
@@ -51,6 +52,7 @@ class OptionCata extends FlxSpriteGroup
 		tar.initY(mainY, putY);
 
 		optionArray.push(tar);
+		saveArray.push(tar);
 
 		if (!sameY) heightSet += tar.saveHeight;
 	}
@@ -76,8 +78,34 @@ class OptionCata extends FlxSpriteGroup
 		}
 	}
 
-	public function changeHeight(time:Float = 0.6) {
-		bg.changeHeight(heightSet + heightSetOffset, time, 'expoInOut');
+	var addOptions:Array<Option> = [];
+	var removeOptions:Array<Option> = [];
+	public function startSearch(text:String, time = 0.6) {
+		addOptions = [];
+		removeOptions = [];
+		for (i in 0...saveArray.length) {
+			addOptions.push(saveArray[i]);
+		}
+		if (text != "") {
+			for (option in saveArray) {
+				if (!option.startSearch(text)) {
+					addOptions.remove(option);
+					removeOptions.push(option);
+				}
+			}
+		}
+		changeOption(time);
+	}
+
+	function changeOption(time = 0.6) {
+		for (option in addOptions) {
+			option.allowUpdate = true;
+			option.changeAlpha(true, time);
+		}
+		for (option in removeOptions) {
+			option.allowUpdate = false;
+			option.changeAlpha(false, time);
+		}
 	}
 
 	public function optionAdjust(str:Option, outputData:Float, time:Float = 0.6) {
@@ -97,5 +125,9 @@ class OptionCata extends FlxSpriteGroup
 		heightSetOffset += outputData;
 
 		changeHeight(time);
+	}
+
+	public function changeHeight(time:Float = 0.6) {
+		bg.changeHeight(heightSet + heightSetOffset, time, 'expoInOut');
 	}
 }
