@@ -41,7 +41,7 @@ import lime.graphics.Image;
 #if android
 @:nativeGen
 class AndroidVSync {
-    extern static function disable():Void;
+    extern public static function disable():Void;
     @:classCode('
         #include <GLES2/gl2.h>
 
