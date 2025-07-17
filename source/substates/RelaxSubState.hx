@@ -154,12 +154,8 @@ class RelaxSubState extends MusicBeatSubstate
 			FlxG.sound.playMusic(songInfo.sound[0], 1);
 			if (songLyrics == null){
 			    songLyrics = new SongLyric(songInfo);
-			    for (member in songLyrics.members){
-			        member.cameras = [camHUD];
-			    }
-			    add(songLyrics);
-			    songLyrics.x = (FlxG.width - songLyrics.width) / 2;
-			    songLyrics.y = FlxG.height * 0.7;
+			    songLyrics.NowLyrics.cameras = [camHUD];
+			    add(songLyrics.NowLyrics);
 			}else{
 			    songLyrics.LoadLyrics(songInfo);
 			}
@@ -522,7 +518,7 @@ class RelaxSubState extends MusicBeatSubstate
 		add(playListWindow);
 		
 	    DebugText = new FlxText(0, 0, FlxG.width, SongsArray.name, 25);
-		DebugText.font = Paths.font('Lang-JP.ttf');
+		DebugText.font = Paths.font('Lang-ZH.ttf');
 		add(DebugText);
 		DebugText.cameras = [camHUD];
 	}
@@ -801,7 +797,7 @@ class RelaxSubState extends MusicBeatSubstate
 			var currentTime:Float = FlxG.sound.music.time / 1000;
 			var totalTime:Float = FlxG.sound.music.length / 1000;
 			
-			DebugText.text = songLyrics.updateNowLyrics(Std.int(FlxG.sound.music.time));
+			songLyrics.updateNowLyrics(Std.int(FlxG.sound.music.time));
 			
 			songInfoDisplay.updateSongLength(currentTime, totalTime);
 			

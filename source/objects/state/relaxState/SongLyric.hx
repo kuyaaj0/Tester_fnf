@@ -23,9 +23,7 @@ class SongLyric extends FlxSpriteGroup
     {
         super(X, Y);
         
-        NowLyrics = new FlxText(0, 0, 0, "", fontSize);
-        NowLyrics.setFormat(null, fontSize, textColor, CENTER);
-        add(NowLyrics);
+        NowLyrics = new FlxText(0, 0, 0, "Lyrics", fontSize);
         
         LoadLyrics(songInfo);
     }
@@ -41,6 +39,8 @@ class SongLyric extends FlxSpriteGroup
         if(font != null && font != "" && FileSystem.exists(font)) {
             NowLyrics.setFormat(font, fontSize, textColor, CENTER);
         }
+        
+        add(NowLyrics);
     }
     
     var lastLyrics:String = "";
