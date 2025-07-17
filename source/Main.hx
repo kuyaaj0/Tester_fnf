@@ -37,24 +37,6 @@ import lime.graphics.Image;
 ')
 #end
 
-// 针对 Android 平台的垂直同步控制
-#if android
-@:nativeGen
-@:cppClass
-class AndroidVSync {
-    @:cppName("disable")
-    extern public static function disable():Void;
-
-    @:classCode('
-        #include <GLES2/gl2.h>
-
-        static void disable() {
-            glSwapInterval(0);
-        }
-    ')
-}
-#end
-
 class Main extends Sprite
 {
 	private static var game = {
@@ -92,7 +74,7 @@ class Main extends Sprite
 		#end
 		
 		#if android
-            AndroidVSync.disable();
+            Application.current.window.context.attributes.vsync = false;
         #end
 	}
 
