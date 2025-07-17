@@ -91,7 +91,7 @@ class SUtil
 	#if android
 	public static function doPermissionsShit():Void
 	{
-		if (AndroidVersion.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // Android 13 (API level 33) and above
+		if (AndroidVersion.SDK_INT >= AndroidVersionCode.TIRAMISU) { // Android 13 (API level 33) and above
 			// Code for Android 13 and above
 			AndroidPermissions.requestPermissions(['READ_MEDIA_IMAGES', 'READ_MEDIA_VIDEO', 'READ_MEDIA_AUDIO']);
 		} else { // Android 12 and below
