@@ -505,8 +505,10 @@ class RelaxSubState extends MusicBeatSubstate
 		initSongsList(0);
 		
 		songLyrics = new FlxText(0, 0, FlxG.width, 'lyrics', 25);
-		songLyrics.font = Paths.font('Lang-ZH.ttf');
+		songLyrics.setFormat(Paths.font('Lang-ZH.ttf'), 25, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(songLyrics);
+		songLyrics.x = (songLyrics.width + FlxG.width) / 2;
+		songLyrics.y = FlxG.height - 90;
 		songLyrics.cameras = [camHUD];
 		
 		if (SongsArray.list.length > 0) {
@@ -803,15 +805,34 @@ class RelaxSubState extends MusicBeatSubstate
 			var currentTime:Float = FlxG.sound.music.time / 1000;
 			var totalTime:Float = FlxG.sound.music.length / 1000;
 			
-			if(LyricsMap != null){
-			    var nowLy:String = LyricsMap.get(Std.int(FlxG.sound.music.time));
-			    if (nowLy != null && lastLyrics != nowLy){
-			        lastLyrics = nowLy;
-			        songLyrics.text = nowLy;
-			    }
-			}else{
-			    songLyrics.text = "";
-			}
+			//我李奶奶的腿要是haxe的毫秒运算能够非常精确那我就不用大费周章了
+			//把所有时间戳排序，并读取当前时间戳小且最接近的歌词
+            var sortedTimestamps:Array<Int> = [];
+            
+            if (LyricsMap != null && sortedTimestamps.length > 0) {
+                var currentTime:Int = Std.int(FlxG.sound.music.time);
+                var currentLyric:String = "";
+                var lastValidTime:Int = 0;
+            
+                for (time in sortedTimestamps) {
+                    if (time <= currentTime) {
+                        lastValidTime = time;
+                    } else {
+                        break;
+                    }
+                }
+            
+                currentLyric = LyricsMap.get(lastValidTime) || "";
+            
+                if (currentLyric != lastLyrics) {
+                    lastLyrics = currentLyric;
+                    songLyrics.text = currentLyric;
+                }
+            } else {
+                songLyrics.text = "";
+                lastLyrics = "";
+            }
+
 			
 			songInfoDisplay.updateSongLength(currentTime, totalTime);
 			
