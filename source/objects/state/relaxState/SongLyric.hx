@@ -6,6 +6,9 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.group.FlxSpriteGroup;
 
+import sys.FileSystem;
+import sys.io.File;
+
 class SongLyric extends FlxSpriteGroup
 {
     public var getL:Array<Dynamic> = [];
@@ -35,8 +38,7 @@ class SongLyric extends FlxSpriteGroup
         Lyrics = getL[1];
         font = getL[0];
         
-        if(font != null && font != "" && Assets.exists(font)) {
-            var customFont = Assets.getFont(font);
+        if(font != null && font != "" && FileSystem.exists(font)) {
             if(customFont != null) {
                 NowLyrics.setFormat(font, fontSize, textColor, CENTER);
             }
