@@ -93,13 +93,13 @@ class GeneralGroup extends OptionCata
 		{
 			FlxG.updateFramerate = ClientPrefs.data.framerate;
 			FlxG.drawFramerate = ClientPrefs.data.framerate;
-			FlxG.stage.frameRate = ClientPrefs.data.framerate;
+			lime.app.Application.current.window.frameRate = ClientPrefs.data.framerate;
 		}
 		else
 		{
 			FlxG.drawFramerate = ClientPrefs.data.framerate;
 			FlxG.updateFramerate = ClientPrefs.data.framerate;
-			FlxG.stage.frameRate = ClientPrefs.data.framerate;
+			lime.app.Application.current.window.frameRate = ClientPrefs.data.framerate;
 		}
 	}
 
