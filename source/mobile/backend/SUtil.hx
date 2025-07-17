@@ -91,20 +91,17 @@ class SUtil
 	#if android
 	public static function doPermissionsShit():Void
 	{
-		if (AndroidVersion.SDK_INT >= AndroidVersionCode.TIRAMISU) // Android 13+
+		if (AndroidVersion.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // Android 13 (API level 33) and above
+			// Code for Android 13 and above
 			AndroidPermissions.requestPermissions(['READ_MEDIA_IMAGES', 'READ_MEDIA_VIDEO', 'READ_MEDIA_AUDIO']);
-		else if (AndroidVersion.SDK_INT >= AndroidVersionCode.Q) { // Android 10-12
-        	AndroidPermissions.requestPermissions(['READ_EXTERNAL_STORAGE']);
-		} 
-		else { // Android 9 及以下
+		} else { // Android 12 and below
 			AndroidPermissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']);
 		}
-		
+
 		if (!AndroidEnvironment.isExternalStorageManager())
 		{
-			if (AndroidVersion.SDK_INT >= AndroidVersionCode.S)
-				AndroidSettings.requestSetting('REQUEST_MANAGE_MEDIA');
-			AndroidSettings.requestSetting('MANAGE_APP_ALL_FILES_ACCESS_PERMISSION');
+			if (AndroidVersion.SDK_INT >= AndroidVersionCode.R) //android 11(sdk 30)
+				AndroidSettings.requestSetting('MANAGE_APP_ALL_FILES_ACCESS_PERMISSION');
 		}
 
 		if ((AndroidVersion.SDK_INT >= AndroidVersionCode.TIRAMISU
