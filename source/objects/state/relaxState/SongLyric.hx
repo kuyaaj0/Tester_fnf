@@ -39,9 +39,7 @@ class SongLyric extends FlxSpriteGroup
         font = getL[0];
         
         if(font != null && font != "" && FileSystem.exists(font)) {
-            if(customFont != null) {
-                NowLyrics.setFormat(font, fontSize, textColor, CENTER);
-            }
+            NowLyrics.setFormat(font, fontSize, textColor, CENTER);
         }
     }
     
