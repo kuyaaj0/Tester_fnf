@@ -113,33 +113,29 @@ class GetInit
         }
         return listss;
     }
+    
+    static public var songLyricsMap:Map<Int, String>;
 
     static public function getSongLyrics(songInfo:SongInfo):Array<Dynamic>{
-        var lyricsMap:Map<Int, String> = new Map<Int, String>();
+        songLyricsMap = new Map();
+        var LyricsDatas:Array<Dynamic> = [];
         
         var lyricsPath:String = songInfo.lyrics;
         
-        if(lyricsPath == null) return [null,lyricsMap];
-        
         if(FileSystem.exists(lyricsPath)){
-            try {
-                var content:String = File.getContent(lyricsPath);
+            var content:String = File.getContent(lyricsPath);
                 
-                var lyricsData:SongLyrics = Json.parse(content);
+            var lyricsData:SongLyrics = Json.parse(content);
                 
-                for (lyricEntry in lyricsData.lyrics) {
-                    var timestamp:Int = Std.int(lyricEntry[0]);
-                    var text:String = lyricEntry[1];
-                    lyricsMap.set(timestamp, text);
-                }
-
-                return [lyricsData.font,lyricsMap];
-            } catch (e:Dynamic) {
-                trace('Error parsing lyrics file: ${e}');
-                return [null,lyricsMap];
+            for (lyricEntry in lyricsData.lyrics) {
+                var timestamp:Int = Std.int(lyricEntry[0]);
+                var text:String = lyricEntry[1];
+                songLyricsMap.set(timestamp, text);
             }
-        }else{
-            return [null,lyricsMap];
+            
+            LyricsDatas = [songLyricsMap, lyricsData.font];
         }
+        
+        return LyricsDatas;
     }
 }

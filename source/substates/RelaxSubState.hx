@@ -73,7 +73,9 @@ class RelaxSubState extends MusicBeatSubstate
 	public var topButtons:TopButtons;
 	public var backButtons:BackButtons;
 	public var songInfoDisplay:SongInfoDisplay;
-	public var songLyrics:SongLyric;
+	
+	public var LyricsMap:Map<Int, String> = new Map();
+	public var songLyrics:FlxText;
 	
 	public var playListWindow:PlayListWindow;
 	
@@ -148,21 +150,14 @@ class RelaxSubState extends MusicBeatSubstate
                 Sound2.play();
             }
         }
+        
+        LyricsMap = GetInit.getSongLyrics(songInfo)[0];
+        songLyrics.font = GetInit.getSongLyrics(songInfo)[1];
 		
 		FlxG.sound.music.stop();
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
 			FlxG.sound.playMusic(songInfo.sound[0], 1);
-			if (songLyrics == null){
-			    songLyrics = new SongLyric(songInfo);
-			    for (member in songLyrics.members){
-			        member.cameras = [camHUD];
-			    }
-			    add(songLyrics);
-			    songLyrics.x = (FlxG.width - songLyrics.width) / 2;
-			    songLyrics.y = FlxG.height * 0.7;
-			}else{
-			    songLyrics.LoadLyrics(songInfo);
-			}
+			
 			FlxG.sound.music.onComplete = () -> {
 				nextSong();
 			};
@@ -442,6 +437,9 @@ class RelaxSubState extends MusicBeatSubstate
 		backButtons.y = FlxG.height - backButtons.height;
 
 		backButtons.back = function() {
+		    Sound1.destroy();
+		    Sound2.destroy();
+		    FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			close();
 		}
 	}
@@ -508,6 +506,13 @@ class RelaxSubState extends MusicBeatSubstate
 		updateMask();
 
 		initSongsList(0);
+		
+		songLyrics = new FlxText(0, 0, FlxG.width, 'lyrics', 25);
+		songLyrics.setFormat(Paths.font('Lang-ZH.ttf'), 25, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(songLyrics);
+		songLyrics.cameras = [camHUD];
+		
+		songLyrics.y = 20;
 		
 		if (SongsArray.list.length > 0) {
 			currentSongIndex = 0;
@@ -751,6 +756,8 @@ class RelaxSubState extends MusicBeatSubstate
 	var clickOption:Bool = false;
 	var clickLock:Bool = false;
 	
+	var lastLyrics:String = '';
+	
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -801,8 +808,37 @@ class RelaxSubState extends MusicBeatSubstate
 			var currentTime:Float = FlxG.sound.music.time / 1000;
 			var totalTime:Float = FlxG.sound.music.length / 1000;
 			
-			songLyrics.updateNowLyrics(Std.int(FlxG.sound.music.time));
-			
+			//我李奶奶的腿要是haxe的毫秒运算能够非常精确那我就不用大费周章了
+			//把所有时间戳排序，并读取当前时间戳小且最接近的歌词
+            var sortedTimestamps:Array<Int> = [];
+            if (LyricsMap != null) {
+                sortedTimestamps = [for (time in LyricsMap.keys()) time];
+                sortedTimestamps.sort((a, b) -> a - b); // 升序排序
+            }
+            
+            var currentLyric:String = "";
+            if (LyricsMap != null && sortedTimestamps.length > 0) {
+                var currentTime:Int = Std.int(FlxG.sound.music.time);
+                var lastValidTime:Int = -1;
+            
+                for (time in sortedTimestamps) {
+                    if (time <= currentTime) {
+                        lastValidTime = time;
+                    } else {
+                        break;
+                    }
+                }
+
+                if (lastValidTime != -1) {
+                    currentLyric = LyricsMap.get(lastValidTime);
+                }
+            }
+            
+            if (currentLyric != lastLyrics) {
+                lastLyrics = currentLyric;
+                songLyrics.text = currentLyric;
+            }
+
 			songInfoDisplay.updateSongLength(currentTime, totalTime);
 			
 			songInfoDisplay.updateSongLengthPosition(

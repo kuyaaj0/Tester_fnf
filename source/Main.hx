@@ -36,6 +36,7 @@ import lime.graphics.Image;
 	#define GAMEMODE_AUTO
 ')
 #end
+
 class Main extends Sprite
 {
 	private static var game = {
