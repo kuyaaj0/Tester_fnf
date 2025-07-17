@@ -504,7 +504,7 @@ class RelaxSubState extends MusicBeatSubstate
 
 		initSongsList(0);
 		
-		songLyrics = new FlxText(0, 40, FlxG.width, 'lyrics', 25);
+		songLyrics = new FlxText(0, 0, FlxG.width, 'lyrics', 25);
 		songLyrics.font = Paths.font('Lang-ZH.ttf');
 		add(songLyrics);
 		songLyrics.cameras = [camHUD];
@@ -803,11 +803,14 @@ class RelaxSubState extends MusicBeatSubstate
 			var currentTime:Float = FlxG.sound.music.time / 1000;
 			var totalTime:Float = FlxG.sound.music.length / 1000;
 			
-			var nowLy:String = LyricsMap.get(Std.int(FlxG.sound.music.time));
-			if (lastLyrics != nowLy){
-			    lastLyrics = nowLy;
-			    songLyrics.text = nowLy;
-			    songLyrics.x = (FlxG.width + songLyrics.width) / 2;
+			if(LyricsMap != null){
+			    var nowLy:String = LyricsMap.get(Std.int(FlxG.sound.music.time));
+			    if (nowLy != null && lastLyrics != nowLy){
+			        lastLyrics = nowLy;
+			        songLyrics.text = nowLy;
+			    }
+			}else{
+			    songLyrics.text = "";
 			}
 			
 			songInfoDisplay.updateSongLength(currentTime, totalTime);
