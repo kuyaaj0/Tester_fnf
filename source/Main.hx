@@ -36,6 +36,21 @@ import lime.graphics.Image;
 	#define GAMEMODE_AUTO
 ')
 #end
+
+// 针对 Android 平台的垂直同步控制
+#if android
+@:native("android.opengl.GLES20")
+extern class GLES20 {
+    static function glSwapInterval(interval:Int):Int;
+}
+
+class AndroidVSync {
+    static function disable() {
+        GLES20.glSwapInterval(0);
+    }
+}
+#end
+
 class Main extends Sprite
 {
 	private static var game = {
@@ -71,6 +86,10 @@ class Main extends Sprite
 		cpp.NativeGc.enable(true);
 		cpp.NativeGc.run(true);
 		#end
+		
+		#if android
+            AndroidVSync.disable();
+        #end
 	}
 
 	public function new()
