@@ -504,6 +504,11 @@ class RelaxSubState extends MusicBeatSubstate
 
 		initSongsList(0);
 		
+		songLyrics = new FlxText(0, 40, FlxG.width, 'lyrics', 25);
+		songLyrics.font = Paths.font('Lang-ZH.ttf');
+		add(songLyrics);
+		songLyrics.cameras = [camHUD];
+		
 		if (SongsArray.list.length > 0) {
 			currentSongIndex = 0;
 			pendingSongIndex = -1;
@@ -515,12 +520,6 @@ class RelaxSubState extends MusicBeatSubstate
 		    i.cameras = [camOption];
 		}
 		add(playListWindow);
-		
-		songLyrics = new FlxText(0, 40, FlxG.width, 'lyrics', 25);
-		songLyrics.font = Paths.font('Lang-ZH.ttf');
-		add(songLyrics);
-		songLyrics.cameras = [camHUD];
-		
 		
 	    DebugText = new FlxText(0, 0, FlxG.width, SongsArray.name, 25);
 		DebugText.font = Paths.font('Lang-ZH.ttf');
