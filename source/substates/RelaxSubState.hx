@@ -825,7 +825,7 @@ class RelaxSubState extends MusicBeatSubstate
                     }
                 }
             
-                currentLyric = LyricsMap.get(lastValidTime) || "";
+                currentLyric = LyricsMap.get(lastValidTime) != null ? LyricsMap.get(lastValidTime) : "";
             
                 if (currentLyric != lastLyrics) {
                     lastLyrics = currentLyric;
