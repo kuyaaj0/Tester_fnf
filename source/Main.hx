@@ -42,17 +42,15 @@ import lime.graphics.Image;
 @:nativeGen
 class AndroidVSync {
     extern public static function disable():Void;
+
     @:classCode('
         #include <GLES2/gl2.h>
-
-        static void disable() {
+        static void AndroidVSync_disable() {
             glSwapInterval(0);
         }
     ')
 }
 #end
-
-
 
 class Main extends Sprite
 {
