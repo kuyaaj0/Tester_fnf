@@ -437,6 +437,9 @@ class RelaxSubState extends MusicBeatSubstate
 		backButtons.y = FlxG.height - backButtons.height;
 
 		backButtons.back = function() {
+		    Sound1.destroy();
+		    Sound2.destroy();
+		    FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			close();
 		}
 	}
