@@ -804,7 +804,7 @@ class RelaxSubState extends MusicBeatSubstate
 			var currentTime:Float = FlxG.sound.music.time / 1000;
 			var totalTime:Float = FlxG.sound.music.length / 1000;
 			
-			var nowLy:String = LyricsMap.get(Std.int(FlxG.sound.music.time);
+			var nowLy:String = LyricsMap.get(Std.int(FlxG.sound.music.time));
 			if (lastLyrics != nowLy){
 			    lastLyrics = nowLy;
 			    songLyrics.text = noeLy;
