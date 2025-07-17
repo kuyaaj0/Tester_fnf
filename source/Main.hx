@@ -40,12 +40,15 @@ import lime.graphics.Image;
 // 针对 Android 平台的垂直同步控制
 #if android
 @:nativeGen
+@:cppClass
 class AndroidVSync {
+    @:cppName("disable")
     extern public static function disable():Void;
 
     @:classCode('
         #include <GLES2/gl2.h>
-        static void AndroidVSync_disable() {
+
+        static void disable() {
             glSwapInterval(0);
         }
     ')
