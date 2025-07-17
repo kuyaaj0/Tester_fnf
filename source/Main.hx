@@ -70,6 +70,9 @@ class Main extends Sprite
 		#if cpp
 		cpp.NativeGc.enable(true);
 		cpp.NativeGc.run(true);
+
+		//cpp.vm.Gc.enable(true);
+		//cpp.vm.Gc.run(true);  
 		#end
 	}
 
