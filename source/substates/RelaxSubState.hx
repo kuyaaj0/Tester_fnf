@@ -811,11 +811,15 @@ class RelaxSubState extends MusicBeatSubstate
 			//我李奶奶的腿要是haxe的毫秒运算能够非常精确那我就不用大费周章了
 			//把所有时间戳排序，并读取当前时间戳小且最接近的歌词
             var sortedTimestamps:Array<Int> = [];
+            if (LyricsMap != null) {
+                sortedTimestamps = [for (time in LyricsMap.keys()) time];
+                sortedTimestamps.sort((a, b) -> a - b); // 升序排序
+            }
             
+            var currentLyric:String = "";
             if (LyricsMap != null && sortedTimestamps.length > 0) {
                 var currentTime:Int = Std.int(FlxG.sound.music.time);
-                var currentLyric:String = "";
-                var lastValidTime:Int = 0;
+                var lastValidTime:Int = -1;
             
                 for (time in sortedTimestamps) {
                     if (time <= currentTime) {
@@ -824,19 +828,17 @@ class RelaxSubState extends MusicBeatSubstate
                         break;
                     }
                 }
-            
-                currentLyric = LyricsMap.get(lastValidTime) != null ? LyricsMap.get(lastValidTime) : "";
-            
-                if (currentLyric != lastLyrics) {
-                    lastLyrics = currentLyric;
-                    songLyrics.text = currentLyric;
+
+                if (lastValidTime != -1) {
+                    currentLyric = LyricsMap.get(lastValidTime);
                 }
-            } else {
-                songLyrics.text = "";
-                lastLyrics = "";
+            }
+            
+            if (currentLyric != lastLyrics) {
+                lastLyrics = currentLyric;
+                songLyrics.text = currentLyric;
             }
 
-			
 			songInfoDisplay.updateSongLength(currentTime, totalTime);
 			
 			songInfoDisplay.updateSongLengthPosition(
