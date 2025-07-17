@@ -49,7 +49,7 @@ class SongLyric extends FlxSpriteGroup
         if (Lyrics.get(nowTime) != null && lastLyrics != Lyrics.get(nowTime)){
             lastLyrics != Lyrics.get(nowTime);
             NowLyrics.text = Lyrics.get(nowTime);
-            return Lyrics.get(nowTime);
         }
+        return Lyrics.get(nowTime);
     }
 }
