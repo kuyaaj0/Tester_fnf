@@ -151,8 +151,8 @@ class RelaxSubState extends MusicBeatSubstate
             }
         }
         
-        LyricsMap = getSongLyrics(songInfo)[0];
-        songLyrics.font = getSongLyrics(songInfo)[1];
+        LyricsMap = GetInit.getSongLyrics(songInfo)[0];
+        songLyrics.font = GetInit.getSongLyrics(songInfo)[1];
 		
 		FlxG.sound.music.stop();
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
@@ -516,7 +516,7 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 		add(playListWindow);
 		
-		songLyrics = FlxText(0, 40, FlxG.width, 'lyrics', 25);
+		songLyrics = new FlxText(0, 40, FlxG.width, 'lyrics', 25);
 		songLyrics.font = Paths.font('Lang-ZH.ttf');
 		add(songLyrics);
 		songLyrics.cameras = [camHUD];
@@ -807,7 +807,7 @@ class RelaxSubState extends MusicBeatSubstate
 			var nowLy:String = LyricsMap.get(Std.int(FlxG.sound.music.time));
 			if (lastLyrics != nowLy){
 			    lastLyrics = nowLy;
-			    songLyrics.text = noeLy;
+			    songLyrics.text = nowLy;
 			    songLyrics.x = (FlxG.width + songLyrics.width) / 2;
 			}
 			
