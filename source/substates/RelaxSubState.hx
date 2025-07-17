@@ -73,7 +73,9 @@ class RelaxSubState extends MusicBeatSubstate
 	public var topButtons:TopButtons;
 	public var backButtons:BackButtons;
 	public var songInfoDisplay:SongInfoDisplay;
-	public var songLyrics:SongLyric;
+	
+	public var LyricsMap:Map<Int, String> = new Map();
+	public var songLyrics:FlxText;
 	
 	public var playListWindow:PlayListWindow;
 	
@@ -148,17 +150,14 @@ class RelaxSubState extends MusicBeatSubstate
                 Sound2.play();
             }
         }
+        
+        LyricsMap = getSongLyrics(songInfo)[0];
+        songLyrics.font = getSongLyrics(songInfo)[1];
 		
 		FlxG.sound.music.stop();
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
 			FlxG.sound.playMusic(songInfo.sound[0], 1);
-			if (songLyrics == null){
-			    songLyrics = new SongLyric(songInfo);
-			    songLyrics.NowLyrics.cameras = [camHUD];
-			    add(songLyrics.NowLyrics);
-			}else{
-			    songLyrics.LoadLyrics(songInfo);
-			}
+			
 			FlxG.sound.music.onComplete = () -> {
 				nextSong();
 			};
@@ -517,6 +516,12 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 		add(playListWindow);
 		
+		songLyrics = FlxText(0, 40, FlxG.width, 'lyrics', 25);
+		songLyrics.font = Paths.font('Lang-ZH.ttf');
+		add(songLyrics);
+		songLyrics.cameras = [camHUD];
+		
+		
 	    DebugText = new FlxText(0, 0, FlxG.width, SongsArray.name, 25);
 		DebugText.font = Paths.font('Lang-ZH.ttf');
 		add(DebugText);
@@ -747,6 +752,8 @@ class RelaxSubState extends MusicBeatSubstate
 	var clickOption:Bool = false;
 	var clickLock:Bool = false;
 	
+	var lastLyrics:String = '';
+	
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -797,7 +804,12 @@ class RelaxSubState extends MusicBeatSubstate
 			var currentTime:Float = FlxG.sound.music.time / 1000;
 			var totalTime:Float = FlxG.sound.music.length / 1000;
 			
-			songLyrics.updateNowLyrics(Std.int(FlxG.sound.music.time));
+			var nowLy:String = LyricsMap.get(Std.int(FlxG.sound.music.time);
+			if (lastLyrics != nowLy){
+			    lastLyrics = nowLy;
+			    songLyrics.text = noeLy;
+			    songLyrics.x = (FlxG.width + songLyrics.width) / 2;
+			}
 			
 			songInfoDisplay.updateSongLength(currentTime, totalTime);
 			
