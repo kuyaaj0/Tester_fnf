@@ -72,10 +72,6 @@ class Main extends Sprite
 		cpp.NativeGc.enable(true);
 		cpp.NativeGc.run(true);
 		#end
-		
-		#if android
-            Application.current.window.context.attributes.vsync = false;
-        #end
 	}
 
 	public function new()

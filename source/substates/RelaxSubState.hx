@@ -510,9 +510,9 @@ class RelaxSubState extends MusicBeatSubstate
 		songLyrics = new FlxText(0, 0, FlxG.width, 'lyrics', 25);
 		songLyrics.setFormat(Paths.font('Lang-ZH.ttf'), 25, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(songLyrics);
-		songLyrics.x = (songLyrics.width + FlxG.width) / 2;
-		songLyrics.y = FlxG.height - 90;
 		songLyrics.cameras = [camHUD];
+		
+		songLyrics.y = 20;
 		
 		if (SongsArray.list.length > 0) {
 			currentSongIndex = 0;
