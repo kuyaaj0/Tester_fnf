@@ -4,12 +4,7 @@ import backend.relax.GetInit;
 import backend.relax.GetInit.SongInfo;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import flixel.tweens.FlxTween;
-import flixel.tweens.FlxEase;
 import flixel.group.FlxSpriteGroup;
-import openfl.text.TextFormat;
-import openfl.text.Font;
-import openfl.utils.Assets;
 
 class SongLyric extends FlxSpriteGroup
 {
@@ -50,12 +45,11 @@ class SongLyric extends FlxSpriteGroup
     
     var lastLyrics:String = "";
 
-    public function updateNowLyrics(nowTime:Int = 0){
+    public function updateNowLyrics(nowTime:Int = 0):String{
         if (Lyrics.get(nowTime) != null && lastLyrics != Lyrics.get(nowTime)){
             lastLyrics != Lyrics.get(nowTime);
             NowLyrics.text = Lyrics.get(nowTime);
-            this.x = (FlxG.width - this.width) / 2;
-			this.y = FlxG.height * 0.7;
+            return Lyrics.get(nowTime);
         }
     }
 }

@@ -522,7 +522,7 @@ class RelaxSubState extends MusicBeatSubstate
 		add(playListWindow);
 		
 	    DebugText = new FlxText(0, 0, FlxG.width, SongsArray.name, 25);
-		DebugText.font = Paths.font('Lang-ZH.ttf');
+		DebugText.font = Paths.font('Lang-JP.ttf');
 		add(DebugText);
 		DebugText.cameras = [camHUD];
 	}
@@ -801,7 +801,7 @@ class RelaxSubState extends MusicBeatSubstate
 			var currentTime:Float = FlxG.sound.music.time / 1000;
 			var totalTime:Float = FlxG.sound.music.length / 1000;
 			
-			songLyrics.updateNowLyrics(Std.int(FlxG.sound.music.time));
+			DebugText.text = songLyrics.updateNowLyrics(Std.int(FlxG.sound.music.time));
 			
 			songInfoDisplay.updateSongLength(currentTime, totalTime);
 			
