@@ -45,11 +45,13 @@ extern class GLES20 {
 }
 
 class AndroidVSync {
-    static function disable() {
+    // 666你也要public
+    public static function disable():Void {
         GLES20.glSwapInterval(0);
     }
 }
 #end
+
 
 class Main extends Sprite
 {
