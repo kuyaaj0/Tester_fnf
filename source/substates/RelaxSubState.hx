@@ -508,11 +508,11 @@ class RelaxSubState extends MusicBeatSubstate
 		initSongsList(0);
 		
 		songLyrics = new FlxText(0, 0, FlxG.width, 'lyrics', 25);
-		songLyrics.setFormat(Paths.font('Lang-ZH.ttf'), 25, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		songLyrics.setFormat(Paths.font('Lang-ZH.ttf'), 25, FlxColor.WHITE, CENTER);
 		add(songLyrics);
 		songLyrics.cameras = [camHUD];
 		
-		songLyrics.y = 20;
+		songLyrics.y = 40;
 		
 		if (SongsArray.list.length > 0) {
 			currentSongIndex = 0;
@@ -749,7 +749,7 @@ class RelaxSubState extends MusicBeatSubstate
 			}
 		}
 	}
-
+	
 	var bgFollowSmooth:Float = 0.2;
 
 	var clickList:Bool = false;
@@ -838,7 +838,7 @@ class RelaxSubState extends MusicBeatSubstate
                 lastLyrics = currentLyric;
                 songLyrics.text = currentLyric;
             }
-
+            
 			songInfoDisplay.updateSongLength(currentTime, totalTime);
 			
 			songInfoDisplay.updateSongLengthPosition(
