@@ -39,18 +39,19 @@ import lime.graphics.Image;
 
 // 针对 Android 平台的垂直同步控制
 #if android
-@:native("android.opengl.GLES20")
-extern class GLES20 {
-    static function glSwapInterval(interval:Int):Int;
-}
-
+@:nativeGen
 class AndroidVSync {
-    // 666你也要public
-    public static function disable():Void {
-        GLES20.glSwapInterval(0);
-    }
+    extern static function disable():Void;
+    @:classCode('
+        #include <GLES2/gl2.h>
+
+        static void disable() {
+            glSwapInterval(0);
+        }
+    ')
 }
 #end
+
 
 
 class Main extends Sprite
