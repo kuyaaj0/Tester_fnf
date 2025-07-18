@@ -10,7 +10,7 @@ class InputGroup extends OptionCata
 		addOption(option);
 
 		var option:Option = new Option(this, 'ControlsSubState', STATE);
-		option.onChange = changeState;
+		option.onChange = changeState(3);
 		addOption(option);
 		
 		/////--TouchMain--\\\\\
@@ -32,6 +32,7 @@ class InputGroup extends OptionCata
 		addOption(option);
 
 		var option:Option = new Option(this, 'MobileControlSelectSubState', STATE);
+		option.onChange = changeState(4);
 		addOption(option);
 
 		var hitboxLocationArray:Array<String> = ['Bottom', 'Top', 'Middle'];
@@ -48,12 +49,13 @@ class InputGroup extends OptionCata
 		addOption(option);
 
 		var option:Option = new Option(this, 'MobileExtraControl', STATE, 'MobileExtraControl');
+		option.onChange = changeState(5);
 		addOption(option);
 
 		changeHeight(0); //初始化真正的height
 	}
 
-	function changeState() {
-		OptionsState.instance.moveState(3);
+	function changeState(type:Int) {
+		OptionsState.instance.moveState(type);
 	}
 }

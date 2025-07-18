@@ -31,9 +31,14 @@ class MaintenanceGroup extends OptionCata
 		addOption(option, true);
 
 		var option:Option = new Option(this, 'filesCheckNew', STATE); //copystate
+		option.onChange = changeState(6);
 		addOption(option);
 		#end
 
 		changeHeight(0); //初始化真正的height
+	}
+	
+	function changeState(type:Int) {
+		OptionsState.instance.moveState(type);
 	}
 }

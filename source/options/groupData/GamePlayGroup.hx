@@ -28,6 +28,7 @@ class GamePlayGroup extends OptionCata
         addOption(option, true);
         
         var option:Option = new Option(this, 'NoteOffsetState', STATE); //NoteOffsetState
+        option.onChange = changeState(0);
 		addOption(option);
 
         /////--Opponent--\\\\\
@@ -96,4 +97,8 @@ class GamePlayGroup extends OptionCata
 
         changeHeight(0); //初始化真正的height
     }
+    
+    function changeState(type:Int) {
+		OptionsState.instance.moveState(type);
+	}
 }

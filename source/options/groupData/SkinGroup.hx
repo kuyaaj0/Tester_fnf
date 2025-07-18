@@ -10,7 +10,7 @@ class SkinGroup extends OptionCata
 		addOption(option);
 
 		var option:Option = new Option(this, 'Note', TEXT);
-		addOption(option,);
+		addOption(option);
 
 		var noteSkins:Array<String> = addNoteSkins();
 
@@ -31,6 +31,7 @@ class SkinGroup extends OptionCata
 		}
 
 		var option:Option = new Option(this, 'NotesSubState', STATE);
+		option.onChange = changeState(2);
 		addOption(option);
 		
 		/////--Splash--\\\\\
@@ -80,5 +81,9 @@ class SkinGroup extends OptionCata
 		else
 			output = CoolUtil.coolTextFile(Paths.getSharedPath('shared/images/noteSplashes/list.txt'));
 		return output;
+	}
+	
+	function changeState(type:Int) {
+		OptionsState.instance.moveState(type);
 	}
 }
