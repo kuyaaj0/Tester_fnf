@@ -51,6 +51,8 @@ class FPS extends Sprite
 
 		extraShow.visible = ClientPrefs.data.showExtra;
 	}
+	
+	private var checkNum:Int = 0;
 
 	private override function __enterFrame(deltaTime:Float):Void
 	{
@@ -58,6 +60,13 @@ class FPS extends Sprite
 		{
 			isHiding = !isHiding;
 			hide();
+            checkNum++;
+            
+            if (checkNum >= 10){
+                ClientPrefs.data.developerMode = true;
+                ClientPrefs.saveSettings();
+                checkNum = 0;
+            }
 		}
 
 		DataGet.update();
