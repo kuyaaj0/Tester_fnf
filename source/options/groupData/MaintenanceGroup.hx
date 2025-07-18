@@ -33,6 +33,11 @@ class MaintenanceGroup extends OptionCata
 		var option:Option = new Option(this, 'filesCheckNew', STATE); //copystate
 		addOption(option);
 		#end
+		
+		if (backend.ClientPrefs.data.developerMode){
+		    var option:Option = new Option(this, 'developerMode', BOOL);
+		    addOption(option);
+		}
 
 
 		changeHeight(0); //初始化真正的height

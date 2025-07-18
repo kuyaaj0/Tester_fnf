@@ -54,6 +54,8 @@ class VersionCounter extends Sprite
 		}
 		this.EngineName.width = 140;
 	}
+	
+	private var checkNum:Int = 0;
 
 	public function update():Void
 	{
@@ -72,6 +74,16 @@ class VersionCounter extends Sprite
 				label.textColor = 0xFFFF0000;
 			}
 		}
+		
+		if (FlxG.mouse.overlaps(this) && FlxG.mouse.justPressed) {
+            checkNum++;
+            
+            if (checkNum >= 10){
+                ClientPrefs.data.developerMode = true;
+                ClientPrefs.saveSettings();
+                checkNum = 0;
+            }
+        }
 	}
 
 	public function change()
