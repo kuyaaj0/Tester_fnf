@@ -55,7 +55,7 @@ class AudioGroup extends OptionCata
 			}
         }
 
-        var option:Option = new Option(this, 'hitSoundType', STRING, hitsoundArray);
+        var option:Option = new Option(this, 'hitoundType', STRING, hitsoundArray);
         addOption(option, true);
         option.onChange = function() {
         if (ClientPrefs.data.hitsoundType == ClientPrefs.defaultData.hitsoundType)
