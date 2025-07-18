@@ -31,7 +31,7 @@ class SkinGroup extends OptionCata
 		}
 
 		var option:Option = new Option(this, 'NotesSubState', STATE);
-		option.onChange = changeState(2);
+		option.onChange = () -> changeState(2);
 		addOption(option);
 		
 		/////--Splash--\\\\\

@@ -31,7 +31,7 @@ class MaintenanceGroup extends OptionCata
 		addOption(option, true);
 
 		var option:Option = new Option(this, 'filesCheckNew', STATE); //copystate
-		option.onChange = changeState(6);
+		option.onChange = () -> changeState(6);
 		addOption(option);
 		#end
 

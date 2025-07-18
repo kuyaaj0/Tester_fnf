@@ -28,7 +28,7 @@ class GamePlayGroup extends OptionCata
         addOption(option, true);
         
         var option:Option = new Option(this, 'NoteOffsetState', STATE); //NoteOffsetState
-        option.onChange = changeState(0);
+        option.onChange = () -> changeState(0);
 		addOption(option);
 
         /////--Opponent--\\\\\
