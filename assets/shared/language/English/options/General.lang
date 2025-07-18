@@ -1,11 +1,10 @@
-Reset => Reset
 General => General
 
 framerate => Framerate Cap
 language => Engine Language
-colorblindMode => Colorblind Filter
-lowQuality => Low Quality
 gameQuality => Game Quality
+lowQuality => Low Quality
+colorblindMode => Colorblind Filter
 antialiasing => Anti-Aliasing
 flashing => Flashing Lights
 shaders => Shaders

@@ -1,11 +1,10 @@
-Reset => Remise à zéro
 General => Général
 
 framerate => Plafond de FPS
 language => Langue du moteur
-colorblindMode => Filtre daltonien
-lowQuality => Qualité basse
 gameQuality => Qualité du jeu
+lowQuality => Qualité basse
+colorblindMode => Filtre daltonien
 antialiasing => Anticrénelage
 flashing => Lumières clignotantes
 shaders => Shaders

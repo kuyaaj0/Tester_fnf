@@ -26,6 +26,9 @@ class GamePlayGroup extends OptionCata
 
         var option:Option = new Option(this, 'noReset', BOOL);
         addOption(option, true);
+        
+        var option:Option = new Option(this, 'NoteOffsetState', STATE); //NoteOffsetState
+		addOption(option);
 
         /////--Opponent--\\\\\
 
@@ -47,6 +50,7 @@ class GamePlayGroup extends OptionCata
         var option:Option = new Option(this, 'HealthDrainOPPOMult', FLOAT, [0, 5, 1]);
         addOption(option);
 
+         /////--Judgement--\\\\\
         var option:Option = new Option(this, 'judgement', TEXT);
 		addOption(option);
 
@@ -73,6 +77,8 @@ class GamePlayGroup extends OptionCata
 
 	    var option:Option = new Option(this, 'badWindow', INT, [0, 166, 'MS']);
 		addOption(option);
+		
+	    /////--Gameplaybackend--\\\\\
 
         var option:Option = new Option(this, 'Gameplaybackend', TEXT);
 		addOption(option);

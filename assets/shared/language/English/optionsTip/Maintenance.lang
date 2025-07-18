@@ -1,0 +1,12 @@
+Maintenance => Maintenance
+
+oldHscriptVersion => Reduced version to use hscript work for runhaxecode
+
+
+APP => App
+
+discordRPC => Show the Application from your \"Playing\" box on Discord
+checkForUpdates => checkForUpdates
+screensaver => Phone will sleep after going inactive for few seconds
+filesCheck => Check game whether miss files
+filesCheckNew => Check game whether questionable files

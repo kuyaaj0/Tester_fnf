@@ -1,0 +1,12 @@
+Maintenance => 维护设置
+
+oldHscriptVersion => 使用 Hscript 为 runhaxecode 工作以兼容旧模组
+
+
+APP => 应用程序
+
+discordRPC => 从 Discord 上的“正在播放”框中显示应用程序
+checkForUpdates => 检查应用程序版本
+screensaver => 处于非活动状态不会进入休眠状态
+filesCheck => 检查游戏是否丢失文件
+filesCheckNew => 检查游戏是否有有问题的文件

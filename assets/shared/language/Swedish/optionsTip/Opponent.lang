@@ -1,7 +1,0 @@
-Opponent => Motståndare
-
-playOpponent => Spela som motståndare
-opponentCodeFix => GoodNoteHit och motståndareNoteHit funktion utbyte ansträngning
-botOpponentFix => Skriptet kommer att tro att du öppnar boten
-HealthDrainOPPO => Hälsodränering i motståndarläget
-HealthDrainOPPOMult => Multiplikator för hälsodränering i motståndarläge

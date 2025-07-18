@@ -1,11 +1,10 @@
-Reset => Resetar
 General => Geral
 
 framerate => Limite de FPS
 language => Idioma do motor
-colorblindMode => Filtro para daltônicos
-lowQuality => Qualidade baixa
 gameQuality => Qualidade do jogo
+lowQuality => Qualidade baixa
+colorblindMode => Filtro para daltônicos
 antialiasing => Anti-aliasing
 flashing => Luzes piscantes
 shaders => Shaders

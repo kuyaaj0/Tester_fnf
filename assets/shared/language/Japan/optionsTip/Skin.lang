@@ -1,11 +1,16 @@
-Skin => 皮膚
+Skin => スキン
 
-Note => 注
+
+Note => ノート
+
 noteSkin => 現在のノートスキンを変更する
 noteRGB => ノート用RGB
 NotesSubState => カラーセットアップ
+
+
 Splash => スプラッシュ
+
+showSplash => 病欠／マーベラス審査員
 splashSkin => 現在のスプラッシュスキンを変更する
 splashRGB => スプラッシュ用RGB
-showSplash => 病欠／マーベラス審査員
 splashAlpha => アルファ

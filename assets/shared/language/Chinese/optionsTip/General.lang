@@ -1,11 +1,10 @@
-Reset => 数据重置
 General => 常规设置
 
 framerate => 更改帧数上限
 language => 切换语言
-colorblindMode => 色盲滤镜
-lowQuality => 低质量模式
 gameQuality => 更改屏幕的游戏画面质量
+lowQuality => 低质量模式
+colorblindMode => 色盲滤镜模式
 antialiasing => 使用抗锯齿，提高图形质量，但性能略有下降
 flashing => 允许可能导致引发癫痫的特效使用
 shaders => 启用着色器

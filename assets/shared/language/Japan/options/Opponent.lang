@@ -1,7 +1,0 @@
-Opponent => 対戦相手
-
-playOpponent => 相手側としてプレイ
-opponentCodeFix => 判定関数交換
-botOpponentFix => ボット模擬
-HealthDrainOPPO => 相手側体力減少
-HealthDrainOPPOMult => 体力減少倍率

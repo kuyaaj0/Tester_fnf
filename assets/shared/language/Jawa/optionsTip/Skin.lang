@@ -1,11 +1,16 @@
 Skin => Kulit
 
+
 Note => Cathetan
+
 noteSkin => Ngganti cathetanKulit saiki
 noteRGB => RGB kanggo Wigati
 NotesSubState => Wigati setelan werna
+
+
 Splash => Nyiprati
+
+showSplash => Tampilake ing hakim lara/apik tenan
 splashSkin => Ngganti cipratanKulit saiki
 splashRGB => RGB kanggo Nyiprati
-showSplash => Tampilake ing hakim lara/apik tenan
 splashAlpha => Alpha

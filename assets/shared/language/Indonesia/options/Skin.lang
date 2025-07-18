@@ -1,11 +1,16 @@
 Skin => Kulit
 
+
 Note => Catatan
+
 noteSkin => Kulit catatan
 noteRGB => RGB catatan
 NotesSubState => Pengaturan warna
+
+
 Splash => Percikan
+
+showSplash => Tampilkan
 splashSkin => Kulit percikan
 splashRGB => RGB percikan
-showSplash => Tampilkan
 splashAlpha => Alfa

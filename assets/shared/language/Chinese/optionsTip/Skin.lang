@@ -1,11 +1,15 @@
 Skin => 皮肤设置
 
 Note => 箭头皮肤设置
-noteSkin => 类型
-noteRGB => 启用着色器
-NotesSubState => 颜色设置
+
+noteSkin => 箭头类型
+noteRGB => 启用箭头着色器
+NotesSubState =>箭头颜色设置
+
+
 Splash => 溅射皮肤设置
-splashSkin => 类型
-splashRGB => 启用着色器
-showSplash => 显示
-splashAlpha => 透明度
+
+showSplash => 喷溅显示
+splashSkin => 喷溅类型
+splashRGB => 启用喷溅着色器
+splashAlpha => 喷溅透明度
