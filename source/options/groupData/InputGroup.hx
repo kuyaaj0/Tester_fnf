@@ -39,10 +39,10 @@ class InputGroup extends OptionCata
 		addOption(option);
 
 		var option:Option = new Option(this, 'dynamicColors', BOOL);
-		addOption(option);
+		addOption(option, true);
 
 		var option:Option = new Option(this, 'playControlsAlpha', FLOAT, [0, 1, 1]);
-		addOption(option, true);
+		addOption(option);
 
 		var option:Option = new Option(this, 'extraKey', INT, [0, 4]);
 		addOption(option);
