@@ -236,7 +236,7 @@ class PsychUIInputText extends FlxSpriteGroup
             return;
 
         var lastAccent = _nextAccent;
-        switch (keyCode)
+        switch (flxKey)
         {
             case KEY_TILDE:
                 _nextAccent = !e.shiftKey ? TILDE : CIRCUMFLEX;
