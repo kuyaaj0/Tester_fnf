@@ -100,20 +100,17 @@ class PsychUIInputText extends FlxSpriteGroup
 
     function onKeyDown(e:KeyboardEvent)
     {
-        if (focusOn != this)
-            return;
+        if (focusOn != this) return;
 
-        var keyCode:Int = e.keyCode;
         var charCode:Int = e.charCode;
-        var flxKey:FlxKey = cast keyCode;
-
-        // Fix missing cedilla
-        switch (keyCode)
-        {
-            case 231: // ç and Ç
-                charCode = e.shiftKey ? 0xC7 : 0xE7;
+        var flxKey:FlxKey = cast e.keyCode;
+    
+        // 直接处理字符输入
+        if (charCode > 0) {
+            _typeLetter(charCode);
+            updateCaret();
+            return;
         }
-
         // Control key actions
         if (e.controlKey)
         {
@@ -709,27 +706,19 @@ class PsychUIInputText extends FlxSpriteGroup
 
     public var broadcastInputTextEvent:Bool = true;
 
-    function _typeLetter(charCode:Int)
-    {
-        if (charCode < 1)
-            return;
-
+    function _typeLetter(charCode:Int) {
+        if (charCode < 1) return;
+    
         if (selectIndex > -1 && selectIndex != caretIndex)
             deleteSelection();
-
+    
         var letter:String = String.fromCharCode(charCode);
-        letter = filter(letter);
-        if (letter.length > 0 && (maxLength == 0 || (text.length + letter.length) < maxLength))
-        {
+        // 直接允许任何字符输入，不进行过滤
+        if (maxLength == 0 || text.length < maxLength) {
             var lastText = text;
-            if (!inInsertMode)
-                text = text.substring(0, caretIndex) + letter + text.substring(caretIndex);
-            else
-                text = text.substring(0, caretIndex) + letter + text.substring(caretIndex + 1);
-
-            caretIndex += letter.length;
-            if (onChange != null)
-                onChange(lastText, text);
+            text = text.substring(0, caretIndex) + letter + text.substring(caretIndex);
+            caretIndex++;
+            if (onChange != null) onChange(lastText, text);
             if (broadcastInputTextEvent)
                 PsychUIEventHandler.event(CHANGE_EVENT, this);
         }
@@ -758,36 +747,49 @@ class PsychUIInputText extends FlxSpriteGroup
         return customFilterPattern;
     }
 
-    private function filter(text:String):String
-    {
-        switch (forceCase)
-        {
+    private function filter(text:String):String {
+        // 首先处理大小写
+        switch (forceCase) {
             case UPPER_CASE:
                 text = text.toUpperCase();
             case LOWER_CASE:
                 text = text.toLowerCase();
             default:
         }
-
-        if (filterMode != NO_FILTER)
-        {
-            var pattern:EReg;
-            switch (filterMode)
-            {
-                case ONLY_ALPHA:
-                    pattern = ~/[^a-zA-Z]*/g;
-                case ONLY_NUMERIC:
-                    pattern = ~/[^0-9]*/g;
-                case ONLY_ALPHANUMERIC:
-                    pattern = ~/[^a-zA-Z0-9]*/g;
-                case ONLY_HEXADECIMAL:
-                    pattern = ~/[^a-fA-F0-9]*/g;
-                case CUSTOM_FILTER:
-                    pattern = customFilterPattern;
-                default:
-                    throw new flash.errors.Error("FlxInputText: Unknown filterMode (" + filterMode + ")");
+    
+        if (filterMode != NO_FILTER) {
+            var result = new StringBuf();
+            for (i in 0...text.length) {
+                var char = text.charAt(i);
+                var code = text.charCodeAt(i);
+                
+                // 非ASCII字符直接保留
+                if (code > 127) {
+                    result.add(char);
+                    continue;
+                }
+                
+                // ASCII字符应用过滤规则
+                var keepChar = switch (filterMode) {
+                    case ONLY_ALPHA:
+                        (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z');
+                    case ONLY_NUMERIC:
+                        char >= '0' && char <= '9';
+                    case ONLY_ALPHANUMERIC:
+                        (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z') || (char >= '0' && char <= '9');
+                    case ONLY_HEXADECIMAL:
+                        (char >= 'a' && char <= 'f') || (char >= 'A' && char <= 'F') || (char >= '0' && char <= '9');
+                    case CUSTOM_FILTER:
+                        customFilterPattern.match(char);
+                    default:
+                        true;
+                }
+                
+                if (keepChar) {
+                    result.add(char);
+                }
             }
-            text = pattern.replace(text, "");
+            text = result.toString();
         }
         return text;
     }
