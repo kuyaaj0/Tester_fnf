@@ -30,7 +30,7 @@ class Paths
 		for (key in FlxG.bitmap._cache.keys())
 		{
 			var obj = FlxG.bitmap._cache.get(key);
-			if (obj != null && !currentTrackedAssets.exists(key))
+			if (obj != null && !Cache.currentTrackedAssets.exists(key))
 			{
 				openfl.Assets.cache.removeBitmapData(key);
 				FlxG.bitmap._cache.remove(key);
@@ -56,19 +56,19 @@ class Paths
 	public static function clearUnusedMemory()
 	{
 		// clear non local assets in the tracked assets list
-		for (key in currentTrackedAssets.keys())
+		for (key in Cache.currentTrackedAssets.keys())
 		{
 			// if it is not currently contained within the used local assets
 			if (!Cache.localTrackedAssets.contains(key) && !Cache.dumpExclusions.contains(key))
 			{
-				var obj = currentTrackedAssets.get(key);
+				var obj = Cache.currentTrackedAssets.get(key);
 				@:privateAccess
 				if (obj != null)
 				{
 					// remove the key from all cache maps
 					FlxG.bitmap._cache.remove(key);
 					openfl.Assets.cache.removeBitmapData(key);
-					currentTrackedAssets.remove(key);
+					Cache.currentTrackedAssets.remove(key);
 
 					// and get rid of the object
 					obj.persist = false; // make sure the garbage collector actually clears it up
@@ -228,10 +228,10 @@ class Paths
 		else
 			file = modFolders(key + '.png');
 
-		if (currentTrackedAssets.exists(file))
+		if (Cache.currentTrackedAssets.exists(file))
 		{
 			Cache.localTrackedAssets.push(file);
-			return currentTrackedAssets.get(file);
+			return Cache.currentTrackedAssets.get(file);
 		}
 		else if (FileSystem.exists(file))
 			bitmap = BitmapData.fromFile(file);
@@ -239,10 +239,10 @@ class Paths
 		#end
 		{
 			file = getPath('images/$key.png', IMAGE, library);
-			if (currentTrackedAssets.exists(file))
+			if (Cache.currentTrackedAssets.exists(file))
 			{
 				Cache.localTrackedAssets.push(file);
-				return currentTrackedAssets.get(file);
+				return Cache.currentTrackedAssets.get(file);
 			}
 			else if (Assets.exists(file, IMAGE))
 				bitmap = Assets.getBitmapData(file);
@@ -286,7 +286,7 @@ class Paths
 		var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(bitmap, false, file);
 		newGraphic.persist = true;
 		newGraphic.destroyOnNoUse = false;
-		currentTrackedAssets.set(file, newGraphic);
+		Cache.currentTrackedAssets.set(file, newGraphic);
 		return newGraphic;
 	}
 
@@ -525,6 +525,7 @@ class Paths
 
 	inline static public function modsSounds(path:String, key:String)
 	{
+		if (path == '') return modFolders(path + key + '.' + SOUND_EXT);
 		return modFolders(path + '/' + key + '.' + SOUND_EXT);
 	}
 
