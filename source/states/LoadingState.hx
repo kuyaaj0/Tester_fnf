@@ -462,7 +462,7 @@ class LoadingState extends MusicBeatState
 
 					#if MODS_ALLOWED
 					file = Paths.modsImages(image);
-					if (Paths.currentTrackedAssets.exists(file))
+					if (Cache.currentTrackedAssets.exists(file))
 					{
 						imageMutex.release();
 						Sys.sleep(0.001);
@@ -475,7 +475,7 @@ class LoadingState extends MusicBeatState
 					#end
 					{
 						file = Paths.getPath('images/$image.png', IMAGE);
-						if (Paths.currentTrackedAssets.exists(file))
+						if (Cache.currentTrackedAssets.exists(file))
 						{
 							imageMutex.release();
 							Sys.sleep(0.001);

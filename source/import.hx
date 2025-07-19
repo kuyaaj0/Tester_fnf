@@ -42,6 +42,7 @@ import js.html.*;
 import language.Language;
 
 import backend.Paths;
+import backend.Cache;
 import backend.Controls;
 import backend.CoolUtil;
 import backend.MusicBeatState;
