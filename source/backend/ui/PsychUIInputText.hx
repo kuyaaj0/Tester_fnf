@@ -117,8 +117,7 @@ class PsychUIInputText extends FlxSpriteGroup
 								imeComposition + 
 								text.substring(caretIndex);
 				
-				textObj.text = passwordMask ? displayText.replace(/./g, "*") : displayText;
-				
+                textObj.text = passwordMask ? new EReg(".", "g").replace(displayText, "*") : displayText;
 				updateBoundaries();
 				updateCaret();
 				
