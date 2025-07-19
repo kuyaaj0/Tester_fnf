@@ -533,7 +533,7 @@ class PsychUIInputText extends FlxSpriteGroup
 
 	function cancelImeComposition()
 	{
-		textObj.text = passwordMask ? text.replace(/./g, "*") : text;
+		textObj.text = passwordMask ? PASSWORD_REPLACE_REGEX.replace(text, "*") : text;
 		resetImeComposition();
 		updateBoundaries();
 		updateCaret();
