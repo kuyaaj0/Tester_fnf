@@ -1,9 +1,12 @@
 package backend;
 
 import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
+import flixel.graphics.frames.FlxFramesCollection;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
+import flixel.animation.FlxAnimationController;
 import flixel.math.FlxRect;
+
 import openfl.display.BitmapData;
 import openfl.display3D.textures.RectangleTexture;
 import openfl.utils.AssetType;
@@ -19,7 +22,13 @@ class Cache {
 
     public static var currentTrackedAssets:Map<String, FlxGraphic> = []; //用于列举当前状态的所有图形资源
 
+	public static var currentTrackedBitmaps:Map<String, BitmapData> = []; //用于列举当前状态的所有动画资源
+
     public static var currentTrackedSounds:Map<String, Sound> = []; //用于列举当前状态的所有声音资源
+
+	public static var currentTrackedFrames:Map<String, FlxFramesCollection> = []; //用于列举当前状态的所有动画帧资源
+
+	public static var currentTrackedAnims:Map<String, FlxAnimationController> = []; //用于列举当前状态的所有动画资源
 
     public static function excludeAsset(key:String)
 	{

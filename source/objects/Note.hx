@@ -403,8 +403,16 @@ class Note extends FlxSprite
 		}
 		else
 		{
-			frames = Paths.getSparrowAtlas(skin, null, false);
-			loadNoteAnims();
+			if (Cache.currentTrackedFrames.get(skin) != null) frames = Cache.currentTrackedFrames.get(skin);
+			else frames = Paths.getSparrowAtlas(skin, null, false);
+
+			if (Cache.currentTrackedAnims.get(skin) != null) {
+			    animation.copyFrom(Cache.currentTrackedAnims.get(skin));
+			    setGraphicSize(Std.int(width * 0.7));
+				updateHitbox();
+			}
+			else loadNoteAnims();
+
 			if (!isSustainNote)
 			{
 				centerOffsets();
@@ -422,9 +430,9 @@ class Note extends FlxSprite
 			animation.play(animName, true);
 	}
 
-	static var saveTexture:String;
-	static var skin:String;
+	static var saveTexture:String; //上一次输入的纹理的路径
 	static var _lastValidChecked:String; // optimization
+	static var skin:String;
 	static var skinPixel:String;
 	static var skinPostfix:String;
 	static var customSkin:String;
@@ -435,11 +443,11 @@ class Note extends FlxSprite
 		saveTexture = texture;
 
 		skin = texture + postfix;
-		if (texture.length < 1)
+		if (texture.length < 1) //如果是''
 		{
-			skin = PlayState.SONG != null ? PlayState.SONG.arrowSkin : null;
+			skin = PlayState.SONG != null ? PlayState.SONG.arrowSkin : null; //兼容了铺面json设置的箭头
 			if (skin == null || skin.length < 1)
-				skin = defaultNoteSkin + postfix;
+				skin = defaultNoteSkin + postfix; //否则是默认箭头路径
 		}
 
 		skinPixel = skin;
@@ -449,10 +457,11 @@ class Note extends FlxSprite
 		if (customSkin == _lastValidChecked || Paths.fileExists('images/' + pathPixel + customSkin + '.png', IMAGE))
 		{
 			skin = customSkin;
-			_lastValidChecked = customSkin;
 		}
-		else
+		else {
+			_lastValidChecked = customSkin;
 			skinPostfix = '';
+		}
 	}
 
 	public static function getNoteSkinPostfix()
@@ -640,13 +649,6 @@ class Note extends FlxSprite
 		}
 	} // this shit can make hold note work better
 
-	public static function checkSkin() // 加载检测独立出来检测省的和原来一样粑粑
-	{
-		if (Paths.fileExists('images/NOTE_assets.png', IMAGE) && ClientPrefs.data.noteSkin == ClientPrefs.defaultData.noteSkin)
-			defaultNoteSkin = 'NOTE_assets';
-		reloadPath(); // 初始化
-	}
-
 	@:noCompletion
 	override function set_clipRect(rect:FlxRect):FlxRect
 	{
@@ -656,5 +658,27 @@ class Note extends FlxSprite
 			frame = frames.frames[animation.frameIndex];
 
 		return rect;
+	}
+
+	public static function init()
+	{
+		if (Paths.fileExists('images/NOTE_assets.png', IMAGE) && ClientPrefs.data.noteSkin == ClientPrefs.defaultData.noteSkin)
+			defaultNoteSkin = 'NOTE_assets';
+		reloadPath(); // 初始化
+
+		var spr:FlxSprite = new FlxSprite();
+		spr.frames = Paths.getSparrowAtlas(skin, null, false);
+
+		for (data in 0...colArray.length)
+		{
+			if (data == 0) spr.animation.addByPrefix('purpleholdend', 'pruple end hold');
+			spr.animation.addByPrefix(Note.colArray[data] + 'holdend', Note.colArray[data] + ' hold end');
+			spr.animation.addByPrefix(Note.colArray[data] + 'hold', Note.colArray[data] + ' hold piece');
+			spr.animation.addByPrefix(Note.colArray[data] + 'Scroll', Note.colArray[data] + '0');
+		}
+		Cache.currentTrackedFrames.set(skin, spr.frames);
+		Cache.currentTrackedAnims.set(skin, spr.animation);
+
+		Note.defaultNoteSkin = 'noteSkins/NOTE_assets';
 	}
 }

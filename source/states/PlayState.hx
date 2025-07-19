@@ -1611,7 +1611,7 @@ class PlayState extends MusicBeatState
 		{
 		}
 
-		Note.checkSkin();
+		Note.init();
 
 		if (unspawnNotes.length == 0)
 		{

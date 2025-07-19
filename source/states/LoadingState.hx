@@ -230,15 +230,7 @@ class LoadingState extends MusicBeatState
 
 	static function addNote()
 	{
-		Note.checkSkin();
-
-		for (i in 0...Note.colArray.length)
-		{
-			var note:Note = new Note(0, i);
-		}
-
-		Note.defaultNoteSkin = 'noteSkins/NOTE_assets';
-		// 用于正确读取note的切割
+		Note.init();
 	}
 
 	static function checkLoaded():Bool
@@ -762,8 +754,6 @@ class LoadingState extends MusicBeatState
 
 	static function preloadChart()
 	{
-		Note.checkSkin();
-
 		Note.globalRgbShaders = [];
 		backend.NoteTypesConfig.clearNoteTypesData();
 
