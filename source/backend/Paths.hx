@@ -4,6 +4,7 @@ import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
 import flixel.math.FlxRect;
+
 import openfl.display.BitmapData;
 import openfl.display3D.textures.RectangleTexture;
 import openfl.utils.AssetType;
@@ -11,6 +12,9 @@ import openfl.utils.Assets;
 import openfl.system.System;
 import openfl.geom.Rectangle;
 import openfl.media.Sound;
+
+import backend.Cache; //用于拆分path代码功能过于冗杂的问题
+
 import haxe.Json;
 
 class Paths
@@ -18,17 +22,35 @@ class Paths
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 	inline public static var VIDEO_EXT = "mp4";
 
-	public static function excludeAsset(key:String)
-	{
-		if (!dumpExclusions.contains(key))
-			dumpExclusions.push(key);
-	}
 
-	public static var dumpExclusions:Array<String> = [
-		'assets/shared/music/freakyMenu.$SOUND_EXT',
-		'assets/shared/music/breakfast.$SOUND_EXT',
-		'assets/shared/music/tea-time.$SOUND_EXT',
-	];
+	public static function clearStoredMemory()
+	{
+		// clear anything not in the tracked assets list
+		@:privateAccess
+		for (key in FlxG.bitmap._cache.keys())
+		{
+			var obj = FlxG.bitmap._cache.get(key);
+			if (obj != null && !currentTrackedAssets.exists(key))
+			{
+				openfl.Assets.cache.removeBitmapData(key);
+				FlxG.bitmap._cache.remove(key);
+				obj.destroy();
+			}
+		}
+
+		// clear all sounds that are cached
+		for (key in Cache.currentTrackedSounds.keys())
+		{
+			if (!Cache.localTrackedAssets.contains(key) && !Cache.dumpExclusions.contains(key) && key != null)
+			{
+				Assets.cache.clear(key);
+				Cache.currentTrackedSounds.remove(key);
+			}
+		}
+		// flags everything to be cleared out next unused memory clear
+		Cache.localTrackedAssets = [];
+		#if !html5 openfl.Assets.cache.clear("songs"); #end
+	}
 
 	/// haya I love you for the base cache dump I took to the max
 	public static function clearUnusedMemory()
@@ -37,7 +59,7 @@ class Paths
 		for (key in currentTrackedAssets.keys())
 		{
 			// if it is not currently contained within the used local assets
-			if (!localTrackedAssets.contains(key) && !dumpExclusions.contains(key))
+			if (!Cache.localTrackedAssets.contains(key) && !Cache.dumpExclusions.contains(key))
 			{
 				var obj = currentTrackedAssets.get(key);
 				@:privateAccess
@@ -60,41 +82,9 @@ class Paths
 		System.gc();
 	}
 
-	// define the locally tracked assets
-	public static var localTrackedAssets:Array<String> = [];
-
-	public static function clearStoredMemory(?cleanUnused:Bool = false)
-	{
-		// clear anything not in the tracked assets list
-		@:privateAccess
-		for (key in FlxG.bitmap._cache.keys())
-		{
-			var obj = FlxG.bitmap._cache.get(key);
-			if (obj != null && !currentTrackedAssets.exists(key))
-			{
-				openfl.Assets.cache.removeBitmapData(key);
-				FlxG.bitmap._cache.remove(key);
-				obj.destroy();
-			}
-		}
-
-		// clear all sounds that are cached
-		for (key in currentTrackedSounds.keys())
-		{
-			if (!localTrackedAssets.contains(key) && !dumpExclusions.contains(key) && key != null)
-			{
-				// trace('test: ' + dumpExclusions, key);
-				Assets.cache.clear(key);
-				currentTrackedSounds.remove(key);
-			}
-		}
-		// flags everything to be cleared out next unused memory clear
-		localTrackedAssets = [];
-		#if !html5 openfl.Assets.cache.clear("songs"); #end
-	}
+	///////////////////////////////////////////上面是缓存清除功能，下面是路径功能
 
 	static public var currentLevel:String;
-
 	static public function setCurrentLevel(name:String)
 	{
 		currentLevel = name.toLowerCase();
@@ -225,7 +215,7 @@ class Paths
 		return inst;
 	}
 
-	public static var currentTrackedAssets:Map<String, FlxGraphic> = [];
+	
 
 	static public function image(key:String, ?library:String = null, ?allowGPU:Bool = true, ?extraLoad:Bool = false):FlxGraphic
 	{
@@ -240,7 +230,7 @@ class Paths
 
 		if (currentTrackedAssets.exists(file))
 		{
-			localTrackedAssets.push(file);
+			Cache.localTrackedAssets.push(file);
 			return currentTrackedAssets.get(file);
 		}
 		else if (FileSystem.exists(file))
@@ -251,7 +241,7 @@ class Paths
 			file = getPath('images/$key.png', IMAGE, library);
 			if (currentTrackedAssets.exists(file))
 			{
-				localTrackedAssets.push(file);
+				Cache.localTrackedAssets.push(file);
 				return currentTrackedAssets.get(file);
 			}
 			else if (Assets.exists(file, IMAGE))
@@ -283,7 +273,7 @@ class Paths
 				return null;
 		}
 
-		localTrackedAssets.push(file);
+		Cache.localTrackedAssets.push(file);
 		if (allowGPU && ClientPrefs.data.cacheOnGPU)
 		{
 			var texture:RectangleTexture = FlxG.stage.context3D.createRectangleTexture(bitmap.width, bitmap.height, BGRA, true);
@@ -354,7 +344,7 @@ class Paths
 
 			if (FileSystem.exists(mods('$key')))
 				return true;
-			if (FileSystem.exists(#if mobile Sys.getCwd() + #end 'assets/shared/' + key))
+			if (FileSystem.exists('assets/shared/' + key))
 				return true;
 		}
 		#end
@@ -470,7 +460,7 @@ class Paths
 		return hideChars.split(path).join("").toLowerCase();
 	}
 
-	public static var currentTrackedSounds:Map<String, Sound> = [];
+	
 
 	public static function returnSound(path:Null<String>, key:String, ?library:String)
 	{
@@ -485,12 +475,12 @@ class Paths
 
 		if (FileSystem.exists(file))
 		{
-			if (!currentTrackedSounds.exists(file))
+			if (!Cache.currentTrackedSounds.exists(file))
 			{
-				currentTrackedSounds.set(file, Sound.fromFile(file));
+				Cache.currentTrackedSounds.set(file, Sound.fromFile(file));
 			}
-			localTrackedAssets.push(key);
-			return currentTrackedSounds.get(file);
+			Cache.localTrackedAssets.push(key);
+			return Cache.currentTrackedSounds.get(file);
 		}
 		#end
 
@@ -501,22 +491,21 @@ class Paths
 		gottenPath = getPath(gottenPath, SOUND, library);
 		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
 		// trace(gottenPath);
-		if (!currentTrackedSounds.exists(gottenPath))
+		if (!Cache.currentTrackedSounds.exists(gottenPath))
 		{
 			var retKey:String = (path != null) ? '$path/$key' : key;
 			retKey = ((path == 'songs') ? 'songs:' : '') + getPath('$retKey.$SOUND_EXT', SOUND, library);
 			if (Assets.exists(retKey, SOUND))
-				currentTrackedSounds.set(gottenPath, Assets.getSound(retKey));
+				Cache.currentTrackedSounds.set(gottenPath, Assets.getSound(retKey));
 		}
-		localTrackedAssets.push(gottenPath);
-		return currentTrackedSounds.get(gottenPath);
+		Cache.localTrackedAssets.push(gottenPath);
+		return Cache.currentTrackedSounds.get(gottenPath);
 	}
 
 	#if MODS_ALLOWED
 	inline static public function mods(key:String = '')
 	{
-		return #if mobile Sys.getCwd() + #end
-		'mods/' + key;
+		return 'mods/' + key;
 	}
 
 	inline static public function modsFont(key:String)
@@ -581,23 +570,22 @@ class Paths
 			{
 				return fileToCheck;
 			}
-		}
+		} //检测当前mods有没有这个文件
 
 		for (mod in Mods.getGlobalMods())
 		{
 			var fileToCheck:String = mods(mod + '/' + key);
 			if (FileSystem.exists(fileToCheck))
 				return fileToCheck;
-		}
+		} //检测全部mods有没有这个文件
 
 		var fileToCheck:String = mods(key);
 		if (FileSystem.exists(fileToCheck))
 		{
 			return fileToCheck;
-		}
+		} //检测mod的根目录有没有这个文件（列如mods/images）
 
-		return #if mobile Sys.getCwd() + #end
-		'assets/shared/' + key;
+		return 'assets/shared/' + key;
 	}
 	#end
 
