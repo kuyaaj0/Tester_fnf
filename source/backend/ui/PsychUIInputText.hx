@@ -221,7 +221,7 @@ class PsychUIInputText extends FlxSpriteGroup
 						{
 							var start:String = deletedText.substring(0, space + 1);
 							var end:String = text.substring(caretIndex);
-							caretIndex -= Std.int(Math.max(0, text.length - (start.length + end.length));
+							caretIndex -= Std.int(Math.max(0, text.length - (start.length + end.length)));
 							text = start + end;
 						}
 						else
