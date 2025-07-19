@@ -505,7 +505,7 @@ class Paths
 	#if MODS_ALLOWED
 	inline static public function mods(key:String = '')
 	{
-		return 'mods/' + key;
+		return #if mobile Sys.getCwd() + #end 'mods/' + key;
 	}
 
 	inline static public function modsFont(key:String)
@@ -525,6 +525,7 @@ class Paths
 
 	inline static public function modsSounds(path:String, key:String)
 	{
+
 		return modFolders(path + key + '.' + SOUND_EXT);
 	}
 
@@ -585,7 +586,7 @@ class Paths
 			return fileToCheck;
 		} //检测mod的根目录有没有这个文件（列如mods/images）
 
-		return 'assets/shared/' + key;
+		return #if mobile Sys.getCwd() + #end 'assets/shared/' + key;
 	}
 	#end
 
