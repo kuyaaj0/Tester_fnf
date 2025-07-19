@@ -37,6 +37,7 @@ enum abstract CaseMode(Int) from Int from UInt to Int to UInt
 class PsychUIInputText extends FlxSpriteGroup
 {
 	public static final CHANGE_EVENT = "inputtext_change";
+	static final PASSWORD_MASK_REGEX = new EReg(".", "g");
 
 	static final KEY_TILDE = 126;
 	static final KEY_ACUTE = 180;
@@ -498,7 +499,7 @@ class PsychUIInputText extends FlxSpriteGroup
 					else
 					{
 						textObj.text = text.substring(0, imeCompositionStart) + 
-									 (passwordMask ? imeComposition.replace(/./g, "*") : imeComposition) + 
+									 (passwordMask ? PASSWORD_MASK_REGEX.replace(imeComposition, "*") : imeComposition) +
 									 text.substring(caretIndex);
 						updateBoundaries();
 						updateCaret();
