@@ -1,4 +1,4 @@
-Gameplay => Jogabilidade
+GamePlay => Jogabilidade
 
 downScroll => Rolagem para baixo
 middleScroll => Rolagem no meio
@@ -6,3 +6,32 @@ flipChart => Inverter tela
 ghostTapping => Toque fantasma
 guitarHeroSustains => Sustentações estilo Guitar Hero
 noReset => Sem reset
+
+
+Opponent => Oponente
+
+playOpponent => Jogar como oponente
+opponentCodeFix => Correção de código do oponente
+botOpponentFix => Correção de bot oponente
+HealthDrainOPPO => Drenagem de vida (oponente)
+HealthDrainOPPOMult => Multiplicador de drenagem (oponente)
+
+
+judgement => Julgamento
+
+safeFrames => Frames seguros
+marvelousWindow => Janela Marvelous
+sickWindow => Janela Sick
+goodWindow => Janela Good
+badWindow => Janela Bad
+marvelousRating => Avaliação Marvelous
+marvelousSprite => Sprite Marvelous
+ratingOffset => Offset de avaliação
+NoteOffsetState => Offset de nota
+
+
+Gameplaybackend => Backend de jogabilidade
+
+replayBot => Bot de replay
+fixLNL => Corrigir notas longas
+gameOverVibration => Vibração no game over

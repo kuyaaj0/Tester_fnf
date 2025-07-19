@@ -51,7 +51,7 @@ class FPS extends Sprite
 
 		extraShow.visible = ClientPrefs.data.showExtra;
 	}
-
+	
 	private override function __enterFrame(deltaTime:Float):Void
 	{
 		if (isPointInFPSCounter() && FlxG.mouse.justPressed)

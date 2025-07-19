@@ -1,0 +1,16 @@
+Graphics => Graphics
+
+
+FPScounter => FPS Counter
+
+showFPS => Show FPS
+showExtra => Show Extra Data
+rainbowFPS => Rainbow FPS
+memoryType => Memory Type
+FPSScale => FPS Scale
+
+
+Watermark => Watermark
+
+showWatermark => Show Watermark
+WatermarkScale => Watermark Scale

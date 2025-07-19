@@ -1,11 +1,10 @@
-Reset => Atur Ulang
 General => Umum
 
 framerate => Batas FPS
 language => Bahasa mesin
-colorblindMode => Filter buta warna
-lowQuality => Kualitas rendah
 gameQuality => Kualitas permainan
+lowQuality => Kualitas rendah
+colorblindMode => Filter buta warna
 antialiasing => Antialiasing
 flashing => Lampu berkedip
 shaders => Shader

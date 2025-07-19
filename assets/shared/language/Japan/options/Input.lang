@@ -1,13 +1,19 @@
 Input => 入力
 
 ControlsSubState => コントロール設定
+
+
 TouchMain => タッチ-メイン
+
 needMobileControl => タッチ操作対応
 controlsAlpha => コントロール透明度
+
+
 TouchGame => タッチ-ゲーム
+
 MobileControlSelectSubState => 操作タイプ
-dynamicColors => 動的色
 hitboxLocation => ヒットボックス位置
+dynamicColors => 動的色
 playControlsAlpha => ゲーム内透明度
 extraKey => 追加キー
 MobileExtraControl => 追加キー設定

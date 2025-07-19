@@ -17,7 +17,7 @@ class PauseLang
 			return getValue;
 		}
 		else {
-			getValue = ClientPrefs.data.developerMode ? value + ' (missed interpret)' : value;
+			getValue = ClientPrefs.data.developerMode ? value + ' (404)' : value;
 			return getValue;
 		}
 		return getValue;

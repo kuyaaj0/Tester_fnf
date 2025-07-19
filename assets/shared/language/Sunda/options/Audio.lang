@@ -1,0 +1,7 @@
+Audio => Audio
+
+mainMusic => Musik utama
+optionMusic => Musik opsi
+pauseMusic => Musik pause
+hitsoundType => Tipe hitsound
+hitsoundVolume => Volume hitsound

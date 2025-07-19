@@ -1,15 +1,13 @@
-Reset => Resetar
 General => Geral
 
 framerate => Mudar limite de FPS
 language => Mudar idioma do motor
-colorblindMode => Filtro para daltônicos que melhora a jogabilidade
-lowQuality => Desativar alguns objetos nos cenários
 gameQuality => Mudar qualidade gráfica do jogo
+lowQuality => Desativar alguns objetos nos cenários
+colorblindMode => Filtro para daltônicos que melhora a jogabilidade
 antialiasing => Ativar/desativar antialiasing, melhorando a qualidade gráfica com pequena queda de desempenho
 flashing => Ativar/desativar luzes piscantes que podem causar convulsões epilépticas e cansaço visual
 shaders => Shaders usados para alguns efeitos visuais
 cacheOnGPU => Permite usar a GPU para armazenar texturas em cache, reduzindo o uso de RAM
 autoPause => Pausa o jogo quando está em segundo plano
 gcFreeZone => Suspende a maior parte da limpeza de RAM para reduzir travamentos repentinos durante o gameplay
-e resolver o problema de crashes por vazamento de memória causados pelo uso excessivo de RAM.

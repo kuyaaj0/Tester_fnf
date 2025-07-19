@@ -1,11 +1,10 @@
-Reset => Återställ
 General => Allmänt
 
 framerate => FPS-gräns
 language => Språk
-colorblindMode => Färgblindläge
-lowQuality => Förenklad grafik
 gameQuality => Grafikkvalitet
+lowQuality => Förenklad grafik
+colorblindMode => Färgblindläge
 antialiasing => Antialiasing
 flashing => Blinkande ljus
 shaders => Shaders

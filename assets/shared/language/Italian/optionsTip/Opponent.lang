@@ -1,7 +1,0 @@
-Opponent => Avversario
-
-playOpponent => Giocare come avversario
-opponentCodeFix => Scambio di funzioni GoodNoteHit e opponentNoteHit
-botOpponentFix => Lo script pensa di aprire il bot
-HealthDrainOPPO => Drenaggio della salute in modalità avversario
-HealthDrainOPPOMult => Moltiplicatore del drenaggio della salute in modalità avversario

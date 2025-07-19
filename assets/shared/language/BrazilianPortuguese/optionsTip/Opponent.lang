@@ -1,7 +1,0 @@
-Opponent => Oponente
-
-playOpponent => Jogar como oponente
-opponentCodeFix => Troca de função entre GoodNoteHit e opponentNoteHit
-botOpponentFix => Script vai achar que você ativou o bot
-HealthDrainOPPO => Drenagem de vida no modo oponente
-HealthDrainOPPOMult => Multiplicador de drenagem de vida no modo oponente

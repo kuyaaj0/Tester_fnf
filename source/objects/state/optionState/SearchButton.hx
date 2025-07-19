@@ -33,7 +33,7 @@ class SearchButton extends FlxSpriteGroup
 		}
 		add(search);
 
-		tapText = new FlxText(round, 0, 0, Language.get('tapToSearch', 'fp'), Std.int(height / 2));
+		tapText = new FlxText(round, 0, 0, Language.get('tapToSearch', 'op'), Std.int(height / 2));
 		tapText.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
 		tapText.antialiasing = ClientPrefs.data.antialiasing;
 		tapText.alpha = 0.6;
@@ -59,7 +59,7 @@ class SearchButton extends FlxSpriteGroup
 	} 
 
 	public function changeLanguage() {
-		tapText.text = Language.get('tapToSearch', 'fp');
+		tapText.text = Language.get('tapToSearch', 'op');
 		tapText.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
 
 		search.textObj.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');

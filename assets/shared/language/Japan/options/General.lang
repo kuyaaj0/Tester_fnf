@@ -1,11 +1,10 @@
-Reset => リセット
 General => 一般
 
 framerate => FPS上限
 language => エンジン言語
-colorblindMode => 色覚障がい者用フィルター
-lowQuality => 低品質モード
 gameQuality => ゲーム画質
+lowQuality => 低品質モード
+colorblindMode => 色覚障がい者用フィルター
 antialiasing => アンチエイリアシング
 flashing => 点滅ライト
 shaders => シェーダー
