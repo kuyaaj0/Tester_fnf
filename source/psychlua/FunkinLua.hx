@@ -1176,7 +1176,6 @@ class FunkinLua
 				leSprite.loadGraphic(Paths.image(image));
 			}
 			game.modchartSprites.set(tag, leSprite);
-			game.checkSprites.remove(tag);
 			leSprite.active = true;
 		});
 		set("makeAnimatedLuaSprite", function(tag:String, ?image:String = null, ?x:Float = 0, ?y:Float = 0, ?spriteType:String = "sparrow")
@@ -1187,7 +1186,6 @@ class FunkinLua
 
 			LuaUtils.loadFrames(leSprite, image, spriteType);
 			game.modchartSprites.set(tag, leSprite);
-			game.checkSprites.remove(tag);
 		});
 
 		set("makeGraphic", function(obj:String, width:Int = 256, height:Int = 256, color:String = 'FFFFFF')
@@ -1276,11 +1274,6 @@ class FunkinLua
 
 		set("addLuaSprite", function(tag:String, front:Bool = false)
 		{
-			if (game.checkSprites.exists(tag))
-			{
-				// trace('Stop add sprite');
-				return false;
-			}
 			var mySprite:FlxSprite = null;
 			if (game.modchartSprites.exists(tag))
 				mySprite = game.modchartSprites.get(tag);
@@ -1289,8 +1282,6 @@ class FunkinLua
 
 			if (mySprite == null)
 				return false;
-
-			game.checkSprites.set(tag, tag);
 
 			if (front)
 				LuaUtils.getTargetInstance().add(mySprite);
@@ -1394,8 +1385,6 @@ class FunkinLua
 			var pee:ModchartSprite = game.modchartSprites.get(tag);
 			FlxTween.cancelTweensOf(pee);
 			LuaUtils.getTargetInstance().remove(pee, true);
-			if (game.checkSprites.exists(tag))
-				game.checkSprites.remove(tag); // 虽然没有被销毁但是仍然需要添加
 			if (destroy)
 			{
 				pee.kill();

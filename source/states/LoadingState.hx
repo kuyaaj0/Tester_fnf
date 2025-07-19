@@ -27,7 +27,7 @@ import haxe.atomic.AtomicInt;
 
 class LoadingState extends MusicBeatState
 {
-	public static var loaded:AtomicInt = new AtomicInt(0);
+	public static var loaded:Int = 0;
 	public static var loadMax:Int = 0;
 
 	static var requestedBitmaps:Map<String, BitmapData> = [];
@@ -42,7 +42,7 @@ class LoadingState extends MusicBeatState
 	{
 		this.target = target;
 		this.stopMusic = stopMusic;
-		loaded.store(0);
+		loaded = 0;
 		startThreads();
 		super();
 	}
@@ -145,7 +145,6 @@ class LoadingState extends MusicBeatState
 		{
 			JustSay.text = Std.string(e);
 		}
-		addNote();
 
 		super.create();
 	}
@@ -195,7 +194,7 @@ class LoadingState extends MusicBeatState
 
 				return;
 			}
-			intendedPercent = loaded.load() / loadMax;
+			intendedPercent = loaded / loadMax;
 		}
 	}
 
@@ -218,7 +217,7 @@ class LoadingState extends MusicBeatState
 			isPlayState = false;
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
-			MusicBeatState.switchState(new PlayState(unspawnNotes, noteTypes, events));
+			MusicBeatState.switchState(new PlayState());
 		}
 		else
 		{
@@ -226,11 +225,6 @@ class LoadingState extends MusicBeatState
 		}
 		transitioning = true;
 		finishedLoading = true;
-	}
-
-	static function addNote()
-	{
-		Note.init();
 	}
 
 	static function checkLoaded():Bool
@@ -243,7 +237,7 @@ class LoadingState extends MusicBeatState
 				trace('failed to cache image $key');
 		}
 		requestedBitmaps.clear();
-		return (loaded.load() == loadMax);
+		return (loaded == loadMax);
 	}
 
 	static function getNextState(target:FlxState, stopMusic = false, intrusive:Bool = true):FlxState
@@ -392,9 +386,41 @@ class LoadingState extends MusicBeatState
 			song.stage = StageData.vanillaSongStage(folder);
 
 		var stageData:StageFile = StageData.getStageFile(song.stage);
-		if (stageData != null && stageData.preload != null)
-			prepare((!ClientPrefs.data.lowQuality || stageData.preload.images_low) ? stageData.preload.images : stageData.preload.images_low,
-				stageData.preload.sounds, stageData.preload.music);
+		if (stageData != null)
+		{
+			var imgs:Array<String> = [];
+			var snds:Array<String> = [];
+			var mscs:Array<String> = [];
+			if(stageData.preload != null)
+			{
+				for (asset in Reflect.fields(stageData.preload))
+				{
+					var filters:Int = Reflect.field(stageData.preload, asset);
+					var asset:String = asset.trim();
+
+					if(filters < 0 || StageData.validateVisibility(filters))
+					{
+						if(asset.startsWith('images/'))
+							imgs.push(asset.substr('images/'.length));
+						else if(asset.startsWith('sounds/'))
+							snds.push(asset.substr('sounds/'.length));
+						else if(asset.startsWith('music/'))
+							mscs.push(asset.substr('music/'.length));
+					}
+				}
+			}
+			
+			if (stageData.objects != null)
+			{
+				for (sprite in stageData.objects)
+				{
+					if(sprite.type == 'sprite' || sprite.type == 'animatedSprite')
+						if((sprite.filters < 0 || StageData.validateVisibility(sprite.filters)) && !imgs.contains(sprite.image))
+							imgs.push(sprite.image);
+				}
+			}
+			prepare(imgs, snds, mscs);
+		}
 
 		songsToPrepare.push('$folder/Inst');
 
@@ -407,7 +433,7 @@ class LoadingState extends MusicBeatState
 			gfVersion = 'gf';
 
 		dontPreloadDefaultVoices = false;
-		preloadCharacter(player1, prefixVocals);
+			preloadCharacter(player1, prefixVocals);
 		if (player2 != player1)
 			preloadCharacter(player2, prefixVocals);
 		if (stageData != null && !stageData.hide_girlfriend && gfVersion != player2 && gfVersion != player1)
@@ -428,12 +454,11 @@ class LoadingState extends MusicBeatState
 	{
 		realStart = true;
 
-		loadMax = imagesToPrepare.length + soundsToPrepare.length + musicToPrepare.length + songsToPrepare.length + 1;
-		loaded.store(0);
+		loadMax = imagesToPrepare.length + soundsToPrepare.length + musicToPrepare.length + songsToPrepare.length;
+		loaded = 0;
 
 		// then start threads
 		setSpeed();
-		preloadChart();
 
 		for (sound in soundsToPrepare)
 			initThread(() -> Paths.sound(sound), 'sound $sound');
@@ -458,7 +483,7 @@ class LoadingState extends MusicBeatState
 					{
 						imageMutex.release();
 						Sys.sleep(0.001);
-						addLoad();
+						loaded++;
 						return;
 					}
 					else if (FileSystem.exists(file))
@@ -471,7 +496,7 @@ class LoadingState extends MusicBeatState
 						{
 							imageMutex.release();
 							Sys.sleep(0.001);
-							addLoad();
+							loaded++;
 							return;
 						}
 						else if (OpenFlAssets.exists(file, IMAGE))
@@ -481,7 +506,7 @@ class LoadingState extends MusicBeatState
 							trace('no such image $image exists');
 							imageMutex.release();
 							Sys.sleep(0.001);
-							addLoad();
+							loaded++;
 							return;
 						}
 					}
@@ -498,7 +523,7 @@ class LoadingState extends MusicBeatState
 					imageMutex.release();
 					trace('ERROR! fail on preloading image $image');
 				}
-				addLoad();
+				loaded++;
 			});
 	}
 
@@ -524,7 +549,7 @@ class LoadingState extends MusicBeatState
 				Sys.sleep(0.001);
 				trace('ERROR! fail on preloading $traceData');
 			}
-			addLoad();
+			loaded++;
 		});
 	}
 
@@ -732,8 +757,6 @@ class LoadingState extends MusicBeatState
 		}
 	}
 
-	public static var unspawnNotes:Array<Note> = [];
-	public static var noteTypes:Array<String> = [];
 	public static var events:Array<Array<Dynamic>> = [];
 
 	public static var songSpeed:Float = 1;
@@ -750,144 +773,6 @@ class LoadingState extends MusicBeatState
 			case "constant":
 				songSpeed = ClientPrefs.getGameplaySetting('scrollspeed');
 		}
-	}
-
-	static function preloadChart()
-	{
-		Note.globalRgbShaders = [];
-		backend.NoteTypesConfig.clearNoteTypesData();
-
-		unspawnNotes = [];
-		noteTypes = [];
-
-		var noteData:Array<SwagSection> = PlayState.SONG.notes;
-
-		var thread = Thread.create(() ->
-		{
-			for (section in noteData)
-			{
-				Sys.sleep(0.001);
-				for (songNotes in section.sectionNotes)
-				{
-					var daStrumTime:Float = songNotes[0];
-					var daNoteData:Int = Std.int(songNotes[1] % 4);
-					var gottaHitNote:Bool = section.mustHitSection;
-
-					if (ClientPrefs.data.flipChart)
-						daNoteData -= Std.int((daNoteData - 1.5) * 2);
-
-					if (Song.isNewVersion)
-						gottaHitNote = (songNotes[1] < 4);
-					else
-					{
-						if (songNotes[1] > 3)
-						{
-							gottaHitNote = !section.mustHitSection;
-						}
-					}
-
-					var oldNote:Note;
-					if (unspawnNotes.length > 0)
-						oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
-					else
-						oldNote = null;
-
-					var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, LoadingState);
-					swagNote.mustPress = gottaHitNote;
-					swagNote.sustainLength = songNotes[2];
-					swagNote.gfNote = (section.gfSection && (songNotes[1] < 4));
-					swagNote.noteType = songNotes[3];
-					if (!Std.isOfType(songNotes[3], String))
-						swagNote.noteType = ChartingState.noteTypeList[songNotes[3]]; // Backward compatibility + compatibility with Week 7 charts
-
-					swagNote.scrollFactor.set();
-					swagNote.updateHitbox();
-					unspawnNotes.push(swagNote);
-
-					final susLength:Float = swagNote.sustainLength / Conductor.stepCrochet;
-					final floorSus:Int = Math.floor(susLength) - ClientPrefs.data.fixLNL;
-
-					if (floorSus > 0)
-					{
-						for (susNote in 0...floorSus + 1)
-						{
-							oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
-
-							var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote), daNoteData, oldNote, true, LoadingState);
-							sustainNote.hitMultUpdate(susNote, floorSus);
-							sustainNote.mustPress = gottaHitNote;
-							sustainNote.gfNote = (section.gfSection && (songNotes[1] < 4));
-							sustainNote.noteType = swagNote.noteType;
-							sustainNote.scrollFactor.set();
-							sustainNote.parent = swagNote;
-							unspawnNotes.push(sustainNote);
-							swagNote.tail.push(sustainNote);
-
-							sustainNote.correctionOffset = swagNote.height / 2;
-							if (!PlayState.isPixelStage)
-							{
-								if (oldNote.isSustainNote)
-								{
-									oldNote.scale.y *= Note.SUSTAIN_SIZE / oldNote.frameHeight;
-									oldNote.scale.y /= ClientPrefs.getGameplaySetting('songspeed');
-									oldNote.updateHitbox();
-								}
-
-								if (ClientPrefs.data.downScroll)
-									sustainNote.correctionOffset = 0;
-							}
-							else if (oldNote.isSustainNote)
-							{
-								oldNote.scale.y /= ClientPrefs.getGameplaySetting('songspeed');
-								oldNote.updateHitbox();
-							}
-
-							if (sustainNote.mustPress)
-								sustainNote.x += FlxG.width / 2; // general offset
-							else if (ClientPrefs.data.middleScroll)
-							{
-								sustainNote.x += 310;
-								if (daNoteData > 1) // Up and Right
-									sustainNote.x += FlxG.width / 2 + 25;
-							}
-						}
-					}
-
-					if (swagNote.mustPress)
-					{
-						swagNote.x += FlxG.width / 2; // general offset
-					}
-					else if (ClientPrefs.data.middleScroll)
-					{
-						swagNote.x += 310;
-						if (daNoteData > 1) // Up and Right
-						{
-							swagNote.x += FlxG.width / 2 + 25;
-						}
-					}
-
-					if (!noteTypes.contains(swagNote.noteType))
-					{
-						noteTypes.push(swagNote.noteType);
-					}
-				}
-				unspawnNotes.sort(PlayState.sortByTime);
-			}
-
-			Note.defaultNoteSkin = 'noteSkins/NOTE_assets';
-			addLoad();
-			// chartMutex.release();
-		});
-	}
-
-	static function addLoad()
-	{
-		var thread = Thread.create(() ->
-		{
-			loadMutex.acquire();
-			loaded.add(1);
-			loadMutex.release();
-		});
 	}
 }
 
