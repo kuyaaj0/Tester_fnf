@@ -4,6 +4,8 @@ import flixel.FlxObject;
 import flixel.input.keyboard.FlxKey;
 import flixel.util.FlxDestroyUtil;
 import flash.events.KeyboardEvent;
+import flash.events.IMEEvent;
+import flash.system.IME;
 import lime.system.Clipboard;
 
 enum abstract AccentCode(Int) from Int from UInt to Int to UInt
@@ -59,6 +61,11 @@ class PsychUIInputText extends FlxSpriteGroup
 	public var customFilterPattern(default, set):EReg;
 
 	public var selectedFormat:FlxTextFormat = new FlxTextFormat(FlxColor.WHITE);
+	
+	public var imeEnabled:Bool = true;
+	public var imeComposition:String = "";
+	public var imeCompositionStart:Int = -1;
+	public var imeCompositionCursorPos:Int = 0;
 
 	public function new(x:Float = 0, y:Float = 0, wid:Int = 100, ?text:String = '', size:Int = 8)
 	{
@@ -86,6 +93,52 @@ class PsychUIInputText extends FlxSpriteGroup
 		this.text = text;
 
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+		FlxG.stage.addEventListener(IMEEvent.IME_COMPOSITION, onImeComposition);
+	}
+
+	function onImeComposition(e:IMEEvent)
+	{
+		if (focusOn != this || !imeEnabled)
+			return;
+
+		switch (e.type)
+		{
+			case IMEEvent.IME_COMPOSITION:
+				if (imeCompositionStart == -1)
+				{
+					imeCompositionStart = caretIndex;
+					imeCompositionCursorPos = 0;
+				}
+				
+				imeComposition = e.text;
+				imeCompositionCursorPos = e.cursorPos;
+				
+				var displayText = text.substring(0, imeCompositionStart) + 
+								imeComposition + 
+								text.substring(caretIndex);
+				
+				textObj.text = passwordMask ? displayText.replace(/./g, "*") : displayText;
+				
+				updateBoundaries();
+				updateCaret();
+				
+			default:
+		}
+	}
+
+	function updateBoundaries()
+	{
+		_boundaries = [];
+		var textField = textObj.textField;
+		var currentWidth:Float = 0;
+		
+		for (i in 0...text.length)
+		{
+			var char = text.charAt(i);
+			textField.text = text.substring(0, i + 1);
+			currentWidth = textField.textWidth;
+			_boundaries.push(currentWidth);
+		}
 	}
 
 	public var selectIndex:Int = -1;
@@ -102,9 +155,23 @@ class PsychUIInputText extends FlxSpriteGroup
 		if (focusOn != this)
 			return;
 
+		if (imeCompositionStart != -1)
+		{
+			handleImeKeyDown(e);
+			return;
+		}
+
 		var keyCode:Int = e.keyCode;
 		var charCode:Int = e.charCode;
 		var flxKey:FlxKey = cast keyCode;
+
+		// 处理非ASCII字符输入
+		if (charCode > 127 && imeEnabled)
+		{
+			_typeLetter(charCode);
+			updateCaret();
+			return;
+		}
 
 		// Fix missing cedilla
 		switch (keyCode)
@@ -149,13 +216,13 @@ class PsychUIInputText extends FlxSpriteGroup
 					if (selectIndex < 0 || selectIndex == caretIndex)
 					{
 						var lastText = text;
-						var deletedText:String = text.substr(0, Std.int(Math.max(0, caretIndex - 1)));
+						var deletedText:String = text.substr(0, Std.int(Math.max(0, caretIndex - 1));
 						var space:Int = deletedText.lastIndexOf(' ');
 						if (space > -1 && space != caretIndex - 1)
 						{
 							var start:String = deletedText.substring(0, space + 1);
 							var end:String = text.substring(caretIndex);
-							caretIndex -= Std.int(Math.max(0, text.length - (start.length + end.length)));
+							caretIndex -= Std.int(Math.max(0, text.length - (start.length + end.length));
 							text = start + end;
 						}
 						else
@@ -175,8 +242,6 @@ class PsychUIInputText extends FlxSpriteGroup
 				case DELETE:
 					if (selectIndex < 0 || selectIndex == caretIndex)
 					{
-						// This is| a test
-						// This is test
 						var deletedText:String = text.substring(caretIndex);
 						var spc:Int = 0;
 						var space:Int = deletedText.indexOf(' ');
@@ -209,7 +274,6 @@ class PsychUIInputText extends FlxSpriteGroup
 							caretIndex--;
 							var a:String = text.substr(caretIndex - 1, 1);
 							var b:String = text.substr(caretIndex, 1);
-							// trace(a, b);
 							if (a == ' ' && b != ' ')
 								break;
 						}
@@ -224,7 +288,6 @@ class PsychUIInputText extends FlxSpriteGroup
 							caretIndex++;
 							var a:String = text.substr(caretIndex - 1, 1);
 							var b:String = text.substr(caretIndex, 1);
-							// trace(a, b);
 							if (a != ' ' && b == ' ')
 								break;
 						}
@@ -256,7 +319,6 @@ class PsychUIInputText extends FlxSpriteGroup
 				lastAccent = NONE;
 		}
 
-		// trace(keyCode, charCode, flxKey);
 		switch (flxKey)
 		{
 			case LEFT: // move caret to left
@@ -375,9 +437,9 @@ class PsychUIInputText extends FlxSpriteGroup
 						capital = 0x55;
 					default:
 				}
-				if (_nextAccent == GRAVE || _nextAccent == ACUTE || _nextAccent == CIRCUMFLEX) // Supported accents
+				if (_nextAccent == GRAVE || _nextAccent == ACUTE || _nextAccent == CIRCUMFLEX)
 					charCode += grave - capital + _nextAccent;
-				else if (_nextAccent == TILDE) // Unsupported accent
+				else if (_nextAccent == TILDE)
 					_typeLetter(getAccentCharCode(_nextAccent));
 
 				_typeLetter(charCode);
@@ -413,6 +475,77 @@ class PsychUIInputText extends FlxSpriteGroup
 		updateCaret();
 	}
 
+	function handleImeKeyDown(e:KeyboardEvent)
+	{
+		var flxKey:FlxKey = cast e.keyCode;
+		
+		switch (flxKey)
+		{
+			case ENTER:
+				confirmImeComposition();
+				
+			case ESCAPE:
+				cancelImeComposition();
+				
+			case BACKSPACE:
+				if (imeComposition.length > 0)
+				{
+					imeComposition = imeComposition.substring(0, imeComposition.length - 1);
+					
+					if (imeComposition.length == 0)
+					{
+						cancelImeComposition();
+					}
+					else
+					{
+						textObj.text = text.substring(0, imeCompositionStart) + 
+									 (passwordMask ? imeComposition.replace(/./g, "*") : imeComposition) + 
+									 text.substring(caretIndex);
+						updateBoundaries();
+						updateCaret();
+					}
+				}
+				else
+				{
+					cancelImeComposition();
+				}
+				
+			default:
+		}
+	}
+
+	function confirmImeComposition()
+	{
+		if (imeCompositionStart == -1 || imeComposition.length == 0)
+			return;
+			
+		var lastText = text;
+		text = text.substring(0, imeCompositionStart) + imeComposition + text.substring(caretIndex);
+		caretIndex = imeCompositionStart + imeComposition.length;
+		
+		if (onChange != null)
+			onChange(lastText, text);
+		if (broadcastInputTextEvent)
+			PsychUIEventHandler.event(CHANGE_EVENT, this);
+			
+		resetImeComposition();
+	}
+
+	function cancelImeComposition()
+	{
+		textObj.text = passwordMask ? text.replace(/./g, "*") : text;
+		resetImeComposition();
+		updateBoundaries();
+		updateCaret();
+	}
+
+	function resetImeComposition()
+	{
+		imeComposition = "";
+		imeCompositionStart = -1;
+		imeCompositionCursorPos = 0;
+	}
+
 	public dynamic function onPressEnter(e:KeyboardEvent)
 		focusOn = null;
 
@@ -425,6 +558,7 @@ class PsychUIInputText extends FlxSpriteGroup
 			if (focusOn.unfocus != null)
 				focusOn.unfocus();
 			focusOn.resetCaret();
+			focusOn.resetImeComposition();
 		}
 		return (focusOn = v);
 	}
@@ -465,9 +599,13 @@ class PsychUIInputText extends FlxSpriteGroup
 				updateCaret();
 			}
 			else if (focusOn == this)
+			{
+				if (imeCompositionStart != -1)
+				{
+					confirmImeComposition();
+				}
 				focusOn = null;
-
-			// trace('changed focus to: ' + this);
+			}
 		}
 
 		if (focusOn == this)
@@ -478,7 +616,7 @@ class PsychUIInputText extends FlxSpriteGroup
 				var drewSelection:Bool = false;
 				if (selection != null && selection.exists)
 				{
-					if (selectIndex != -1 && selectIndex != caretIndex)
+					if (selectIndex != -1 && selectIndex != caretIndex && imeCompositionStart == -1)
 					{
 						selection.visible = true;
 						drewSelection = true;
@@ -489,7 +627,7 @@ class PsychUIInputText extends FlxSpriteGroup
 
 				if (caret != null && caret.exists)
 				{
-					if (!drewSelection && _caretTime < 0.5 && caret.x >= textObj.x)
+					if (!drewSelection && _caretTime < 0.5 && caret.x >= textObj.x && imeCompositionStart == -1)
 					{
 						caret.visible = true;
 						caret.color = textObj.color;
@@ -525,6 +663,24 @@ class PsychUIInputText extends FlxSpriteGroup
 		var textField = textObj.textField;
 		textField.setSelection(caretIndex, caretIndex);
 		_caretTime = 0;
+		
+		if (imeCompositionStart != -1)
+		{
+			caret.y = textObj.y + 2;
+			caret.x = textObj.x + 1 - textObj.textField.scrollH;
+			
+			if (imeCompositionStart > 0)
+				caret.x += _boundaries[Std.int(Math.max(0, Math.min(_boundaries.length - 1, imeCompositionStart - 1)))];
+			
+			var compositionTextBeforeCursor = imeComposition.substring(0, imeCompositionCursorPos);
+			var compositionWidth = textField.getCharBoundaries(imeCompositionCursorPos)?.x ?? textField.textWidth;
+			
+			caret.x += compositionWidth;
+			
+			selection.visible = false;
+			return;
+		}
+
 		if (caret != null && caret.exists)
 		{
 			caret.y = textObj.y + 2;
@@ -597,6 +753,7 @@ class PsychUIInputText extends FlxSpriteGroup
 		if (focusOn == this)
 			focusOn = null;
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+		FlxG.stage.removeEventListener(IMEEvent.IME_COMPOSITION, onImeComposition);
 		super.destroy();
 	}
 
@@ -728,7 +885,6 @@ class PsychUIInputText extends FlxSpriteGroup
 		if (letter.length > 0 && (maxLength == 0 || (text.length + letter.length) < maxLength))
 		{
 			var lastText = text;
-			// trace('Drawing character: $letter');
 			if (!inInsertMode)
 				text = text.substring(0, caretIndex) + letter + text.substring(caretIndex);
 			else
@@ -767,39 +923,61 @@ class PsychUIInputText extends FlxSpriteGroup
 
 	private function filter(text:String):String
 	{
-		switch (forceCase)
+		if (filterMode == NO_FILTER)
 		{
-			case UPPER_CASE:
-				text = text.toUpperCase();
-			case LOWER_CASE:
-				text = text.toLowerCase();
-			default:
+			switch (forceCase)
+			{
+				case UPPER_CASE:
+					text = text.toUpperCase();
+				case LOWER_CASE:
+					text = text.toLowerCase();
+				default:
+			}
+			return text;
 		}
-		if (forceCase == UPPER_CASE)
-			text = text.toUpperCase();
-		else if (forceCase == LOWER_CASE)
-			text = text.toLowerCase();
 
-		if (filterMode != NO_FILTER)
+		var result = new StringBuf();
+		for (i in 0...text.length)
 		{
-			var pattern:EReg;
-			switch (filterMode)
+			var char = text.charAt(i);
+			var code = text.charCodeAt(i);
+			
+			if (code > 127)
+			{
+				result.add(char);
+				continue;
+			}
+			
+			var keepChar = switch (filterMode)
 			{
 				case ONLY_ALPHA:
-					pattern = ~/[^a-zA-Z]*/g;
+					(char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z');
 				case ONLY_NUMERIC:
-					pattern = ~/[^0-9]*/g;
+					char >= '0' && char <= '9';
 				case ONLY_ALPHANUMERIC:
-					pattern = ~/[^a-zA-Z0-9]*/g;
+					(char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z') || (char >= '0' && char <= '9');
 				case ONLY_HEXADECIMAL:
-					pattern = ~/[^a-fA-F0-9]*/g;
+					(char >= 'a' && char <= 'f') || (char >= 'A' && char <= 'F') || (char >= '0' && char <= '9');
 				case CUSTOM_FILTER:
-					pattern = customFilterPattern;
+					customFilterPattern.match(char);
 				default:
-					throw new flash.errors.Error("FlxInputText: Unknown filterMode (" + filterMode + ")");
+					true;
 			}
-			text = pattern.replace(text, "");
+			
+			if (keepChar)
+			{
+				switch (forceCase)
+				{
+					case UPPER_CASE:
+						result.add(char.toUpperCase());
+					case LOWER_CASE:
+						result.add(char.toLowerCase());
+					default:
+						result.add(char);
+				}
+			}
 		}
-		return text;
+		
+		return result.toString();
 	}
 }

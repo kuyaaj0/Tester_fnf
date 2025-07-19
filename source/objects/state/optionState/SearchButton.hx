@@ -59,7 +59,7 @@ class SearchButton extends FlxSpriteGroup
 	} 
 
 	public function changeLanguage() {
-		tapText.text = Language.get('tapToSearch', 'fp');
+		tapText.text = Language.get('tapToSearch', 'op');
 		tapText.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
 
 		search.textObj.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
