@@ -70,7 +70,7 @@ class SkinGroup extends OptionCata
 		if (Mods.mergeAllTextsNamed('images/noteSkins/list.txt', 'shared').length > 0)
 			output = Mods.mergeAllTextsNamed('images/noteSkins/list.txt', 'shared');
 		else
-			output = CoolUtil.coolTextFile(Paths.getSharedPath('shared/images/noteSkins/list.txt'));
+			output = CoolUtil.coolTextFile(Paths.getSharedPath('images/noteSkins/list.txt'));
 		return output;
 	}
 
@@ -79,7 +79,7 @@ class SkinGroup extends OptionCata
 		if (Mods.mergeAllTextsNamed('images/noteSplashes/list.txt', 'shared').length > 0)
 			output = Mods.mergeAllTextsNamed('images/noteSplashes/list.txt', 'shared');
 		else
-			output = CoolUtil.coolTextFile(Paths.getSharedPath('shared/images/noteSplashes/list.txt'));
+			output = CoolUtil.coolTextFile(Paths.getSharedPath('images/noteSplashes/list.txt'));
 		return output;
 	}
 	
