@@ -215,7 +215,7 @@ class PsychUIInputText extends FlxSpriteGroup
 					if (selectIndex < 0 || selectIndex == caretIndex)
 					{
 						var lastText = text;
-						var deletedText:String = text.substr(0, Std.int(Math.max(0, caretIndex - 1));
+						var deletedText:String = text.substr(0, Std.int(Math.max(0, caretIndex - 1)));
 						var space:Int = deletedText.lastIndexOf(' ');
 						if (space > -1 && space != caretIndex - 1)
 						{
