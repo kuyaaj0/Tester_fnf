@@ -221,7 +221,6 @@ class InitState extends MusicBeatState
 			startCutscenesIn();
 		}
 		#end
-		return super.create();
 	}
 	
 	function startCutscenesIn()
