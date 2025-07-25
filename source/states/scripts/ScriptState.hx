@@ -4,3 +4,4 @@ class ScriptState extends MusicBeatState implements IScriptedClass
 {
     
 }
+
