@@ -410,11 +410,11 @@ class LoadingState extends MusicBeatState
 		soundThread = new FixedThreadPool(8);
 
 		for (sound in soundsToPrepare)
-			initThread(() -> Paths.sound(sound), 'sound $sound');
+			initThread(() -> Paths.sound(sound, true), 'sound $sound');
 		for (music in musicToPrepare)
-			initThread(() -> Paths.music(music), 'music $music');
+			initThread(() -> Paths.music(music, true), 'music $music');
 		for (song in songsToPrepare)
-			initThread(() -> Paths.returnSound(null, song, 'songs'), 'song $song');
+			initThread(() -> Paths.returnSound(null, song, 'songs', true), 'song $song');
 
 		// for images, they get to have their own thread
 		for (image in imagesToPrepare) {

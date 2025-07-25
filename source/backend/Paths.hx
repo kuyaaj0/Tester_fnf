@@ -13,6 +13,8 @@ import openfl.system.System;
 import openfl.geom.Rectangle;
 import openfl.media.Sound;
 
+import sys.thread.Mutex;
+
 import backend.Cache; //用于拆分path代码功能过于冗杂的问题
 
 import haxe.Json;
@@ -181,9 +183,9 @@ class Paths
 		return 'assets/videos/$key.$VIDEO_EXT';
 	}
 
-	static public function sound(key:String, ?library:String):Sound
+	static public function sound(key:String, ?library:String, ?threadLoad:Bool):Sound
 	{
-		var sound:Sound = returnSound('sounds', key, library);
+		var sound:Sound = returnSound('sounds', key, library, threadLoad);
 		return sound;
 	}
 
@@ -192,9 +194,9 @@ class Paths
 		return sound(key + FlxG.random.int(min, max), library);
 	}
 
-	inline static public function music(key:String, ?library:String):Sound
+	inline static public function music(key:String, ?library:String, ?threadLoad:Bool):Sound
 	{
-		var file:Sound = returnSound('music', key, library);
+		var file:Sound = returnSound('music', key, library, threadLoad);
 		return file;
 	}
 
@@ -461,8 +463,8 @@ class Paths
 	}
 
 	
-
-	public static function returnSound(path:Null<String>, key:String, ?library:String)
+	static var soundMutex:Mutex = new Mutex();
+	public static function returnSound(path:Null<String>, key:String, ?library:String, ?threadLoad:Bool)
 	{
 		#if MODS_ALLOWED
 		var modLibPath:String = '';
@@ -471,15 +473,23 @@ class Paths
 		if (path != null)
 			modLibPath += '$path/';
 
+		var thread:Bool = false;
+		//if (threadLoad != null) thread = true;
+
 		var file:String = modsSounds(modLibPath, key);
 
 		if (FileSystem.exists(file))
 		{
 			if (!Cache.currentTrackedSounds.exists(file))
 			{
-				Cache.currentTrackedSounds.set(file, Sound.fromFile(file));
+				var sound = Sound.fromFile(file);
+				if (thread) soundMutex.acquire();
+				Cache.currentTrackedSounds.set(file, sound);
+				if (thread) soundMutex.release();
 			}
+			if (thread) soundMutex.acquire();
 			Cache.localTrackedAssets.push(key);
+			if (thread) soundMutex.release();
 			return Cache.currentTrackedSounds.get(file);
 		}
 		#end
@@ -491,14 +501,21 @@ class Paths
 		gottenPath = getPath(gottenPath, SOUND, library);
 		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
 		// trace(gottenPath);
+
 		if (!Cache.currentTrackedSounds.exists(gottenPath))
 		{
 			var retKey:String = (path != null) ? '$path/$key' : key;
 			retKey = ((path == 'songs') ? 'songs:' : '') + getPath('$retKey.$SOUND_EXT', SOUND, library);
-			if (Assets.exists(retKey, SOUND))
-				Cache.currentTrackedSounds.set(gottenPath, Assets.getSound(retKey));
+			if (Assets.exists(retKey, SOUND)) {
+				var sound:Sound = Assets.getSound(retKey);
+				if (thread) soundMutex.acquire();
+				Cache.currentTrackedSounds.set(gottenPath, sound);
+				if (thread) soundMutex.release();
+			}
 		}
+		if (thread) soundMutex.acquire();
 		Cache.localTrackedAssets.push(gottenPath);
+		if (thread) soundMutex.release();
 		return Cache.currentTrackedSounds.get(gottenPath);
 	}
 
