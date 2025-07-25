@@ -1,0 +1,77 @@
+name: reInstallHaxelib
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+env:
+  HAXE_VERSION: 4.3.7
+
+jobs:
+  build:
+    name: InstallHaxelib
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: ${{ env.HAXE_VERSION }}
+
+      - name: cache install
+        uses: actions/cache@v3
+        with:
+          # not caching the bin folder to prevent asset duplication and stuff like that
+          key: cache-install-Haxelib
+          path: |
+            .haxelib/
+          restore-keys: |
+            cache-install-Haxelib
+        
+      - name: Install Libraries
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hmm 
+          haxelib run hmm reinstall -f
+
+      - name: Make Haxelib Zip
+        run: |
+          zip -r /Users/runner/haxelib.zip .haxelib/
+
+      - name: Upload Haxelib
+        uses: actions/upload-artifact@main
+        with:
+          name: Haxelib
+          path: /Users/runner/haxelib.zip
+          if-no-files-found: error
+
+      - name: Clearing already existing cache
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const caches = await github.rest.actions.getActionsCacheList({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            for (const cache of caches.data.actions_caches) {
+              if (cache.key == "cache-install-Haxelib") {
+                console.log('Clearing ' + cache.key + '...')
+                await github.rest.actions.deleteActionsCacheById({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  cache_id: cache.id,
+                })
+                console.log("Cache cleared.")
+              }
+            }
+      - name: Uploading new cache
+        uses: actions/cache@v3
+        with:
+          key: cache-install-Haxelib
+          path: |
+            .haxelib/
+          restore-keys: |
+            cache-install-Haxelib
+

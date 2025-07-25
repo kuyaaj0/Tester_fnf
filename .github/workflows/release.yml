@@ -1,0 +1,149 @@
+name: Release
+on: workflow_dispatch
+jobs:
+  installHaxelib:
+     uses: ./.github/workflows/InstallHaxelib.yml
+  MobileBuild:
+    name: ${{ matrix.name }}
+    strategy:
+      matrix:
+        include:
+          - name: Android
+            os: macos-14
+            buildArgs: "android"
+            artifactName: androidBuild
+            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
+          - name: iOS
+            os: macos-15
+            buildArgs: "ios -nosign"
+            artifactName: iOSBuild
+            artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
+    uses: ./.github/workflows/build.yml
+    with:
+        name: ${{ matrix.name }}
+        os: ${{ matrix.os }}
+        buildArgs: ${{ matrix.buildArgs }}
+        artifactName: ${{ matrix.artifactName }}
+        artifactPath: ${{ matrix.artifactPath }}
+        
+  Windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.6
+
+      - name: Install Libraries
+        run: |
+          haxelib setup C:\haxelib
+          haxelib install hmm --quiet
+          haxelib run hmm install --quiet
+
+      - name: Compile
+        run: haxelib run lime build windows
+
+      - name: Make zip for release
+        shell: pwsh
+        run: | 
+          cd export\release\windows\bin
+          Compress-Archive -Path . -DestinationPath windows.zip
+
+      - name: Upload Artifact
+        if: ${{ success() }}
+        uses: actions/upload-artifact@main
+        with:
+          name: windowsBuild
+          path: export\release\windows\bin\*.zip
+          if-no-files-found: error      
+  macOS:
+    runs-on: macos-${{matrix.version}}
+    strategy:
+      matrix:
+        version: [14, 15]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.6
+
+      - name: Install Libraries
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hmm --quiet
+          haxelib run hmm install --quiet
+
+      - name: Compile
+        run: haxelib run lime build mac
+
+      - name: Make tar for relese
+        run: |
+          cd export/release/macos/bin
+          tar czf macOS${{matrix.version}}.tar .
+
+      - name: Upload Artifact
+        if: ${{ success() }}
+        uses: actions/upload-artifact@main
+        with:
+          name: macOSBuild-${{matrix.version}}
+          path: export/release/macos/bin/*.tar
+          if-no-files-found: error
+
+  Releaser:
+    needs: [MobileBuild, macOS, Windows, installHaxelib]
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Download Android Build
+        uses: actions/download-artifact@main
+        with:
+           name: androidBuild
+           path: /home/runner
+
+      - name: Download iOS Build
+        uses: actions/download-artifact@main
+        with:
+           name: iOSBuild
+           path: /home/runner
+  
+      - name: Download macOS14 Build
+        uses: actions/download-artifact@main
+        with:
+           name: macOSBuild-14
+           path: /home/runner
+
+      - name: Download macOS15 Build
+        uses: actions/download-artifact@main
+        with:
+           name: macOSBuild-15
+           path: /home/runner
+
+      - name: Download Windows Build
+        uses: actions/download-artifact@main
+        with:
+           name: windowsBuild
+           path: /home/runner
+
+      - name: Download Haxelib
+        uses: actions/download-artifact@main
+        with:
+           name: Haxelib
+           path: /home/runner
+
+      - name: Publish The Release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          automatic_release_tag: "V1.1.9"
+          title: "V1.1.9"
+          files: |
+            /home/runner/*.apk
+            /home/runner/*.zip
+            /home/runner/*.tar
