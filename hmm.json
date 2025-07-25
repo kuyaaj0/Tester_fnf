@@ -54,9 +54,9 @@
     },
     {
       "name": "hscript-iris-improved",
-      "type": "sb-class",
+      "type": "git",
       "dir": null,
-      "ref": "master",
+      "ref": "sb-class",
       "url": "https://github.com/NovaFlare-Engine-Concentration/hscript-iris-improved"
     },
     {
