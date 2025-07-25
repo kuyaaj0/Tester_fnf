@@ -78,6 +78,7 @@ import flxanimate.PsychFlxAnimate as FlxAnimate;
 // Flixel
 import flixel.sound.FlxSound;
 import flixel.FlxG;
+import flixel.FlxState;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
 import flixel.util.FlxDestroyUtil;
@@ -92,6 +93,8 @@ import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.addons.transition.FlxTransitionableState;
 import shaders.flixel.system.FlxShader;
+
+import crowplexus.hscript.scriptclass.IScriptedClass;
 
 using StringTools;
 #end

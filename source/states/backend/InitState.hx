@@ -24,7 +24,7 @@ import hxvlc.flixel.FlxVideoSprite;
 #end
 #if android
 import backend.device.AppData;
-import states.PirateState;
+import states.backend.PirateState;
 #end
 
 import sys.thread.Thread;

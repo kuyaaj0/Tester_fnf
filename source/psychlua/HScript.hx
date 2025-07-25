@@ -218,6 +218,7 @@ class HScript {
 			// set('StringTools', StringTools);
 			#if flxanimate
 			set('FlxAnimate', FlxAnimate);
+			set('ScriptState', states.scripts.ScriptState);
 			#end
 			if(parent is MusicBeatState) {
 				set('setVar', function(name:String, value:Dynamic)

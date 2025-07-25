@@ -6,7 +6,7 @@ class InterfaceGroup extends OptionCata
 	{
 		super(X, Y, width, height);
 
-		var option:Option = new Option(this, 'UserInterface', TITLE);
+		var option:Option = new Option(this, 'User Interface', TITLE);
 		addOption(option);
 
 		var CustomFadeArray:Array<String> = ['Move', 'Alpha'];
