@@ -3,6 +3,7 @@ package substates;
 import objects.AudioDisplay.AudioCircleDisplay;
 import objects.state.relaxState.*;
 import objects.state.relaxState.windows.PlayListWindow;
+import objects.state.relaxState.windows.OptionWindow;
 
 import openfl.filters.BlurFilter;
 import openfl.display.Shape;
@@ -78,6 +79,7 @@ class RelaxSubState extends MusicBeatSubstate
 	public var songLyrics:FlxText;
 	
 	public var playListWindow:PlayListWindow;
+	public var optionWindow:OptionWindow;
 	
 	var Sound1:FlxSound = new FlxSound();
 	var Sound2:FlxSound = new FlxSound();
@@ -526,6 +528,12 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 		add(playListWindow);
 		
+		optionWindow = new OptionWindow();
+		for (i in optionWindow.members){
+		    i.cameras = [camOption];
+		}
+		add(optionWindow);
+		
 	    DebugText = new FlxText(0, 0, FlxG.width, SongsArray.name, 25);
 		DebugText.font = Paths.font('Lang-ZH.ttf');
 		add(DebugText);
@@ -896,6 +904,7 @@ class RelaxSubState extends MusicBeatSubstate
 				clickList = !clickList;
 				if (clickList && clickOption)
 					clickOption = !clickList;
+					optionWindow.Hidding = true;
 					playListWindow.toggle();
 			}
 			else if (isOverSetting) {
@@ -904,6 +913,8 @@ class RelaxSubState extends MusicBeatSubstate
 					clickList = !clickOption;
 					playListWindow.Hidding = false;
 					playListWindow.hide();
+					
+					optionWindow.Hidding = false;
 				trace('setting');
 			}
 			else if (isOverRock) {
