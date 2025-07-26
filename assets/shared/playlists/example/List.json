@@ -7,7 +7,6 @@
 			"background": ["assets/shared/playlists/example/art/Aimai-Attitude.png"],
 			"lyrics": "assets/shared/playlists/example/lyrics/Aimai-Attitude.json",
 			"record": null,
-			"backendVideo": null,
 			"bpm": 200,
 			"writer": "rejection"
 		},
@@ -17,7 +16,6 @@
 			"background": ["assets/shared/playlists/example/art/Wellerman.png"],
 			"lyrics": null,
 			"record": null,
-			"backendVideo": null,
 			"bpm": 110,
 			"writer": "Acapella"
 		}

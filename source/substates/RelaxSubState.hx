@@ -86,9 +86,11 @@ class RelaxSubState extends MusicBeatSubstate
 	public var enableBpmZoom:Bool = true; //启用唱片根据bpm zoom
 	public var enableRecordRotation:Bool = true; //启用唱片旋转
 	public var bgBlur:Bool = false; //启用背景高斯模糊
+	public var AudioSymmetry:Bool = true; //启用可视化中间对称
+	public var AudioNumber:Int = 5; //解析器的数量
+	public var RelaxAudioDisplayQuality:Int = 5 //解析器质量（仅用于RelaxState)
 	//public var NextSongs:String = "Next"; //播放下一个歌曲的方式 ["Next", "Restart", "Random"]
 	
-
 	public function new()
 	{
 		super();
@@ -311,7 +313,7 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 
 		audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
-									  500, 100, 46, 4, FlxColor.WHITE, 150);
+									  500, 100, 46, 4, FlxColor.WHITE, 150, AudioSymmetry, AudioNumber);
 		audio.alpha = 0;
 		audio.cameras = [camBack];
 		add(audio);
@@ -454,6 +456,7 @@ class RelaxSubState extends MusicBeatSubstate
 		    Sound1.destroy();
 		    Sound2.destroy();
 		    FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		    ClientPrefs.saveSettings();
 			close();
 		}
 	}
@@ -962,6 +965,7 @@ class RelaxSubState extends MusicBeatSubstate
 		    Sound1.destroy();
 		    Sound2.destroy();
 		    FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		    ClientPrefs.saveSettings();
 			close();
 		}
 	}

@@ -14,7 +14,6 @@ typedef SongInfo = {
 	background: Array<FlxGraphicAsset>, 	// 背景图像
 	record: Array<FlxGraphicAsset>, 		// 唱片图像
     lyrics: String,                         // 歌词
-	backendVideo: FlxGraphicAsset, 			// 背景视频
 	bpm: Float, 							// 每分钟节拍数
 	writer: String 							// 作曲家
 };

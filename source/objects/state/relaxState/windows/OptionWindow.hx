@@ -19,7 +19,7 @@ class OptionWindow extends FlxSpriteGroup
         BackendRect.alpha = 0;
         add(BackendRect);
         
-        optionButton =new OptionButton(0, 65);
+        optionButton =new OptionButton(50, 70);
         for (i in optionButton.members){
 		    i.cameras = [RelaxSubState.instance.camOption];
 		}
@@ -28,6 +28,6 @@ class OptionWindow extends FlxSpriteGroup
     
     override public function update(elapsed:Float){
         super.update(elapsed);
-        BackendRect.alpha = FlxMath.lerp(BackendRect.alpha, Hidding ? 0 : 0.5, 0.2);
+        alpha = FlxMath.lerp(BackendRect.alpha, Hidding ? 0 : 0.7, 0.2);
     }
 }
