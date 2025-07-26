@@ -87,7 +87,7 @@ class RelaxSubState extends MusicBeatSubstate
 	public var enableBpmZoom:Bool = true; //启用唱片根据bpm zoom
 	public var enableRecordRotation:Bool = true; //启用唱片旋转
 	public var bgBlur:Bool = false; //启用背景高斯模糊
-	public var NextSongs:String = "Next" //播放下一个歌曲的方式 ["Next", "Restart", "Random"]
+	public var NextSongs:String = "Next"; //播放下一个歌曲的方式 ["Next", "Restart", "Random"]
 	
 
 	public function new()
