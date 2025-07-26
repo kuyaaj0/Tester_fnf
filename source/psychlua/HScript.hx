@@ -222,8 +222,10 @@ class HScript {
 
 			//scriptedclass
 			set('ScriptedSprite', psychlua.scriptClasses.ScriptedSprite);
-			set('ScriptedGroup', psychlua.scriptClasses.ScriptedGroup);
-			set('ScriptedSpriteGroup', psychlua.scriptClasses.ScriptedSpriteGroup);
+			//有bug，未修
+			//set('ScriptedGroup', psychlua.scriptClasses.ScriptedGroup);
+			//set('ScriptedSpriteGroup', psychlua.scriptClasses.ScriptedSpriteGroup);
+
 			set('ScriptedState', psychlua.scriptClasses.ScriptedState);
 			set('ScriptedSubstate', psychlua.scriptClasses.ScriptedSubstate);
 
