@@ -19,7 +19,6 @@ import flixel.sound.FlxSound;
 import flixel.system.FlxAssets.FlxSoundAsset;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxTimer;
-import flixel.math.FlxRandom;
 
 import sys.thread.Thread;
 
@@ -171,7 +170,7 @@ class RelaxSubState extends MusicBeatSubstate
 			        case 'Restart':
 			            FlxG.sound.resume();
 			        case 'Random':
-			            var randomNum:Int = FlxRandom.int(0, SongsArray.list.length - 1);
+			            var randomNum:Int = FlxG.random.int(0, SongsArray.list.length - 1);
 			            loadSongs(SongsArray.list[randomNum]);
 			            currentSongIndex = randomNum;
 			    }
