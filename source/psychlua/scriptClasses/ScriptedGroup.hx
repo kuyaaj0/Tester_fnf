@@ -1,4 +1,4 @@
-package psychlua.scriptclasses;
+package psychlua.scriptClasses;
 
 /**
  * 相比原FlxGroup，这个更适用于在script class上继承

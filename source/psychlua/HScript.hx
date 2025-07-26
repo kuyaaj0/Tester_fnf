@@ -221,11 +221,11 @@ class HScript {
 			#end
 
 			//scriptedclass
-			set('ScriptedSprite', psychlua.scriptclasses.ScriptedSprite);
-			set('ScriptedGroup', psychlua.scriptclasses.ScriptedGroup);
-			set('ScriptedSpriteGroup', psychlua.scriptclasses.ScriptedSpriteGroup);
-			set('ScriptedState', psychlua.scriptclasses.ScriptedState);
-			set('ScriptedSubstate', psychlua.scriptclasses.ScriptedSubstate);
+			set('ScriptedSprite', psychlua.scriptClasses.ScriptedSprite);
+			set('ScriptedGroup', psychlua.scriptClasses.ScriptedGroup);
+			set('ScriptedSpriteGroup', psychlua.scriptClasses.ScriptedSpriteGroup);
+			set('ScriptedState', psychlua.scriptClasses.ScriptedState);
+			set('ScriptedSubstate', psychlua.scriptClasses.ScriptedSubstate);
 
 			if(parent is MusicBeatState) {
 				set('setVar', function(name:String, value:Dynamic)

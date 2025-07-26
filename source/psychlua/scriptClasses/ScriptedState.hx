@@ -1,4 +1,4 @@
-package psychlua.scriptclasses;
+package psychlua.scriptClasses;
 
 /**
  * 相比原MusicBeatState，这个更适用于在script class上继承
