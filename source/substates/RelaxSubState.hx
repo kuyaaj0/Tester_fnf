@@ -86,7 +86,7 @@ class RelaxSubState extends MusicBeatSubstate
 	public var enableBpmZoom:Bool = true; //启用唱片根据bpm zoom
 	public var enableRecordRotation:Bool = true; //启用唱片旋转
 	public var bgBlur:Bool = false; //启用背景高斯模糊
-	public var NextSongs:String = "Next"; //播放下一个歌曲的方式 ["Next", "Restart", "Random"]
+	//public var NextSongs:String = "Next"; //播放下一个歌曲的方式 ["Next", "Restart", "Random"]
 	
 
 	public function new()
@@ -164,7 +164,7 @@ class RelaxSubState extends MusicBeatSubstate
 			FlxG.sound.playMusic(songInfo.sound[0], 1);
 			
 			FlxG.sound.music.onComplete = () -> {
-			    switch(NextSongs){
+			    switch(ClientPrefs.data.NextSongs){
 			        case 'Next':
 			            nextSong();
 			        case 'Restart':
@@ -914,20 +914,28 @@ class RelaxSubState extends MusicBeatSubstate
 			}
 			else if (isOverList) {
 				clickList = !clickList;
-				if (clickList && clickOption)
-					clickOption = !clickList;
+				if (clickList){
+					clickOption = false;
+					playListWindow.Hidding = true;
+					playListWindow.show();
+					
 					optionWindow.Hidding = true;
-					playListWindow.toggle();
+			    }else{
+			        playListWindow.Hidding = false;
+					playListWindow.hide();
+			    }
 			}
 			else if (isOverSetting) {
 				clickOption = !clickOption;
-				if (clickList && clickOption)
-					clickList = !clickOption;
+				if (clickOption){
+					clickList = false;
 					playListWindow.Hidding = false;
 					playListWindow.hide();
 					
 					optionWindow.Hidding = false;
-				trace('setting');
+				}else{
+				    optionWindow.Hidding = true;
+				}
 			}
 			else if (isOverRock) {
 				clickLock = !clickLock;

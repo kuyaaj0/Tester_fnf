@@ -183,6 +183,9 @@ import states.TitleState;
 		'botplay' => false,
 		'opponentplay' => false
 	];
+	
+	/////RelaxState Options\\\\\
+	public var NextSongs:String = 'Next';
 }
 
 class ClientPrefs
