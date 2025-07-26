@@ -20,6 +20,8 @@ class Language
 				return OptionsTipLang.get(value);
 			case 'pa':
 				return PauseLang.get(value);
+			case 'relax':
+			    return RelaxLang.get(value);
 		}
 		return "error";
 	}
@@ -33,6 +35,7 @@ class Language
 		OptionsLang.updateLang();
 		OptionsTipLang.updateLang();
 		PauseLang.updateLang();
+		RelaxLang.updateLang();
 	}
 
 	public static function check()

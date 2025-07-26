@@ -19,6 +19,7 @@ import flixel.sound.FlxSound;
 import flixel.system.FlxAssets.FlxSoundAsset;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxTimer;
+import flixel.math.FlxRandom;
 
 import sys.thread.Thread;
 
@@ -51,7 +52,6 @@ class RelaxSubState extends MusicBeatSubstate
 	private var beatTimer:Float = 0;
 	private var defaultZoom:Float = 1.0;
 	private var zoomIntensity:Float = 0.05;
-	public var enableBpmZoom:Bool = true;
 
 	var maskRadius:Float = 150;
 	var circleMask:Shape;
@@ -66,9 +66,6 @@ class RelaxSubState extends MusicBeatSubstate
 
 	var transitionTime:Float = 0.5;
 	var isTransitioning:Bool = false;
-	
-	public var enableRecordRotation:Bool = true;
-	public var bgBlur:Bool = false;
 	
 	public var controlButtons:ControlButtons;
 	public var topButtons:TopButtons;
@@ -85,6 +82,13 @@ class RelaxSubState extends MusicBeatSubstate
 	var Sound2:FlxSound = new FlxSound();
 	
 	var DebugText:FlxText;
+	
+	//options var
+	public var enableBpmZoom:Bool = true; //启用唱片根据bpm zoom
+	public var enableRecordRotation:Bool = true; //启用唱片旋转
+	public var bgBlur:Bool = false; //启用背景高斯模糊
+	public var NextSongs:String = "Next" //播放下一个歌曲的方式 ["Next", "Restart", "Random"]
+	
 
 	public function new()
 	{
@@ -95,7 +99,7 @@ class RelaxSubState extends MusicBeatSubstate
 	
 	public function inspectFile(NowInfo:SongInfo):Array<Dynamic>{
 	    var result:Array<Dynamic> = [];
-	    var error:String = "";
+	    var error:String = " ";
 	    if (NowInfo.sound != null && NowInfo.sound.length > 0){
 	        for (i in NowInfo.sound){
 	            if (!FileSystem.exists(i)){  //以防万一如果有一个歌曲不存在就终止加载
@@ -121,7 +125,7 @@ class RelaxSubState extends MusicBeatSubstate
 	    }
 	    
 	    result = [true, ""];
-	    if (error != "") result = [false, error];
+	    if (error != " ") result = [false, error];
 	    
 	    return result;
 	}
@@ -161,7 +165,16 @@ class RelaxSubState extends MusicBeatSubstate
 			FlxG.sound.playMusic(songInfo.sound[0], 1);
 			
 			FlxG.sound.music.onComplete = () -> {
-				nextSong();
+			    switch(NextSongs){
+			        case 'Next':
+			            nextSong();
+			        case 'Restart':
+			            FlxG.sound.resume();
+			        case 'Random'
+			            var randomNum:Int = FlxRandom.int(0, SongsArray.list.length - 1);
+			            loadSongs(SongsArray.list[randomNum]);
+			            currentSongIndex = randomNum;
+			    }
 			};
 			
 			if (songInfoDisplay.songLengthText != null) {
@@ -1002,8 +1015,13 @@ class RelaxSubState extends MusicBeatSubstate
     	    
     	    if(data[1] >= SongsArray.list.length){
     	        data[1] = SongsArray.list.length - 1;
+    	        pendingSongIndex = 0;
+    	    }else{
+    	        pendingSongIndex = data[1] + 1;
     	    }
     	    nowChoose = data;
+    	    currentSongIndex = data[1];
+    	    
     	    loadSongs(SongsArray.list[data[1]]);
 	    }
 	}

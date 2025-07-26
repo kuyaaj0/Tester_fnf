@@ -15,12 +15,13 @@ class OptionWindow extends FlxSpriteGroup
     public var BackendRect:FlxSprite;
     
     public function new(){
-        BackendRect = new Rect(20, 60, 1240, 660, 20, 20, 0xFF24232C);
+        BackendRect = new Rect(0, 60, 1280, 660, 20, 20, 0xFF24232C);
         BackendRect.alpha = 0;
         add(BackendRect);
     }
     
     public function update(elapsed:Float){
+        super.update(elapsed);
         BackendRect.alpha = FlxMath.lerp(BackendRect.alpha, Hidding ? 0 : 0.5, 2);
     }
 }
