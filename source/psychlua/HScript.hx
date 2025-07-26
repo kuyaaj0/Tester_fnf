@@ -218,8 +218,15 @@ class HScript {
 			// set('StringTools', StringTools);
 			#if flxanimate
 			set('FlxAnimate', FlxAnimate);
-			set('ScriptState', states.scripts.ScriptState);
 			#end
+
+			//scriptedclass
+			set('ScriptedSprite', psychlua.scriptclasses.ScriptedSprite);
+			set('ScriptedGroup', psychlua.scriptclasses.ScriptedGroup);
+			set('ScriptedSpriteGroup', psychlua.scriptclasses.ScriptedSpriteGroup);
+			set('ScriptedState', psychlua.scriptclasses.ScriptedState);
+			set('ScriptedSubstate', psychlua.scriptclasses.ScriptedSubstate);
+
 			if(parent is MusicBeatState) {
 				set('setVar', function(name:String, value:Dynamic)
 				{
