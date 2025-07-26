@@ -11,13 +11,13 @@ class BoolType extends FlxSpriteGroup
     
     var helpBool:Bool;
 
-    public function new(X:Int = 0, Y:Int = 0, lable:String = 'test'){
-        this.label = label;
+    public function new(X:Int = 0, Y:Int = 0, lables:String = 'test'){
+        label = labels;
         
         background = new Rect(X, Y, 300, 150, 20, 20, 0xFF403E4E);
         add(background);
         
-        labelText = new FlxText(X + 5, Y + 5, 295, Language.get(label, 'relax'));
+        labelText = new FlxText(X + 5, Y + 5, 295, Language.get(labels, 'relax'));
         labelText.autoSize = true;
         labelText.setFormat(Paths.font("montserrat.ttf"), 20, FlxColor.WHITE, LEFT);
         add(labelText);
@@ -40,7 +40,7 @@ class BoolType extends FlxSpriteGroup
             saveY = FlxG.mouse.y;
         }
         
-        if(FlxG.mouse.Pressed && canPress){
+        if(FlxG.mouse.pressed && canPress){
             if((saveX < FlxG.mouse.x - 5 || saveX > FlxG.mouse.x + 5) ||
               (saveY < FlxG.mouse.y - 5 || saveY > FlxG.mouse.y + 5)){
                 canPress = false;

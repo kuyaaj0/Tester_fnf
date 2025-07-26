@@ -12,7 +12,7 @@ class ArrayType extends FlxSpriteGroup
     var isPressed:Bool = false;
     var canPress:Bool = true;
 
-    public function new(X:Int = 0, Y:Int = 0, lables:String = 'test', Assistant:Array<String>){
+    public function new(X:Int = 0, Y:Int = 0, labels:String = 'test', Assistant:Array<String>){
         super(X, Y);
         
         helpArray = Assistant;

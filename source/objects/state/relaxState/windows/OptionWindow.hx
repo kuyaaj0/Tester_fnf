@@ -19,7 +19,7 @@ class OptionWindow extends FlxSpriteGroup
         BackendRect.alpha = 0;
         add(BackendRect);
         
-        optionButton =new OptionButton();
+        optionButton =new OptionButton(0, 65);
         for (i in optionButton.members){
 		    i.cameras = [RelaxSubState.instance.camOption];
 		}
