@@ -170,7 +170,7 @@ class RelaxSubState extends MusicBeatSubstate
 			            nextSong();
 			        case 'Restart':
 			            FlxG.sound.resume();
-			        case 'Random'
+			        case 'Random':
 			            var randomNum:Int = FlxRandom.int(0, SongsArray.list.length - 1);
 			            loadSongs(SongsArray.list[randomNum]);
 			            currentSongIndex = randomNum;
