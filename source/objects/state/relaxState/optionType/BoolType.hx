@@ -33,7 +33,8 @@ class BoolType extends FlxSpriteGroup
     var saveX = 0;
     var saveY = 0;
     
-    public function update(elapsed:Float){
+    override public function update(elapsed:Float){
+        super.update(elapsed);
         if(FlxG.mouse.justPressed){
             saveX = FlxG.mouse.x;
             saveY = FlxG.mouse.y;
