@@ -21,7 +21,7 @@ class ArrayType extends FlxSpriteGroup
         background = new Rect(X, Y, 300, 150, 20, 20, 0xFF403E4E);
         add(background);
         
-        labelText = new FlxText(X + 5, Y + 5, 295, Language.get(label, 'relax'););
+        labelText = new FlxText(X + 5, Y + 5, 295, Language.get(label, 'relax'));
         labelText.autoSize = true;
         labelText.setFormat(Paths.font("montserrat.ttf"), 20, FlxColor.WHITE, LEFT);
         add(labelText);
