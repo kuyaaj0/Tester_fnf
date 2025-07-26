@@ -21,7 +21,7 @@ class OptionWindow extends FlxSpriteGroup
         
         optionButton =new OptionButton();
         for (i in optionButton.members){
-		    i.cameras = [camOption];
+		    i.cameras = [RelaxSubState.instance.camOption];
 		}
 		add(optionButton);
     }
