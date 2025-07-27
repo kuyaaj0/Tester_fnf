@@ -20,19 +20,18 @@ class FloatType extends FlxSpriteGroup
         super(X * 355, Y * 155);
         
         label = labels;
-        
-        background = new Rect(X * 355, Y * 155, 350, 150, 20, 20, 0xFF403E4E);
-        add(background);
-        
-        labelText = new FlxText(X * 355 + 10, Y * 155 + 10, 295, Language.get(labels, 'relax'));
-        labelText.autoSize = true;
-        labelText.setFormat(Paths.font("montserrat.ttf"), 30, FlxColor.WHITE, LEFT);
-        add(labelText);
-        
         helpFloat = Reflect.getProperty(ClientPrefs.data, label);
         helpFloat = Math.max(min, Math.min(max, helpFloat));
         
-        nowChoose = new FlxText(labelText.x, 130 + Y * 135, 295, Reflect.getProperty(ClientPrefs.data, label));
+        background = new Rect(X * 177.5, Y * 77.5, 350, 150, 20, 20, 0xFF403E4E);
+        add(background);
+        
+        labelText = new FlxText(background.x + 10, background.y + 10, 295, Language.get(labels, 'relax'));
+        labelText.autoSize = true;
+        labelText.setFormat(Paths.font("montserrat.ttf"), 28, FlxColor.WHITE, LEFT);
+        add(labelText);
+        
+        nowChoose = new FlxText(labelText.x, 110 + Y * 67.5, 295, Reflect.getProperty(ClientPrefs.data, label));
         nowChoose.autoSize = true;
         nowChoose.setFormat(Paths.font("montserrat.ttf"), 25, FlxColor.WHITE, LEFT);
         add(nowChoose);
