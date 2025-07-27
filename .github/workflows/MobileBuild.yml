@@ -44,7 +44,7 @@ jobs:
         with:
           key: cache-build-android
           path: |
-            .haxelib/
+            ~/haxelib
             export/release/Android/haxe/
             export/release/Android/obj/
           restore-keys: |
@@ -128,7 +128,7 @@ jobs:
         with:
           key: cache-build-iOS
           path: |
-            .haxelib/
+            ~/haxelib
             export/release/iOS/haxe/
             export/release/iOS/obj/
           restore-keys: |
