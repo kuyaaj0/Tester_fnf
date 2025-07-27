@@ -46,7 +46,7 @@ jobs:
             echo "Updating all dependencies..."
             haxelib install hmm 
             haxelib run hmm reinstall -f
-          elif [ -n "${{ inputs.dependencies_to_update }}" ]; then
+          elif [ -n "${{ inputs.dependencies_to_update }}" ] && [ "${{ github.event.inputs.dependencies_to_update }}" != "ios" ] && [ "${{ github.event.inputs.dependencies_to_update }}" != "android" ]; then
             echo "Updating specified dependencies: ${{ inputs.dependencies_to_update }}"
             haxelib install hmm
             haxelib run hmm reinstall $(echo "${{ inputs.dependencies_to_update }}" | tr -d ' ')
