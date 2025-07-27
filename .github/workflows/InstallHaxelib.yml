@@ -26,7 +26,7 @@ jobs:
           # not caching the bin folder to prevent asset duplication and stuff like that
           key: cache-install-Haxelib
           path: |
-            ./haxelib
+            .haxelib/
         
       - name: Install Libraries
         run: |
@@ -36,7 +36,7 @@ jobs:
 
       - name: Make Haxelib Zip
         run: |
-          zip -r /Users/runner/haxelib.zip ./haxelib
+          zip -r /Users/runner/haxelib.zip .haxelib/
 
       - name: Upload Haxelib
         uses: actions/upload-artifact@main
@@ -69,4 +69,4 @@ jobs:
         with:
           key: cache-install-Haxelib
           path: |
-            ./haxelib
+            .haxelib/
