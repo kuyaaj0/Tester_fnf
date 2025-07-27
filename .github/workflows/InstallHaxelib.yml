@@ -2,10 +2,22 @@ name: InstallHaxelib
 
 on:
   workflow_dispatch:
+    inputs:
+      dependencies_to_update:
+        description: '输入 "all" 更新所有haxelib, 或指定库名 (e.g. "lime,openfl")不输入即不给haxelib做任何更新'
+        required: false
+        type: string
+        default: ''
   workflow_call:
+    inputs:
+      dependencies_to_update:
+        description: '输入 "all" 更新所有haxelib, 或指定库名 (e.g. "lime,openfl")不输入即不给haxelib做任何更新'
+        required: false
+        type: string
+        default: ''
 
 env:
-  HAXE_VERSION: 4.3.6
+  HAXE_VERSION: 4.3.7
 
 jobs:
   build:
@@ -23,7 +35,6 @@ jobs:
       - name: cache install
         uses: actions/cache/restore@v4
         with:
-          # not caching the bin folder to prevent asset duplication and stuff like that
           key: cache-install-Haxelib
           path: |
             .haxelib/
@@ -31,8 +42,19 @@ jobs:
       - name: Install Libraries
         run: |
           haxelib setup ~/haxelib
-          haxelib install hmm 
-          haxelib run hmm install
+          if [ "${{ inputs.dependencies_to_update }}" == "all" ]; then
+            echo "Updating all dependencies..."
+            haxelib install hmm 
+            haxelib run hmm reinstall -f
+          elif [ -n "${{ inputs.dependencies_to_update }}" ]; then
+            echo "Updating specified dependencies: ${{ inputs.dependencies_to_update }}"
+            haxelib install hmm
+            haxelib run hmm reinstall $(echo "${{ inputs.dependencies_to_update }}" | tr -d ' ')
+          else
+            echo "No dependencies specified, only installing hmm"
+            haxelib install hmm 
+            haxelib run hmm install
+          fi
 
       - name: Make Haxelib Zip
         run: |
