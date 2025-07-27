@@ -954,7 +954,7 @@ class RelaxSubState extends MusicBeatSubstate
 			recordPicture.angle += elapsed * 20;
 			if (recordPicture.angle >= 360) recordPicture.angle -= 360;
 		}else if(!ClientPrefs.data.enableRecordRotation){
-		    recordPicture.angle = FlxMath.lerp(recordPicture.angle, 0, 10);
+		    recordPicture.angle = FlxMath.lerp(recordPicture.angle, 0, 1);
 		}
 
 		if (FlxG.keys.justPressed.B)
