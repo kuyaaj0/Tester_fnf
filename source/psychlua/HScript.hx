@@ -41,7 +41,7 @@ class HScript {
 	var interp:Interp;
 	var parser:Parser;
 
-	public function new(file:String, ?parent:Dynamic, ?manualRun:Bool = false, ?experimental:Bool = false) {
+	public function new(file:String, ?parent:Dynamic, ?manualRun:Bool = false, ?experimental:Bool = true) {
 		active = true;
 
 		filePath = file;
