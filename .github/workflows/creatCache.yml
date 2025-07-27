@@ -21,14 +21,12 @@ jobs:
           haxe-version: ${{ env.HAXE_VERSION }}
 
       - name: cache install
-        uses: actions/cache@v3
+        uses: actions/cache/restore@v4
         with:
           # not caching the bin folder to prevent asset duplication and stuff like that
           key: cache-build-android
           path: |
             ~/haxelib
-          restore-keys: |
-            cache-build-android
         
       - name: Install Libraries
         run: |
@@ -55,7 +53,7 @@ jobs:
               }
             }
       - name: Uploading new cache
-        uses: actions/cache@v3
+        uses: actions/cache/save@v4
         with:
           key: cache-build-android
           path: |
