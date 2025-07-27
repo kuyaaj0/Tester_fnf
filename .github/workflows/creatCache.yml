@@ -24,7 +24,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           # not caching the bin folder to prevent asset duplication and stuff like that
-          key: cache-build-android
+          key: cache-build-Android
           path: |
             ~/haxelib
         
@@ -42,7 +42,7 @@ jobs:
               repo: context.repo.repo,
             })
             for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache-build-android") {
+              if (cache.key == "cache-build-Android") {
                 console.log('Clearing ' + cache.key + '...')
                 await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
@@ -55,6 +55,6 @@ jobs:
       - name: Uploading new cache
         uses: actions/cache/save@v4
         with:
-          key: cache-build-android
+          key: cache-build-Android
           path: |
             ~/haxelib
