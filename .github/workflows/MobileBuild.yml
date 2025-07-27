@@ -31,15 +31,14 @@ jobs:
           haxe-version: 4.3.7
           
       - name: List available caches
-          uses: actions/github-script@v6
-          with:
-            script: |
-              const caches = await github.rest.actions.getActionsCacheList({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-              });
-              console.log("Available caches:", caches.data.actions_caches);
-              
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const caches = await github.rest.actions.getActionsCacheList({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            console.log("Available caches:", caches.data.actions_caches);
       - name: cache Build
         uses: actions/cache@v4
         with:
