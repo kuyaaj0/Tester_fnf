@@ -16,7 +16,7 @@ class IntType extends FlxSpriteGroup
     var minValue:Int;
 
     public function new(X:Int = 0, Y:Int = 0, labels:String = 'test', max:Int, min:Int){
-        super(X * 355, Y * 155);
+        super(X * 177.5, Y * 77.5);
         
         label = labels;
         
