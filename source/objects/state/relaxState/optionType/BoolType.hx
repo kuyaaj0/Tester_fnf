@@ -5,13 +5,14 @@ class BoolType extends FlxSpriteGroup
     var background:FlxSprite;
     var labelText:FlxText;
     var nowChoose:FlxText;
+    var label:String;
     
     var isPressed:Bool = false;
     var canPress:Bool = true;
     
     var helpBool:Bool;
 
-    public function new(X:Int = 0, Y:Int = 0, lables:String = 'test'){
+    public function new(X:Int = 0, Y:Int = 0, labels:String = 'test'){
         super(X * 355, Y * 155);
         
         label = labels;

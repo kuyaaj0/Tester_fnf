@@ -4,7 +4,7 @@ import objects.state.relaxState.optionType.*;
 
 class OptionButton extends FlxSpriteGroup
 {
-    public var test:ArrayType;
+    public var test:Dynamic;
     var optionButtons:Array<Dynamic> = [];
     
     public function new(X:Float, Y:Float = 60){
