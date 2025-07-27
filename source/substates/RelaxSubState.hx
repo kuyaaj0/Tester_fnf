@@ -83,12 +83,12 @@ class RelaxSubState extends MusicBeatSubstate
 	var DebugText:FlxText;
 	
 	//options var
-	public var enableBpmZoom:Bool = true; //启用唱片根据bpm zoom
-	public var enableRecordRotation:Bool = true; //启用唱片旋转
-	public var bgBlur:Bool = false; //启用背景高斯模糊
-	public var AudioSymmetry:Bool = true; //启用可视化中间对称
-	public var AudioNumber:Int = 5; //解析器的数量
-	public var RelaxAudioDisplayQuality:Int = 5; //解析器质量（仅用于RelaxState)
+	//public var enableBpmZoom:Bool = true; //启用唱片根据bpm zoom
+	//public var enableRecordRotation:Bool = true; //启用唱片旋转
+	public var RelaxBgBlur:Bool = false; //启用背景高斯模糊
+	//public var RelaxAudioSymmetry:Bool = true; //启用可视化中间对称
+	//public var RelaxAudioNumber:Int = 5; //解析器的数量
+	//public var RelaxAudioDisplayQuality:Int = 5; //解析器质量（仅用于RelaxState)
 	//public var NextSongs:String = "Next"; //播放下一个歌曲的方式 ["Next", "Restart", "Random"]
 	
 	public function new()
@@ -313,7 +313,7 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 
 		audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
-									  500, 100, 46, 4, FlxColor.WHITE, 150, AudioSymmetry, AudioNumber);
+									  500, 100, 46, 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
 		audio.alpha = 0;
 		audio.cameras = [camBack];
 		add(audio);
@@ -354,7 +354,8 @@ class RelaxSubState extends MusicBeatSubstate
 	}
 		
 	private function applyBlurFilter():Void {
-		if (backendPicture != null && bgBlur) {
+		if (backendPicture != null && ClientPrefs.data.RelaxBgBlur && RelaxBgBlur != ClientPrefs.data.RelaxBgBlur) {
+		    RelaxBgBlur = ClientPrefs.data.RelaxBgBlur;
 			var blurFilter:BlurFilter = new BlurFilter(10, 10, 1);
 			var filterFrames = FlxFilterFrames.fromFrames(backendPicture.frames, 
 														Std.int(backendPicture.width), 
@@ -781,6 +782,8 @@ class RelaxSubState extends MusicBeatSubstate
 	
 	var lastLyrics:String = '';
 	
+	var saveTrue:Bool = false;
+	
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -818,7 +821,7 @@ class RelaxSubState extends MusicBeatSubstate
 			controlButtons.MiddleButton.height
 		);
 		
-		if (enableBpmZoom && FlxG.sound.music != null && FlxG.sound.music.playing) {
+		if (ClientPrefs.data.enableBpmZoom && FlxG.sound.music != null && FlxG.sound.music.playing) {
 			beatTimer += elapsed;
 			
 			if (beatTimer >= beatTime) {
@@ -946,16 +949,18 @@ class RelaxSubState extends MusicBeatSubstate
 			}
 		}
 		
-		if (recordPicture != null && !isTransitioning && enableRecordRotation)
+		if (recordPicture != null && !isTransitioning && ClientPrefs.data.enableRecordRotation)
 		{
 			recordPicture.angle += elapsed * 20;
 			if (recordPicture.angle >= 360) recordPicture.angle -= 360;
+		}else if(!ClientPrefs.data.enableRecordRotation){
+		    recordPicture.angle = FlxMath.lerp(recordPicture.angle, 0, 10);
 		}
 
 		if (FlxG.keys.justPressed.B)
 		{
-			enableBpmZoom = !enableBpmZoom;
-			if (!enableBpmZoom) {
+			ClientPrefs.data.enableBpmZoom = !ClientPrefs.data.enableBpmZoom;
+			if (!ClientPrefs.data.enableBpmZoom) {
 				camPic.zoom = defaultZoom;
 			}
 		}
@@ -968,6 +973,25 @@ class RelaxSubState extends MusicBeatSubstate
 		    ClientPrefs.saveSettings();
 			close();
 		}
+		
+		if (optionWindow.Hidding != saveTrue){
+	        saveTrue = optionWindow.Hidding;
+	        if(optionWindow.Hidding)
+	            updateOptions();
+	    }
+	}
+	
+	function updateOptions(){
+	    audio.analyzer.fftN = 256 * ClientPrefs.data.RelaxAudioDisplayQuality;
+	    
+	    if (audio.Number != ClientPrefs.data.RelaxAudioNumber ||
+	       audio.symmetry != ClientPrefs.data.RelaxAudioSymmetry){
+	        audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
+									  500, 100, 46, 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
+	    }
+	    
+	    
+	    applyBlurFilter();
 	}
 
 	var beatTimess:Int = 0;

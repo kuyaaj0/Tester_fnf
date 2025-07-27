@@ -35,6 +35,6 @@ class RelaxLang
 		if (!FileSystem.isDirectory(path)) directoryPath.push(Paths.getPath('language') + '/' + 'English' + minorPath);
 		else directoryPath.push(path);
 
-		Language.setupData(MainLang, directoryPath);
+		Language.setupData(RelaxLang, directoryPath);
 	}
 }

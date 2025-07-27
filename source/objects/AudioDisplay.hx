@@ -124,7 +124,7 @@ class AudioDisplay extends FlxSpriteGroup
 
 class AudioCircleDisplay extends FlxSpriteGroup
 {
-	var analyzer:SpectralAnalyzer;
+	public var analyzer:SpectralAnalyzer;
 
 	public var snd:FlxSound;
 
@@ -133,8 +133,8 @@ class AudioCircleDisplay extends FlxSpriteGroup
 
 	public var Radius:Float = 0;
 	
-	var symmetry:Bool = true;
-	var Number:Int = 1;
+	public var symmetry:Bool = true;
+	public var Number:Int = 1;
 	
 	public var Rotate:Bool = false;
 	public var RotateSpeed:Float = 1;

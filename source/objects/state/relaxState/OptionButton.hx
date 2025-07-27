@@ -13,8 +13,24 @@ class OptionButton extends FlxSpriteGroup
         
         test = new ArrayType(0, 0, 'NextSongs', ['Next', 'Restart', 'Random']);
         pushOption(test);
+        //////
+        test = new BoolType(1, 0, 'enableRecordRotation');
+        pushOption(test);
         
+        test = new BoolType(1, 1, 'enableBpmZoom');
+        pushOption(test);
+        //////
+        test = new IntType(2, 0, 'RelaxAudioDisplayQuality', 1, 10);
+        pushOption(test);
         
+        test = new IntType(2, 1, 'RelaxAudioNumber', 1, 8);
+        pushOption(test);
+        
+        test = new BoolType(2, 2, 'RelaxAudioSymmetry');
+        pushOption(test);
+        //////
+        test = new BoolType(3, 0, 'RelaxBgBlur');
+        pushOption(test);
         
         addOption();
     }

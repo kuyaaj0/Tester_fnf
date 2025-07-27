@@ -186,6 +186,14 @@ import states.TitleState;
 	
 	/////RelaxState Options\\\\\
 	public var NextSongs:String = 'Next';
+	public var RelaxAudioDisplayQuality:Int = 2;
+	public var RelaxAudioNumber:Int = 3;
+	public var RelaxAudioSymmetry:Bool = true;
+	
+	public var enableRecordRotation:Bool = true;
+	public var enableBpmZoom:Bool = true;
+	
+	public var RelaxBgBlur:Bool = false;
 }
 
 class ClientPrefs
