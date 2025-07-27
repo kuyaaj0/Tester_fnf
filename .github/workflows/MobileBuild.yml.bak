@@ -6,19 +6,12 @@ on:
     branches: [ main ]
     
   workflow_dispatch:
-    inputs:
-      dependencies_to_update:
-        description: '输入 "all" 更新所有haxelib, 也可以输入单个或多个haxelib单独更新他们(e.g. "lime,openfl,flixel"),不输入即不给haxelib做任何更新'
-        required: false
-        default: ''
-
 jobs:
   installHaxelib:
-    uses: ./.github/workflows/InstallHaxelib.yml
+     uses: ./.github/workflows/InstallHaxelib.yml
      
   Android:
     runs-on: macos-14
-    needs: installHaxelib
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -31,6 +24,7 @@ jobs:
       - name: cache Build
         uses: actions/cache@v3
         with:
+          # not caching the bin folder to prevent asset duplication and stuff like that
           key: cache-build-Android
           path: |
             .haxelib/
@@ -42,17 +36,8 @@ jobs:
       - name: Install Libraries
         run: |
           haxelib setup ~/haxelib
-          if [ "${{ github.event.inputs.dependencies_to_update }}" == "all" ]; then
-            echo "Installing all dependencies..."
-            haxelib install hmm 
-            haxelib run hmm reinstall -f
-          elif [ -n "${{ github.event.inputs.dependencies_to_update }}" ]; then
-            echo "Updating specified dependencies: ${{ github.event.inputs.dependencies_to_update }}"
-            haxelib install hmm
-            haxelib run hmm reinstall $(echo "${{ github.event.inputs.dependencies_to_update }}" | tr -d ' ')
-          else
-            echo "No dependencies specified, only setting up haxelib"
-          fi
+          haxelib install hmm 
+          haxelib run hmm install
           
       - name: Configure Android
         run: |
@@ -93,6 +78,7 @@ jobs:
       - name: Uploading new cache
         uses: actions/cache@v3
         with:
+          # caching again since for some reason it doesnt work with the first post cache shit
           key: cache-build-Android
           path: |
             .haxelib/
@@ -103,7 +89,6 @@ jobs:
             
   iOS:
     runs-on: macos-15
-    needs: installHaxelib
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -116,6 +101,7 @@ jobs:
       - name: cache Build
         uses: actions/cache@v3
         with:
+          # not caching the bin folder to prevent asset duplication and stuff like that
           key: cache-build-iOS
           path: |
             .haxelib/
@@ -127,17 +113,8 @@ jobs:
       - name: Install Libraries
         run: |
           haxelib setup ~/haxelib
-          if [ "${{ github.event.inputs.dependencies_to_update }}" == "all" ]; then
-            echo "Installing all dependencies..."
-            haxelib install hmm 
-            haxelib run hmm reinstall -f
-          elif [ -n "${{ github.event.inputs.dependencies_to_update }}" ]; then
-            echo "Updating specified dependencies: ${{ github.event.inputs.dependencies_to_update }}"
-            haxelib install hmm
-            haxelib run hmm reinstall $(echo "${{ github.event.inputs.dependencies_to_update }}" | tr -d ' ')
-          else
-            echo "No dependencies specified, only setting up haxelib"
-          fi
+          haxelib install hmm 
+          haxelib run hmm install
 
       - name: Compile
         run: haxelib run lime build ios -nosign
@@ -179,6 +156,7 @@ jobs:
       - name: Uploading new cache
         uses: actions/cache@v3
         with:
+          # caching again since for some reason it doesnt work with the first post cache shit
           key: cache-build-iOS
           path: |
             .haxelib/
@@ -186,3 +164,7 @@ jobs:
             export/release/iOS/obj/
           restore-keys: |
             cache-build-iOS
+
+      
+      
+      
