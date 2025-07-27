@@ -40,15 +40,13 @@ jobs:
             });
             console.log("Available caches:", caches.data.actions_caches);
       - name: cache Build
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
-          key: cache-build-android
+          key: cache-build-Android
           path: |
             ~/haxelib
             export/release/Android/haxe/
             export/release/Android/obj/
-          restore-keys: |
-            cache-build-android
             
       - name: Install Libraries
         run: |
@@ -91,7 +89,7 @@ jobs:
               repo: context.repo.repo,
             })
             for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache-build-android") {
+              if (cache.key == "cache-build-Android") {
                 console.log('Clearing ' + cache.key + '...')
                 await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
@@ -102,15 +100,15 @@ jobs:
               }
             }
       - name: Uploading new cache
-        uses: actions/cache@v4
+        uses: actions/cache/save@v4
         with:
-          key: cache-build-android
+          key: cache-build-Android
           path: |
-            .haxelib/
+            ~haxelib/
             export/release/Android/haxe/
             export/release/Android/obj/
           restore-keys: |
-            cache-build-android
+            cache-build-Android
             
   iOS:
     runs-on: macos-15
@@ -124,15 +122,13 @@ jobs:
           haxe-version: 4.3.7
 
       - name: cache Build
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           key: cache-build-iOS
           path: |
             ~/haxelib
             export/release/iOS/haxe/
             export/release/iOS/obj/
-          restore-keys: |
-            cache-build-iOS
             
       - name: Install Libraries
         run: |
@@ -187,12 +183,10 @@ jobs:
               }
             }
       - name: Uploading new cache
-        uses: actions/cache@v4
+        uses: actions/cache/save@v4
         with:
           key: cache-build-iOS
           path: |
-            .haxelib/
+            ~haxelib/
             export/release/iOS/haxe/
             export/release/iOS/obj/
-          restore-keys: |
-            cache-build-iOS

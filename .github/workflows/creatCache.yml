@@ -58,6 +58,3 @@ jobs:
           key: cache-build-android
           path: |
             ~/haxelib
-          restore-keys: |
-            cache-build-android
-
