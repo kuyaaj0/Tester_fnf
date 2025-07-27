@@ -4,6 +4,7 @@ class FloatType extends FlxSpriteGroup
 {
     var background:FlxSprite;
     var labelText:FlxText;
+    var nowChoose:FlxText;
     var label:String;
     
     var isPressed:Bool = false;

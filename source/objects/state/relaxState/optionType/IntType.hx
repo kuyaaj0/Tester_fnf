@@ -4,17 +4,23 @@ class IntType extends FlxSpriteGroup
 {
     var background:FlxSprite;
     var labelText:FlxText;
+    var nowChoose:FlxText;
     var label:String;
     
     var isPressed:Bool = false;
     var canPress:Bool = true;
     
     var helpInt:Int;
+    
+    var maxValue:Int;
+    var minValue:Int;
 
-    public function new(X:Int = 0, Y:Int = 0, labels:String = 'test', max:Float, min:Float){
+    public function new(X:Int = 0, Y:Int = 0, labels:String = 'test', max:Int, min:Int){
         super(X * 355, Y * 155);
         
         label = labels;
+        maxValue = max;
+        minValue = min;
         
         background = new Rect(X * 355, Y * 155, 350, 150, 20, 20, 0xFF403E4E);
         add(background);
