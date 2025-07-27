@@ -26,6 +26,10 @@ import backend.relax.GetInit;
 import backend.relax.GetInit.SongLists;
 import backend.relax.GetInit.SongInfo;
 
+/*
+    这一大坨屎山代码出自MaoPou https://github.com/MaoPou
+*/
+
 class RelaxSubState extends MusicBeatSubstate
 {
     public static var instance:RelaxSubState;

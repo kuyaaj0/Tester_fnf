@@ -52,8 +52,6 @@ jobs:
             haxelib run hmm reinstall $(echo "${{ inputs.dependencies_to_update }}" | tr -d ' ')
           else
             echo "No dependencies specified, only installing hmm"
-            haxelib install hmm 
-            haxelib run hmm install
           fi
 
       - name: Make Haxelib Zip
