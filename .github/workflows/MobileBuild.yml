@@ -54,7 +54,7 @@ jobs:
       - name: Install Libraries
         run: |
           haxelib setup ~/haxelib
-          if [ "${{ github.event.inputs.dependencies_to_update }}" == "all" ]; then
+          if [ "${{ github.event.inputs.dependencies_to_update }}" == "all" ] || [ "${{ github.event.inputs.dependencies_to_update }}" == "android" ]; then
             echo "Installing all dependencies..."
             haxelib install hmm 
             haxelib run hmm reinstall -f
