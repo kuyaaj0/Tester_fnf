@@ -31,7 +31,7 @@ class IntType extends FlxSpriteGroup
         add(labelText);
         
         helpInt = Reflect.getProperty(ClientPrefs.data, label);
-        helpInt = Math.max(min, Math.min(max, helpInt));
+        helpInt = Std.int(Math.max(min, Math.min(max, helpInt)));
         
         nowChoose = new FlxText(labelText.x, 130 + Y * 135, 295, Reflect.getProperty(ClientPrefs.data, label));
         nowChoose.autoSize = true;
@@ -81,7 +81,7 @@ class IntType extends FlxSpriteGroup
             helpInt ++;
         }
         
-        helpInt = Math.max(minValue, Math.min(maxValue, helpInt));
+        helpInt = Std.int(Math.max(minValue, Math.min(maxValue, helpInt)));
         
         var text:String = '';
         
