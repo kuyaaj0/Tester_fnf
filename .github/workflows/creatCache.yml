@@ -26,7 +26,7 @@ jobs:
           # not caching the bin folder to prevent asset duplication and stuff like that
           key: cache-build-android
           path: |
-            .haxelib/
+            ~/haxelib
           restore-keys: |
             cache-build-android
         
