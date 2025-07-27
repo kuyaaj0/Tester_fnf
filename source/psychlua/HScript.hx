@@ -55,7 +55,7 @@ class HScript {
 		interp = new Interp();
 		parser = new Parser();
 		parser.allowTypes = parser.allowMetadata = parser.allowJSON = true;
-		parser.allowInterpolation = experimental;
+		parser.allowInterpolation = true;
 		preset(parent);
 
 		loadFile();
