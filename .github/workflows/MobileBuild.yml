@@ -1,5 +1,11 @@
-name: WindowsBuild
-on: workflow_dispatch
+name: MobileBuild
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    
+  workflow_dispatch:
 jobs:
   installHaxelib:
      uses: ./.github/workflows/InstallHaxelib.yml
