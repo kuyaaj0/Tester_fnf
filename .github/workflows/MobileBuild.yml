@@ -11,6 +11,9 @@ on:
         description: '输入 "all" 更新所有haxelib, 也可以输入单个或多个haxelib单独更新他们(e.g. "lime,openfl,flixel"),不输入即不给haxelib做任何更新'
         required: false
         default: ''
+        
+permissions:
+  actions: write
 
 jobs:
   installHaxelib:
@@ -28,7 +31,7 @@ jobs:
           haxe-version: 4.3.7
           
       - name: cache Build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: cache-build-Android
           path: |
@@ -90,7 +93,7 @@ jobs:
               }
             }
       - name: Uploading new cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: cache-build-Android
           path: |
@@ -112,7 +115,7 @@ jobs:
           haxe-version: 4.3.7
 
       - name: cache Build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: cache-build-iOS
           path: |
@@ -175,7 +178,7 @@ jobs:
               }
             }
       - name: Uploading new cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: cache-build-iOS
           path: |
