@@ -47,6 +47,7 @@ jobs:
             ~/haxelib
             export/release/Android/haxe/
             export/release/Android/obj/
+            ~/.gradle
             
       - name: Install Libraries
         run: |
@@ -104,11 +105,10 @@ jobs:
         with:
           key: cache-build-Android
           path: |
-            ~haxelib/
+            ~/haxelib
             export/release/Android/haxe/
             export/release/Android/obj/
-          restore-keys: |
-            cache-build-Android
+            ~/.gradle
             
   iOS:
     runs-on: macos-15
@@ -127,8 +127,8 @@ jobs:
           key: cache-build-iOS
           path: |
             ~/haxelib
-            export/release/iOS/haxe/
-            export/release/iOS/obj/
+            export/release/ios/haxe/
+            export/release/ios/obj/
             
       - name: Install Libraries
         run: |
@@ -188,5 +188,5 @@ jobs:
           key: cache-build-iOS
           path: |
             ~haxelib/
-            export/release/iOS/haxe/
-            export/release/iOS/obj/
+            export/release/ios/haxe/
+            export/release/ios/obj/
