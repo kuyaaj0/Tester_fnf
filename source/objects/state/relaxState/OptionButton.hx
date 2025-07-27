@@ -29,8 +29,6 @@ class OptionButton extends FlxSpriteGroup
         test = new BoolType(2, 2, 'RelaxAudioSymmetry');
         pushOption(test);
         //////
-        test = new BoolType(3, 0, 'RelaxBgBlur');
-        pushOption(test);
         
         addOption();
     }

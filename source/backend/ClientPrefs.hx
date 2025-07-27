@@ -192,8 +192,6 @@ import states.TitleState;
 	
 	public var enableRecordRotation:Bool = true;
 	public var enableBpmZoom:Bool = true;
-	
-	public var RelaxBgBlur:Bool = false;
 }
 
 class ClientPrefs

@@ -85,7 +85,6 @@ class RelaxSubState extends MusicBeatSubstate
 	//options var
 	//public var enableBpmZoom:Bool = true; //启用唱片根据bpm zoom
 	//public var enableRecordRotation:Bool = true; //启用唱片旋转
-	public var RelaxBgBlur:Bool = false; //启用背景高斯模糊
 	//public var RelaxAudioSymmetry:Bool = true; //启用可视化中间对称
 	//public var RelaxAudioNumber:Int = 5; //解析器的数量
 	//public var RelaxAudioDisplayQuality:Int = 5; //解析器质量（仅用于RelaxState)
@@ -203,7 +202,6 @@ class RelaxSubState extends MusicBeatSubstate
 		var recordImage:FlxGraphicAsset = (songInfo.record != null && songInfo.record.length > 0) ? songInfo.record[0] : null;
 		
 		createNewElements(backgroundImage, recordImage);
-		applyBlurFilter();
 		
 		updateSongInfoDisplay(songInfo);
 		
@@ -352,19 +350,7 @@ class RelaxSubState extends MusicBeatSubstate
 			controlButtons.MiddleButton.height
 		);
 	}
-		
-	private function applyBlurFilter():Void {
-		if (backendPicture != null && ClientPrefs.data.RelaxBgBlur && RelaxBgBlur != ClientPrefs.data.RelaxBgBlur) {
-		    RelaxBgBlur = ClientPrefs.data.RelaxBgBlur;
-			var blurFilter:BlurFilter = new BlurFilter(10, 10, 1);
-			var filterFrames = FlxFilterFrames.fromFrames(backendPicture.frames, 
-														Std.int(backendPicture.width), 
-														Std.int(backendPicture.height), 
-														[blurFilter]);
-			filterFrames.applyToSprite(backendPicture, false, true);
-		}
-	}
-	
+
 	private function fadeInNewElements(onComplete:Void->Void):Void {
 		var tweenCount = 0;
 		var totalTweens = 0;
@@ -986,12 +972,12 @@ class RelaxSubState extends MusicBeatSubstate
 	    
 	    if (audio.Number != ClientPrefs.data.RelaxAudioNumber ||
 	       audio.symmetry != ClientPrefs.data.RelaxAudioSymmetry){
+	       
+	        audio.destroy();
+			audio = null;
 	        audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
 									  500, 100, 46, 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
 	    }
-	    
-	    
-	    applyBlurFilter();
 	}
 
 	var beatTimess:Int = 0;
