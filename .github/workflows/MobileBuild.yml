@@ -21,184 +21,183 @@ jobs:
     with:
       dependencies_to_update: ${{ github.event.inputs.dependencies_to_update }}
       
-  Build:
-    steps:
-    Android:
-      runs-on: macos-14
-      steps:
-        - name: Checkout
-          uses: actions/checkout@main
 
-        - name: Setup Haxe
-          uses: krdlab/setup-haxe@master
-          with:
-            haxe-version: 4.3.7
+  Android:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.7
               
-        - name: List available caches
-          uses: actions/github-script@v6
-          with:
-            script: |
-              const caches = await github.rest.actions.getActionsCacheList({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-              });
-              console.log("Available caches:", caches.data.actions_caches);
-        - name: cache Build
-          uses: actions/cache/restore@v4
-          with:
-            key: cache-build-Android
-            path: |
-              .haxelib/
-              export/release/android/haxe/
-              export/release/android/obj/
-              ~/.gradle
+      - name: List available caches
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const caches = await github.rest.actions.getActionsCacheList({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            console.log("Available caches:", caches.data.actions_caches);
+      - name: cache Build
+        uses: actions/cache/restore@v4
+        with:
+          key: cache-build-Android
+          path: |
+            .haxelib/
+            export/release/android/haxe/
+            export/release/android/obj/
+            ~/.gradle
               
-        - name: Install Libraries
-          run: |
-            haxelib setup ~/haxelib
-            if [ "${{ github.event.inputs.dependencies_to_update }}" == "all" ]; then
-              echo "Installing all dependencies..."
-              haxelib install hmm 
-              haxelib run hmm reinstall -f
-            elif [ -n "${{ github.event.inputs.dependencies_to_update }}" ]; then
-              echo "Updating specified dependencies: ${{ github.event.inputs.dependencies_to_update }}"
-              haxelib install hmm
-              haxelib run hmm reinstall $(echo "${{ github.event.inputs.dependencies_to_update }}" | tr -d ' ')
-            else
-              echo "No dependencies specified, only setting up haxelib"
-            fi
+      - name: Install Libraries
+        run: |
+          haxelib setup ~/haxelib
+          if [ "${{ github.event.inputs.dependencies_to_update }}" == "all" ]; then
+            echo "Installing all dependencies..."
+            haxelib install hmm 
+            haxelib run hmm reinstall -f
+          elif [ -n "${{ github.event.inputs.dependencies_to_update }}" ]; then
+            echo "Updating specified dependencies: ${{ github.event.inputs.dependencies_to_update }}"
+            haxelib install hmm
+            haxelib run hmm reinstall $(echo "${{ github.event.inputs.dependencies_to_update }}" | tr -d ' ')
+          else
+            echo "No dependencies specified, only setting up haxelib"
+          fi
             
-        - name: Configure Android
-          run: |
-            haxelib run lime config ANDROID_SDK $ANDROID_HOME
-            haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_LATEST_HOME
-            haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
-            haxelib run lime config ANDROID_SETUP true
-              
-        - name: Compile
-          run: haxelib run lime build android -ONLY_ARMV8
-          
-        - name: Upload Artifact
-          uses: actions/upload-artifact@main
-          with:
-            name: androidBuild
-            path: export/release/android/bin/app/build/outputs/apk/release/*.apk
-            if-no-files-found: error
-    
-        - name: Clearing already existing cache
-          uses: actions/github-script@v6
-          with:
-            script: |
-              const caches = await github.rest.actions.getActionsCacheList({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-              })
-              for (const cache of caches.data.actions_caches) {
-                if (cache.key == "cache-build-Android") {
-                  console.log('Clearing ' + cache.key + '...')
-                  await github.rest.actions.deleteActionsCacheById({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    cache_id: cache.id,
-                  })
-                  console.log("Cache cleared.")
-                }
-              }
-        - name: Uploading new cache
-          uses: actions/cache/save@v4
-          with:
-            key: cache-build-Android
-            path: |
-              .haxelib/
-              export/release/android/haxe/
-              export/release/android/obj/
-              ~/.gradle
-                
-    iOS:
-      runs-on: macos-15
-      steps:
-        - name: Checkout
-          uses: actions/checkout@main
-    
-        - name: Setup Haxe
-          uses: krdlab/setup-haxe@master
-          with:
-            haxe-version: 4.3.7
-    
-        - name: cache Build
-          uses: actions/cache/restore@v4
-          with:
-            key: cache-build-iOS
-            path: |
-              .haxelib/
-              ~/.haxe/cache/
-              ~/.hxcpp/
-              export/release/ios/haxe/
-              export/release/ios/obj/
-              bin/ios/obj/
-              bin/ios/haxe/
-                
-        - name: Install Libraries
-          run: |
-            haxelib setup ~/haxelib
-            if [ "${{ github.event.inputs.dependencies_to_update }}" == "all" ]; then
-              echo "Installing all dependencies..."
-              haxelib install hmm 
-              haxelib run hmm reinstall -f
-            elif [ -n "${{ github.event.inputs.dependencies_to_update }}" ]; then
-              echo "Updating specified dependencies: ${{ github.event.inputs.dependencies_to_update }}"
-              haxelib install hmm
-              haxelib run hmm reinstall $(echo "${{ github.event.inputs.dependencies_to_update }}" | tr -d ' ')
-            else
-              echo "No dependencies specified, only setting up haxelib"
-            fi
-    
-        - name: Compile
-          run: haxelib run lime build ios -nosign
+      - name: Configure Android
+        run: |
+          haxelib run lime config ANDROID_SDK $ANDROID_HOME
+          haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_LATEST_HOME
+          haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
+          haxelib run lime config ANDROID_SETUP true
+            
+      - name: Compile
+        run: haxelib run lime build android -ONLY_ARMV8
         
-        - name: Make IPA And iOS Zip
-          run: |
-            cd export/release/ios/build/Release-iphoneos
-            mkdir Payload
-            mv *.app Payload
-            zip -r NovaFlareEngine.ipa Payload
-            zip -r iOSBuild.zip NovaFlareEngine.ipa
+      - name: Upload Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: androidBuild
+          path: export/release/android/bin/app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
     
-        - name: Upload Artifact
-          uses: actions/upload-artifact@main
-          with:
-            name: iOSBuild
-            path: export/release/ios/build/Release-iphoneos/*.ipa
-            if-no-files-found: error
-    
-        - name: Clearing already existing cache
-          uses: actions/github-script@v6
-          with:
-            script: |
-              const caches = await github.rest.actions.getActionsCacheList({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-              })
-              for (const cache of caches.data.actions_caches) {
-                if (cache.key == "cache-build-iOS") {
-                  console.log('Clearing ' + cache.key + '...')
-                  await github.rest.actions.deleteActionsCacheById({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    cache_id: cache.id,
-                  })
-                  console.log("Cache cleared.")
-                }
+      - name: Clearing already existing cache
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const caches = await github.rest.actions.getActionsCacheList({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            for (const cache of caches.data.actions_caches) {
+              if (cache.key == "cache-build-Android") {
+                console.log('Clearing ' + cache.key + '...')
+                await github.rest.actions.deleteActionsCacheById({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  cache_id: cache.id,
+                })
+                console.log("Cache cleared.")
               }
-        - name: Save build cache
-          uses: actions/cache/save@v4
-          with:
-            key: cache-build-iOS-${{ hashFiles('**/project.xml') }}  # 根据项目文件变化触发缓存失效
-            path: |
-              .haxelib/
-              ~/.haxe/cache/
-              ~/.hxcpp/
-              export/release/ios/haxe/
-              export/release/ios/obj/
-              bin/ios/obj/
-              bin/ios/haxe/
+            }
+      - name: Uploading new cache
+        uses: actions/cache/save@v4
+        with:
+          key: cache-build-Android
+          path: |
+            .haxelib/
+            export/release/android/haxe/
+            export/release/android/obj/
+            ~/.gradle
+          
+  iOS:
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+  
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+        haxe-version: 4.3.7
+   
+      - name: cache Build
+        uses: actions/cache/restore@v4
+        with:
+          key: cache-build-iOS
+          path: |
+            .haxelib/
+            ~/.haxe/cache/
+            ~/.hxcpp/
+            export/release/ios/haxe/
+            export/release/ios/obj/
+            bin/ios/obj/
+            bin/ios/haxe/
+                
+      - name: Install Libraries
+        run: |
+          haxelib setup ~/haxelib
+          if [ "${{ github.event.inputs.dependencies_to_update }}" == "all" ]; then
+            echo "Installing all dependencies..."
+            haxelib install hmm 
+            haxelib run hmm reinstall -f
+          elif [ -n "${{ github.event.inputs.dependencies_to_update }}" ]; then
+              echo "Updating specified dependencies: ${{ github.event.inputs.dependencies_to_update }}"
+            haxelib install hmm
+            haxelib run hmm reinstall $(echo "${{ github.event.inputs.dependencies_to_update }}" | tr -d ' ')
+          else
+            echo "No dependencies specified, only setting up haxelib"
+          fi
+    
+      - name: Compile
+        run: haxelib run lime build ios -nosign
+        
+      - name: Make IPA And iOS Zip
+        run: |
+          cd export/release/ios/build/Release-iphoneos
+          mkdir Payload
+          mv *.app Payload
+          zip -r NovaFlareEngine.ipa Payload
+          zip -r iOSBuild.zip NovaFlareEngine.ipa
+    
+      - name: Upload Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: iOSBuild
+          path: export/release/ios/build/Release-iphoneos/*.ipa
+          if-no-files-found: error
+    
+      - name: Clearing already existing cache
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const caches = await github.rest.actions.getActionsCacheList({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            for (const cache of caches.data.actions_caches) {
+              if (cache.key == "cache-build-iOS") {
+                console.log('Clearing ' + cache.key + '...')
+                await github.rest.actions.deleteActionsCacheById({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  cache_id: cache.id,
+                })
+                console.log("Cache cleared.")
+              }
+            }
+      - name: Save build cache
+        uses: actions/cache/save@v4
+        with:
+          key: cache-build-iOS-${{ hashFiles('**/project.xml') }}  # 根据项目文件变化触发缓存失效
+          path: |
+            .haxelib/
+            ~/.haxe/cache/
+            ~/.hxcpp/
+            export/release/ios/haxe/
+            export/release/ios/obj/
+            bin/ios/obj/
+            bin/ios/haxe/
