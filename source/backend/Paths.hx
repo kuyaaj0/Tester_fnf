@@ -474,7 +474,7 @@ class Paths
 			modLibPath += '$path/';
 
 		var thread:Bool = false;
-		//if (threadLoad != null) thread = true;
+		if (threadLoad != null) thread = true;
 
 		var file:String = modsSounds(modLibPath, key);
 
