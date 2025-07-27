@@ -48,8 +48,7 @@ jobs:
           key: cache-build-Android
           path: |
             .haxelib/
-            export/release/android/haxe/
-            export/release/android/obj/
+            export/release/android/
             ~/.gradle
               
       - name: Install Libraries
@@ -109,8 +108,7 @@ jobs:
           key: cache-build-Android
           path: |
             .haxelib/
-            export/release/android/haxe/
-            export/release/android/obj/
+            export/release/android/
             ~/.gradle
           
   iOS:
@@ -130,17 +128,12 @@ jobs:
           key: cache-build-iOS
           path: |
             .haxelib/
-            ~/.haxe/cache/
-            ~/.hxcpp/
-            export/release/ios/haxe/
-            export/release/ios/obj/
-            bin/ios/obj/
-            bin/ios/haxe/
+            export/release/ios/
                 
       - name: Install Libraries
         run: |
           haxelib setup ~/haxelib
-          if [ "${{ github.event.inputs.dependencies_to_update }}" == "all" ]; then
+          if [ "${{ github.event.inputs.dependencies_to_update }}" == "all" ] || [ "${{ github.event.inputs.dependencies_to_update }}" == "ios" ]; then
             echo "Installing all dependencies..."
             haxelib install hmm 
             haxelib run hmm reinstall -f
@@ -192,12 +185,7 @@ jobs:
       - name: Save build cache
         uses: actions/cache/save@v4
         with:
-          key: cache-build-iOS-${{ hashFiles('**/project.xml') }}  # 根据项目文件变化触发缓存失效
+          key: cache-build-iOS
           path: |
             .haxelib/
-            ~/.haxe/cache/
-            ~/.hxcpp/
-            export/release/ios/haxe/
-            export/release/ios/obj/
-            bin/ios/obj/
-            bin/ios/haxe/
+            export/release/ios/
