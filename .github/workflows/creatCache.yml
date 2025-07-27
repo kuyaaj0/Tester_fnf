@@ -59,7 +59,7 @@ jobs:
         with:
           key: cache-build-Android
           path: |
-            .haxelib/
+            ~/haxelib
           restore-keys: |
             cache-build-Android
 
