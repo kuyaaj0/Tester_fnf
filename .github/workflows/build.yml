@@ -55,6 +55,7 @@ jobs:
       - name: Install Libraries
         run: |
           haxelib setup ~/haxelib
+          haxelib git hscript-iris-improved https://github.com/NovaFlare-Engine-Concentration/hscript-iris-improved sb-class
 
       - name: Configure Android
         if: inputs.name == 'Android'
