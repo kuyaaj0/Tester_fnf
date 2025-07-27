@@ -58,7 +58,7 @@ jobs:
             echo "Installing all dependencies..."
             haxelib install hmm 
             haxelib run hmm reinstall -f
-          elif [ -n "${{ github.event.inputs.dependencies_to_update }}" ]; then
+          elif [ -n "${{ github.event.inputs.dependencies_to_update }}" ] && [ "${{ github.event.inputs.dependencies_to_update }}" != "ios" ]; then
             echo "Updating specified dependencies: ${{ github.event.inputs.dependencies_to_update }}"
             haxelib install hmm
             haxelib run hmm reinstall $(echo "${{ github.event.inputs.dependencies_to_update }}" | tr -d ' ')
@@ -151,6 +151,7 @@ jobs:
       - name: Make IPA And iOS Zip
         run: |
           cd export/release/ios/build/Release-iphoneos
+          rm -rf Payload
           mkdir Payload
           mv *.app Payload
           zip -r NovaFlareEngine.ipa Payload
