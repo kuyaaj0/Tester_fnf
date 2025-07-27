@@ -55,6 +55,8 @@ jobs:
       - name: Install Libraries
         run: |
           haxelib setup ~/haxelib
+          haxelib install hmm 
+          haxelib run hmm install
 
       - name: Configure Android
         if: inputs.name == 'Android'
