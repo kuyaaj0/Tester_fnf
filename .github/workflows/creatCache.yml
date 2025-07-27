@@ -24,27 +24,16 @@ jobs:
         uses: actions/cache@v3
         with:
           # not caching the bin folder to prevent asset duplication and stuff like that
-          key: cache-install-Android
+          key: cache-build-Android
           path: |
             .haxelib/
           restore-keys: |
-            cache-install-Android
+            cache-build-Android
         
       - name: Install Libraries
         run: |
           haxelib setup ~/haxelib
-          haxelib install hmm 
-
-      - name: Make Haxelib Zip
-        run: |
-          zip -r /Users/runner/haxelib.zip .haxelib/
-
-      - name: Upload Haxelib
-        uses: actions/upload-artifact@main
-        with:
-          name: Haxelib
-          path: /Users/runner/haxelib.zip
-          if-no-files-found: error
+          haxelib install hmm
 
       - name: Clearing already existing cache
         uses: actions/github-script@v6
@@ -55,7 +44,7 @@ jobs:
               repo: context.repo.repo,
             })
             for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache-install-Android") {
+              if (cache.key == "cache-build-Android") {
                 console.log('Clearing ' + cache.key + '...')
                 await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
@@ -68,9 +57,9 @@ jobs:
       - name: Uploading new cache
         uses: actions/cache@v3
         with:
-          key: cache-install-Android
+          key: cache-build-Android
           path: |
             .haxelib/
           restore-keys: |
-            cache-install-Android
+            cache-build-Android
 
