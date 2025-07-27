@@ -4,8 +4,14 @@ class IntType extends FlxSpriteGroup
 {
     var background:FlxSprite;
     var labelText:FlxText;
+    
+    var isPressed:Bool = false;
+    var canPress:Bool = true;
+    
+    var helpInt:Int;
 
-    public function new(X:Int = 0, Y:Int = 0, label:String = 'test', max:Int, min:Int){
+    public function new(X:Int = 0, Y:Int = 0, lable:String = 'test', max:Float, min:Float){
+    
         background = new Rect(X, Y, 350, 150, 20, 20, 0xFF403E4E);
         add(background);
         
@@ -14,9 +20,65 @@ class IntType extends FlxSpriteGroup
         labelText.setFormat(Paths.font("montserrat.ttf"), 35, FlxColor.WHITE, LEFT);
         add(labelText);
         
-        nowChoose = new FlxText(labelText.x, labelText.y + labelText.height + 10, 295, Reflect.getProperty(ClientPrefs.data, label));
+        helpInt = Reflect.getProperty(ClientPrefs.data, label);
+        helpInt = Math.max(min, Math.min(max, helpInt));
+        
+        nowChoose = new FlxText(labelText.x, labelText.y + labelText.height + 10, 295, helpInt);
         nowChoose.autoSize = true;
         nowChoose.setFormat(Paths.font("montserrat.ttf"), 30, FlxColor.WHITE, LEFT);
         add(nowChoose);
+    }
+    
+    var saveX = 0;
+    var saveY = 0;
+    
+    override public function update(elapsed:Float){
+        super.update(elapsed);
+        
+        if(FlxG.mouse.justPressed){
+            saveX = FlxG.mouse.x;
+            saveY = FlxG.mouse.y;
+        }
+        
+        if(FlxG.mouse.pressed && canPress){
+            if((saveX < FlxG.mouse.x - 5 || saveX > FlxG.mouse.x + 5) ||
+              (saveY < FlxG.mouse.y - 5 || saveY > FlxG.mouse.y + 5)){
+                canPress = false;
+            }
+        }
+        
+        if (FlxG.mouse.overlaps(this) && FlxG.mouse.justPressed) {
+            isPressed = true;
+        }
+        
+        if (isPressed && FlxG.mouse.justReleased && canPress) {
+            isPressed = false;
+            updateData()
+        }
+        
+        if(FlxG.mouse.justReleased){
+            canPress = true;
+        }
+    }
+    
+    function updateData(){
+        var localX = FlxG.mouse.x - this.x;
+        var buttonWidth = background.width;
+            
+        if (localX < buttonWidth / 2) {
+            helpInt --;
+        } else {
+            helpInt ++;
+        }
+        
+        helpInt = Math.max(minValue, Math.min(maxValue, helpInt));
+        
+        var text:String = '';
+        
+        if (helpInt == minValue) text = 'Min: ' + Std.string(helpInt);
+        else if(helpInt == maxValue) text = 'Max: ' + Std.string(helpInt);
+            
+        nowChoose.text = text;
+        Reflect.setProperty(ClientPrefs.data, label, helpInt);
     }
 }
