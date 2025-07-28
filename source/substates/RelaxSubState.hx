@@ -115,16 +115,16 @@ class RelaxSubState extends MusicBeatSubstate
 	    
 	    if (NowInfo.background != null && NowInfo.background.length > 0){
 	        for (i in NowInfo.background){
-	            if (!FileSystem.exists('assets/shared/$i')){  //以防万一如果有一个背景不存在就终止加载
-	                error += "can't find '" + 'assets/shared/$i' + "'\n";
+	            if (!FileSystem.exists('assets/shared/$i' + '.png')){  //以防万一如果有一个背景不存在就终止加载
+	                error += "can't find '" + 'assets/shared/$i' + ".png'\n";
 	            }
 	        }
 	    }
 	    
 	    if (NowInfo.record != null && NowInfo.record.length > 0){
 	        for (i in NowInfo.record){
-	            if (!FileSystem.exists('assets/shared/$i')){  //以防万一如果有一个曲绘唱片不存在就终止加载
-	                error += "can't find '" + 'assets/shared/$i' + "'\n";
+	            if (!FileSystem.exists('assets/shared/$i' + '.png')){  //以防万一如果有一个曲绘唱片不存在就终止加载
+	                error += "can't find '" + 'assets/shared/$i' + ".png'\n";
 	            }
 	        }
 	    }
