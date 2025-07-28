@@ -41,7 +41,7 @@ class IntType extends FlxSpriteGroup
         labelText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 19, FlxColor.WHITE, LEFT);
         add(labelText);
         
-        nowChoose = new FlxText(X * ((BGwidth + 10) / 2) + changeX, Y * ((BGheight + 10) / 2) + changeY + BGheight - 20, BGwidth - 5, Std.string(helpInt));
+        nowChoose = new FlxText(X * ((BGwidth + 10) / 2) + changeX, Y * ((BGheight + 10) / 2) + changeY + BGheight - 25, BGwidth - 5, Std.string(helpInt));
         nowChoose.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 17, FlxColor.WHITE, LEFT);
         add(nowChoose);
 
