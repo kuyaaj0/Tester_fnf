@@ -31,7 +31,7 @@ class ArrayType extends FlxSpriteGroup
         labelText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 19, FlxColor.WHITE, LEFT);
         add(labelText);
         
-        nowChoose = new FlxText(X * ((BGwidth + 10) / 2) + changeX, Y * ((BGheight + 10) / 2) + changeY + BGheight - 5, BGwidth - 5, Std.string(Reflect.getProperty(ClientPrefs.data, label)));
+        nowChoose = new FlxText(X * ((BGwidth + 10) / 2) + changeX, Y * ((BGheight + 10) / 2) + changeY + BGheight - 20, BGwidth - 5, Std.string(Reflect.getProperty(ClientPrefs.data, label)));
         nowChoose.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 17, FlxColor.WHITE, LEFT);
         add(nowChoose);
     }
