@@ -16,7 +16,7 @@ class FloatType extends FlxSpriteGroup
     var maxValue:Float;
     var minValue:Float;
 
-    public function new(X:Int = 0, Y:Int = 0, labels:String = 'test', max:Float, min:Float, bit:Float = 0.1){
+    public function new(X:Int = 0, Y:Int = 0, labels:String = 'test', min:Float, max:Float, bit:Float = 0.1){
         super(X * 177.5, Y * 77.5);
         
         label = labels;

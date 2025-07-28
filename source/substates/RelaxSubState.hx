@@ -980,6 +980,8 @@ class RelaxSubState extends MusicBeatSubstate
 	        audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
 									  500, 100, 46, 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
 									  
+			audio.cameras = [camBack];
+			
 		    @:privateAccess
 	        audio.analyzer.fftN = 256 * ClientPrefs.data.RelaxAudioDisplayQuality;
 	    }
