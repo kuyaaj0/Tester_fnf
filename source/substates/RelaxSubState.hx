@@ -315,7 +315,7 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 
 		audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
-									  500, 100, Std.int(46 / ClientPrefs.data.RelaxAudioNumb, 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
+									  500, 100, Std.int(46 / ClientPrefs.data.RelaxAudioNumb), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
 		audio.alpha = 0;
 		audio.inRelax = true;
 		audio.cameras = [camBack];
@@ -945,7 +945,10 @@ class RelaxSubState extends MusicBeatSubstate
 			recordPicture.angle += elapsed * 20;
 			if (recordPicture.angle >= 360) recordPicture.angle -= 360;
 		}else if(!ClientPrefs.data.enableRecordRotation){
-		    recordPicture.angle = FlxMath.lerp(recordPicture.angle, 0, 0.1);
+		    if(recordPicture.angle <= 180)
+		        recordPicture.angle = FlxMath.lerp(recordPicture.angle, 0, 0.1);
+		    else
+		        recordPicture.angle = FlxMath.lerp(recordPicture.angle, 360, 0.1);
 		}
 
 		if (FlxG.keys.justPressed.B)
