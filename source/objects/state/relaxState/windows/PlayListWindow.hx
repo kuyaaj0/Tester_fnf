@@ -82,6 +82,8 @@ class PlayListWindow extends FlxSpriteGroup
         instance = this;
         
         camera = RelaxSubState.instance.camOption;
+        
+        alpha = 0.5;
     }
     
     public function show():Void {

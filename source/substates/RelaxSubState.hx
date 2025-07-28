@@ -45,6 +45,8 @@ class RelaxSubState extends MusicBeatSubstate
 	public var nowChoose:Array<Int> = [0,0];
 
 	var camBack:FlxCamera;
+	var camHollow:FlxCamera;
+	var camMidd:FlxCamera;
 	var camPic:FlxCamera;
 	var camText:FlxCamera;
 	var camHUD:FlxCamera;
@@ -59,6 +61,8 @@ class RelaxSubState extends MusicBeatSubstate
 
 	var maskRadius:Float = 150;
 	var circleMask:Shape;
+	
+	var triangleEmitter:HollowTriangleEmitter;
 	
 	var backendPicture:FlxSprite;
 	var audio:AudioCircleDisplay;
@@ -316,10 +320,10 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 
 		audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
-									  500, 100, Std.int(230 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
+									  500, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
 		audio.alpha = 0;
 		audio.inRelax = true;
-		audio.cameras = [camBack];
+		audio.cameras = [camMidd];
 		add(audio);
 
 		var actualRecordImage:FlxGraphicAsset = recordImage;
@@ -458,6 +462,8 @@ class RelaxSubState extends MusicBeatSubstate
 	{
 	    instance = this;
 		camBack = new FlxCamera();
+		camHollow = new FlxCamera;
+		camMidd = new FlxCamera();
 		camPic = new FlxCamera();
 		camText = new FlxCamera();
 		camHUD = new FlxCamera();
@@ -467,6 +473,8 @@ class RelaxSubState extends MusicBeatSubstate
 		camPic.bgColor.alpha = 0;
 		camText.bgColor.alpha = 0;
 		camBack.bgColor.alpha = 0;
+		camHollow.bgColor.alpha = 0;
+		camMidd.bgColor.alpha = 0;
 		camVpad.bgColor.alpha = 0;
 
 		camOption = new FlxCamera();
@@ -474,6 +482,8 @@ class RelaxSubState extends MusicBeatSubstate
 		camOption.y = 0;
 
 		FlxG.cameras.add(camBack, false);
+		FlxG.cameras.add(camHollow, false);
+		FlxG.cameras.add(camMidd, false);
 		FlxG.cameras.add(camPic, false);
 		FlxG.cameras.add(camText, false);
 		FlxG.cameras.add(camHUD, false);
@@ -546,6 +556,9 @@ class RelaxSubState extends MusicBeatSubstate
 		DebugText.font = Paths.font('Lang-ZH.ttf');
 		add(DebugText);
 		DebugText.cameras = [camHUD];
+		
+		triangleEmitter = new HollowTriangleEmitter(camHollow);
+        add(triangleEmitter);
 	}
 
 	function createButtons(){
@@ -974,6 +987,10 @@ class RelaxSubState extends MusicBeatSubstate
 	        if(optionWindow.Hidding)
 	            updateOptions();
 	    }
+	    
+	    if(audio != null){
+	        triangleEmitter.externalSpeedFactor = audio.amplitude;
+	    }
 	}
 	
 	function updateOptions(){
@@ -983,9 +1000,9 @@ class RelaxSubState extends MusicBeatSubstate
 	        audio.destroy();
 			audio = null;
 	        audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
-									  500, 100, Std.int(230 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
+									  500, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
 									  
-			audio.cameras = [camBack];
+			audio.cameras = [camMidd];
 			audio.inRelax = true;
 			add(audio);
 	    }
@@ -1024,7 +1041,7 @@ class RelaxSubState extends MusicBeatSubstate
 		if(beatTimess == 4)
 		{
 			beatTimess = 0;
-			fourTimeBeat();
+			//fourTimeBeat();
 		}
 	}
 	function fourTimeBeat() {

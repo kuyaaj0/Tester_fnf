@@ -122,6 +122,8 @@ class AudioDisplay extends FlxSpriteGroup
 	}
 }
 
+import shapeEx.Rect;
+
 class AudioCircleDisplay extends FlxSpriteGroup
 {
 	public var analyzer:SpectralAnalyzer;
@@ -165,7 +167,8 @@ class AudioCircleDisplay extends FlxSpriteGroup
 
 		for (i in 0...line * Number)
 		{
-			var newLine = new FlxSprite().makeGraphic(gap, 1, Color);
+			//var newLine = new FlxSprite().makeGraphic(gap, 1, Color);
+			var newLine = new Rect(0, 0, gap, 1, 4, 4, Color);
 			var angle = (360 / (line * Number)) * i + 1;
 			newLine.angle = angle;
 			newLine.origin.y = 1;
@@ -192,6 +195,8 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	}
 
 	public var stopUpdate:Bool = false;
+	
+	public var amplitude:Int = 0;
 
 	var saveTime:Float = 0;
 	var getValues:Array<funkin.vis.dsp.Bar>;
@@ -215,6 +220,14 @@ class AudioCircleDisplay extends FlxSpriteGroup
 
 		getValues = analyzer.getLevels();
 		updateLine(elapsed);
+		
+		var Helpamplitude = 0;
+		
+		for (i in getValues) {
+		    Helpamplitude += i;
+		}
+		
+		amplitude = Helpamplitude / getValues.length;
 
         if (Rotate){
 		    for (newLine in 0...(members.length - 1)){
