@@ -36,6 +36,7 @@ import lime.graphics.Image;
 	#define GAMEMODE_AUTO
 ')
 #end
+import developer.TraceInterceptor;
 
 class Main extends Sprite
 {
@@ -62,6 +63,8 @@ class Main extends Sprite
 
 	public static function main():Void
 	{
+	    TraceInterceptor.init();
+	    
 		#if (cpp && windows)
 		backend.device.Native.fixScaling();
 		backend.device.Native.setWindowDarkMode(true, true);

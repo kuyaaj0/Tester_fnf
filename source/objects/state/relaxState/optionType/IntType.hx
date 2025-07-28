@@ -38,18 +38,18 @@ class IntType extends FlxSpriteGroup
         add(background);
 
         labelText = new FlxText(X * ((BGwidth + 10) / 2) + changeX, Y * ((BGheight + 10) / 2) + changeY, BGwidth - 5, Language.get(labels, 'relax'));
-        labelText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 19, FlxColor.WHITE, LEFT);
+        labelText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 17, FlxColor.WHITE, LEFT);
         add(labelText);
         
         nowChoose = new FlxText(X * ((BGwidth + 10) / 2) + changeX, Y * ((BGheight + 10) / 2) + changeY + BGheight - 25, BGwidth - 5, Std.string(helpInt));
-        nowChoose.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 17, FlxColor.WHITE, LEFT);
+        nowChoose.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 15, FlxColor.WHITE, LEFT);
         add(nowChoose);
 
-        leftHitbox = new FlxSprite(X * (BGwidth / 2) + changeX, Y * (BGheight / 2)).makeGraphic(Std.int(BGwidth / 2), BGheight, FlxColor.TRANSPARENT);
+        leftHitbox = new FlxSprite(X * (BGwidth / 2) + changeX, Y * (BGheight / 2) + changeY).makeGraphic(Std.int(BGwidth / 2), BGheight, FlxColor.TRANSPARENT);
         leftHitbox.alpha = 0;
         add(leftHitbox);
 
-        rightHitbox = new FlxSprite(X * (BGwidth / 2) + changeX + 175, Y * (BGheight / 2)).makeGraphic(Std.int(BGwidth / 2), BGheight, FlxColor.TRANSPARENT);
+        rightHitbox = new FlxSprite(X * (BGwidth / 2) + changeX + 175, Y * (BGheight / 2) + changeY).makeGraphic(Std.int(BGwidth / 2), BGheight, FlxColor.TRANSPARENT);
         rightHitbox.alpha = 0;
         add(rightHitbox);
     }
