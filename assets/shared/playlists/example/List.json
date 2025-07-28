@@ -3,17 +3,17 @@
 	"list": [
 		{
 			"name": "Aimai Attitude",
-			"sound": ["assets/shared/playlists/example/songs/Aimai-Attitude.ogg"],
-			"background": ["assets/shared/playlists/example/art/Aimai-Attitude.png"],
-			"lyrics": "assets/shared/playlists/example/lyrics/Aimai-Attitude.json",
+			"sound": ["playlists/example/songs/Aimai-Attitude.ogg"],
+			"background": ["playlists/example/art/Aimai-Attitude.png"],
+			"lyrics": "playlists/example/lyrics/Aimai-Attitude.json",
 			"record": null,
 			"bpm": 200,
 			"writer": "rejection"
 		},
 		{
 		    "name": "Wellerman",
-			"sound": ["assets/shared/playlists/example/songs/Wellerman.ogg"],
-			"background": ["assets/shared/playlists/example/art/Wellerman.png"],
+			"sound": ["playlists/example/songs/Wellerman.ogg"],
+			"background": ["playlists/example/art/Wellerman.png"],
 			"lyrics": null,
 			"record": null,
 			"bpm": 110,

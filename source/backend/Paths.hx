@@ -256,20 +256,6 @@ class Paths
 		trace('oh no its returning null NOOOO ($file)');
 		return null;
 	}
-	
-    static public function loadAbsoluteImage(fullPath:String, ?allowGPU:Bool = true):FlxGraphic
-    {
-        if (Cache.currentTrackedAssets.exists(fullPath)) {
-            return Cache.currentTrackedAssets.get(fullPath);
-        }
-    
-        if (sys.FileSystem.exists(fullPath)) {
-            var bitmap = BitmapData.fromFile(fullPath);
-            return cacheBitmap(fullPath, bitmap, allowGPU);
-        }
-    
-        return null;
-    }
 
 	static public function cacheBitmap(file:String, ?bitmap:BitmapData = null, ?allowGPU:Bool = true)
 	{

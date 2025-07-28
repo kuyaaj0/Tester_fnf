@@ -305,7 +305,7 @@ class RelaxSubState extends MusicBeatSubstate
 	
 	private function createNewElements(background:FlxGraphicAsset, recordImage:FlxGraphicAsset):Void {
 		if (background != null) {
-			backendPicture = new FlxSprite().loadGraphic(Paths.loadAbsoluteImage(background));
+			backendPicture = new FlxSprite().loadGraphic(Paths.image(background, null, false, true));
 			backendPicture.antialiasing = ClientPrefs.data.antialiasing;
 			backendPicture.scale.set(1.1,1.1);
 			backendPicture.updateHitbox();
@@ -328,7 +328,7 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 		
 		if (actualRecordImage != null) {
-			recordPicture = new FlxSprite().loadGraphic(Paths.loadAbsoluteImage(actualRecordImage));
+			recordPicture = new FlxSprite().loadGraphic(Paths.image(actualRecordImage, null, false, true))));
 			recordPicture.antialiasing = ClientPrefs.data.antialiasing;
 			updatePictureScale();
 			recordPicture.cameras = [camPic];
