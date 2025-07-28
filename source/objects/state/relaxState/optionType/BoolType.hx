@@ -11,24 +11,25 @@ class BoolType extends FlxSpriteGroup
     var canPress:Bool = true;
     
     var helpBool:Bool;
+    
+    var BGwidth:Int = 233;
+    var BGheight:Int = 100;
 
     public function new(X:Int = 0, Y:Int = 0, labels:String = 'test'){
-        super(X * 177.5, Y * 77.5);
+        super(X * (BGwidth / 2), Y * (BGheight / 2));
         
         label = labels;
         helpBool = Reflect.getProperty(ClientPrefs.data, label);
         
-        background = new Rect(X * 177.5, Y * 77.5, 350, 150, 20, 20, 0xFF403E4E);
+        background = new Rect(X * (BGwidth / 2), Y * (BGheight / 2), BGwidth, BGheight, 20, 20, 0xFF403E4E);
         add(background);
-        
-        labelText = new FlxText(X * 177.5 + 10, Y * 77.5 + 10, 295, Language.get(labels, 'relax'));
-        labelText.autoSize = true;
-        labelText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 28, FlxColor.WHITE, LEFT);
+
+        labelText = new FlxText(X * (BGwidth / 2) + 10, Y * (BGheight / 2) + 10, 295, Language.get(labels, 'relax'));
+        labelText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 19, FlxColor.WHITE, LEFT);
         add(labelText);
         
-        nowChoose = new FlxText(X * 177.5 + 10, 110 + Y * 67.5, 295, Reflect.getProperty(ClientPrefs.data, label));
-        nowChoose.autoSize = true;
-        nowChoose.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 25, FlxColor.WHITE, LEFT);
+        nowChoose = new FlxText(X * (BGwidth / 2) + 10, 110 + Y * 45, 295, Std.string(helpInt));
+        nowChoose.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 17, FlxColor.WHITE, LEFT);
         add(nowChoose);
     }
     

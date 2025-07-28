@@ -317,6 +317,7 @@ class RelaxSubState extends MusicBeatSubstate
 		audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
 									  500, 100, 46, 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
 		audio.alpha = 0;
+		audio.inRelax = true;
 		audio.cameras = [camBack];
 		add(audio);
 
@@ -944,7 +945,7 @@ class RelaxSubState extends MusicBeatSubstate
 			recordPicture.angle += elapsed * 20;
 			if (recordPicture.angle >= 360) recordPicture.angle -= 360;
 		}else if(!ClientPrefs.data.enableRecordRotation){
-		    recordPicture.angle = FlxMath.lerp(recordPicture.angle, 0, 1);
+		    recordPicture.angle = FlxMath.lerp(recordPicture.angle, 0, 0.1);
 		}
 
 		if (FlxG.keys.justPressed.B)
@@ -981,10 +982,8 @@ class RelaxSubState extends MusicBeatSubstate
 									  500, 100, 46, 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
 									  
 			audio.cameras = [camBack];
+			audio.inRelax = true;
 			add(audio);
-			
-		    @:privateAccess
-	        audio.analyzer.fftN = 256 * ClientPrefs.data.RelaxAudioDisplayQuality;
 	    }
 	}
 

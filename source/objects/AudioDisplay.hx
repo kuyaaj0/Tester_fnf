@@ -127,6 +127,8 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	public var analyzer:SpectralAnalyzer;
 
 	public var snd:FlxSound;
+	
+	public var inRelax:Bool = false;
 
 	var _height:Int;
 	public var line:Int;
@@ -179,8 +181,13 @@ class AudioCircleDisplay extends FlxSpriteGroup
 		@:privateAccess
 		if (snd != null)
 		{
-			analyzer = new SpectralAnalyzer(snd._channel.__audioSource, Std.int(line * 1 + Math.abs(0.05 * (4 - ClientPrefs.data.audioDisplayQuality))), 1, 5);
-			analyzer.fftN = 256 * ClientPrefs.data.audioDisplayQuality;
+		    if(!inRelax){
+    			analyzer = new SpectralAnalyzer(snd._channel.__audioSource, Std.int(line * 1 + Math.abs(0.05 * (4 - ClientPrefs.data.audioDisplayQuality))), 1, 5);
+    			analyzer.fftN = 256 * ClientPrefs.data.audioDisplayQuality;
+    		}else{
+    		    analyzer = new SpectralAnalyzer(snd._channel.__audioSource, Std.int(line * 1 + Math.abs(0.05 * (10 - ClientPrefs.data.RelaxAudioDisplayQuality))), 1, 5);
+    			analyzer.fftN = 256 * ClientPrefs.data.RelaxAudioDisplayQuality;
+    		}
 		}
 	}
 
