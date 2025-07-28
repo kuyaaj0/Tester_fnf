@@ -59,7 +59,7 @@ class OutdatedState extends MusicBeatState
 			if (controls.ACCEPT)
 			{
 				leftState = true;
-				CoolUtil.browserLoad("https://github.com/beihu235/FNF-NovaFlare-Engine/releases");
+				CoolUtil.browserLoad("https://github.com/NovaFlare-Engine-Concentration/FNF-NovaFlare-Engine/releases");
 			}
 			else if (controls.BACK)
 			{

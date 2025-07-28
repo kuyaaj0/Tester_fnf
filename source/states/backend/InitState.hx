@@ -96,7 +96,7 @@ class InitState extends MusicBeatState
 				try
 				{
 					trace('checking for update');
-					var http = new haxe.Http("https://raw.githubusercontent.com/beihu235/FNF-NovaFlare-Engine/main/gitVersion.txt");
+					var http = new haxe.Http("https://raw.githubusercontent.com/NovaFlare-Engine-Concentration/FNF-NovaFlare-Engine/refs/heads/main/gitVersion.txt");
 		
 					http.onData = function(data:String)
 					{

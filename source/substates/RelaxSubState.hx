@@ -972,15 +972,16 @@ class RelaxSubState extends MusicBeatSubstate
 	}
 	
 	function updateOptions(){
-	    audio.analyzer.fftN = 256 * ClientPrefs.data.RelaxAudioDisplayQuality;
-	    
 	    if (audio.Number != ClientPrefs.data.RelaxAudioNumber ||
-	       audio.symmetry != ClientPrefs.data.RelaxAudioSymmetry){
+	        audio.symmetry != ClientPrefs.data.RelaxAudioSymmetry){
 	       
 	        audio.destroy();
 			audio = null;
 	        audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
 									  500, 100, 46, 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
+									  
+		    @:privateAccess
+	        audio.analyzer.fftN = 256 * ClientPrefs.data.RelaxAudioDisplayQuality;
 	    }
 	}
 
