@@ -1,4 +1,4 @@
-package debug;
+package developer;
 
 class TraceInterceptor {
     static var originalTrace = haxe.Log.trace;
