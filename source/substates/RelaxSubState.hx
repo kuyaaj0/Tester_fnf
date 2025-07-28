@@ -328,7 +328,7 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 		
 		if (actualRecordImage != null) {
-			recordPicture = new FlxSprite().loadGraphic(Paths.image(actualRecordImage, null, false, true))));
+			recordPicture = new FlxSprite().loadGraphic(Paths.image(actualRecordImage, null, false, true));
 			recordPicture.antialiasing = ClientPrefs.data.antialiasing;
 			updatePictureScale();
 			recordPicture.cameras = [camPic];
