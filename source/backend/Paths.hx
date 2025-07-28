@@ -464,7 +464,7 @@ class Paths
 
 	
 	static var soundMutex:Mutex = new Mutex();
-	public static function returnSound(path:Null<String>, key:String, ?library:String, ?threadLoad:Bool)
+	public static function returnSound(path:Null<String>, key:String, ?library:String, ?threadLoad:Bool, ?extraLoad:Bool = false)
 	{
 		#if MODS_ALLOWED
 		var modLibPath:String = '';
@@ -476,7 +476,12 @@ class Paths
 		var thread:Bool = false;
 		if (threadLoad != null) thread = true;
 
-		var file:String = modsSounds(modLibPath, key);
+		var file:String = '';
+		
+		if (!extraLoad)
+		    file = modsSounds(modLibPath, key);
+		else
+		    file = modFolders(path);
 
 		if (FileSystem.exists(file))
 		{
