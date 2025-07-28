@@ -19,10 +19,12 @@ class IntType extends FlxSpriteGroup
     
     var BGwidth:Int = 233;
     var BGheight:Int = 100;
+    
+    var changeX:Int = 5;
 
     public function new(X:Int = 0, Y:Int = 0, labels:String = 'test', min:Int, max:Int)
     {
-        super(X * (BGwidth / 2), Y * (BGheight / 2));
+        super(X * (BGwidth / 2) + changeX, Y * (BGheight / 2));
         
         label = labels;
         helpInt = Reflect.getProperty(ClientPrefs.data, label);
@@ -31,22 +33,22 @@ class IntType extends FlxSpriteGroup
         maxValue = max;
         minValue = min;
 
-        background = new Rect(X * (BGwidth / 2), Y * (BGheight / 2), BGwidth, BGheight, 20, 20, 0xFF403E4E);
+        background = new Rect(X * (BGwidth / 2) + changeX, Y * (BGheight / 2) + changeY + 10, BGwidth, BGheight, 20, 20, 0xFF403E4E);
         add(background);
 
-        labelText = new FlxText(X * (BGwidth / 2) + 10, Y * (BGheight / 2) + 10, 295, Language.get(labels, 'relax'));
+        labelText = new FlxText(X * (BGwidth / 2) + changeX + 10, Y * (BGheight / 2) + changeY + 10, BGwidth - 5, Language.get(labels, 'relax'));
         labelText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 19, FlxColor.WHITE, LEFT);
         add(labelText);
         
-        nowChoose = new FlxText(X * (BGwidth / 2) + 10, 110 + Y * 45, 295, Std.string(helpInt));
+        nowChoose = new FlxText(X * (BGwidth / 2) + changeX + 10, Y * (BGheight / 2) + changeY + (BGheight / 2) - 5, BGwidth - 5, Std.string(helpInt));
         nowChoose.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 17, FlxColor.WHITE, LEFT);
         add(nowChoose);
 
-        leftHitbox = new FlxSprite(X * (BGwidth / 2), Y * (BGheight / 2)).makeGraphic(Std.int(BGwidth / 2), BGheight, FlxColor.TRANSPARENT);
+        leftHitbox = new FlxSprite(X * (BGwidth / 2) + changeX, Y * (BGheight / 2)).makeGraphic(Std.int(BGwidth / 2), BGheight, FlxColor.TRANSPARENT);
         leftHitbox.alpha = 0;
         add(leftHitbox);
 
-        rightHitbox = new FlxSprite(X * (BGwidth / 2) + 175, Y * (BGheight / 2)).makeGraphic(Std.int(BGwidth / 2), BGheight, FlxColor.TRANSPARENT);
+        rightHitbox = new FlxSprite(X * (BGwidth / 2) + changeX + 175, Y * (BGheight / 2)).makeGraphic(Std.int(BGwidth / 2), BGheight, FlxColor.TRANSPARENT);
         rightHitbox.alpha = 0;
         add(rightHitbox);
     }
