@@ -32,14 +32,14 @@ class FloatType extends FlxSpriteGroup
         helpFloat = Reflect.getProperty(ClientPrefs.data, label);
         helpFloat = Math.max(min, Math.min(max, helpFloat));
         
-        background = new Rect(X * (BGwidth / 2) + changeX, Y * (BGheight / 2) + changeY + 10, BGwidth, BGheight, 20, 20, 0xFF403E4E);
+        background = new Rect(X * ((BGwidth + 10) / 2) + changeX, Y * ((BGheight + 10) / 2) + changeY, BGwidth, BGheight, 20, 20, 0xFF403E4E);
         add(background);
 
-        labelText = new FlxText(X * (BGwidth / 2) + changeX + 10, Y * (BGheight / 2) + changeY + 10, BGwidth - 5, Language.get(labels, 'relax'));
+        labelText = new FlxText(X * ((BGwidth + 10) / 2) + changeX, Y * ((BGheight + 10) / 2) + changeY, BGwidth - 5, Language.get(labels, 'relax'));
         labelText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 19, FlxColor.WHITE, LEFT);
         add(labelText);
         
-        nowChoose = new FlxText(X * (BGwidth / 2) + changeX + 10, Y * (BGheight / 2) + changeY + (BGheight / 2) - 5, BGwidth - 5, Std.string(helpFloat));
+        nowChoose = new FlxText(X * ((BGwidth + 10) / 2) + changeX, Y * ((BGheight + 10) / 2) + changeY + BGheight - 5, BGwidth - 5, Std.string(helpFloat));
         nowChoose.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 17, FlxColor.WHITE, LEFT);
         add(nowChoose);
 
