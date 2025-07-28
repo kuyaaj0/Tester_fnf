@@ -463,7 +463,7 @@ class RelaxSubState extends MusicBeatSubstate
 	{
 	    instance = this;
 		camBack = new FlxCamera();
-		camHollow = new FlxCamera;
+		camHollow = new FlxCamera();
 		camMidd = new FlxCamera();
 		camPic = new FlxCamera();
 		camText = new FlxCamera();

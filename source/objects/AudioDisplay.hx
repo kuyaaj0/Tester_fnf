@@ -3,6 +3,8 @@ package objects;
 import flixel.sound.FlxSound;
 import funkin.vis.dsp.SpectralAnalyzer;
 
+import shapeEx.Rect;
+
 class AudioDisplay extends FlxSpriteGroup
 {
 	var analyzer:SpectralAnalyzer;
@@ -121,8 +123,6 @@ class AudioDisplay extends FlxSpriteGroup
 		}
 	}
 }
-
-import shapeEx.Rect;
 
 class AudioCircleDisplay extends FlxSpriteGroup
 {
