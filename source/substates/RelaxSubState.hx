@@ -7,6 +7,7 @@ import objects.state.relaxState.windows.OptionWindow;
 
 import openfl.filters.BlurFilter;
 import openfl.display.Shape;
+import openfl.media.Sound;
 
 import flixel.graphics.frames.FlxFilterFrames;
 import flixel.tweens.FlxEase;
@@ -151,12 +152,12 @@ class RelaxSubState extends MusicBeatSubstate
 
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
             if (songInfo.sound.length > 1) {
-                Sound1.loadEmbedded(Paths.getPath(songInfo.sound[1]), false, true);
+                Sound1.loadEmbedded(Sound.fromFile(songInfo.sound[1]), false, true);
                 Sound1.play();
             }
             
             if (songInfo.sound.length > 2) {
-                Sound2.loadEmbedded(Paths.getPath(songInfo.sound[2]), false, true);
+                Sound2.loadEmbedded(Sound.fromFile(songInfo.sound[2]), false, true);
                 Sound2.play();
             }
         }
@@ -166,7 +167,7 @@ class RelaxSubState extends MusicBeatSubstate
 		
 		FlxG.sound.music.stop();
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
-			FlxG.sound.playMusic(Paths.getPath(songInfo.sound[0]), 1);
+			FlxG.sound.playMusic(Sound.fromFile(songInfo.sound[0]), 1);
 			
 			FlxG.sound.music.onComplete = () -> {
 			    switch(ClientPrefs.data.NextSongs){
@@ -304,7 +305,7 @@ class RelaxSubState extends MusicBeatSubstate
 	
 	private function createNewElements(background:FlxGraphicAsset, recordImage:FlxGraphicAsset):Void {
 		if (background != null) {
-			backendPicture = new FlxSprite().loadGraphic(Paths.getPath(background));
+			backendPicture = new FlxSprite().loadGraphic(Paths.loadAbsoluteImage(background));
 			backendPicture.antialiasing = ClientPrefs.data.antialiasing;
 			backendPicture.scale.set(1.1,1.1);
 			backendPicture.updateHitbox();
@@ -327,7 +328,7 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 		
 		if (actualRecordImage != null) {
-			recordPicture = new FlxSprite().loadGraphic(Paths.getPath(actualRecordImage));
+			recordPicture = new FlxSprite().loadGraphic(Paths.loadAbsoluteImage(actualRecordImage));
 			recordPicture.antialiasing = ClientPrefs.data.antialiasing;
 			updatePictureScale();
 			recordPicture.cameras = [camPic];
