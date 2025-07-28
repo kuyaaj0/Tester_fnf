@@ -61,7 +61,7 @@ class IntType extends FlxSpriteGroup
         if (FlxG.mouse.justReleased && canPress)
         {
             var localX = FlxG.mouse.getScreenPosition().x - this.x;
-            var isLeftSide = localX < bg.width / 2;
+            var isLeftSide = localX < background.width / 2;
             
             if (isLeftSide)
             {
