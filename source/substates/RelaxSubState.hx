@@ -152,12 +152,12 @@ class RelaxSubState extends MusicBeatSubstate
 
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
             if (songInfo.sound.length > 1) {
-                Sound1.loadEmbedded(Sound.fromFile(songInfo.sound[1]), false, true);
+                Sound1.loadEmbedded(Sound.fromFile('assets/shared/' + songInfo.sound[1]), false, true);
                 Sound1.play();
             }
             
             if (songInfo.sound.length > 2) {
-                Sound2.loadEmbedded(Sound.fromFile(songInfo.sound[2]), false, true);
+                Sound2.loadEmbedded(Sound.fromFile('assets/shared/' + songInfo.sound[2]), false, true);
                 Sound2.play();
             }
         }
@@ -167,7 +167,7 @@ class RelaxSubState extends MusicBeatSubstate
 		
 		FlxG.sound.music.stop();
 		if (songInfo.sound != null && songInfo.sound.length > 0) {
-			FlxG.sound.playMusic(Sound.fromFile(songInfo.sound[0]), 1);
+			FlxG.sound.playMusic(Sound.fromFile('assets/shared/' + songInfo.sound[0]), 1);
 			
 			FlxG.sound.music.onComplete = () -> {
 			    switch(ClientPrefs.data.NextSongs){
