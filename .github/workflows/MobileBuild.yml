@@ -12,8 +12,8 @@ on:
         required: false
         default: ''
         
-permissions:
-  actions: write
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   installHaxelib:
