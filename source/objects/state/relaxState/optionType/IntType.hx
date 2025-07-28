@@ -42,11 +42,11 @@ class IntType extends FlxSpriteGroup
         nowChoose.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 17, FlxColor.WHITE, LEFT);
         add(nowChoose);
 
-        leftHitbox = new FlxSprite(X * (BGwidth / 2), Y * (BGheight / 2)).makeGraphic(BGwidth / 2, BGheight, FlxColor.TRANSPARENT);
+        leftHitbox = new FlxSprite(X * (BGwidth / 2), Y * (BGheight / 2)).makeGraphic(Std.int(BGwidth / 2), BGheight, FlxColor.TRANSPARENT);
         leftHitbox.alpha = 0;
         add(leftHitbox);
 
-        rightHitbox = new FlxSprite(X * (BGwidth / 2) + 175, Y * (BGheight / 2)).makeGraphic(BGwidth / 2, BGheight, FlxColor.TRANSPARENT);
+        rightHitbox = new FlxSprite(X * (BGwidth / 2) + 175, Y * (BGheight / 2)).makeGraphic(Std.int(BGwidth / 2), BGheight, FlxColor.TRANSPARENT);
         rightHitbox.alpha = 0;
         add(rightHitbox);
     }

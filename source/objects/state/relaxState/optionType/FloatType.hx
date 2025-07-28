@@ -36,15 +36,15 @@ class FloatType extends FlxSpriteGroup
         labelText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 19, FlxColor.WHITE, LEFT);
         add(labelText);
         
-        nowChoose = new FlxText(X * (BGwidth / 2) + 10, 110 + Y * 45, 295, Std.string(helpInt));
+        nowChoose = new FlxText(X * (BGwidth / 2) + 10, 110 + Y * 45, 295, Std.string(helpFloat));
         nowChoose.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 17, FlxColor.WHITE, LEFT);
         add(nowChoose);
 
-        leftHitbox = new FlxSprite(X * (BGwidth / 2), Y * (BGheight / 2)).makeGraphic(BGwidth / 2, BGheight, FlxColor.TRANSPARENT);
+        leftHitbox = new FlxSprite(X * (BGwidth / 2), Y * (BGheight / 2)).makeGraphic(Std.int(BGwidth / 2), BGheight, FlxColor.TRANSPARENT);
         leftHitbox.alpha = 0;
         add(leftHitbox);
 
-        rightHitbox = new FlxSprite(X * (BGwidth / 2) + 175, Y * (BGheight / 2)).makeGraphic(BGwidth / 2, BGheight, FlxColor.TRANSPARENT);
+        rightHitbox = new FlxSprite(X * (BGwidth / 2) + 175, Y * (BGheight / 2)).makeGraphic(Std.int(BGwidth / 2), BGheight, FlxColor.TRANSPARENT);
         rightHitbox.alpha = 0;
         add(rightHitbox);
         

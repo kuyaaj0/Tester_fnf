@@ -28,7 +28,7 @@ class BoolType extends FlxSpriteGroup
         labelText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 19, FlxColor.WHITE, LEFT);
         add(labelText);
         
-        nowChoose = new FlxText(X * (BGwidth / 2) + 10, 110 + Y * 45, 295, Std.string(helpInt));
+        nowChoose = new FlxText(X * (BGwidth / 2) + 10, 110 + Y * 45, 295, Std.string(Reflect.getProperty(ClientPrefs.data, label)));
         nowChoose.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 17, FlxColor.WHITE, LEFT);
         add(nowChoose);
     }
