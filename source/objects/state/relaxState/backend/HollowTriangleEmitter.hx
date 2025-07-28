@@ -145,14 +145,12 @@ class HollowTriangle extends FlxBasic
             drawX = x - targetCamera.scroll.x;
             drawY = y - targetCamera.scroll.y;
         }
-        var gfx:Graphics = FlxSpriteUtil.flashGfx;
-        gfx.clear();
-        gfx.lineStyle(2, color);
-        gfx.moveTo(drawX + size / 2, drawY);
-        gfx.lineTo(drawX, drawY + size);
-        gfx.lineTo(drawX + size, drawY + size);
-        gfx.lineTo(drawX + size / 2, drawY);
-        @:privateAccess
-        FlxSpriteUtil.flashGfxSprite.graphics.drawGraphicsData(FlxSpriteUtil.flashGfxGraphicsData);
+        
+        FlxSpriteUtil.beginDraw(FlxColor.TRANSPARENT);
+        FlxSpriteUtil.drawPolygon([drawX + size/2, drawY, 
+                                 drawX, drawY + size,
+                                 drawX + size, drawY + size], 
+                                 color, { thickness: 2 });
+        FlxSpriteUtil.endDraw();
     }
 }

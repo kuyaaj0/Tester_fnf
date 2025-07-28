@@ -221,7 +221,7 @@ class AudioCircleDisplay extends FlxSpriteGroup
 		getValues = analyzer.getLevels();
 		updateLine(elapsed);
 		
-		var Helpamplitude = 0;
+		var Helpamplitude:Float = 0;
 		
 		for (i in getValues) {
 		    Helpamplitude += i.value;
