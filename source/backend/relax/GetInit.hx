@@ -119,7 +119,7 @@ class GetInit
         songLyricsMap = new Map();
         var LyricsDatas:Array<Dynamic> = [];
         
-        var lyricsPath:String = songInfo.lyrics;
+        var lyricsPath:String = "assets/shared/" + songInfo.lyrics;
         
         if(FileSystem.exists(lyricsPath)){
             var content:String = File.getContent(lyricsPath);
