@@ -196,7 +196,7 @@ class AudioCircleDisplay extends FlxSpriteGroup
 
 	public var stopUpdate:Bool = false;
 	
-	public var amplitude:Int = 0;
+	public var amplitude:Float = 0;
 
 	var saveTime:Float = 0;
 	var getValues:Array<funkin.vis.dsp.Bar>;
@@ -224,7 +224,7 @@ class AudioCircleDisplay extends FlxSpriteGroup
 		var Helpamplitude = 0;
 		
 		for (i in getValues) {
-		    Helpamplitude += i;
+		    Helpamplitude += i.value;
 		}
 		
 		amplitude = Helpamplitude / getValues.length;
