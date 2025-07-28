@@ -15,7 +15,7 @@ class BoolType extends FlxSpriteGroup
     var BGwidth:Int = 233;
     var BGheight:Int = 100;
     
-    var changeX:Int = 5
+    var changeX:Int = 5;
     var changeY:Int = 5;
 
     public function new(X:Int = 0, Y:Int = 0, labels:String = 'test'){

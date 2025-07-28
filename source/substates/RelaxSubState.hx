@@ -315,7 +315,7 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 
 		audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
-									  500, 100, 46, 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
+									  500, 100, Std.int(46 / ClientPrefs.data.RelaxAudioNumb, 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
 		audio.alpha = 0;
 		audio.inRelax = true;
 		audio.cameras = [camBack];
@@ -979,7 +979,7 @@ class RelaxSubState extends MusicBeatSubstate
 	        audio.destroy();
 			audio = null;
 	        audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
-									  500, 100, 46, 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
+									  500, 100, Std.int(46 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
 									  
 			audio.cameras = [camBack];
 			audio.inRelax = true;
