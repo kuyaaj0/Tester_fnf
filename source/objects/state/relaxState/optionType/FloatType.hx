@@ -15,6 +15,9 @@ class FloatType extends FlxSpriteGroup
     
     var maxValue:Float;
     var minValue:Float;
+    
+    var leftHitbox:FlxSprite;
+    var rightHitbox:FlxSprite;
 
     public function new(X:Int = 0, Y:Int = 0, labels:String = 'test', min:Float, max:Float, bit:Float = 0.1){
         super(X * 177.5, Y * 77.5);
@@ -28,13 +31,21 @@ class FloatType extends FlxSpriteGroup
         
         labelText = new FlxText(X * 177.5 + 10, Y * 77.5 + 10, 295, Language.get(labels, 'relax'));
         labelText.autoSize = true;
-        labelText.setFormat(Paths.font("montserrat.ttf"), 28, FlxColor.WHITE, LEFT);
+        labelText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 28, FlxColor.WHITE, LEFT);
         add(labelText);
         
         nowChoose = new FlxText(X * 177.5 + 10, 110 + Y * 67.5, 295, Reflect.getProperty(ClientPrefs.data, label));
         nowChoose.autoSize = true;
-        nowChoose.setFormat(Paths.font("montserrat.ttf"), 25, FlxColor.WHITE, LEFT);
+        nowChoose.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 25, FlxColor.WHITE, LEFT);
         add(nowChoose);
+        
+        leftHitbox = new FlxSprite(X * 177.5, Y * 77.5).makeGraphic(175, 150, FlxColor.TRANSPARENT);
+        leftHitbox.alpha = 0;
+        add(leftHitbox);
+
+        rightHitbox = new FlxSprite(X * 177.5 + 175, Y * 77.5).makeGraphic(175, 150, FlxColor.TRANSPARENT);
+        rightHitbox.alpha = 0;
+        add(rightHitbox);
         
         oneChange = bit;
         
@@ -69,21 +80,24 @@ class FloatType extends FlxSpriteGroup
             updateData()
         }
         
+        if (FlxG.mouse.justReleased && canPress && FlxG.mouse.overlaps(this))
+        {
+            if (FlxG.mouse.overlaps(leftHitbox))
+            {
+                helpFloat -= oneChange;
+            }
+            else if (FlxG.mouse.overlaps(rightHitbox))
+            {
+                helpFloat += oneChange;
+            }
+        }
+        
         if(FlxG.mouse.justReleased){
             canPress = true;
         }
     }
     
     function updateData(){
-        var localX = FlxG.mouse.getScreenPosition().x - this.x;
-        var isLeftSide = localX < background.width / 2;
-            
-        if (isLeftSide)
-            helpFloat -= oneChange;
-        } else {
-            helpFloat += oneChange;
-        }
-        
         helpFloat = Math.max(minValue, Math.min(maxValue, helpFloat));
             
         var text:String = '';

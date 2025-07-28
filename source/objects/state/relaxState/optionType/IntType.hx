@@ -14,6 +14,9 @@ class IntType extends FlxSpriteGroup
     var maxValue:Int;
     var minValue:Int;
 
+    var leftHitbox:FlxSprite;
+    var rightHitbox:FlxSprite;
+
     public function new(X:Int = 0, Y:Int = 0, labels:String = 'test', min:Int, max:Int)
     {
         super(X * 177.5, Y * 77.5);
@@ -24,17 +27,25 @@ class IntType extends FlxSpriteGroup
         
         maxValue = max;
         minValue = min;
-        
+
         background = new Rect(X * 177.5, Y * 77.5, 350, 150, 20, 20, 0xFF403E4E);
         add(background);
-        
+
         labelText = new FlxText(X * 177.5 + 10, Y * 77.5 + 10, 295, Language.get(labels, 'relax'));
-        labelText.setFormat(Paths.font("montserrat.ttf"), 28, FlxColor.WHITE, LEFT);
+        labelText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 28, FlxColor.WHITE, LEFT);
         add(labelText);
         
         nowChoose = new FlxText(X * 177.5 + 10, 110 + Y * 67.5, 295, Std.string(helpInt));
-        nowChoose.setFormat(Paths.font("montserrat.ttf"), 25, FlxColor.WHITE, LEFT);
+        nowChoose.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 25, FlxColor.WHITE, LEFT);
         add(nowChoose);
+
+        leftHitbox = new FlxSprite(X * 177.5, Y * 77.5).makeGraphic(175, 150, FlxColor.TRANSPARENT);
+        leftHitbox.alpha = 0;
+        add(leftHitbox);
+
+        rightHitbox = new FlxSprite(X * 177.5 + 175, Y * 77.5).makeGraphic(175, 150, FlxColor.TRANSPARENT);
+        rightHitbox.alpha = 0;
+        add(rightHitbox);
     }
     
     var saveX = 0;
@@ -58,15 +69,14 @@ class IntType extends FlxSpriteGroup
             }
         }
     
-        if (FlxG.mouse.justReleased && canPress)
+        if (FlxG.mouse.justReleased && canPress && FlxG.mouse.overlaps(this))
         {
-            var localX = FlxG.mouse.getScreenPosition().x - this.x;
-            var isLeftSide = localX < background.width / 2;
-            
-            if (isLeftSide)
+            if (FlxG.mouse.overlaps(leftHitbox))
             {
                 helpInt--;
-            }else{
+            }
+            else if (FlxG.mouse.overlaps(rightHitbox))
+            {
                 helpInt++;
             }
     

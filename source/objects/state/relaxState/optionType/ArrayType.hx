@@ -23,12 +23,12 @@ class ArrayType extends FlxSpriteGroup
         
         labelText = new FlxText(X * 177.5 + 10, Y * 77.5 + 10, 295, Language.get(labels, 'relax'));
         labelText.autoSize = true;
-        labelText.setFormat(Paths.font("montserrat.ttf"), 28, FlxColor.WHITE, LEFT);
+        labelText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 28, FlxColor.WHITE, LEFT);
         add(labelText);
         
         nowChoose = new FlxText(X * 177.5 + 10, 110 + Y * 67.5, 295, Reflect.getProperty(ClientPrefs.data, label));
         nowChoose.autoSize = true;
-        nowChoose.setFormat(Paths.font("montserrat.ttf"), 25, FlxColor.WHITE, LEFT);
+        nowChoose.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 25, FlxColor.WHITE, LEFT);
         add(nowChoose);
     }
     
