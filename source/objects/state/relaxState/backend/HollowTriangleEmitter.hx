@@ -138,19 +138,27 @@ class HollowTriangle extends FlxBasic
     override public function draw():Void 
     {
         super.draw();
+        
         var drawX:Float = x;
         var drawY:Float = y;
+        
         if (!followCamera && targetCamera != null)
         {
             drawX = x - targetCamera.scroll.x;
             drawY = y - targetCamera.scroll.y;
         }
         
-        FlxSpriteUtil.beginDraw(FlxColor.TRANSPARENT);
-        FlxSpriteUtil.drawPolygon([drawX + size/2, drawY, 
-                                 drawX, drawY + size,
-                                 drawX + size, drawY + size], 
-                                 color, { thickness: 2 });
-        FlxSpriteUtil.endDraw();
+        var vertices = new Array<Float>();
+        vertices.push(drawX + size/2); vertices.push(drawY);      // 顶点
+        vertices.push(drawX); vertices.push(drawY + size);        // 左下角
+        vertices.push(drawX + size); vertices.push(drawY + size); // 右下角
+        
+        var graphic = FlxSpriteUtil.makeGraphic(this, 
+            Std.int(size + 2), 
+            Std.int(size + 2), 
+            FlxColor.TRANSPARENT, 
+            true);
+        
+        FlxSpriteUtil.drawPolygon(graphic, vertices, color, { thickness: 2 });
     }
 }
