@@ -11,15 +11,14 @@ class IntType extends FlxSpriteGroup
     var canPress:Bool = true;
     
     var helpInt:Int;
-    
     var maxValue:Int;
     var minValue:Int;
 
-    public function new(X:Int = 0, Y:Int = 0, labels:String = 'test', min:Int, max:Int){
+    public function new(X:Int = 0, Y:Int = 0, labels:String = 'test', min:Int, max:Int)
+    {
         super(X * 177.5, Y * 77.5);
         
         label = labels;
-        
         helpInt = Reflect.getProperty(ClientPrefs.data, label);
         helpInt = Std.int(Math.max(min, Math.min(max, helpInt)));
         
@@ -30,12 +29,10 @@ class IntType extends FlxSpriteGroup
         add(background);
         
         labelText = new FlxText(X * 177.5 + 10, Y * 77.5 + 10, 295, Language.get(labels, 'relax'));
-        labelText.autoSize = true;
         labelText.setFormat(Paths.font("montserrat.ttf"), 28, FlxColor.WHITE, LEFT);
         add(labelText);
         
-        nowChoose = new FlxText(X * 177.5 + 10, 110 + Y * 67.5, 295, Reflect.getProperty(ClientPrefs.data, label));
-        nowChoose.autoSize = true;
+        nowChoose = new FlxText(X * 177.5 + 10, 110 + Y * 67.5, 295, Std.string(helpInt));
         nowChoose.setFormat(Paths.font("montserrat.ttf"), 25, FlxColor.WHITE, LEFT);
         add(nowChoose);
     }
@@ -43,52 +40,52 @@ class IntType extends FlxSpriteGroup
     var saveX = 0;
     var saveY = 0;
     
-    override public function update(elapsed:Float){
+    override public function update(elapsed:Float)
+    {
         super.update(elapsed);
-        
-        if(FlxG.mouse.justPressed){
+    
+        if (FlxG.mouse.justPressed)
+        {
             saveX = FlxG.mouse.x;
             saveY = FlxG.mouse.y;
         }
-        
-        if(FlxG.mouse.pressed && canPress){
-            if((saveX < FlxG.mouse.x - 5 || saveX > FlxG.mouse.x + 5) ||
-              (saveY < FlxG.mouse.y - 5 || saveY > FlxG.mouse.y + 5)){
+    
+        if (FlxG.mouse.pressed && canPress)
+        {
+            if ((Math.abs(FlxG.mouse.x - saveX) > 5) || (Math.abs(FlxG.mouse.y - saveY) > 5))
+            {
                 canPress = false;
             }
         }
-        
-        if (FlxG.mouse.overlaps(this) && FlxG.mouse.justPressed) {
-            isPressed = true;
+    
+        if (FlxG.mouse.justReleased && canPress)
+        {
+            var localX = FlxG.mouse.getScreenPosition().x - this.x;
+            var isLeftSide = localX < bg.width / 2;
+            
+            if (isLeftSide)
+            {
+                helpInt--;
+            }else{
+                helpInt++;
+            }
+    
+            helpInt = Std.int(Math.max(minValue, Math.min(maxValue, helpInt)));
+            updateDisplay();
         }
-        
-        if (isPressed && FlxG.mouse.justReleased && canPress) {
-            isPressed = false;
-            updateData();
-        }
-        
-        if(FlxG.mouse.justReleased){
+    
+        if (FlxG.mouse.justReleased)
+        {
             canPress = true;
         }
     }
     
-    function updateData(){
-        var localX = FlxG.mouse.x - this.x;
-        var buttonWidth = background.width;
-            
-        if (localX < buttonWidth / 2) {
-            helpInt --;
-        } else {
-            helpInt ++;
-        }
+    function updateDisplay()
+    {
+        var text = Std.string(helpInt);
+        if (helpInt == minValue) text = 'Min: ' + text;
+        else if (helpInt == maxValue) text = 'Max: ' + text;
         
-        helpInt = Std.int(Math.max(minValue, Math.min(maxValue, helpInt)));
-        
-        var text:String = '';
-        
-        if (helpInt == minValue) text = 'Min: ' + Std.string(helpInt);
-        else if(helpInt == maxValue) text = 'Max: ' + Std.string(helpInt);
-            
         nowChoose.text = text;
         Reflect.setProperty(ClientPrefs.data, label, helpInt);
     }

@@ -981,6 +981,7 @@ class RelaxSubState extends MusicBeatSubstate
 									  500, 100, 46, 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
 									  
 			audio.cameras = [camBack];
+			add(audio);
 			
 		    @:privateAccess
 	        audio.analyzer.fftN = 256 * ClientPrefs.data.RelaxAudioDisplayQuality;

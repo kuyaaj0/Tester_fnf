@@ -75,10 +75,10 @@ class FloatType extends FlxSpriteGroup
     }
     
     function updateData(){
-        var localX = FlxG.mouse.x - this.x;
-        var buttonWidth = background.width;
+        var localX = FlxG.mouse.getScreenPosition().x - this.x;
+        var isLeftSide = localX < bg.width / 2;
             
-        if (localX < buttonWidth / 2) {
+        if (isLeftSide)
             helpFloat -= oneChange;
         } else {
             helpFloat += oneChange;
