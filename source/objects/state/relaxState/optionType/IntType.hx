@@ -21,10 +21,11 @@ class IntType extends FlxSpriteGroup
     var BGheight:Int = 100;
     
     var changeX:Int = 5;
+    var changeY:Int = 5;
 
     public function new(X:Int = 0, Y:Int = 0, labels:String = 'test', min:Int, max:Int)
     {
-        super(X * (BGwidth / 2) + changeX, Y * (BGheight / 2));
+        super(X * (BGwidth / 2) + changeX, Y * (BGheight / 2) + changeY);
         
         label = labels;
         helpInt = Reflect.getProperty(ClientPrefs.data, label);
