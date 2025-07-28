@@ -23,6 +23,8 @@ jobs:
   build:
     name: InstallHaxelib
     runs-on: macos-15
+    concurrency:
+      group: ${{ github.workflow }}-Haxelib-${{ github.ref }}
     steps:
       - name: Checkout
         uses: actions/checkout@main

@@ -12,9 +12,6 @@ on:
         required: false
         default: ''
         
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-
 jobs:
   installHaxelib:
     uses: ./.github/workflows/InstallHaxelib.yml
@@ -24,6 +21,10 @@ jobs:
 
   Android:
     runs-on: macos-14
+    
+    concurrency:
+      group: ${{ github.workflow }}-Android-${{ github.ref }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -113,6 +114,9 @@ jobs:
           
   iOS:
     runs-on: macos-15
+    concurrency:
+      group: ${{ github.workflow }}-iOS-${{ github.ref }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@main
