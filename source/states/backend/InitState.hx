@@ -64,13 +64,14 @@ class InitState extends MusicBeatState
 		FlxG.game.focusLostFramerate = 60;
 		FlxG.keys.preventDefaultKeys = [TAB];
 
-		psychlua.modules.ModuleHandler.init();
-
 		super.create();
 
 		FlxG.save.bind('funkin', CoolUtil.getSavePath());
 
 		ClientPrefs.loadPrefs();
+
+		//clear up
+		crowplexus.hscript.Interp.clearCache();
 
 		#if LUA_ALLOWED
 		#if (android && EXTERNAL)
@@ -87,9 +88,10 @@ class InitState extends MusicBeatState
 		}
 		#end
 		#end
-	
+
 		Mods.loadTopMod();
-	
+		psychlua.modules.ModuleHandler.init();
+
 		#if CHECK_FOR_UPDATES
 		if (ClientPrefs.data.checkForUpdates)
 		{

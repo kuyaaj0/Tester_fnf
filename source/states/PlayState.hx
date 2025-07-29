@@ -4699,10 +4699,6 @@ class PlayState extends MusicBeatState
 		return returnVal;
 	}
 
-	public function callOnModule(name:String, args:Array<Dynamic>):Dynamic {
-		return psychlua.modules.ModuleHandler.call(name, args);
-	}
-
 	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null, ?ignoreStops:Bool = false, exclusions:Array<String> = null,
 			excludeValues:Array<Dynamic> = null):Dynamic
 	{
@@ -4740,8 +4736,6 @@ class PlayState extends MusicBeatState
 					returnVal = myValue;
 			}
 		}
-
-		callOnModule(funcToCall, args);
 		#end
 
 		return returnVal;
