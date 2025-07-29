@@ -559,8 +559,10 @@ class RelaxSubState extends MusicBeatSubstate
 		DebugText.cameras = [camHUD];
 		
 		triangleEmitter = new HollowTriangleEmitter();
-		triangleEmitter.cameras = [camHUD];
+		triangleEmitter.cameras = [camHollow];
         add(triangleEmitter);
+        
+        camHollow.alpha = 0.6;
 	}
 
 	function createButtons(){

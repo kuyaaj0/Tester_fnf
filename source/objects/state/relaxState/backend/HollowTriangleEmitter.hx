@@ -10,13 +10,13 @@ import flixel.math.FlxPoint;
 class HollowTriangleEmitter extends FlxTypedGroup<FlxSprite>
 {
     // 发射控制
-    public var emissionRate:Float = 5; // 降低发射频率
+    public var emissionRate:Float = 3; // 发射频率
     var emissionTimer:Float = 0;
     
-    var minTriangleSize:Int = 40;  // 增大最小尺寸
-    var maxTriangleSize:Int = 80;  // 增大最大尺寸
-    var minSpeed:Int = 30;         // 降低最小速度
-    var maxSpeed:Int = 60;         // 降低最大速度
+    var minTriangleSize:Int = 100;  // 最小尺寸
+    var maxTriangleSize:Int = 200;  // 最大尺寸
+    var minSpeed:Int = 10;         // 最小速度
+    var maxSpeed:Int = 30;         // 最大速度
     
     // 对象池
     var poolSize:Int = 100;
@@ -94,7 +94,7 @@ class HollowTriangleEmitter extends FlxTypedGroup<FlxSprite>
         FlxSpriteUtil.drawPolygon(
             sprite,
             vertices,
-            FlxColor.WHITE,
+            FlxColor.BLACK,
             {
                 thickness: 3,
                 color: FlxColor.BLACK,
@@ -122,7 +122,7 @@ class HollowTriangleEmitter extends FlxTypedGroup<FlxSprite>
         {
             if (triangle.exists)
             {
-                triangle.y += (triangle.velocity.y - externalSpeedFactor * 10) * elapsed;
+                triangle.y += (triangle.velocity.y - externalSpeedFactor * 100) * elapsed;
                 
                 if (triangle.y + triangle.height < 0)
                 {
