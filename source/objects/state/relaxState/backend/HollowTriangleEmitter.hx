@@ -10,13 +10,13 @@ import flixel.math.FlxPoint;
 class HollowTriangleEmitter extends FlxTypedGroup<FlxSprite>
 {
     // 发射控制
-    public var emissionRate:Float = 3; // 发射频率
+    public var emissionRate:Float = 2; // 发射频率
     var emissionTimer:Float = 0;
     
     var minTriangleSize:Int = 100;  // 最小尺寸
-    var maxTriangleSize:Int = 200;  // 最大尺寸
-    var minSpeed:Int = 10;         // 最小速度
-    var maxSpeed:Int = 30;         // 最大速度
+    var maxTriangleSize:Int = 400;  // 最大尺寸
+    var minSpeed:Int = 5;         // 最小速度
+    var maxSpeed:Int = 10;         // 最大速度
     
     // 对象池
     var poolSize:Int = 100;

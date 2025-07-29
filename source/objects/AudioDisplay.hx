@@ -223,11 +223,11 @@ class AudioCircleDisplay extends FlxSpriteGroup
 		
 		var Helpamplitude:Float = 0;
 		
-		for (i in getValues) {
-		    Helpamplitude += i.value;
+		for (i in 0...5) {
+		    Helpamplitude += getValues[i].value;
 		}
 		
-		amplitude = Helpamplitude / getValues.length;
+		amplitude = Helpamplitude / 5;
 
         if (Rotate){
 		    for (newLine in 0...(members.length - 1)){
