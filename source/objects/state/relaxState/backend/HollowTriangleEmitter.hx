@@ -82,7 +82,7 @@ class HollowTriangle extends FlxBasic
     public var size:Float;
     private var baseSpeed:Float;
     private var speedVariation:Float = 0;
-    private var color:FlxColor;
+    public var color:FlxColor;
     public var externalSpeedFactor:Float = 1.0;
     public var targetCamera:FlxCamera;
     public var followCamera:Bool = true;
@@ -91,12 +91,19 @@ class HollowTriangle extends FlxBasic
     private var worldX:Float = 0;
     private var worldY:Float = 0;
 
+    // 用于绘制的临时精灵
+    private var drawSprite:FlxSprite;
+
     public function new(?camera:FlxCamera) 
     {
         super();
         this.targetCamera = camera != null ? camera : FlxG.camera;
+        
+        // 创建用于绘制的精灵
+        drawSprite = new FlxSprite();
+        drawSprite.makeGraphic(1, 1, FlxColor.TRANSPARENT, true);
     }
-    
+
     public function init(x:Float, y:Float, size:Float, baseSpeed:Float):Void
     {
         this.x = x;
@@ -105,23 +112,26 @@ class HollowTriangle extends FlxBasic
         this.baseSpeed = baseSpeed;
         this.worldX = x;
         this.worldY = y;
+        
         color = FlxColor.fromRGB(
             Std.int(FlxG.random.float(100, 255)),
             Std.int(FlxG.random.float(100, 255)),
             Std.int(FlxG.random.float(100, 255))
         );
+        
         variationSpeed = FlxG.random.float(0.5, 2.0);
         alive = true;
         exists = true;
         visible = true;
     }
-    
+
     override public function update(elapsed:Float):Void 
     {
         super.update(elapsed);
         time += elapsed;
         speedVariation = Math.sin(time * variationSpeed) * baseSpeed * 0.3;
         worldY -= (baseSpeed + speedVariation) * externalSpeedFactor * elapsed;
+        
         if (followCamera)
         {
             x = worldX;
@@ -134,7 +144,7 @@ class HollowTriangle extends FlxBasic
             worldY = y;
         }
     }
-    
+
     override public function draw():Void 
     {
         super.draw();
@@ -148,17 +158,36 @@ class HollowTriangle extends FlxBasic
             drawY = y - targetCamera.scroll.y;
         }
         
-        var vertices = new Array<Float>();
-        vertices.push(drawX + size/2); vertices.push(drawY);      // 顶点
-        vertices.push(drawX); vertices.push(drawY + size);        // 左下角
-        vertices.push(drawX + size); vertices.push(drawY + size); // 右下角
+        drawSprite.x = drawX;
+        drawSprite.y = drawY;
+        drawSprite.scale.set(size, size);
         
-        var graphic = FlxSpriteUtil.makeGraphic(this, 
-            Std.int(size + 2), 
-            Std.int(size + 2), 
-            FlxColor.TRANSPARENT, 
-            true);
+        // 清除之前的绘制
+        drawSprite.pixels.fillRect(drawSprite.pixels.rect, FlxColor.TRANSPARENT);
         
-        FlxSpriteUtil.drawPolygon(graphic, vertices, color, { thickness: 2 });
+        // 绘制空心三角形
+        var vertices = [
+            FlxPoint.get(0.5, 0),    // 顶点
+            FlxPoint.get(0, 1),      // 左下角
+            FlxPoint.get(1, 1)       // 右下角
+        ];
+        
+        FlxSpriteUtil.drawPolygon(drawSprite, vertices, color, { thickness: 2 });
+
+        for (point in vertices) {
+            point.put();
+        }
+        
+        // 绘制到屏幕上
+        drawSprite.draw();
+    }
+
+    override public function destroy():Void 
+    {
+        if (drawSprite != null) {
+            drawSprite.destroy();
+            drawSprite = null;
+        }
+        super.destroy();
     }
 }
