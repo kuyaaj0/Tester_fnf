@@ -64,12 +64,14 @@ class InitState extends MusicBeatState
 		FlxG.game.focusLostFramerate = 60;
 		FlxG.keys.preventDefaultKeys = [TAB];
 
+		psychlua.modules.ModuleHandler.init();
+
 		super.create();
 
 		FlxG.save.bind('funkin', CoolUtil.getSavePath());
-		
+
 		ClientPrefs.loadPrefs();
-		
+
 		#if LUA_ALLOWED
 		#if (android && EXTERNAL)
 		try
