@@ -1,7 +1,6 @@
 
 name: LinuxBuild
 on:
-  push:
   workflow_dispatch:
 jobs:
   build:
