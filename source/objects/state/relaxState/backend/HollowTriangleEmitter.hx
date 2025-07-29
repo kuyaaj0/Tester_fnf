@@ -5,25 +5,24 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
+import flixel.math.FlxPoint;
 
 class HollowTriangleEmitter extends FlxTypedGroup<FlxSprite>
 {
     // 发射控制
-    public var emissionRate:Float = 10; // 每秒发射数量
+    public var emissionRate:Float = 5; // 降低发射频率
     var emissionTimer:Float = 0;
     
-    // 三角形属性
-    var minTriangleSize:Int = 20;  // 最小尺寸
-    var maxTriangleSize:Int = 50;  // 最大尺寸
-    var minSpeed:Int = 80; // 最小速度
-    var maxSpeed:Int = 150;// 最大速度
+    var minTriangleSize:Int = 40;  // 增大最小尺寸
+    var maxTriangleSize:Int = 80;  // 增大最大尺寸
+    var minSpeed:Int = 30;         // 降低最小速度
+    var maxSpeed:Int = 60;         // 降低最大速度
     
     // 对象池
     var poolSize:Int = 100;
     var trianglePool:Array<FlxSprite> = [];
     
-    // 外部影响因子
-    public var externalSpeedFactor:Float = 1.0;
+    public var externalSpeedFactor:Float = 0;
     
     public function new() 
     {
@@ -44,8 +43,8 @@ class HollowTriangleEmitter extends FlxTypedGroup<FlxSprite>
     function createTriangle():FlxSprite
     {
         var triangle = new FlxSprite();
-        triangle.makeGraphic(maxTriangleSize * 2, maxTriangleSize * 2, FlxColor.TRANSPARENT, true);
-        triangle.offset.set(maxTriangleSize, maxTriangleSize); // 中心点对齐
+        triangle.makeGraphic(maxTriangleSize * 3, maxTriangleSize * 3, FlxColor.TRANSPARENT, true);
+        triangle.offset.set(maxTriangleSize * 1.5, maxTriangleSize * 1.5); // 中心点对齐
         add(triangle);
         return triangle;
     }
@@ -57,16 +56,13 @@ class HollowTriangleEmitter extends FlxTypedGroup<FlxSprite>
         
         var size = FlxG.random.int(minTriangleSize, maxTriangleSize);
         
-        // 设置初始位置
-        triangle.x = FlxG.random.float(-size, FlxG.width + size);
-        triangle.y = FlxG.height + size;
+        triangle.x = FlxG.random.float(0, FlxG.width);
+        triangle.y = FlxG.height + size; 
+
+        triangle.velocity.y = -FlxG.random.int(minSpeed, maxSpeed)
+        triangle.velocity.x = 0;
         
-        // 设置速度
-        triangle.velocity.y = -FlxG.random.int(minSpeed, maxSpeed);
-        triangle.velocity.x = FlxG.random.float(-20, 20);
-        
-        // 绘制三角形
-        drawTriangle(triangle, size);
+        drawSolidTriangle(triangle, size);
         
         triangle.revive();
     }
@@ -82,30 +78,30 @@ class HollowTriangleEmitter extends FlxTypedGroup<FlxSprite>
         return newTriangle;
     }
     
-    function drawTriangle(sprite:FlxSprite, size:Float):Void
+    function drawSolidTriangle(sprite:FlxSprite, size:Float):Void
     {
-        // 清除之前内容
         sprite.pixels.fillRect(sprite.pixels.rect, FlxColor.TRANSPARENT);
         
-        // 使用新版FlxSpriteUtil.drawPolygon
+        var centerX = sprite.width / 2;
+        var centerY = sprite.height / 2;
+        
         var vertices = [
-            FlxPoint.get(sprite.width/2, sprite.height/2 - size/2),    // 顶点
-            FlxPoint.get(sprite.width/2 - size/2, sprite.height/2 + size/2), // 左下
-            FlxPoint.get(sprite.width/2 + size/2, sprite.height/2 + size/2)  // 右下
+            FlxPoint.get(centerX, centerY - size/2),     // 顶点
+            FlxPoint.get(centerX - size/2, centerY + size/2), // 左下
+            FlxPoint.get(centerX + size/2, centerY + size/2)  // 右下
         ];
         
         FlxSpriteUtil.drawPolygon(
             sprite,
             vertices,
-            FlxColor.TRANSPARENT, // 填充色
+            FlxColor.WHITE,
             {
-                thickness: 2, 
-                color: FlxColor.CYAN,
+                thickness: 3,
+                color: FlxColor.BLACK,
                 pixelHinting: true
             }
         );
         
-        // 释放顶点内存
         for (point in vertices) point.put();
         
         sprite.dirty = true;
@@ -121,18 +117,14 @@ class HollowTriangleEmitter extends FlxTypedGroup<FlxSprite>
             emissionTimer -= 1 / emissionRate;
             spawnTriangle();
         }
-        
+
         for (triangle in members)
         {
             if (triangle.exists)
             {
-                triangle.y += triangle.velocity.y * elapsed * externalSpeedFactor;
-                triangle.x += triangle.velocity.x * elapsed;
-                triangle.angle += triangle.velocity.x * 0.2;
+                triangle.y += (triangle.velocity.y - externalSpeedFactor * 10) * elapsed;
                 
-                if (triangle.y + triangle.height < 0 || 
-                    triangle.x + triangle.width < 0 || 
-                    triangle.x > FlxG.width)
+                if (triangle.y + triangle.height < 0)
                 {
                     triangle.kill();
                 }
@@ -141,9 +133,9 @@ class HollowTriangleEmitter extends FlxTypedGroup<FlxSprite>
     }
     
     public function setParams(
-        rate:Float = 10, 
-        minS:Int = 20, maxS:Int = 50, 
-        minSpd:Int = 80, maxSpd:Int = 150
+        rate:Float = 5, 
+        minS:Int = 40, maxS:Int = 80, 
+        minSpd:Int = 30, maxSpd:Int = 60
     ):Void
     {
         emissionRate = rate;
