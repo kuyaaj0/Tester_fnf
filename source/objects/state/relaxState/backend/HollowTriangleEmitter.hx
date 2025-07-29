@@ -59,7 +59,7 @@ class HollowTriangleEmitter extends FlxTypedGroup<FlxSprite>
         triangle.x = FlxG.random.float(0, FlxG.width);
         triangle.y = FlxG.height + size; 
 
-        triangle.velocity.y = -FlxG.random.int(minSpeed, maxSpeed)
+        triangle.velocity.y = -FlxG.random.int(minSpeed, maxSpeed);
         triangle.velocity.x = 0;
         
         drawSolidTriangle(triangle, size);
