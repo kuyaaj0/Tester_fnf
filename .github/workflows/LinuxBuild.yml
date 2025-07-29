@@ -24,6 +24,7 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hmm
+          haxelib run hmm install
           
       - name: Compile
         run: |
