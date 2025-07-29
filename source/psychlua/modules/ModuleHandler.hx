@@ -57,33 +57,33 @@ class ModuleHandler {
 			for(k=>v in sbCallbacks) {
 				switch(k) {
 					case "onStateSwitch":
-						FlxG.signals.preStateSwitch.remove(v);
+						FlxG.signals.preStateSwitch.remove(cast v);
 					case "onStateSwitchPost":
-						FlxG.signals.postStateSwitch.remove(v);
+						FlxG.signals.postStateSwitch.remove(cast v);
 					case "onStateCreate":
-						FlxG.signals.preStateCreate.remove(v);
+						FlxG.signals.preStateCreate.remove(cast v);
 					case "onGameResized":
-						FlxG.signals.gameResized.remove(v);
+						FlxG.signals.gameResized.remove(cast v);
 					case "onGameReset":
-						FlxG.signals.preGameReset.remove(v);
+						FlxG.signals.preGameReset.remove(cast v);
 					case "onGameResetPost":
-						FlxG.signals.postGameReset.remove(v);
+						FlxG.signals.postGameReset.remove(cast v);
 					case "onGameStart":
-						FlxG.signals.preGameStart.remove(v);
+						FlxG.signals.preGameStart.remove(cast v);
 					case "onGameStartPost":
-						FlxG.signals.postGameStart.remove(v);
+						FlxG.signals.postGameStart.remove(cast v);
 					case "onUpdate":
-						FlxG.signals.preUpdate.remove(v);
+						FlxG.signals.preUpdate.remove(cast v);
 					case "onUpdatePost":
-						FlxG.signals.postUpdate.remove(v);
+						FlxG.signals.postUpdate.remove(cast v);
 					case "onDraw":
-						FlxG.signals.preDraw.remove(v);
+						FlxG.signals.preDraw.remove(cast v);
 					case "onDrawPost":
-						FlxG.signals.postDraw.remove(v);
+						FlxG.signals.postDraw.remove(cast v);
 					case "onFocusGained":
-						FlxG.signals.focusGained.remove(v);
+						FlxG.signals.focusGained.remove(cast v);
 					case "onFocusLost":
-						FlxG.signals.focusLost.remove(v);
+						FlxG.signals.focusLost.remove(cast v);
 					case _:
 				}
 			}
@@ -96,72 +96,72 @@ class ModuleHandler {
 					sbCallbacks.set(id, function() {
 						ModuleHandler.call(id);
 					});
-					FlxG.signals.preStateSwitch.add(sbCallbacks.get(id));
+					FlxG.signals.preStateSwitch.add(cast sbCallbacks.get(id));
 				case "onStateSwitchPost":
 					sbCallbacks.set(id, function() {
 						ModuleHandler.call(id);
 					});
-					FlxG.signals.postStateSwitch.add(sbCallbacks.get(id));
+					FlxG.signals.postStateSwitch.add(cast sbCallbacks.get(id));
 				case "onStateCreate":
 					sbCallbacks.set(id, function(state:FlxState) {
 						ModuleHandler.call(id, [state]);
 					});
-					FlxG.signals.preStateCreate.add(sbCallbacks.get(id));
+					FlxG.signals.preStateCreate.add(cast sbCallbacks.get(id));
 				case "onGameResized":
 					sbCallbacks.set(id, function(width:Int, height:Int) {
 						ModuleHandler.call(id, [width, height]);
 					});
-					FlxG.signals.gameResized.add(sbCallbacks.get(id));
+					FlxG.signals.gameResized.add(cast sbCallbacks.get(id));
 				case "onGameReset":
 					sbCallbacks.set(id, function() {
 						ModuleHandler.call(id);
 					});
-					FlxG.signals.preGameReset.add(sbCallbacks.get(id));
+					FlxG.signals.preGameReset.add(cast sbCallbacks.get(id));
 				case "onGameResetPost":
 					sbCallbacks.set(id, function() {
 						ModuleHandler.call(id);
 					});
-					FlxG.signals.postGameReset.add(sbCallbacks.get(id));
+					FlxG.signals.postGameReset.add(cast sbCallbacks.get(id));
 				case "onGameStart":
 					sbCallbacks.set(id, function() {
 						ModuleHandler.call(id);
 					});
-					FlxG.signals.preGameStart.add(sbCallbacks.get(id));
+					FlxG.signals.preGameStart.add(cast sbCallbacks.get(id));
 				case "onGameStartPost":
 					sbCallbacks.set(id, function() {
 						ModuleHandler.call(id);
 					});
-					FlxG.signals.postGameStart.add(sbCallbacks.get(id));
+					FlxG.signals.postGameStart.add(cast sbCallbacks.get(id));
 				case "onUpdate":
 					sbCallbacks.set(id, function() {
 						ModuleHandler.call(id, [FlxG.elapsed]);
 					});
-					FlxG.signals.preUpdate.add(sbCallbacks.get(id));
+					FlxG.signals.preUpdate.add(cast sbCallbacks.get(id));
 				case "onUpdatePost":
 					sbCallbacks.set(id, function() {
 						ModuleHandler.call(id, [FlxG.elapsed]);
 					});
-					FlxG.signals.postUpdate.add(sbCallbacks.get(id));
+					FlxG.signals.postUpdate.add(cast sbCallbacks.get(id));
 				case "onDraw":
 					sbCallbacks.set(id, function() {
 						ModuleHandler.call(id);
 					});
-					FlxG.signals.preDraw.add(sbCallbacks.get(id));
+					FlxG.signals.preDraw.add(cast sbCallbacks.get(id));
 				case "onDrawPost":
 					sbCallbacks.set(id, function() {
 						ModuleHandler.call(id);
 					});
-					FlxG.signals.postDraw.add(sbCallbacks.get(id));
+					FlxG.signals.postDraw.add(cast sbCallbacks.get(id));
 				case "onFocusGained":
 					sbCallbacks.set(id, function() {
 						ModuleHandler.call(id);
 					});
-					FlxG.signals.focusGained.add(sbCallbacks.get(id));
+					FlxG.signals.focusGained.add(cast sbCallbacks.get(id));
 				case "onFocusLost":
 					sbCallbacks.set(id, function() {
 						ModuleHandler.call(id);
 					});
-					FlxG.signals.focusLost.add(sbCallbacks.get(id));
+					FlxG.signals.focusLost.add(cast sbCallbacks.get(id));
 				case _:
 			}
 		}
