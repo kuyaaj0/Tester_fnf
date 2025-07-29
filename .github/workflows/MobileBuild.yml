@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       dependencies_to_update:
-        description: '输入 "all" 更新所有haxelib, 也可以输入单个或多个haxelib单独更新他们(e.g. "lime,openfl,flixel"),不输入即不给haxelib做任何更新'
+        description: '输入 "all" 更新所有haxelib, 也可以输入单个或多个haxelib单独更新他们(e.g. "lime openfl flixel"),不输入即不给haxelib做任何更新'
         required: false
         default: ''
         
@@ -55,37 +55,18 @@ jobs:
       - name: Install Libraries
         run: |
           haxelib setup ~/haxelib
-            
-          if ! haxelib list | grep -q 'hmm '; then
-            haxelib install hmm
-          fi
-        
           if [ "${{ github.event.inputs.dependencies_to_update }}" == "all" ] || [ "${{ github.event.inputs.dependencies_to_update }}" == "android" ]; then
             echo "Installing all dependencies..."
+            haxelib install hmm 
             haxelib run hmm reinstall -f
-              
           elif [ -n "${{ github.event.inputs.dependencies_to_update }}" ] && [ "${{ github.event.inputs.dependencies_to_update }}" != "ios" ]; then
             echo "Updating specified dependencies: ${{ github.event.inputs.dependencies_to_update }}"
-              
-            IFS=', ' read -ra LIBS <<< "$(echo "${{ github.event.inputs.dependencies_to_update }}" | tr -d ' ')"
-              
-            for lib in "${LIBS[@]}"; do
-              echo "Processing library: $lib"
-                
-              if haxelib list | grep -q "$lib: \[git\]"; then
-                echo "-> Force updating git library"
-                URL=$(haxelib info $lib | grep 'url:' | awk '{print $2}')
-                haxelib git $lib $URL --always
-              else
-                echo "-> Reinstalling regular library"
-                haxelib run hmm reinstall $lib
-              fi
-            done
-              
+            haxelib install hmm
+            haxelib run hmm reinstall $(echo "${{ github.event.inputs.dependencies_to_update }}")
           else
             echo "No dependencies specified, only setting up haxelib"
           fi
-            
+
       - name: Configure Android
         run: |
           haxelib run lime config ANDROID_SDK $ANDROID_HOME
