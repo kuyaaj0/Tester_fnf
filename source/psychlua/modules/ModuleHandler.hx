@@ -1,7 +1,7 @@
 package psychlua.modules;
 
 import psychlua.HScript;
-import haxe.io.Path
+import haxe.io.Path;
 
 class ModuleHandler {
 	private static var moduleArray:Array<Module> = [];
