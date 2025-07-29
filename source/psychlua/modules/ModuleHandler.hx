@@ -2,6 +2,7 @@ package psychlua.modules;
 
 import psychlua.HScript;
 import haxe.io.Path;
+import crowplexus.iris.Iris;
 
 class ModuleHandler {
 	private static var moduleArray:Array<Module> = [];
@@ -17,7 +18,7 @@ class ModuleHandler {
 				HScript.originError(content, pos);
 			};
 
-			for(fn in file) {
+			for(fn in files) {
 				if(supportExtension.contains(Path.extension(fn))) {
 					var sc:ModuleHScript = new ModuleHScript(directoryPath + fn);
 					sc.execute();

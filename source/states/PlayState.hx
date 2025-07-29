@@ -4741,8 +4741,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		var moduleVal:Dynamic = callOnModule(funcToCall, args);
-		if((myValue == LuaUtils.Function_StopHScript || myValue == LuaUtils.Function_StopAll))
+		callOnModule(funcToCall, args);
 		#end
 
 		return returnVal;
