@@ -144,7 +144,7 @@ jobs:
           elif [ -n "${{ github.event.inputs.dependencies_to_update }}" ] && [ "${{ github.event.inputs.dependencies_to_update }}" != "android" ]; then
               echo "Updating specified dependencies: ${{ github.event.inputs.dependencies_to_update }}"
             haxelib install hmm
-            haxelib run hmm reinstall $(echo "${{ github.event.inputs.dependencies_to_update }}" | tr -d ' ')
+            haxelib run hmm reinstall $(echo "${{ github.event.inputs.dependencies_to_update }}")
           else
             echo "No dependencies specified, only setting up haxelib"
           fi
