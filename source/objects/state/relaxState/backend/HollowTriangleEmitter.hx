@@ -2,7 +2,7 @@ package objects.state.relaxState.backend;
 
 import flixel.util.FlxSpriteUtil;
 
-import substate.RelaxSubState;
+import substates.RelaxSubState;
 
 class HollowTriangleEmitter extends FlxTypedGroup<FlxSprite> {
     var emissionRate:Float = 0.5; // 每几秒发射一个三角形
@@ -17,6 +17,8 @@ class HollowTriangleEmitter extends FlxTypedGroup<FlxSprite> {
     
     // 对象池
     var trianglePool:Array<FlxSprite> = [];
+    
+    var externalSpeedFactor:Float = 0;
     
     public function new() {
         super();
@@ -92,7 +94,7 @@ class HollowTriangleEmitter extends FlxTypedGroup<FlxSprite> {
         for (triangle in members) {
             if (triangle.exists) {
                 triangle.y += triangle.velocity.y * elapsed;
-                triangle.y -= RelaxSubState.instance.audio.amplitude * elapsed * 50;
+                triangle.y -= externalSpeedFactor * elapsed * 50;
                 
                 // 如果移出屏幕就回收
                 if (triangle.y + triangle.height < 0) {
