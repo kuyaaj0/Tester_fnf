@@ -18,6 +18,9 @@ import lime.app.Application;
 import states.TitleState;
 import states.backend.InitState;
 import mobile.backend.Data;
+
+import developer.TraceInterceptor;
+
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import psychlua.HScript.HScriptInfos;
@@ -36,7 +39,6 @@ import lime.graphics.Image;
 	#define GAMEMODE_AUTO
 ')
 #end
-import developer.TraceInterceptor;
 
 class Main extends Sprite
 {
