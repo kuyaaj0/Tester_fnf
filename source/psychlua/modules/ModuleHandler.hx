@@ -13,7 +13,7 @@ class ModuleHandler {
 		var directoryPath:String = #if mobile mobile.backend.SUtil.getStorageDirectory() + #end "mods/modules/";
 		if(FileSystem.exists(directoryPath) && FileSystem.isDirectory(directoryPath)) {
 			var files:Array<String> = FileSystem.readDirectory(directoryPath);
-			Iris.error = function(content:Dynamic, pos: haxe.Posinfos) {
+			Iris.error = function(content:Dynamic, pos:haxe.PosInfos) {
 				lime.app.Application.current.window.alert(Std.string(content), '[${pos.fileName}:${pos.lineNumber}]');
 				HScript.originError(content, pos);
 			};
