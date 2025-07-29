@@ -14,7 +14,7 @@ class ModuleHandler {
 		if(FileSystem.exists(directoryPath) && FileSystem.isDirectory(directoryPath)) {
 			var files:Array<String> = FileSystem.readDirectory(directoryPath);
 			Iris.error = function(content:Dynamic, ?pos:haxe.PosInfos) {
-				lime.app.Application.current.window.alert(Std.string(content), '[${pos.fileName}:${pos.lineNumber}]');
+				lime.app.Application.current.window.alert('[${pos.fileName}:${pos.lineNumber}]: ' + Std.string(content), "Module Error");
 				HScript.originError(content, pos);
 			};
 
