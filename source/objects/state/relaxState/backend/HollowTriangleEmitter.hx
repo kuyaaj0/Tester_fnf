@@ -18,7 +18,7 @@ class HollowTriangleEmitter extends FlxTypedGroup<FlxSprite> {
     // 对象池
     var trianglePool:Array<FlxSprite> = [];
     
-    var externalSpeedFactor:Float = 0;
+    public var externalSpeedFactor:Float = 0;
     
     public function new() {
         super();
