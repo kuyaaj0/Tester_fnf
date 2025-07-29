@@ -55,17 +55,33 @@ jobs:
       - name: Install Libraries
         run: |
           haxelib setup ~/haxelib
+            
+          if ! haxelib list | grep -q 'hmm '; then
+            haxelib install hmm
+          fi
+        
           if [ "${{ github.event.inputs.dependencies_to_update }}" == "all" ] || [ "${{ github.event.inputs.dependencies_to_update }}" == "android" ]; then
             echo "Installing all dependencies..."
-            haxelib install hmm 
             haxelib run hmm reinstall -f
-          elif [ -n "${{ github.event.inputs.dependencies_to_update }}" ] && [ "${{ github.event.inputs.dependencies_to_update }}" != "ios" ]; then
-              echo "Cleaning and reinstalling: ${{ github.event.inputs.dependencies_to_update }}"
-              haxelib install hmm
               
-              # 先移除再安装
-              haxelib remove $(echo "${{ github.event.inputs.dependencies_to_update }}" | tr -d ' ')
-              haxelib run hmm install $(echo "${{ github.event.inputs.dependencies_to_update }}" | tr -d ' ')
+          elif [ -n "${{ github.event.inputs.dependencies_to_update }}" ] && [ "${{ github.event.inputs.dependencies_to_update }}" != "ios" ]; then
+            echo "Updating specified dependencies: ${{ github.event.inputs.dependencies_to_update }}"
+              
+            IFS=', ' read -ra LIBS <<< "$(echo "${{ github.event.inputs.dependencies_to_update }}" | tr -d ' ')"
+              
+            for lib in "${LIBS[@]}"; do
+              echo "Processing library: $lib"
+                
+              if haxelib list | grep -q "$lib: \[git\]"; then
+                echo "-> Force updating git library"
+                URL=$(haxelib info $lib | grep 'url:' | awk '{print $2}')
+                haxelib git $lib $URL --always
+              else
+                echo "-> Reinstalling regular library"
+                haxelib run hmm reinstall $lib
+              fi
+            done
+              
           else
             echo "No dependencies specified, only setting up haxelib"
           fi
