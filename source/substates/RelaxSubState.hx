@@ -66,7 +66,7 @@ class RelaxSubState extends MusicBeatSubstate
 	var triangleEmitter:HollowTriangleEmitter;
 	
 	var backendPicture:FlxSprite;
-	var audio:AudioCircleDisplay;
+	public var audio:AudioCircleDisplay;
 	var recordPicture:FlxSprite;
 	
 	var oldBackendPicture:FlxSprite;
@@ -558,7 +558,8 @@ class RelaxSubState extends MusicBeatSubstate
 		add(DebugText);
 		DebugText.cameras = [camHUD];
 		
-		triangleEmitter = new HollowTriangleEmitter(camHollow);
+		triangleEmitter = new HollowTriangleEmitter();
+		triangleEmitter.cameras = [camHollow];
         add(triangleEmitter);
 	}
 
