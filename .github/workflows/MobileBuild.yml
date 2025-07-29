@@ -60,9 +60,12 @@ jobs:
             haxelib install hmm 
             haxelib run hmm reinstall -f
           elif [ -n "${{ github.event.inputs.dependencies_to_update }}" ] && [ "${{ github.event.inputs.dependencies_to_update }}" != "ios" ]; then
-            echo "Updating specified dependencies: ${{ github.event.inputs.dependencies_to_update }}"
-            haxelib install hmm
-            haxelib run hmm reinstall $(echo "${{ github.event.inputs.dependencies_to_update }}" | tr -d ' ')
+              echo "Cleaning and reinstalling: ${{ github.event.inputs.dependencies_to_update }}"
+              haxelib install hmm
+              
+              # 先移除再安装
+              haxelib remove $(echo "${{ github.event.inputs.dependencies_to_update }}" | tr -d ' ')
+              haxelib run hmm install $(echo "${{ github.event.inputs.dependencies_to_update }}" | tr -d ' ')
           else
             echo "No dependencies specified, only setting up haxelib"
           fi
