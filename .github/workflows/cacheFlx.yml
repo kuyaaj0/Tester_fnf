@@ -23,7 +23,7 @@ jobs:
           
       - name: Save Haxelib cache
         uses: actions/cache/save@v4
-        id: HaxelibCache
+        enableCrossOsArchive: true
         with:
           key: cache-install-Haxelib
           path: |
@@ -31,7 +31,7 @@ jobs:
 
       - name: Save androidbuild cache
         uses: actions/cache/save@v4
-        id: AndroidCache
+        enableCrossOsArchive: true
         with:
           key: cache-build-Android
           path: |
@@ -39,7 +39,7 @@ jobs:
             
       - name: Save iOSbuild cache
         uses: actions/cache/save@v4
-        id: iOSCache
+        enableCrossOsArchive: true
         with:
           key: cache-build-iOS
           path: |

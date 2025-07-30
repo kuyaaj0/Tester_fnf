@@ -45,7 +45,7 @@ jobs:
             console.log("Available caches:", caches.data.actions_caches);
       - name: cache Build
         uses: actions/cache/restore@v4
-        id: AndroidCache
+        enableCrossOsArchive: true
         with:
           key: cache-build-Android
           path: |
@@ -87,6 +87,7 @@ jobs:
     
       - name: Uploading new cache
         uses: actions/cache/save@v4
+        enableCrossOsArchive: true
         with:
           key: cache-build-Android
           path: |
@@ -110,6 +111,7 @@ jobs:
    
       - name: cache Build
         uses: actions/cache/restore@v4
+        enableCrossOsArchive: true
         with:
           key: cache-build-iOS
           path: |
