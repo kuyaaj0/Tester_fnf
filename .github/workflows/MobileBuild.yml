@@ -84,6 +84,29 @@ jobs:
           name: androidBuild
           path: export/release/android/bin/app/build/outputs/apk/release/*.apk
           if-no-files-found: error
+          
+      - name: Delete old Android cache before saving new one
+        uses: actions/github-script@v6
+        with:
+          script: |
+            try {
+              const caches = await github.rest.actions.getActionsCacheList({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                key: 'cache-build-Android',
+              });
+              
+              for (const cache of caches.data.actions_caches) {
+                await github.rest.actions.deleteActionsCacheById({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  cache_id: cache.id,
+                });
+                console.log(`Deleted old Android cache ID: ${cache.id}`);
+              }
+            } catch (error) {
+              console.error('Error deleting old cache:', error.message);
+            }
     
       - name: Uploading new cache
         uses: actions/cache/save@v4
