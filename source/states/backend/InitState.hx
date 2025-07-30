@@ -67,9 +67,12 @@ class InitState extends MusicBeatState
 		super.create();
 
 		FlxG.save.bind('funkin', CoolUtil.getSavePath());
-		
+
 		ClientPrefs.loadPrefs();
-		
+
+		//clear up
+		crowplexus.hscript.Interp.clearCache();
+
 		#if LUA_ALLOWED
 		#if (android && EXTERNAL)
 		try
@@ -85,9 +88,10 @@ class InitState extends MusicBeatState
 		}
 		#end
 		#end
-	
+
 		Mods.loadTopMod();
-	
+		psychlua.modules.ModuleHandler.init();
+
 		#if CHECK_FOR_UPDATES
 		if (ClientPrefs.data.checkForUpdates)
 		{
