@@ -43,6 +43,15 @@ jobs:
               repo: context.repo.repo,
             });
             console.log("Available caches:", caches.data.actions_caches);
+            
+      - name: cache Build
+        uses: actions/cache@v3
+        with:
+          key: cache-build-Android
+          path: |
+            .haxelib/
+            export/release/android/
+            ~/.gradle
               
       - name: Install Libraries
         run: |
@@ -76,31 +85,27 @@ jobs:
           path: export/release/android/bin/app/build/outputs/apk/release/*.apk
           if-no-files-found: error
           
-      - name: Delete old Android cache before saving new one
+      - name: Clearing already existing cache
         uses: actions/github-script@v6
         with:
           script: |
-            try {
-              const caches = await github.rest.actions.getActionsCacheList({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                key: 'cache-build-Android',
-              });
-              
-              for (const cache of caches.data.actions_caches) {
+            const caches = await github.rest.actions.getActionsCacheList({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            for (const cache of caches.data.actions_caches) {
+              if (cache.key == "cache-build-${{ inputs.name }}") {
+                console.log('Clearing ' + cache.key + '...')
                 await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   cache_id: cache.id,
-                });
-                console.log(`Deleted old Android cache ID: ${cache.id}`);
+                })
+                console.log("Cache cleared.")
               }
-            } catch (error) {
-              console.error('Error deleting old cache:', error.message);
             }
-    
       - name: Uploading new cache
-        uses: actions/cache/save@v4
+        uses: actions/cache@v3
         with:
           key: cache-build-Android
           path: |
