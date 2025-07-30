@@ -227,7 +227,7 @@ class CopyState extends MusicBeatState
 	{
 		locatedFiles = OpenflAssets.list();
 		// removes unwanted assets
-		var assets = locatedFiles.filter(folder -> folder.startsWith('assets/'));
+		var assets = locatedFiles.filter(folder -> folder.startsWith('assets/') && !folder.contains('asset/shared/images/menuExtendHide/'));
 		var mods = locatedFiles.filter(folder -> folder.startsWith('mods/'));
 		locatedFiles = assets.concat(mods);
 
@@ -256,8 +256,8 @@ class CopyState extends MusicBeatState
 		#if !ios
 		locatedFiles = OpenflAssets.list();
 		// removes unwanted assets
-		var assets = locatedFiles.filter(folder -> folder.startsWith('assets/'));
-		var mods = locatedFiles.filter(folder -> folder.startsWith('mods/'));
+		var assets = locatedFiles.filter(folder -> folder.startsWith('assets/') && !folder.contains('unwantedFolder/'));
+		var mods = locatedFiles.filter(folder -> folder.startsWith('mods/') && !folder.contains('unwantedFolder/'));
 		locatedFiles = assets.concat(mods);
 
 		var filesToRemove:Array<String> = [];
@@ -292,8 +292,8 @@ class CopyState extends MusicBeatState
 		#else
 		locatedFiles = OpenflAssets.list();
 		// removes unwanted assets
-		var assets = locatedFiles.filter(folder -> folder.startsWith('assets/'));
-		var mods = locatedFiles.filter(folder -> folder.startsWith('mods/'));
+		var assets = locatedFiles.filter(folder -> folder.startsWith('assets/') && !folder.contains('unwantedFolder/'));
+		var mods = locatedFiles.filter(folder -> folder.startsWith('mods/') && !folder.contains('unwantedFolder/'));
 		locatedFiles = assets.concat(mods);
 
 		var filesToRemove:Array<String> = [];
