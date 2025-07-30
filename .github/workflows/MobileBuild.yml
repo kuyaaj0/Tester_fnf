@@ -43,15 +43,6 @@ jobs:
               repo: context.repo.repo,
             });
             console.log("Available caches:", caches.data.actions_caches);
-      - name: cache Build
-        uses: actions/cache/restore@v4
-        with:
-          enableCrossOsArchive: true
-          key: cache-build-Android
-          path: |
-            .haxelib/
-            export/release/android/
-            ~/.gradle
               
       - name: Install Libraries
         run: |
