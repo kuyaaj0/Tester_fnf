@@ -87,7 +87,6 @@ jobs:
     
       - name: Uploading new cache
         uses: actions/cache/save@v4
-        id: AndroidCache
         with:
           key: cache-build-Android
           path: |
@@ -111,7 +110,6 @@ jobs:
    
       - name: cache Build
         uses: actions/cache/restore@v4
-        id: iOSCache
         with:
           key: cache-build-iOS
           path: |
@@ -154,7 +152,6 @@ jobs:
     
       - name: Save build cache
         uses: actions/cache/save@v4
-        id: iOSCache
         with:
           key: cache-build-iOS
           path: |

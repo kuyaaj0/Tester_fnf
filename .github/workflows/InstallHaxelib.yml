@@ -36,7 +36,6 @@ jobs:
 
       - name: cache install
         uses: actions/cache/restore@v4
-        id: HaxelibCache
         with:
           key: cache-install-Haxelib
           path: |
