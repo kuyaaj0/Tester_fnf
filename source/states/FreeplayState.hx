@@ -31,7 +31,7 @@ import sys.thread.Mutex;
 
 class FreeplayState extends MusicBeatState
 {
-	var filePath:String = 'menuExtend/freeplayState/';
+	static public var filePath:String = 'menuExtendHide/freeplay/';
 
 	static public var instance:FreeplayState;
 
@@ -40,6 +40,7 @@ class FreeplayState extends MusicBeatState
 	public static var vocals:FlxSound = null;
 
 	var background:ChangeSprite;
+	var detailRect:DetailRect;
 	var downBG:Rect;
 
 	override function create()
@@ -95,6 +96,9 @@ class FreeplayState extends MusicBeatState
 		background = new ChangeSprite(0, 0).load(Paths.image('menuDesat'));
 		background.antialiasing = ClientPrefs.data.antialiasing;
 		add(background);
+
+		detailRect = new DetailRect(0, 0);
+		add(detailRect);
 
 		var downBG = new Rect(0, FlxG.height - 50, FlxG.width, 50, 0, 0);
 		downBG.color = 0x242A2E;
