@@ -2,7 +2,13 @@ name: InstallHaxelib
 
 on:
   workflow_dispatch:
+
   workflow_call:
+    inputs:
+      backup:
+        required: false
+        defeat: true
+        type: boolean
 
 env:
   HAXE_VERSION: 4.3.6
@@ -10,6 +16,7 @@ env:
 jobs:
   build:
     name: InstallHaxelib
+    if: ${{ inputs.backup }}
     runs-on: macos-15
     steps:
       - name: Checkout

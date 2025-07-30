@@ -9,6 +9,14 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  
+on:
+  workflow_call:
+    inputs:
+      backup:
+        required: false
+        defeat: true
+        type: boolean
 
 jobs:
   Build:
@@ -35,3 +43,5 @@ jobs:
         artifactPath: ${{ matrix.artifactPath }}
   installHaxelib:
      uses: ./.github/workflows/InstallHaxelib.yml
+     with:
+        backup: ${{ inputs.backup }}
