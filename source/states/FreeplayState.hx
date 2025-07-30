@@ -1,35 +1,46 @@
 package states;
 
-import flixel.util.FlxSpriteUtil;
 import flixel.addons.transition.FlxTransitionableState;
+
 import haxe.Json;
 import haxe.ds.ArraySort;
-import sys.thread.Thread;
-import sys.thread.Mutex;
+
 import openfl.system.System;
+
 import backend.WeekData;
 import backend.Highscore;
 import backend.Song;
 import backend.diffCalc.DiffCalc;
 import backend.Replay;
 import backend.diffCalc.StarRating;
-import objects.HealthIcon;
+
 import objects.state.freeplayState.*;
+
 import substates.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
 import substates.ErrorSubState;
+
 import states.MainMenuState;
 import states.PlayState;
 import states.LoadingState;
 import states.editors.ChartingState;
 import options.OptionsState;
 
+import sys.thread.Thread;
+import sys.thread.Mutex;
+
 class FreeplayState extends MusicBeatState
 {
+	var filePath:String = 'menuExtend/freeplayState/';
+
 	static public var instance:FreeplayState;
+
+	var songs:Array<SongMetadata> = [];
 
 	public static var vocals:FlxSound = null;
 
+	var background:ChangeSprite;
+	var downBG:Rect;
 
 	override function create()
 	{
@@ -50,7 +61,7 @@ class FreeplayState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
-		/*
+		
 		for (i in 0...WeekData.weeksList.length)
 		{
 			if (weekIsLocked(WeekData.weeksList[i]))
@@ -73,26 +84,40 @@ class FreeplayState extends MusicBeatState
 				var charter:Array<String> = song[4];
 				if (song[4] == null)
 					charter = ['N/A', 'N/A', 'N/A'];
-				addSong(song[0], i, song[1], muscan, charter, colors);
+				songs.push(new SongMetadata(song[0], i, song[1], muscan, charter, colors));
 			}
 		}
 
 		Mods.loadTopMod();
+	
+		//////////////////////////////////////////////////////////////////////////////////////////
+
+		background = new ChangeSprite(0, 0).load(Paths.image('menuDesat'));
+		background.antialiasing = ClientPrefs.data.antialiasing;
+		add(background);
+
+		var downBG = new Rect(0, FlxG.height - 50, FlxG.width, 50, 0, 0);
+		downBG.color = 0x242A2E;
+		add(downBG);
+
+		//////////////////////////////////////////////////////////////////////////////////////////
 
 		for (i in 0...songs.length)
 		{
 			Mods.currentModDirectory = songs[i].folder;
 
-			var songRect:SongRect = new SongRect(660, 50 + i * 100, songs[i].songName, songs[i].songCharacter, songs[i].musican, songs[i].color);
-			add(songRect);
-			songRect.member = i;
-			grpSongs.push(songRect);
-
-			if (i == curSelected)
-				songRect.lerpPosX = songRect.posX;
-		}*/
+			
+		}
 
 		WeekData.setDirectoryFromWeek();
+	}
+
+	function weekIsLocked(name:String):Bool
+	{
+		var leWeek:WeekData = WeekData.weeksLoaded.get(name);
+		return (!leWeek.startUnlocked
+			&& leWeek.weekBefore.length > 0
+			&& (!StoryMenuState.weekCompleted.exists(leWeek.weekBefore) || !StoryMenuState.weekCompleted.get(leWeek.weekBefore)));
 	}
 
 	public static function destroyFreeplayVocals() {
