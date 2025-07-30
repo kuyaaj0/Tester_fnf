@@ -1,0 +1,36 @@
+name: cacheFlx
+on:
+  workflow_dispatch:
+  
+jobs:
+  build:
+    name: cacheFlx
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.7
+          
+      - name: Install Libraries
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hmm
+          haxelib run hmm install
+
+      - name: Save androidbuild cache
+        uses: actions/cache/save@v4
+        with:
+          key: cache-install-Android
+          path: |
+            .haxelib/
+            
+      - name: Save iOSbuild cache
+        uses: actions/cache/save@v4
+        with:
+          key: cache-build-iOS
+          path: |
+            .haxelib/
