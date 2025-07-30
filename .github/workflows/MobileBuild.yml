@@ -45,13 +45,14 @@ jobs:
             console.log("Available caches:", caches.data.actions_caches);
       - name: cache Build
         uses: actions/cache/restore@v4
-        enableCrossOsArchive: true
         with:
+          enableCrossOsArchive: true
           key: cache-build-Android
           path: |
             .haxelib/
             export/release/android/
             ~/.gradle
+          restore-keys: cache-build-A
               
       - name: Install Libraries
         run: |
@@ -87,8 +88,8 @@ jobs:
     
       - name: Uploading new cache
         uses: actions/cache/save@v4
-        enableCrossOsArchive: true
         with:
+          enableCrossOsArchive: true
           key: cache-build-Android
           path: |
             .haxelib/
@@ -111,12 +112,14 @@ jobs:
    
       - name: cache Build
         uses: actions/cache/restore@v4
-        enableCrossOsArchive: true
         with:
+          enableCrossOsArchive: true
           key: cache-build-iOS
           path: |
             .haxelib/
             export/release/ios/
+            
+          restore-keys: cache-build-i
                 
       - name: Install Libraries
         run: |
@@ -155,6 +158,7 @@ jobs:
       - name: Save build cache
         uses: actions/cache/save@v4
         with:
+          enableCrossOsArchive: true
           key: cache-build-iOS
           path: |
             .haxelib/

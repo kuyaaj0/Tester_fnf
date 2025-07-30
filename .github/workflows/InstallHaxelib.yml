@@ -37,6 +37,7 @@ jobs:
       - name: cache install
         uses: actions/cache/restore@v4
         with:
+          enableCrossOsArchive: true
           key: cache-install-Haxelib
           path: |
             .haxelib/
@@ -88,8 +89,8 @@ jobs:
             }
       - name: Uploading new cache
         uses: actions/cache/save@v4
-        id: HaxelibCache
         with:
+          enableCrossOsArchive: true
           key: cache-install-Haxelib
           path: |
             .haxelib/
