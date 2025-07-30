@@ -20,11 +20,18 @@ jobs:
           haxelib setup ~/haxelib
           haxelib install hmm
           haxelib run hmm install
+          
+      - name: Save Haxelib cache
+        uses: actions/cache/save@v4
+        with:
+          key: cache-install-Haxelib
+          path: |
+            .haxelib/
 
       - name: Save androidbuild cache
         uses: actions/cache/save@v4
         with:
-          key: cache-install-Android
+          key: cache-build-Android
           path: |
             .haxelib/
             
