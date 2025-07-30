@@ -36,6 +36,7 @@ jobs:
 
       - name: cache install
         uses: actions/cache/restore@v4
+        id: HaxelibCache
         with:
           key: cache-install-Haxelib
           path: |
@@ -88,6 +89,7 @@ jobs:
             }
       - name: Uploading new cache
         uses: actions/cache/save@v4
+        id: HaxelibCache
         with:
           key: cache-install-Haxelib
           path: |
