@@ -47,7 +47,7 @@ jobs:
           path: export\release\windows\bin\*.zip
           if-no-files-found: error
           
-  name: LinuxBuild
+  LinuxBuild:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -78,7 +78,7 @@ jobs:
           name: LinuxBuild
           path: export/release/linux/bin/
           
-  name: macOS
+  macOS:
     runs-on: macos-${{matrix.version}}
     strategy:
       matrix:
