@@ -9,7 +9,7 @@ class TraceInterceptor {
     
     static function customTrace(v:Dynamic, ?infos:haxe.PosInfos) {
         var message = if (infos != null) {
-            '${infos.fileName}:${infos.lineNumber}: $v';
+            '${infos.fileName}:${infos.lineNumber}: ' + Std.string(v);
         } else {
             Std.string(v);
         };
