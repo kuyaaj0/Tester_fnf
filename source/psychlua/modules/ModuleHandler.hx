@@ -3,9 +3,12 @@ package psychlua.modules;
 import psychlua.HScript;
 import haxe.io.Path;
 import crowplexus.iris.Iris;
+<<<<<<< HEAD
 #if MODS_ALLOWED
 import backend.Mods;
 #end
+=======
+>>>>>>> 91e75a13 (添加module x2)
 
 class ModuleHandler {
 	private static var moduleArray:Array<Module> = [];
@@ -14,6 +17,7 @@ class ModuleHandler {
 	public static function init() {
 		moduleArray = [];
 
+<<<<<<< HEAD
 		#if MODS_ALLOWED
 		var paths:Array<String> = [];
 
@@ -32,7 +36,10 @@ class ModuleHandler {
 			HScript.originError(content, pos);
 		};
 		for(path in paths) {
-			for(fn in FileSystem.readDirectory(path)) {
+			for(fn in CoolUtil.readDirectoryRecursive(path)) {
+=======
+			for(fn in files) {
+>>>>>>> 91e75a13 (添加module x2)
 				if(supportExtension.contains(Path.extension(fn))) {
 					var sc:ModuleHScript = new ModuleHScript(path + fn);
 					sc.execute();
@@ -189,7 +196,6 @@ class ModuleHScript extends HScript {
 
 	override function preset(parent:Dynamic) {
 		set("ScriptedModule", ScriptedModule);
-		set("Applicaton", lime.app.Application);
 		super.preset(parent);
 	}
 }

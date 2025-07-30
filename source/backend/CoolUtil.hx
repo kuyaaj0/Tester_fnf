@@ -164,7 +164,7 @@ class CoolUtil
 	 * @param directory 要搜索的目录路径
 	 * @return Array<String> 包含所有文件路径的数组
 	 */
-	public static function readDirectoryRecursive(directory:String):Array<String>
+	public static function readDirectoryRecursive(directory:String, stayRoot:Bool = false):Array<String>
 	{
 		var filePaths:Array<String> = [];
 		#if sys
@@ -172,7 +172,7 @@ class CoolUtil
 		{
 			for (file in FileSystem.readDirectory(directory))
 			{
-				var path:String = directory + '/' + file;
+				var path:String = haxe.io.Path.addTrailingSlash(directory) + file;
 				if (FileSystem.isDirectory(path))
 				{
 					// 递归处理子文件夹
