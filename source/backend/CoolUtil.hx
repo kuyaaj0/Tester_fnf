@@ -159,6 +159,36 @@ class CoolUtil
 		#end
 	}
 
+	/**
+	 * 递归读取指定目录及其子目录中的所有文件路径
+	 * @param directory 要搜索的目录路径
+	 * @return Array<String> 包含所有文件路径的数组
+	 */
+	public static function readDirectoryRecursive(directory:String):Array<String>
+	{
+		var filePaths:Array<String> = [];
+		#if sys
+		if (FileSystem.exists(directory) && FileSystem.isDirectory(directory))
+		{
+			for (file in FileSystem.readDirectory(directory))
+			{
+				var path:String = directory + '/' + file;
+				if (FileSystem.isDirectory(path))
+				{
+					// 递归处理子文件夹
+					filePaths = filePaths.concat(readDirectoryRecursive(path));
+				}
+				else
+				{
+					// 添加文件路径
+					filePaths.push(path);
+				}
+			}
+		}
+		#end
+		return filePaths;
+	}
+
 	inline public static function openFolder(folder:String, absolute:Bool = false)
 	{
 		#if sys
