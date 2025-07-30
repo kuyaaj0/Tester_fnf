@@ -1,11 +1,10 @@
 name: Release
 on: workflow_dispatch
 jobs:
-  installHaxelib:
-     uses: ./.github/workflows/InstallHaxelib.yml
-     
   Mobile:
      uses: ./.github/workflows/MobileBuild.yml
+     with:
+      dependencies_to_update: all
      
   Windows:
     uses: ./.github/workflows/WindowsBuild.yml
@@ -17,7 +16,7 @@ jobs:
     uses: ./.github/workflows/MacBuild.yml
     
   Releaser:
-    needs: [Mobile, macOS, Windows, Linux, installHaxelib]
+    needs: [Mobile, macOS, Windows, Linux]
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
