@@ -21,26 +21,10 @@ jobs:
           haxelib install hmm
           haxelib run hmm install
           
-      - name: Save Haxelib cache
-        uses: actions/cache/save@v4
-        with:
-          enableCrossOsArchive: true
-          key: cache-install-Haxelib
-          path: |
-            .haxelib/
-
       - name: Save androidbuild cache
         uses: actions/cache/save@v4
         with:
           enableCrossOsArchive: true
           key: cache-build-Android
-          path: |
-            .haxelib/
-            
-      - name: Save iOSbuild cache
-        uses: actions/cache/save@v4
-        with:
-          enableCrossOsArchive: true
-          key: cache-build-iOS
           path: |
             .haxelib/
