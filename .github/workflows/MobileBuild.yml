@@ -84,25 +84,6 @@ jobs:
           path: export/release/android/bin/app/build/outputs/apk/release/*.apk
           if-no-files-found: error
     
-      - name: Clearing already existing cache
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const caches = await github.rest.actions.getActionsCacheList({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            })
-            for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache-build-Android") {
-                console.log('Clearing ' + cache.key + '...')
-                await github.rest.actions.deleteActionsCacheById({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  cache_id: cache.id,
-                })
-                console.log("Cache cleared.")
-              }
-            }
       - name: Uploading new cache
         uses: actions/cache/save@v4
         with:
@@ -168,25 +149,6 @@ jobs:
           path: export/release/ios/build/Release-iphoneos/*.ipa
           if-no-files-found: error
     
-      - name: Clearing already existing cache
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const caches = await github.rest.actions.getActionsCacheList({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            })
-            for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache-build-iOS") {
-                console.log('Clearing ' + cache.key + '...')
-                await github.rest.actions.deleteActionsCacheById({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  cache_id: cache.id,
-                })
-                console.log("Cache cleared.")
-              }
-            }
       - name: Save build cache
         uses: actions/cache/save@v4
         with:
