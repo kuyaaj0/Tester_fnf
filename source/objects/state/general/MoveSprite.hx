@@ -7,10 +7,10 @@ class MoveSprite extends FlxSprite{
         super(X, Y);
     }
 
-    public function load(graphic:FlxGraphicAsset, needScale:Float = 1.1) {
+    public function load(graphic:FlxGraphicAsset, scaleValue:Float = 1.1) {
         this.loadGraphic(graphic, false, 0, 0, false);
         this.scrollFactor.set(0, 0);
-        var scale = Math.max(FlxG.width * needScale / this.width, FlxG.height * needScale / this.height);
+        var scale = Math.max(FlxG.width * scaleValue / this.width, FlxG.height * scaleValue / this.height);
 		this.scale.x = scale;
 		this.scale.y = scale;
 		this.updateHitbox();
