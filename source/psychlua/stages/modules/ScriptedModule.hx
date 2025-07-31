@@ -1,4 +1,4 @@
-package psychlua.modules;
+package psychlua.stages.modules;
 
 import crowplexus.hscript.scriptclass.IScriptedClass;
 

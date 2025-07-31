@@ -1,0 +1,134 @@
+package psychlua.stages;
+
+/**
+ * @see 自个查
+ * 总之就是先这样再那样最后那样就没了（
+ */
+class HScriptState extends MusicBeatState {
+	public static final sign:String = "states";
+
+	public var scriptName:String;
+	public var scriptData:Null<Dynamic>;
+
+	private var hscriptArray:Array<HScript>;
+
+	public function new(name:String, ?data:Null<Dynamic>) {
+		hscriptArray = new Array<HScript>();
+
+		this.scriptName = name;
+		this.data = scriptData;
+		#if MODS_ALLOWED
+		var paths:Array<String> = [];
+
+		var globalPath:String = Paths.mods("stageScripts/" + sign + "/");
+		var topPath:String = Paths.mods(Mods.currentModDirectory + "/stageScripts/" + sign + "/");
+		if(FileSystem.exists(globalPath) && FileSystem.isDirectory(globalPath)) paths.push(globalPath);
+		if(FileSystem.exists(topPath) && FileSystem.isDirectory(topPath)) paths.push(topPath);
+
+		Iris.error = function(content:Dynamic, ?pos:haxe.PosInfos) {
+			lime.app.Application.current.window.alert('[${pos.fileName}:${pos.lineNumber}]: ' + Std.string(content), "State HScript Error");
+			HScript.originError(content, pos);
+		};
+		for(path in paths) {
+			for(fn in FileSystem.readDirectory(path)) {
+				if(Path.extension(fn) == "hx") {
+					var sc:HScript = new HScript(path + fn, this);
+					sc.set("MusicBeatState", MusicBeatState);
+					sc.set("MusicBeatSubstate", MusicBeatSubstate);
+					sc.execute();
+					hscriptArray.push(sc);
+				}
+			}
+		}
+		Iris.error = HScript.originError;
+		#end
+
+		super();
+	}
+
+	override function create() {
+		callOnScript("onCreate");
+		super.create();
+		callOnScript("onCreatePost");
+	}
+
+	override function update(elapsed:Float) {
+		callOnScript("onUpdate", [elapsed]);
+		super.update(elapsed);
+		callOnScript("onUpdatePost");
+	}
+
+	override function draw() {
+		callOnScript("onDraw");
+		super.draw();
+		callOmScript("onDrawPost");
+	}
+
+	override function openSubState(SubState:FlxSubState) {
+		callOnScript("onOpenSubState", [SubState]);
+		super.openSubState(SubState);
+		callOnScript("onOpenSubStatePost", [SubState]);
+	}
+
+	override function closeSubState() {
+		callOnScript("onCloseSubState");
+		super.closeSubState();
+		callOnScript("onCloseSubStatePost", [SubState]);
+	}
+
+	override function startOutro(onOutroComplete:()->Void) {
+		callOnScript("onOutroStart", [onOutroComplete]);
+		super.startOutro(onOutroComplete);
+	}
+
+	override function onFocusLost() {
+		callOnScript("onFocusLost");
+		super.onFocusLost();
+	}
+
+	override function onFocus() {
+		callOnScript("onFocus");
+		super.onFocus();
+	}
+
+	override function onResize(Width:Int, Height:Int) {
+		callOnScript("onResize", [Width, Height]);
+		super.onResize(Width, Height);
+	}
+
+	override function stepHit() {
+		callOnScript("onStepHit");
+		super.stepHit();
+	}
+
+	override function beatHit() {
+		callOnScript("onBeatHit");
+		super.beatHit();
+	}
+
+	override function sectionHit() {
+		callOnScript("onSectionHit");
+		super.beatHit();
+	}
+
+	override function destroy() {
+		if(hscriptArray != null && hscriptArray.length > 0) for(sc in hscriptArray) {
+			if(sc != null) {
+				if(sc.exists("onDestroy")) sc.call("onDestroy");
+				sc.destroy();
+			}
+		}
+
+		super.destroy();
+	}
+
+	public function callOnScript(name:String, ?args:Array<Dynamic>):Dynamic {
+		if(hscriptArray != null && hscriptArray.length > 0) for(sc in hscriptArray) {
+			if(sc != null && sc.exists(name)) {
+				sc.call(name, args);
+			}
+		}
+
+		return null;
+	}
+}
