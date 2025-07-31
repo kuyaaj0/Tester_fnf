@@ -122,7 +122,8 @@ import states.TitleState;
 	public var extraKeyReturn4:String = 'SHIFT';
 
 	// User Interface
-	public var uiScale:Float = 1;
+	public var uiScale:Float = 1; //废弃
+
 	public var CustomFade:String = 'Move';
 	public var CustomFadeSound:Float = 0.5;
 	public var CustomFadeText:Bool = true;
@@ -132,6 +133,8 @@ import states.TitleState;
 	public var freeplayOld:Bool = false;
 	public var resultsScreen:Bool = true;
 	public var loadingScreen:Bool = false;
+	public var loadImageTheards:Int = #if mobile 4 #else 8 #end;
+	public var loadMusicTheards:Int = #if mobile 2 #else 4 #end;
 
 	// Watermark
 	public var showFPS:Bool = true;
@@ -147,6 +150,19 @@ import states.TitleState;
 	public var language:String = 'English';
 
 	public var developerMode:Bool = false;
+
+
+
+	/////RelaxState Options\\\\\
+	public var NextSongs:String = 'Next';
+	public var RelaxAudioDisplayQuality:Int = 2;
+	public var RelaxAudioNumber:Int = 3;
+	public var RelaxAudioSymmetry:Bool = true;
+	
+	public var enableRecordRotation:Bool = true;
+	public var enableBpmZoom:Bool = true;
+
+	//////////////////////////////////////////////////////////////////////////////////////
 
 	public var arrowRGB:Array<Array<FlxColor>> = [
 		[0xFFC24B99, 0xFFFFFFFF, 0xFF3C1F56],
@@ -183,15 +199,6 @@ import states.TitleState;
 		'botplay' => false,
 		'opponentplay' => false
 	];
-	
-	/////RelaxState Options\\\\\
-	public var NextSongs:String = 'Next';
-	public var RelaxAudioDisplayQuality:Int = 2;
-	public var RelaxAudioNumber:Int = 3;
-	public var RelaxAudioSymmetry:Bool = true;
-	
-	public var enableRecordRotation:Bool = true;
-	public var enableBpmZoom:Bool = true;
 }
 
 class ClientPrefs
