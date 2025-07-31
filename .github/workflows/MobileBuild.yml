@@ -35,5 +35,5 @@ jobs:
       artifactPath: ${{ matrix.artifactPath }}
 
   installHaxelib:
-    if: ${{ github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'pull' || github.event_name == 'pull_request'}}
     uses: ./.github/workflows/InstallHaxelib.yml
