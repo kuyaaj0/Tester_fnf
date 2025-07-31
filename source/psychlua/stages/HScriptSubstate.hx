@@ -16,7 +16,7 @@ class HScriptSubstate extends MusicBeatSubstate {
 		hscriptArray = new Array<HScript>();
 
 		this.scriptName = name;
-		this.data = scriptData;
+		this.scriptData = data;
 		#if MODS_ALLOWED
 		var paths:Array<String> = [];
 
@@ -61,7 +61,7 @@ class HScriptSubstate extends MusicBeatSubstate {
 	override function draw() {
 		callOnScript("onDraw");
 		super.draw();
-		callOmScript("onDrawPost");
+		callOnScript("onDrawPost");
 	}
 
 	override function openSubState(SubState:FlxSubState) {
