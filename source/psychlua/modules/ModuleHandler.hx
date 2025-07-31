@@ -17,7 +17,7 @@ class ModuleHandler {
 		#if MODS_ALLOWED
 		var paths:Array<String> = [];
 
-		var globalPath:String = #if mobile mobile.backend.SUtil.getStorageDirectory() + #end "mods/modules/";
+		var globalPath:String = Paths.mods("modules/");
 		var topPath:String = Paths.mods(Mods.currentModDirectory + "/modules/");
 		if(FileSystem.exists(globalPath) && FileSystem.isDirectory(globalPath)) paths.push(globalPath);
 		if(FileSystem.exists(topPath) && FileSystem.isDirectory(topPath)) paths.push(topPath);
