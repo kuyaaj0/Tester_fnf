@@ -289,6 +289,7 @@ class Paths
 		newGraphic.persist = true;
 		newGraphic.destroyOnNoUse = false;
 		Cache.currentTrackedAssets.set(file, newGraphic);
+		newGraphic.dump();
 		return newGraphic;
 	}
 

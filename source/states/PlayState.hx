@@ -327,8 +327,9 @@ class PlayState extends MusicBeatState
 	
 	override public function create()
 	{
-		if (!ClientPrefs.data.loadingScreen)
-			Paths.clearStoredMemory();
+		
+		Paths.clearStoredMemory();
+		
 		startCallback = startCountdown;
 		endCallback = endSong;
 		
