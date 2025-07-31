@@ -418,11 +418,12 @@ class LoadingState extends MusicBeatState
 
 		// for images, they get to have their own thread
 		for (image in imagesToPrepare) {
-			
 			imageThread.run(() ->
 			{
 				try
 				{
+					Sys.sleep(0.001);
+					
 					var bitmap:BitmapData;
 					var file:String = null;
 
@@ -461,7 +462,6 @@ class LoadingState extends MusicBeatState
 					}
 					else
 						trace('oh no the image is null NOOOO ($image)');		
-					Sys.sleep(0.001);
 				}
 				catch (e:Dynamic)
 				{
@@ -479,6 +479,7 @@ class LoadingState extends MusicBeatState
 		{
 			try
 			{
+				Sys.sleep(0.001);
 				var ret:Dynamic = func();
 
 				if (ret != null)
