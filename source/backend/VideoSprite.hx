@@ -96,6 +96,7 @@ class VideoSprite extends FlxSpriteGroup
 
 		// start video and adjust resolution to screen size
 		videoSprite.load(videoName, shouldLoop ? ['input-repeat=65545'] : null);
+		videoSprite.bitmap.volumeAdjust = videoSprite.bitmap.volumeAdjust * FlxG.sound.volume;
 	}
 
 	var alreadyDestroyed:Bool = false;

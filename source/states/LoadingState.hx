@@ -418,10 +418,9 @@ class LoadingState extends MusicBeatState
 
 		// for images, they get to have their own thread
 		for (image in imagesToPrepare) {
-			var thrMutex:Mutex = new Mutex();
+			
 			imageThread.run(() ->
 			{
-				thrMutex.acquire();
 				try
 				{
 					var bitmap:BitmapData;
@@ -431,7 +430,7 @@ class LoadingState extends MusicBeatState
 					file = Paths.modsImages(image);
 					if (Cache.currentTrackedAssets.exists(file))
 					{
-						thrMutex.release();
+						
 						Sys.sleep(0.001);
 						addLoadCount();
 						return;
@@ -444,7 +443,7 @@ class LoadingState extends MusicBeatState
 						file = Paths.getPath('images/$image.png', IMAGE);
 						if (Cache.currentTrackedAssets.exists(file))
 						{
-							thrMutex.release();
+							
 							Sys.sleep(0.001);
 							addLoadCount();
 							return;
@@ -454,14 +453,12 @@ class LoadingState extends MusicBeatState
 						else
 						{
 							trace('no such image $image exists');
-							thrMutex.release();
+							
 							Sys.sleep(0.001);
 							addLoadCount();
 							return;
 						}
 					}
-					thrMutex.release();
-					Sys.sleep(0.001);
 
 					if (bitmap != null) {
 						imageMutex.acquire();
@@ -470,10 +467,14 @@ class LoadingState extends MusicBeatState
 					}
 					else
 						trace('oh no the image is null NOOOO ($image)');
+					
+					Sys.sleep(0.001);
+
+					
 				}
 				catch (e:Dynamic)
 				{
-					thrMutex.release();
+					Sys.sleep(0.001);
 					trace('ERROR! fail on preloading image $image');
 				}
 				addLoadCount();
@@ -483,14 +484,11 @@ class LoadingState extends MusicBeatState
 
 	static function initThread(func:Void->Dynamic, traceData:String)
 	{
-		var thrMutex:Mutex = new Mutex();
 		soundThread.run(() ->
 		{
-			thrMutex.acquire();
 			try
 			{
 				var ret:Dynamic = func();
-				thrMutex.release();
 				Sys.sleep(0.001);
 
 				if (ret != null)
@@ -500,7 +498,6 @@ class LoadingState extends MusicBeatState
 			}
 			catch (e:Dynamic)
 			{
-				thrMutex.release();
 				Sys.sleep(0.001);
 				trace('ERROR! fail on preloading $traceData');
 			}
