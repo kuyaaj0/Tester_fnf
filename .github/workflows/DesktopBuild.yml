@@ -1,6 +1,9 @@
 name: DesktopBuild
 on: 
   workflow_dispatch:
+    inputs:
+      backup: true
+    
   workflow_call:
     inputs:
       backup:
