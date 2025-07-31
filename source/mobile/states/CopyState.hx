@@ -256,8 +256,8 @@ class CopyState extends MusicBeatState
 		#if !ios
 		locatedFiles = OpenflAssets.list();
 		// removes unwanted assets
-		var assets = locatedFiles.filter(folder -> folder.startsWith('assets/') && !folder.contains('unwantedFolder/'));
-		var mods = locatedFiles.filter(folder -> folder.startsWith('mods/') && !folder.contains('unwantedFolder/'));
+		var assets = locatedFiles.filter(folder -> folder.startsWith('assets/') && !folder.contains('assets/shared/images/menuExtendHide/'));
+		var mods = locatedFiles.filter(folder -> folder.startsWith('mods/'));
 		locatedFiles = assets.concat(mods);
 
 		var filesToRemove:Array<String> = [];
