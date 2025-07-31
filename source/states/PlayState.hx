@@ -43,7 +43,6 @@ import objects.Note.EventNote;
 import objects.*;
 import states.stages.*;
 import states.stages.objects.*;
-import psychlua.modules.ModuleHandler;
 #if LUA_ALLOWED
 import psychlua.*;
 #else
