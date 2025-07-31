@@ -204,7 +204,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 				}
 			}
 
-			if (FlxG.keys.justPressed.ESCAPE #if android || justTouched #end)
+			if (Controls.instance.justPressed('accept') || justTouched)
 			{
 				// If the current dialogue still going
 				if (!finishedText)

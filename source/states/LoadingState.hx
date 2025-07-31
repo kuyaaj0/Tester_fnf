@@ -430,8 +430,6 @@ class LoadingState extends MusicBeatState
 					file = Paths.modsImages(image);
 					if (Cache.currentTrackedAssets.exists(file))
 					{
-						
-						Sys.sleep(0.001);
 						addLoadCount();
 						return;
 					}
@@ -443,8 +441,6 @@ class LoadingState extends MusicBeatState
 						file = Paths.getPath('images/$image.png', IMAGE);
 						if (Cache.currentTrackedAssets.exists(file))
 						{
-							
-							Sys.sleep(0.001);
 							addLoadCount();
 							return;
 						}
@@ -453,8 +449,6 @@ class LoadingState extends MusicBeatState
 						else
 						{
 							trace('no such image $image exists');
-							
-							Sys.sleep(0.001);
 							addLoadCount();
 							return;
 						}
@@ -466,11 +460,8 @@ class LoadingState extends MusicBeatState
 						imageMutex.release();
 					}
 					else
-						trace('oh no the image is null NOOOO ($image)');
-					
+						trace('oh no the image is null NOOOO ($image)');		
 					Sys.sleep(0.001);
-
-					
 				}
 				catch (e:Dynamic)
 				{
@@ -489,7 +480,6 @@ class LoadingState extends MusicBeatState
 			try
 			{
 				var ret:Dynamic = func();
-				Sys.sleep(0.001);
 
 				if (ret != null)
 					trace('finished preloading $traceData');
@@ -510,6 +500,7 @@ class LoadingState extends MusicBeatState
 		countMutex.acquire();
 		loaded++;
 		countMutex.release();
+		Sys.sleep(0.001);
 	}
 
 	public static function preloadCharacter(char:String, ?prefixVocals:String)

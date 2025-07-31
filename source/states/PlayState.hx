@@ -2136,8 +2136,11 @@ class PlayState extends MusicBeatState
 
 	function musicCheck(music:FlxSound, getTime:Float, deviation:Float):Bool
 	{
-		if (music.length > 0 && Math.abs(music.time - getTime) > deviation)
+		if (music == null)
+			return false;
+		if (music.length > 0 && Math.abs(music.time - getTime) > deviation) {
 			return true;
+		}
 		return false;
 	}
 
@@ -2264,9 +2267,9 @@ class PlayState extends MusicBeatState
 
 				if (Math.abs(FlxG.sound.music.time - timeSub) > diff
 					|| musicCheck(vocals, timeSub, diff)
-					|| musicCheck(opponentVocals, timeSub, diff))
+					|| (splitVocals && musicCheck(opponentVocals, timeSub, diff)))
 				{
-					if (fixDesyncedStep >= 10)
+					if (fixDesyncedStep >= 5)
 					{
 						fixDesyncedStep = 0;
 						resyncVocals(true);
