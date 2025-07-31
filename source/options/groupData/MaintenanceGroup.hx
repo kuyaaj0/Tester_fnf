@@ -9,7 +9,7 @@ class MaintenanceGroup extends OptionCata
         var option:Option = new Option(this, 'Maintenance', TITLE);
         addOption(option);
 
-        var option:Option = new Option(this, 'oldHscriptVersion', BOOL);
+        var option:Option = new Option(this, 'developerMode', BOOL);
         addOption(option);
 
 		/////--App--\\\\\
