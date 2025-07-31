@@ -6,13 +6,9 @@ jobs:
      
   MobileBuild:
     uses: ./.github/workflows/MobileBuild.yml
-    with:
-       backup: false
         
   DesktopBuild:
      uses: ./.github/workflows/DesktopBuild.yml
-     with:
-        backup: false
 
   Releaser:
     needs: [MobileBuild, DesktopBuild, installHaxelib]

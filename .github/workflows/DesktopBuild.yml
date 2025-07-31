@@ -10,10 +10,8 @@ on:
         type: boolean
 jobs:
   installHaxelib:
-    if: ${{ github.event_name == 'workflow_dispatch' || inputs.backup != false }}
+    if: ${{ github.event_name == 'workflow_dispatch'}
     uses: ./.github/workflows/InstallHaxelib.yml
-    with:
-      backup: ${{ github.event_name == 'workflow_dispatch' || inputs.backup }}
      
   Windows:
     runs-on: windows-latest
