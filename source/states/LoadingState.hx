@@ -432,8 +432,9 @@ class LoadingState extends MusicBeatState
 						addLoadCount();
 						return;
 					}
-					else if (FileSystem.exists(file))
+					else if (FileSystem.exists(file)) {
 						bitmap = BitmapData.fromFile(file);
+					}
 					else
 					#end
 					{
@@ -443,8 +444,9 @@ class LoadingState extends MusicBeatState
 							addLoadCount();
 							return;
 						}
-						else if (OpenFlAssets.exists(file, IMAGE))
+						else if (OpenFlAssets.exists(file, IMAGE)) {
 							bitmap = OpenFlAssets.getBitmapData(file);
+						}
 						else
 						{
 							trace('no such image $image exists');
