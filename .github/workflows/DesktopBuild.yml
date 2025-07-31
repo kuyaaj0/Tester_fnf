@@ -10,7 +10,7 @@ on:
   
 jobs:
   installHaxelib:
-    if: ${{ github.event_name == 'workflow_dispatch' || (inputs.skip_haxelib != true && github.event_name == 'workflow_call') }}
+    if: ${{ github.event_name == 'workflow_dispatch' || inputs.skip_haxelib == false}}
     uses: ./.github/workflows/InstallHaxelib.yml
      
   Windows:
