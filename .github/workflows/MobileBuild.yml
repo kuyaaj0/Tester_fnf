@@ -14,7 +14,7 @@ on:
     inputs:
       backup:
         required: false
-        defeat: true
+        default: true
         type: boolean
   
 jobs:
