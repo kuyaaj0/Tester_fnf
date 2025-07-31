@@ -1,9 +1,7 @@
 name: DesktopBuild
 on: 
   workflow_dispatch:
-    inputs:
-      backup: true
-    
+
   workflow_call:
     inputs:
       backup:
@@ -12,9 +10,10 @@ on:
         type: boolean
 jobs:
   installHaxelib:
-     uses: ./.github/workflows/InstallHaxelib.yml
-     with:
-        backup: ${{ inputs.backup }}
+    if: ${{ github.event_name == 'workflow_dispatch' || inputs.backup != false }}
+    uses: ./.github/workflows/InstallHaxelib.yml
+    with:
+      backup: ${{ github.event_name == 'workflow_dispatch' || inputs.backup }}
      
   Windows:
     runs-on: windows-latest

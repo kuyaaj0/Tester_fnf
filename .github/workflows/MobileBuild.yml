@@ -1,24 +1,20 @@
 name: MobileBuild
 
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-    inputs:
-      backup: true
   
+  workflow_dispatch:
+
   workflow_call:
     inputs:
       backup:
         required: false
         default: true
         type: boolean
-  
+
 jobs:
   Build:
     name: ${{ matrix.name }}
@@ -37,12 +33,14 @@ jobs:
             artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
     uses: ./.github/workflows/build.yml
     with:
-        name: ${{ matrix.name }}
-        os: ${{ matrix.os }}
-        buildArgs: ${{ matrix.buildArgs }}
-        artifactName: ${{ matrix.artifactName }}
-        artifactPath: ${{ matrix.artifactPath }}
+      name: ${{ matrix.name }}
+      os: ${{ matrix.os }}
+      buildArgs: ${{ matrix.buildArgs }}
+      artifactName: ${{ matrix.artifactName }}
+      artifactPath: ${{ matrix.artifactPath }}
+
   installHaxelib:
-     uses: ./.github/workflows/InstallHaxelib.yml
-     with:
-        backup: ${{ inputs.backup }}
+    if: ${{ github.event_name == 'workflow_dispatch' || inputs.backup != false }}
+    uses: ./.github/workflows/InstallHaxelib.yml
+    with:
+      backup: ${{ github.event_name == 'workflow_dispatch' || inputs.backup }}
