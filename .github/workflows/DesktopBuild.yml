@@ -1,12 +1,16 @@
 name: DesktopBuild
 on: 
   workflow_dispatch:
-
   workflow_call:
+    inputs:
+      skip_haxelib:
+        required: false
+        default: false
+        type: boolean
   
 jobs:
   installHaxelib:
-    if: ${{ github.event_name != 'workflow_call'}}
+    if: ${{ github.event_name == 'workflow_dispatch' || (inputs.skip_haxelib != true && github.event_name == 'workflow_call') }}
     uses: ./.github/workflows/InstallHaxelib.yml
      
   Windows:

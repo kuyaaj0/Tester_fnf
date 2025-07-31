@@ -6,10 +6,14 @@ jobs:
      
   MobileBuild:
     uses: ./.github/workflows/MobileBuild.yml
-        
+    with:
+      skip_haxelib: true  
+      
   DesktopBuild:
      uses: ./.github/workflows/DesktopBuild.yml
-
+     with:
+      skip_haxelib: true
+      
   Releaser:
     needs: [MobileBuild, DesktopBuild, installHaxelib]
     runs-on: ubuntu-latest
