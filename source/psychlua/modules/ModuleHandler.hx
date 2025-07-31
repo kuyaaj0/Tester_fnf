@@ -17,13 +17,8 @@ class ModuleHandler {
 		#if MODS_ALLOWED
 		var paths:Array<String> = [];
 
-		var topMod:Null<String> = null;
-		var list = Mods.parseList()?.enabled;
-		if(list != null && list[0] != null) {
-			topMod = list[0];
-		}
-		var globalPath:String = #if mobile mobile.backend.SUtil.getStorageDirectory() + #end "mods/modules/";
-		var topPath:String = #if mobile mobile.backend.SUtil.getStorageDirectory() + #end "mods/" + topMod + "/modules/";
+		var globalPath:String = Paths.mods("modules/");
+		var topPath:String = Paths.mods(Mods.currentModDirectory + "/modules/");
 		if(FileSystem.exists(globalPath) && FileSystem.isDirectory(globalPath)) paths.push(globalPath);
 		if(FileSystem.exists(topPath) && FileSystem.isDirectory(topPath)) paths.push(topPath);
 
