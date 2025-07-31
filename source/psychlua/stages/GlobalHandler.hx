@@ -1,48 +1,35 @@
-package psychlua.modules;
+package psychlua.stages;
 
-import psychlua.HScript;
-import haxe.io.Path;
-import crowplexus.iris.Iris;
-#if MODS_ALLOWED
-import backend.Mods;
-#end
-
-class ModuleHandler {
-	private static var moduleArray:Array<Module> = [];
-	private static final supportExtension:Array<String> = ["hxc", "hxs"];
+class GlobalHandler {
+	private static var grp:Array<HScript>;
 
 	public static function init() {
-		moduleArray = [];
+		grp = [];
 
 		#if MODS_ALLOWED
 		var paths:Array<String> = [];
 
-		var globalPath:String = Paths.mods("modules/");
-		var topPath:String = Paths.mods(Mods.currentModDirectory + "/modules/");
-		trace(topPath);
+		var globalPath:String = Paths.mods("stageScripts/globals/");
+		var topPath:String = Paths.mods(Mods.currentModDirectory + "/stageScripts/globals/");
 		if(FileSystem.exists(globalPath) && FileSystem.isDirectory(globalPath)) paths.push(globalPath);
 		if(FileSystem.exists(topPath) && FileSystem.isDirectory(topPath)) paths.push(topPath);
 
 		Iris.error = function(content:Dynamic, ?pos:haxe.PosInfos) {
-			lime.app.Application.current.window.alert('[${pos.fileName}:${pos.lineNumber}]: ' + Std.string(content), "Module Error");
+			lime.app.Application.current.window.alert('[${pos.fileName}:${pos.lineNumber}]: ' + Std.string(content), "Global HScript Error");
 			HScript.originError(content, pos);
 		};
 		for(path in paths) {
-			for(fn in CoolUtil.readDirectoryRecursive(path)) {
-				if(supportExtension.contains(Path.extension(fn))) {
-					var sc:ModuleHScript = new ModuleHScript(fn);
+			for(fn in FileSystem.readDirectory(path)) {
+				if(Path.extension(fn) == "hx") {
+					var sc:HScript = new HScript(path + fn);
 					sc.execute();
+					sc.call("onCreate");
+					grp.push(sc);
 				}
 			}
 		}
 		Iris.error = HScript.originError;
 		#end
-
-		for(fp in ScriptedModule.__sc_scriptClassLists()) {
-			var instance:Module = ScriptedModule.createScriptClassInstance(fp);
-			instance.onCreate();
-			moduleArray.push(instance);
-		}
 
 		globalHandler();
 	}
@@ -90,72 +77,72 @@ class ModuleHandler {
 			switch(id) {
 				case "onStateSwitch":
 					sbCallbacks.set(id, function() {
-						ModuleHandler.call(id);
+						GlobalHandler.call(id);
 					});
 					FlxG.signals.preStateSwitch.add(cast sbCallbacks.get(id));
 				case "onStateSwitchPost":
 					sbCallbacks.set(id, function() {
-						ModuleHandler.call(id);
+						GlobalHandler.call(id);
 					});
 					FlxG.signals.postStateSwitch.add(cast sbCallbacks.get(id));
 				case "onStateCreate":
 					sbCallbacks.set(id, function(state:FlxState) {
-						ModuleHandler.call(id, [state]);
+						GlobalHandler.call(id, [state]);
 					});
 					FlxG.signals.preStateCreate.add(cast sbCallbacks.get(id));
 				case "onGameResized":
 					sbCallbacks.set(id, function(width:Int, height:Int) {
-						ModuleHandler.call(id, [width, height]);
+						GlobalHandler.call(id, [width, height]);
 					});
 					FlxG.signals.gameResized.add(cast sbCallbacks.get(id));
 				case "onGameReset":
 					sbCallbacks.set(id, function() {
-						ModuleHandler.call(id);
+						GlobalHandler.call(id);
 					});
 					FlxG.signals.preGameReset.add(cast sbCallbacks.get(id));
 				case "onGameResetPost":
 					sbCallbacks.set(id, function() {
-						ModuleHandler.call(id);
+						GlobalHandler.call(id);
 					});
 					FlxG.signals.postGameReset.add(cast sbCallbacks.get(id));
 				case "onGameStart":
 					sbCallbacks.set(id, function() {
-						ModuleHandler.call(id);
+						GlobalHandler.call(id);
 					});
 					FlxG.signals.preGameStart.add(cast sbCallbacks.get(id));
 				case "onGameStartPost":
 					sbCallbacks.set(id, function() {
-						ModuleHandler.call(id);
+						GlobalHandler.call(id);
 					});
 					FlxG.signals.postGameStart.add(cast sbCallbacks.get(id));
 				case "onUpdate":
 					sbCallbacks.set(id, function() {
-						ModuleHandler.call(id, [FlxG.elapsed]);
+						GlobalHandler.call(id, [FlxG.elapsed]);
 					});
 					FlxG.signals.preUpdate.add(cast sbCallbacks.get(id));
 				case "onUpdatePost":
 					sbCallbacks.set(id, function() {
-						ModuleHandler.call(id, [FlxG.elapsed]);
+						GlobalHandler.call(id, [FlxG.elapsed]);
 					});
 					FlxG.signals.postUpdate.add(cast sbCallbacks.get(id));
 				case "onDraw":
 					sbCallbacks.set(id, function() {
-						ModuleHandler.call(id);
+						GlobalHandler.call(id);
 					});
 					FlxG.signals.preDraw.add(cast sbCallbacks.get(id));
 				case "onDrawPost":
 					sbCallbacks.set(id, function() {
-						ModuleHandler.call(id);
+						GlobalHandler.call(id);
 					});
 					FlxG.signals.postDraw.add(cast sbCallbacks.get(id));
 				case "onFocusGained":
 					sbCallbacks.set(id, function() {
-						ModuleHandler.call(id);
+						GlobalHandler.call(id);
 					});
 					FlxG.signals.focusGained.add(cast sbCallbacks.get(id));
 				case "onFocusLost":
 					sbCallbacks.set(id, function() {
-						ModuleHandler.call(id);
+						GlobalHandler.call(id);
 					});
 					FlxG.signals.focusLost.add(cast sbCallbacks.get(id));
 				case _:
@@ -163,28 +150,15 @@ class ModuleHandler {
 		}
 	}
 
-	public static function call(name:String, ?args:Array<Dynamic>):Dynamic {
-		for(module in moduleArray) {
-			if(module.active) {
-				var func:Dynamic = Reflect.getProperty(module, name);
-				if(Reflect.isFunction(func)) {
-					var result:Dynamic = Reflect.callMethod(null, func, args ?? []);
+	public static function call(funcName:String, ?args:Array<Dynamic>):Dynamic {
+		if(grp != null && grp.length > 0) {
+			for(sc in grp) {
+				if(sc != null && sc.exists(funcName)) {
+					sc.call(funcName, args);
 				}
 			}
 		}
 
 		return null;
-	}
-}
-
-class ModuleHScript extends HScript {
-	public function new(path:String) {
-		super(path);
-		interp.allowScriptClass = interp.allowScriptEnum = true;
-	}
-
-	override function preset(parent:Dynamic) {
-		set("ScriptedModule", ScriptedModule);
-		super.preset(parent);
 	}
 }

@@ -1,4 +1,4 @@
-package psychlua.modules;
+package psychlua.stages.modules;
 
 /**
  * 另类的全局脚本执行替身

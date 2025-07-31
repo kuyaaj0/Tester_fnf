@@ -224,6 +224,7 @@ class HScript {
 			#end
 
 			//scriptedclass
+			set("ScriptedBaseStage", psychlua.scriptClasses.ScriptedBaseStage);
 			set('ScriptedSprite', psychlua.scriptClasses.ScriptedSprite);
 			set('ScriptedGroup', psychlua.scriptClasses.ScriptedGroup);
 			set('ScriptedSpriteGroup', psychlua.scriptClasses.ScriptedSpriteGroup);

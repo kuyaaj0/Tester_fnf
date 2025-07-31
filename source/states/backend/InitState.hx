@@ -90,7 +90,8 @@ class InitState extends MusicBeatState
 		#end
 
 		Mods.loadTopMod();
-		psychlua.modules.ModuleHandler.init();
+		psychlua.stages.modules.ModuleHandler.init();
+		psychlua.stages.GlobalHandler.init();
 
 		#if CHECK_FOR_UPDATES
 		if (ClientPrefs.data.checkForUpdates)
