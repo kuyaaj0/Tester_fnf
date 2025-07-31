@@ -19,6 +19,7 @@ class ModuleHandler {
 
 		var globalPath:String = Paths.mods("modules/");
 		var topPath:String = Paths.mods(Mods.currentModDirectory + "/modules/");
+		trace(topPath);
 		if(FileSystem.exists(globalPath) && FileSystem.isDirectory(globalPath)) paths.push(globalPath);
 		if(FileSystem.exists(topPath) && FileSystem.isDirectory(topPath)) paths.push(topPath);
 
@@ -29,7 +30,7 @@ class ModuleHandler {
 		for(path in paths) {
 			for(fn in CoolUtil.readDirectoryRecursive(path)) {
 				if(supportExtension.contains(Path.extension(fn))) {
-					var sc:ModuleHScript = new ModuleHScript(path + fn);
+					var sc:ModuleHScript = new ModuleHScript(fn);
 					sc.execute();
 				}
 			}
