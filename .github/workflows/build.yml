@@ -43,8 +43,8 @@ jobs:
           key: cache-build-${{ inputs.name }}
           path: |
             .haxelib/
-            export/release/${{ inputs.name }}
-
+            export/release/${{ inputs.name }}/haxe/
+            export/release/${{ inputs.name }}/obj/
           restore-keys: |
             cache-build-${{ inputs.name }}
 
@@ -73,7 +73,6 @@ jobs:
         if: inputs.name == 'iOS'
         run: |
           cd export/release/ios/build/Release-iphoneos
-          rm -rf Payload
           mkdir Payload
           mv *.app Payload
           zip -r ${{ env.PROJECT_NAME }}.ipa Payload
@@ -112,6 +111,7 @@ jobs:
           key: cache-build-${{ inputs.name }}
           path: |
             .haxelib/
-            export/release/${{ inputs.name }}
+            export/release/${{ inputs.name }}/haxe/
+            export/release/${{ inputs.name }}/obj/
           restore-keys: |
             cache-build-${{ inputs.name }}
