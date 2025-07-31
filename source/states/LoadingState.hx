@@ -406,8 +406,8 @@ class LoadingState extends MusicBeatState
 		loadMax = imagesToPrepare.length + soundsToPrepare.length + musicToPrepare.length + songsToPrepare.length;
 		loaded = 0;
 
-		imageThread = new FixedThreadPool(8);
-		soundThread = new FixedThreadPool(8);
+		imageThread = new FixedThreadPool(ClientPrefs.data.loadImageTheards);
+		soundThread = new FixedThreadPool(ClientPrefs.data.loadMusicTheards);
 
 		for (sound in soundsToPrepare)
 			initThread(() -> Paths.sound(sound, true), 'sound $sound');
@@ -421,9 +421,7 @@ class LoadingState extends MusicBeatState
 			imageThread.run(() ->
 			{
 				try
-				{
-					Sys.sleep(0.001);
-					
+				{	
 					var bitmap:BitmapData;
 					var file:String = null;
 
@@ -479,7 +477,6 @@ class LoadingState extends MusicBeatState
 		{
 			try
 			{
-				Sys.sleep(0.001);
 				var ret:Dynamic = func();
 
 				if (ret != null)
