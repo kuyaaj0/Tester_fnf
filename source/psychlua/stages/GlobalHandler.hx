@@ -150,7 +150,7 @@ class GlobalHandler {
 		}
 	}
 
-	public static function call(funcName:String, args:Array<Dynamic>):Dynamic {
+	public static function call(funcName:String, ?args:Array<Dynamic>):Dynamic {
 		if(grp != null && grp.length > 0) {
 			for(sc in grp) {
 				if(sc != null && sc.exists(funcName)) {
