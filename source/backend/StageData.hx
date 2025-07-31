@@ -22,6 +22,8 @@ typedef StageFile =
 	var camera_girlfriend:Array<Float>;
 	var camera_speed:Null<Float>;
 
+	//指定script class实施操作
+	@:optional var specifyClass:String;
 	@:optional var preload:Dynamic;
 	@:optional var objects:Array<Dynamic>;
 	@:optional var _editorMeta:Dynamic;

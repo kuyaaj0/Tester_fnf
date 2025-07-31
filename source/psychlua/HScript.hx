@@ -232,6 +232,10 @@ class HScript {
 			set('ScriptedState', psychlua.scriptClasses.ScriptedState);
 			set('ScriptedSubstate', psychlua.scriptClasses.ScriptedSubstate);
 
+			//custom state
+			set("HScriptState", psychlua.stages.HScriptState);
+			set("HScriptSubstate", psychlua.stages.HScriptSubstate);
+
 			if(parent is MusicBeatState) {
 				set('setVar', function(name:String, value:Dynamic)
 				{

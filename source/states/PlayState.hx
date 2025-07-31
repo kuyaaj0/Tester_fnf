@@ -468,6 +468,15 @@ class PlayState extends MusicBeatState
 				new PhillyStreets(); // Weekend 1 - Darnell, Lit Up, 2Hot
 			case 'phillyBlazin':
 				new PhillyBlazin(); // Weekend 1 - Blazin
+			case _: //custom class
+				if(Reflect.hasField(stageData, "specifyClass") && stageData.specifyClass != null) {
+					if(psychlua.scriptClasses.ScriptedBaseStage.__sc_scriptClassLists().contains(stageData.specifyClass)) {
+						psychlua.scriptClasses.ScriptedBaseStage.createScriptClassInstance(stageData.specifyClass);
+					} else {
+						var resolve:Dynamic = Type.resolveClass(stageData.specifyClass);
+						if(resolve != null) Type.createInstance(cast resolve, []);
+					}
+				}
 		}
 
 		if (isPixelStage)
@@ -4618,9 +4627,6 @@ class PlayState extends MusicBeatState
 
 		if (FileSystem.exists(scriptToLoad))
 		{
-			if (Iris.instances.exists(scriptToLoad))
-				return false;
-
 			initHScript(scriptToLoad);
 			return true;
 		}
