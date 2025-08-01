@@ -304,8 +304,9 @@ class ModsMenuState extends MusicBeatState
 			curMod.icon.color = modsList.disabled.contains(mod) ? 0xFFFF6666 : FlxColor.WHITE;
 			curMod.text.color = modsList.disabled.contains(mod) ? FlxColor.GRAY : FlxColor.WHITE;
 
-			if (curMod.mustRestart)
+			//if (curMod.mustRestart) //待被更新
 				waitingToRestart = true;
+
 			updateModDisplayData();
 			checkToggleButtons();
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.6);
@@ -885,8 +886,8 @@ class ModsMenuState extends MusicBeatState
 		if (curMod == null)
 			return;
 
-		if (curMod.mustRestart || modsGroup.members[position].mustRestart)
-			waitingToRestart = true;
+		//if (curMod.mustRestart || modsGroup.members[position].mustRestart) //待被更新
+		waitingToRestart = true;
 
 		modsGroup.remove(curMod, true);
 		modsList.all.remove(mod);
