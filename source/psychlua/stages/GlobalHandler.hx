@@ -9,10 +9,8 @@ class GlobalHandler {
 		#if MODS_ALLOWED
 		var paths:Array<String> = [];
 
-		var globalPath:String = Paths.mods("stageScripts/globals/");
-		var topPath:String = Paths.mods(Mods.currentModDirectory + "/stageScripts/globals/");
-		if(FileSystem.exists(globalPath) && FileSystem.isDirectory(globalPath)) paths.push(globalPath);
-		if(FileSystem.exists(topPath) && FileSystem.isDirectory(topPath)) paths.push(topPath);
+		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'stageScripts/globals/'))
+			if(FileSystem.exists(folder) && FileSystem.isDirectory(folder)) paths.push(folder);
 
 		Iris.error = function(content:Dynamic, ?pos:haxe.PosInfos) {
 			lime.app.Application.current.window.alert('[${pos.fileName}:${pos.lineNumber}]: ' + Std.string(content), "Global HScript Error");

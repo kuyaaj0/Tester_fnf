@@ -58,7 +58,7 @@ class Mods
 			for (folder in FileSystem.readDirectory(modsFolder))
 			{
 				var path = haxe.io.Path.join([modsFolder, folder]);
-				if (FileSystem.isDirectory(path) && !ignoreModFolders.contains(folder.toLowerCase()) && !list.contains(folder))
+				if (FileSystem.isDirectory(path) && !ignoreModFolders.contains(folder) && !list.contains(folder))
 					list.push(folder);
 			}
 		}
@@ -226,7 +226,7 @@ class Mods
 			if (folder.trim().length > 0
 				&& FileSystem.exists(Paths.mods(folder))
 				&& FileSystem.isDirectory(Paths.mods(folder))
-				&& !ignoreModFolders.contains(folder.toLowerCase())
+				&& !ignoreModFolders.contains(folder)
 				&& !added.contains(folder))
 			{
 				added.push(folder);
