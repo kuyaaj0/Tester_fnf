@@ -1,0 +1,320 @@
+package developer;
+
+import openfl.display.Sprite;
+import openfl.events.MouseEvent;
+import openfl.text.TextField;
+import openfl.text.TextFormat;
+import openfl.ui.Mouse;
+import openfl.ui.MouseCursor;
+
+class Console extends Sprite {
+    private static var _instance:Console;
+    private var output:TextField;
+    private var buffer:Array<String> = [];
+    private var isDragging:Bool = false;
+    private var dragOffsetX:Float = 0;
+    private var dragOffsetY:Float = 0;
+    private var isScrolling:Bool = false;
+    private var scrollStartY:Float = 0;
+    private var scrollStartV:Int = 0;
+    private var captureEnabled:Bool = true;
+    private var autoScroll:Bool = true;
+    
+    public static var visible(get, set):Bool;
+    
+    public function new() {
+        super();
+        createConsoleUI();
+    }
+    
+    private function createConsoleUI():Void {
+        // 控制台背景
+        graphics.beginFill(0x333333, 0.8);
+        graphics.drawRoundRect(0, 0, 550, 400, 10);
+        graphics.endFill();
+        
+        // 输出文本框（带滚动功能）
+        output = new TextField();
+        output.defaultTextFormat = new TextFormat("_sans", 12, 0xFFFFFF);
+        output.width = 520;
+        output.height = 320;
+        output.x = 15;
+        output.y = 50;
+        output.multiline = true;
+        output.wordWrap = true;
+        output.selectable = true;
+        output.addEventListener(MouseEvent.MOUSE_DOWN, startTextScroll);
+        addChild(output);
+        
+        createTitleBar();
+        createControlButtons();
+    }
+    
+    private function createTitleBar():Void {
+        // 标题栏
+        var titleBar = new Sprite();
+        titleBar.graphics.beginFill(0x444444);
+        titleBar.graphics.drawRoundRect(0, 0, 550, 30, 10, 10);
+        titleBar.graphics.endFill();
+        addChild(titleBar);
+        
+        // 标题文本
+        var title = new TextField();
+        title.text = "Trace Console (拖拽移动)";
+        title.setTextFormat(new TextFormat("_sans", 12, 0xFFFFFF));
+        title.x = 10;
+        title.y = 5;
+        title.width = 300;
+        title.selectable = false;
+        titleBar.addChild(title);
+        
+        // 拖动功能
+        titleBar.addEventListener(MouseEvent.MOUSE_DOWN, startDragConsole);
+        titleBar.addEventListener(MouseEvent.MOUSE_UP, stopDragConsole);
+        titleBar.addEventListener(MouseEvent.MOUSE_OUT, stopDragConsole);
+    }
+    
+    private function createControlButtons():Void {
+        var buttonY = 10;
+        
+        // 启用/禁用捕捉按钮
+        var captureButton = createButton("禁用捕捉", 0xFF5555, 360, buttonY);
+        captureButton.addEventListener(MouseEvent.CLICK, function(e) {
+            toggleCapture();
+        });
+        
+        // 自动滚动按钮
+        var autoScrollButton = createButton("自动滚动:开", 0x55AA55, 440, buttonY);
+        autoScrollButton.addEventListener(MouseEvent.CLICK, function(e) {
+            toggleAutoScroll();
+        });
+        
+        // 清空按钮
+        var clearButton = createButton("清空日志", 0x5555FF, 280, buttonY);
+        clearButton.addEventListener(MouseEvent.CLICK, function(e) {
+            clearLogs();
+        });
+        
+        // 关闭按钮
+        var closeButton = createButton("关闭", 0xAAAAAA, 200, buttonY);
+        closeButton.addEventListener(MouseEvent.CLICK, function(e) {
+            closeConsole();
+        });
+    }
+    
+    private function createButton(label:String, color:Int, xPos:Float, yPos:Float):Sprite {
+        var button = new Sprite();
+        button.graphics.beginFill(color);
+        button.graphics.drawRoundRect(0, 0, 80, 20, 5);
+        button.graphics.endFill();
+        
+        var text = new TextField();
+        text.text = label;
+        text.setTextFormat(new TextFormat("_sans", 10, 0xFFFFFF));
+        text.x = 5;
+        text.y = 3;
+        text.width = 70;
+        text.selectable = false;
+        button.addChild(text);
+        
+        button.x = xPos;
+        button.y = yPos;
+        addChild(button);
+        
+        button.addEventListener(MouseEvent.MOUSE_OVER, function(e) {
+            Mouse.cursor = MouseCursor.BUTTON;
+        });
+        
+        button.addEventListener(MouseEvent.MOUSE_OUT, function(e) {
+            Mouse.cursor = MouseCursor.AUTO;
+        });
+        
+        return button;
+    }
+    
+    private function startTextScroll(e:MouseEvent):Void {
+        isScrolling = true;
+        scrollStartY = e.stageY;
+        scrollStartV = output.scrollV;
+        stage.addEventListener(MouseEvent.MOUSE_MOVE, doTextScroll);
+        stage.addEventListener(MouseEvent.MOUSE_UP, stopTextScroll);
+    }
+    
+    private function doTextScroll(e:MouseEvent):Void {
+        if (isScrolling) {
+            var deltaY:Int = Std.int((e.stageY - scrollStartY) / 3);
+            output.scrollV = scrollStartV - deltaY;
+            if (autoScroll) {
+                toggleAutoScroll(false);
+                updateAutoScrollButton();
+            }
+        }
+    }
+    
+    private function stopTextScroll(e:MouseEvent):Void {
+        isScrolling = false;
+        stage.removeEventListener(MouseEvent.MOUSE_MOVE, doTextScroll);
+        stage.removeEventListener(MouseEvent.MOUSE_UP, stopTextScroll);
+    }
+    
+    private function startDragConsole(e:MouseEvent):Void {
+        isDragging = true;
+        dragOffsetX = e.stageX - x;
+        dragOffsetY = e.stageY - y;
+        stage.addEventListener(MouseEvent.MOUSE_MOVE, dragConsole);
+    }
+    
+    private function stopDragConsole(e:MouseEvent):Void {
+        isDragging = false;
+        if (stage != null) {
+            stage.removeEventListener(MouseEvent.MOUSE_MOVE, dragConsole);
+        }
+    }
+    
+    private function dragConsole(e:MouseEvent):Void {
+        if (isDragging) {
+            x = e.stageX - dragOffsetX;
+            y = e.stageY - dragOffsetY;
+        }
+    }
+    
+    private function scrollToBottom():Void {
+        output.scrollV = output.maxScrollV;
+    }
+    
+    private function toggleCapture():Void {
+        captureEnabled = !captureEnabled;
+        updateCaptureButton();
+    }
+    
+    private function toggleAutoScroll(?value:Bool):Void {
+        autoScroll = value != null ? value : !autoScroll;
+        if (autoScroll) scrollToBottom();
+    }
+    
+    private function clearLogs():Void {
+        buffer = [];
+        output.text = "";
+    }
+    
+    private function closeConsole():Void {
+        visible = false;
+        ConsoleToggleButton.show();
+    }
+    
+    private function updateCaptureButton():Void {
+        var btn:TextField = cast(getChildAt(3).getChildAt(0), TextField);
+        btn.text = captureEnabled ? "禁用捕捉" : "启用捕捉";
+    }
+    
+    private function updateAutoScrollButton():Void {
+        var btn:TextField = cast(getChildAt(4).getChildAt(0), TextField);
+        btn.text = autoScroll ? "自动滚动:开" : "自动滚动:关";
+    }
+    
+    public function log(message:String):Void {
+        if (!captureEnabled) return;
+        
+        buffer.push(message);
+        output.text = buffer.join("\n");
+        
+        if (autoScroll) {
+            scrollToBottom();
+        }
+    }
+    
+    public static function show():Void {
+        if (_instance == null) {
+            _instance = new Console();
+            openfl.Lib.current.stage.addChild(_instance);
+        }
+        _instance.visible = true;
+        ConsoleToggleButton.hide();
+    }
+    
+    public static function hide():Void {
+        if (_instance != null) {
+            _instance.visible = false;
+        }
+    }
+    
+    private static function get_visible():Bool {
+        return _instance != null && _instance.visible;
+    }
+    
+    private static function set_visible(value:Bool):Bool {
+        if (_instance == null && value) {
+            show();
+        } else if (_instance != null) {
+            _instance.visible = value;
+        }
+        return value;
+    }
+    
+    public static function toggle():Void {
+        if (visible) {
+            hide();
+        } else {
+            show();
+        }
+    }
+}
+
+class ConsoleToggleButton extends Sprite {
+    private static var _instance:ConsoleToggleButton;
+    
+    public function new() {
+        super();
+        createButton();
+    }
+    
+    private function createButton():Void {
+        graphics.beginFill(0x4CAF50, 0.8);
+        graphics.drawRoundRect(0, 0, 80, 30, 5);
+        graphics.endFill();
+        
+        var label = new TextField();
+        label.text = "显示控制台";
+        label.setTextFormat(new TextFormat("_sans", 12, 0xFFFFFF));
+        label.x = 5;
+        label.y = 5;
+        label.width = 70;
+        label.selectable = false;
+        addChild(label);
+        
+        // 初始位置
+        x = openfl.Lib.current.stage.stageWidth - 90;
+        y = 20;
+        
+        // 点击事件
+        addEventListener(MouseEvent.CLICK, function(e) {
+            Console.show();
+        });
+        
+        // 拖动功能
+        addEventListener(MouseEvent.MOUSE_DOWN, startDrag);
+        addEventListener(MouseEvent.MOUSE_UP, stopDrag);
+    }
+    
+    private function startDrag(e:MouseEvent):Void {
+        startDrag();
+    }
+    
+    private function stopDrag(e:MouseEvent):Void {
+        stopDrag();
+    }
+    
+    public static function show():Void {
+        if (_instance == null) {
+            _instance = new ConsoleToggleButton();
+            openfl.Lib.current.stage.addChild(_instance);
+        }
+        _instance.visible = true;
+    }
+    
+    public static function hide():Void {
+        if (_instance != null) {
+            _instance.visible = false;
+        }
+    }
+}

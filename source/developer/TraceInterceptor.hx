@@ -5,6 +5,7 @@ class TraceInterceptor {
     
     public static function init() {
         haxe.Log.trace = customTrace;
+        ConsoleToggleButton.show();
     }
     
     static function customTrace(v:Dynamic, ?infos:haxe.PosInfos) {
@@ -13,6 +14,10 @@ class TraceInterceptor {
         } else {
             Std.string(v);
         };
+        
+        if (Console._instance != null && Console._instance.visible) {
+            Console._instance.log(message);
+        }
 
         originalTrace(v, infos);
     }
