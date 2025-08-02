@@ -61,15 +61,15 @@ class Console extends Sprite {
     private var isMaximized:Bool = false;
     private var normalSize:Rectangle = new Rectangle();
     
-    private function get titleBarHeight():Float return 30 * uiScale;
-    private function get titleFontSize():Int return Std.int(12 * uiScale);
-    private function get windowButtonSize():Float return 25 * uiScale;
-    private function get windowButtonFontSize():Int return Std.int(14 * uiScale);
-    private function get controlButtonWidth():Float return 80 * uiScale;
-    private function get controlButtonHeight():Float return 20 * uiScale;
-    private function get controlButtonFontSize():Int return Std.int(10 * uiScale);
-    private function get resizeHandleSize():Float return 40 * uiScale;
-    private function get consoleFontSize():Int return Std.int(14 * TextScale);
+    private function titleBarHeight():Float return 30 * uiScale;
+    private function titleFontSize():Int return Std.int(12 * uiScale);
+    private function windowButtonSize():Float return 25 * uiScale;
+    private function windowButtonFontSize():Int return Std.int(14 * uiScale);
+    private function controlButtonWidth():Float return 80 * uiScale;
+    private function controlButtonHeight():Float return 20 * uiScale;
+    private function controlButtonFontSize():Int return Std.int(10 * uiScale);
+    private function resizeHandleSize():Float return 40 * uiScale;
+    private function consoleFontSize():Int return Std.int(14 * TextScale);
     
     private static function get_consoleInstance():Console {
         if (_consoleInstance == null) {
