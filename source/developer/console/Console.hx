@@ -484,10 +484,13 @@ class Console extends Sprite {
         if (isResizing) {
             var newWidth = Math.max(minWidth, startWidth + (e.stageX - startResizeX));
             var newHeight = Math.max(minHeight, startHeight + (e.stageY - startResizeY));
-            
+    
             newWidth = Math.min(newWidth, openfl.Lib.current.stage.stageWidth - x);
             newHeight = Math.min(newHeight, openfl.Lib.current.stage.stageHeight - y);
-            
+    
+            currentWidth = newWidth;
+            currentHeight = newHeight;
+    
             drawDragReference(newWidth, newHeight);
         }
     }
@@ -496,12 +499,9 @@ class Console extends Sprite {
         if (isResizing) {
             isResizing = false;
             dragReference.visible = false;
-            
-            var finalWidth = dragReference.width;
-            var finalHeight = dragReference.height;
-            
-            redrawConsole(finalWidth, finalHeight);
-            
+    
+            redrawConsole(currentWidth, currentHeight);
+    
             stage.removeEventListener(MouseEvent.MOUSE_MOVE, onResize);
             stage.removeEventListener(MouseEvent.MOUSE_UP, stopResize);
             Mouse.cursor = MouseCursor.AUTO;
@@ -620,17 +620,21 @@ class Console extends Sprite {
         
         dragReference.graphics.lineStyle(1, 0xFFFFFF, 0.7);
         
-        // 左边线
+        // 上边线
         dragReference.graphics.moveTo(0, 0);
-        dragReference.graphics.lineTo(0, h);
+        dragReference.graphics.lineTo(w, 0);
         
         // 右边线
         dragReference.graphics.moveTo(w, 0);
         dragReference.graphics.lineTo(w, h);
         
         // 下边线
+        dragReference.graphics.moveTo(w, h);
+        dragReference.graphics.lineTo(0, h);
+        
+        // 左边线
         dragReference.graphics.moveTo(0, h);
-        dragReference.graphics.lineTo(w, h);
+        dragReference.graphics.lineTo(0, 0);
     }
     
     private function redrawConsole(newWidth:Float, newHeight:Float):Void {
