@@ -22,6 +22,7 @@ class Console extends Sprite {
     private var autoScroll:Bool = true;
     
     private var colorBuffer:Array<Int> = []; // 存储每行对应的颜色值
+    public static inline var MAX_LOG_LINES:Int = 200;
     
     // 按钮引用
     private var captureButton:Sprite;
@@ -180,8 +181,8 @@ class Console extends Sprite {
             output.scrollV = scrollStartV - deltaY;
             if (autoScroll) {
                 toggleAutoScroll(false);
-                updateAutoScrollButton();
             }
+            updateAutoScrollButton();
         }
     }
     
@@ -228,6 +229,7 @@ class Console extends Sprite {
     
     private function clearLogs():Void {
         buffer = [];
+        colorBuffer = [];
         output.text = "";
     }
     
@@ -256,6 +258,10 @@ class Console extends Sprite {
     
     private function addLog(message:String):Void {
         if (!captureEnabled) return;
+        
+        if (buffer.length >= MAX_LOG_LINES) {
+            buffer.shift();
+        }
         
         buffer.push(message);
         output.text = buffer.join("\n");
@@ -301,6 +307,11 @@ class Console extends Sprite {
         if (!captureEnabled) return;
         
         var fullMessage = head + message;
+        
+        if (buffer.length >= MAX_LOG_LINES) {
+            buffer.shift();
+        }
+        
         buffer.push(fullMessage);
         output.text = buffer.join("\n");
         
