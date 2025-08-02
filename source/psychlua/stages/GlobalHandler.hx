@@ -4,7 +4,7 @@ class GlobalHandler {
 	private static var grp:Array<HScript>;
 
 	public static function init() {
-		if(grp != null && grp.length > 0) for(sc in grp) (
+		if(grp != null && grp.length > 0) for(sc in grp) {
 			sc.destroy();
 		}
 		grp = [];

@@ -225,7 +225,7 @@ class HScript implements ISharedScript {
 		if(instances.exists(path)) {
 			var sc:HScript = instances.get(path);
 			if(sc.active) {
-				this.interp.imports.set((as != null && as.trim != "" ? as : Tools.last(s.split("."))), sc);
+				this.interp.imports.set((as != null && as.trim() != "" ? as : Tools.last(s.split("."))), sc);
 				return true;
 			}
 		}
