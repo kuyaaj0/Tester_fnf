@@ -261,9 +261,12 @@ class Console extends Sprite {
         
         if (buffer.length >= MAX_LOG_LINES) {
             buffer.shift();
+            colorBuffer.shift();
         }
         
         buffer.push(message);
+        colorBuffer.push(0xFFFFFF);
+        
         output.text = buffer.join("\n");
         
         if (autoScroll) {
@@ -310,19 +313,35 @@ class Console extends Sprite {
         
         if (buffer.length >= MAX_LOG_LINES) {
             buffer.shift();
+            colorBuffer.shift();
         }
         
         buffer.push(fullMessage);
+        colorBuffer.push(color);
+        
         output.text = buffer.join("\n");
         
-        var startIndex = output.text.length - fullMessage.length;
-        var endIndex = startIndex + head.length;
-        
-        var coloredFormat = new TextFormat(Paths.font('Lang-ZH.ttf'), 12, color);
-        output.setTextFormat(coloredFormat, startIndex, endIndex);
+        applyTextColors();
         
         if (autoScroll) {
             scrollToBottom();
+        }
+    }
+    
+    private function applyTextColors():Void {
+        var currentPos = 0;
+        for (i in 0...buffer.length) {
+            var line = buffer[i];
+            var color = colorBuffer[i];
+            
+            if (color != null && color != 0xFFFFFF) {
+                var format = new TextFormat(Paths.font('Lang-ZH.ttf'), 12, color);
+                var headLength = line.indexOf(":") + 1;
+                if (headLength > 0) {
+                    output.setTextFormat(format, currentPos, currentPos + headLength);
+                }
+            }
+            currentPos += line.length + 1;
         }
     }
 }
