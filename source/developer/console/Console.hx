@@ -24,6 +24,7 @@ class Console extends Sprite {
     // 按钮引用
     private var captureButton:Sprite;
     private var autoScrollButton:Sprite;
+    private var clearButton:Sprite;
     private var closeButton:Sprite;
     private var maximizeButton:Sprite;
     private var minimizeButton:Sprite; 
@@ -193,7 +194,7 @@ class Console extends Sprite {
     }
     
     private function createControlButtons():Void {
-        var buttonY = height - 40;
+        var buttonY = height - 20;
         
         captureButton = createButton("捕捉:开", 0xFF5555, 20, buttonY);
         captureButton.addEventListener(MouseEvent.CLICK, function(e) {
@@ -205,7 +206,7 @@ class Console extends Sprite {
             toggleAutoScroll();
         });
         
-        var clearButton = createButton("清空日志", 0x5555FF, 220, buttonY);
+        clearButton = createButton("清空日志", 0x5555FF, 220, buttonY);
         clearButton.addEventListener(MouseEvent.CLICK, function(e) {
             clearLogs();
         });
@@ -529,7 +530,7 @@ class Console extends Sprite {
     }
 
     private function updateControlButtonsPosition():Void {
-        var buttonY = height - 40;
+        var buttonY = height - 20;
         
         if (captureButton != null) {
             captureButton.x = 20;
@@ -561,7 +562,7 @@ class Console extends Sprite {
     }
     
     private function updateControlButtons(newHeight:Float):Void {
-        var buttonY = newHeight - 40;
+        var buttonY = newHeight - 20;
         
         if (captureButton != null) {
             captureButton.y = buttonY;
@@ -573,6 +574,18 @@ class Console extends Sprite {
         
         if (clearButton != null) {
             clearButton.y = buttonY;
+        }
+    }
+    
+    private function updateWindowButtons(newWidth:Float):Void {
+        if (closeButton != null) {
+            closeButton.x = newWidth - 30;
+        }
+        if (maximizeButton != null) {
+            maximizeButton.x = newWidth - 60;
+        }
+        if (minimizeButton != null) {
+            minimizeButton.x = newWidth - 90;
         }
     }
 }
