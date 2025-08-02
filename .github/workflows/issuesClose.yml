@@ -1,0 +1,63 @@
+name: Close inactive issues
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  close-inactive-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Close inactive issues
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: '',
+            });
+            
+            const now = new Date();
+            const threeDaysInMs = 3 * 24 * 60 * 60 * 1000;
+            
+            for (const issue of issues) {
+              const { data: events } = await github.rest.issues.listEventsForTimeline({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+              });
+              
+              const hasAuthorComment = events.some(event => 
+                event.event === 'commented' && 
+                event.actor?.login === issue.user.login &&
+                new Date(event.created_at) > new Date(issue.created_at)
+              );
+              
+              if (!hasAuthorComment && (now - new Date(issue.created_at)) > threeDaysInMs) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: 'The issue author has not responded for more than 3 days. This issue will be automatically closed as incomplete.You can create a new issue again if needed.'
+                });
+                
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  labels: ['incomplete']
+                });
+                
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed'
+                });
+              }
+            }
