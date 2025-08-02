@@ -37,6 +37,11 @@ class Console extends Sprite {
     
     private static var _consoleInstance:Console = null;
     
+    // 参考线
+    private var dragReference:Sprite;
+    private var lastWidth:Float = 0;
+    private var lastHeight:Float = 0;
+    
     //窗口大小
     private var minWidth:Float = 400;
     private var minHeight:Float = 300;
@@ -67,6 +72,10 @@ class Console extends Sprite {
         var initialHeight = openfl.Lib.current.stage.stageHeight * 0.3;
 
         normalSize = new Rectangle(100, 100, initialWidth, initialHeight);
+        
+        dragReference = new Sprite();
+        dragReference.visible = false;
+        addChild(dragReference);
         
         graphics.beginFill(0x333333, 0.8);
         graphics.drawRoundRect(0, 0, initialWidth, initialHeight, 10);
@@ -453,6 +462,10 @@ class Console extends Sprite {
         startWidth = width;
         startHeight = height;
         
+        // 显示参考线
+        drawDragReference(startWidth, startHeight);
+        dragReference.visible = true;
+        
         stage.addEventListener(MouseEvent.MOUSE_MOVE, onResize);
         stage.addEventListener(MouseEvent.MOUSE_UP, stopResize);
         
@@ -463,13 +476,24 @@ class Console extends Sprite {
         if (isResizing) {
             var newWidth = Math.max(minWidth, startWidth + (e.stageX - startResizeX));
             var newHeight = Math.max(minHeight, startHeight + (e.stageY - startResizeY));
-            resizeConsole(newWidth, newHeight);
+            
+            newWidth = Math.min(newWidth, openfl.Lib.current.stage.stageWidth - x);
+            newHeight = Math.min(newHeight, openfl.Lib.current.stage.stageHeight - y);
+            
+            drawDragReference(newWidth, newHeight);
         }
     }
     
     private function stopResize(e:MouseEvent):Void {
         if (isResizing) {
             isResizing = false;
+            dragReference.visible = false;
+            
+            var finalWidth = dragReference.width;
+            var finalHeight = dragReference.height;
+            
+            redrawConsole(finalWidth, finalHeight);
+            
             stage.removeEventListener(MouseEvent.MOUSE_MOVE, onResize);
             stage.removeEventListener(MouseEvent.MOUSE_UP, stopResize);
             Mouse.cursor = MouseCursor.AUTO;
@@ -587,5 +611,46 @@ class Console extends Sprite {
         if (minimizeButton != null) {
             minimizeButton.x = newWidth - 90;
         }
+    }
+    
+    private function drawDragReference(w:Float, h:Float):Void {
+        dragReference.graphics.clear();
+        
+        dragReference.graphics.lineStyle(1, 0xFFFFFF, 0.7);
+        
+        dragReference.graphics.moveTo(w, 0);
+        dragReference.graphics.lineTo(w, h); // 右边
+        dragReference.graphics.lineTo(0, h); // 下边
+    }
+    
+    private function redrawConsole(newWidth:Float, newHeight:Float):Void {
+        graphics.clear();
+        graphics.beginFill(0x333333, 0.8);
+        graphics.drawRoundRect(0, 0, newWidth, newHeight, 10);
+        graphics.endFill();
+        
+        updateAllElements(newWidth, newHeight);
+        
+        lastWidth = newWidth;
+        lastHeight = newHeight;
+    }
+    
+    private function updateAllElements(newWidth:Float, newHeight:Float):Void {
+        // 输出区域
+        output.width = newWidth - 30;
+        output.height = newHeight - 100;
+        
+        // 标题栏
+        updateTitleBar(newWidth);
+        
+        // 控制按钮
+        updateControlButtons(newHeight);
+        
+        // 窗口按钮
+        updateWindowButtons(newWidth);
+        
+        // 缩放手柄
+        resizeHandle.x = newWidth - 20;
+        resizeHandle.y = newHeight - 20;
     }
 }
