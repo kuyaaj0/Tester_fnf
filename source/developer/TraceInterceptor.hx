@@ -17,8 +17,6 @@ class TraceInterceptor {
 
         originalTrace(v, infos);
         
-        if (Console.instance != null && Console.instance.visible) {
-            Console.log(message);
-        }
+        Console.log(message);
     }
 }

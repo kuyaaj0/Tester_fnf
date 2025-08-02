@@ -9,7 +9,7 @@ import openfl.ui.MouseCursor;
 import openfl.geom.Rectangle;
 
 class Console extends Sprite {
-    public static var instance(get, null):Console;
+    public static var consoleInstance(get, null):Console;
     private var output:TextField;
     private var buffer:Array<String> = [];
     private var isDragging:Bool = false;
@@ -21,13 +21,17 @@ class Console extends Sprite {
     private var captureEnabled:Bool = true;
     private var autoScroll:Bool = true;
     
-    private static function get_instance():Console {
-        if (_instance == null) {
-            _instance = new Console();
+    // 按钮引用
+    private var captureButton:Sprite;
+    private var autoScrollButton:Sprite;
+    
+    private static var _consoleInstance:Console = null;
+    private static function get_consoleInstance():Console {
+        if (_consoleInstance == null) {
+            _consoleInstance = new Console();
         }
-        return _instance;
+        return _consoleInstance;
     }
-    private static var _instance:Console = null;
     
     public function new() {
         super();
@@ -40,7 +44,7 @@ class Console extends Sprite {
         graphics.drawRoundRect(0, 0, 550, 400, 10);
         graphics.endFill();
         
-        // 输出文本框（带滚动功能）
+        // 输出文本框
         output = new TextField();
         output.defaultTextFormat = new TextFormat("_sans", 12, 0xFFFFFF);
         output.width = 520;
@@ -85,13 +89,13 @@ class Console extends Sprite {
         var buttonY = 10;
         
         // 启用/禁用捕捉按钮
-        var captureButton = createButton("禁用捕捉", 0xFF5555, 360, buttonY);
+        captureButton = createButton("禁用捕捉", 0xFF5555, 360, buttonY);
         captureButton.addEventListener(MouseEvent.CLICK, function(e) {
             toggleCapture();
         });
         
         // 自动滚动按钮
-        var autoScrollButton = createButton("自动滚动:开", 0x55AA55, 440, buttonY);
+        autoScrollButton = createButton("自动滚动:开", 0x55AA55, 440, buttonY);
         autoScrollButton.addEventListener(MouseEvent.CLICK, function(e) {
             toggleAutoScroll();
         });
@@ -210,18 +214,18 @@ class Console extends Sprite {
     }
     
     private function updateCaptureButton():Void {
-        var btn:TextField = cast(getChildAt(3).getChildAt(0), TextField);
-        btn.text = captureEnabled ? "禁用捕捉" : "启用捕捉";
+        var textField:TextField = cast(captureButton.getChildAt(0), TextField);
+        textField.text = captureEnabled ? "禁用捕捉" : "启用捕捉";
     }
     
     private function updateAutoScrollButton():Void {
-        var btn:TextField = cast(getChildAt(4).getChildAt(0), TextField);
-        btn.text = autoScroll ? "自动滚动:开" : "自动滚动:关";
+        var textField:TextField = cast(autoScrollButton.getChildAt(0), TextField);
+        textField.text = autoScroll ? "自动滚动:开" : "自动滚动:关";
     }
     
     public static function log(message:String):Void {
-        if (instance != null) {
-            instance.addLog(message);
+        if (consoleInstance != null) {
+            consoleInstance.addLog(message);
         }
     }
     
@@ -237,35 +241,25 @@ class Console extends Sprite {
     }
     
     public static function show():Void {
-        if (_instance == null) {
-            _instance = new Console();
-            openfl.Lib.current.stage.addChild(_instance);
+        if (consoleInstance.parent == null) {
+            openfl.Lib.current.stage.addChild(consoleInstance);
         }
-        _instance.visible = true;
+        consoleInstance.visible = true;
         ConsoleToggleButton.hide();
     }
     
     public static function hide():Void {
-        if (_instance != null) {
-            _instance.visible = false;
+        if (consoleInstance != null) {
+            consoleInstance.visible = false;
         }
     }
     
-    private static function get_visible():Bool {
-        return _instance != null && _instance.visible;
-    }
-    
-    private static function set_visible(value:Bool):Bool {
-        if (_instance == null && value) {
-            show();
-        } else if (_instance != null) {
-            _instance.visible = value;
-        }
-        return value;
+    public static function isVisible():Bool {
+        return consoleInstance != null && consoleInstance.visible;
     }
     
     public static function toggle():Void {
-        if (visible) {
+        if (isVisible()) {
             hide();
         } else {
             show();
