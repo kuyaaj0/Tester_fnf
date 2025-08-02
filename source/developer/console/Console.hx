@@ -24,6 +24,9 @@ class Console extends Sprite {
     // 按钮引用
     private var captureButton:Sprite;
     private var autoScrollButton:Sprite;
+    private var closeButton:Sprite;
+    private var maximizeButton:Sprite;
+    private var minimizeButton:Sprite; 
     
     private var pendingLogs:Array<String> = [];
     private var pendingColoredLogs:Array<{head:String, message:String, color:Int}> = [];
