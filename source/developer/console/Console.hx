@@ -84,19 +84,20 @@ class Console extends Sprite {
         
         setUIScale(ClientPrefs.data.DevConScale);
         
-        setTextScale(ClientPrefs.data.DevConTextScale);
+        updateTextScale(ClientPrefs.data.DevConTextScale);
     }
     
     public static function setTextScale(scale:Float):Void{
         if (consoleInstance != null) {
             consoleInstance.TextScale = scale;
-            consoleInstance.updateTextScale();
+            consoleInstance.updateTextScale(scale);
         }
     }
     
-    public function updateTextScale(){
+    public function updateTextScale(scale:Float){
         if(output != null){
-            output.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), consoleFontSize(), 0xFFFFFF));
+            TextScale = scale;
+            output.defaultTextFormat = new TextFormat(Paths.font('Lang-ZH.ttf'), consoleFontSize(), 0xFFFFFF);
         }
     }
     
