@@ -61,18 +61,12 @@ jobs:
                   body: 'The issue author has not responded for more than 2 days. This issue will be automatically closed as incomplete.You can create a new issue again if needed.'
                 });
                 
-                await github.rest.issues.addLabels({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: issue.number,
-                  labels: ['incomplete']
-                });
-                
                 await github.rest.issues.update({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: issue.number,
-                  state: 'closed'
+                  state: 'closed',
+                  state_reason: 'not_planned'
                 });
                 
                 console.log(`Successfully closed issue #${issue.number}`);
