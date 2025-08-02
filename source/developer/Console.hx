@@ -21,11 +21,15 @@ class Console extends Sprite {
     private var captureEnabled:Bool = true;
     private var autoScroll:Bool = true;
     
-    private var colorBuffer:Array<Int> = []; // 存储每行对应的颜色值
-    
     // 按钮引用
     private var captureButton:Sprite;
     private var autoScrollButton:Sprite;
+    
+    private var pendingLogs:Array<String> = [];
+    private var pendingColoredLogs:Array<{head:String, message:String, color:Int}> = [];
+    private var renderTimer:haxe.Timer = null;
+    private var maxBatchSize:Int = 10; // 每批处理的最大日志数
+    private var renderDelay:Int = 100; // 渲染延迟(毫秒)
     
     private static var _consoleInstance:Console = null;
     private static function get_consoleInstance():Console {
@@ -258,15 +262,8 @@ class Console extends Sprite {
     private function addLog(message:String):Void {
         if (!captureEnabled) return;
         
-        if (output.htmlText != "") {
-            output.htmlText += "<br/>" + StringTools.htmlEscape(message);
-        } else {
-            output.htmlText = StringTools.htmlEscape(message);
-        }
-        
-        if (autoScroll) {
-            scrollToBottom();
-        }
+        pendingLogs.push(StringTools.htmlEscape(message));
+        scheduleRender();
     }
     
     public static function show():Void {
@@ -304,16 +301,58 @@ class Console extends Sprite {
     private function addLogWithColoredHead(head:String, message:String, color:Int):Void {
         if (!captureEnabled) return;
         
-        var htmlLine = '<font color="#${StringTools.hex(color, 6)}">${StringTools.htmlEscape(head)}</font>${StringTools.htmlEscape(message)}';
+        pendingColoredLogs.push({
+            head: head,
+            message: message,
+            color: color
+        });
+        scheduleRender();
+    }
+    
+    private function scheduleRender():Void {
+        if (renderTimer == null) {
+            renderTimer = haxe.Timer.delay(processPendingLogs, renderDelay);
+        }
+    }
+    
+    private function processPendingLogs():Void {
+        renderTimer = null;
         
-        if (output.htmlText != "") {
-            output.htmlText += "<br/>" + htmlLine;
-        } else {
-            output.htmlText = htmlLine;
+        var hasNewContent = false;
+        var batchCount = 0;
+        
+        // 处理普通日志
+        while (pendingLogs.length > 0 && batchCount < maxBatchSize) {
+            var message = pendingLogs.shift();
+            appendToOutput(message);
+            hasNewContent = true;
+            batchCount++;
         }
         
-        if (autoScroll) {
+        // 处理带颜色的日志
+        while (pendingColoredLogs.length > 0 && batchCount < maxBatchSize) {
+            var log = pendingColoredLogs.shift();
+            var htmlLine = '<font color="#${StringTools.hex(log.color, 6)}">${StringTools.htmlEscape(log.head)}</font>${StringTools.htmlEscape(log.message)}';
+            appendToOutput(htmlLine);
+            hasNewContent = true;
+            batchCount++;
+        }
+        
+        if (hasNewContent && autoScroll) {
             scrollToBottom();
+        }
+        
+        // 如果还有待处理日志，继续调度下一批
+        if (pendingLogs.length > 0 || pendingColoredLogs.length > 0) {
+            scheduleRender();
+        }
+    }
+    
+    private function appendToOutput(content:String):Void {
+        if (output.htmlText != "") {
+            output.htmlText += "<br/>" + content;
+        } else {
+            output.htmlText = content;
         }
     }
 }
