@@ -48,8 +48,6 @@ class Console extends Sprite {
     
     private var isMaximized:Bool = false;
     private var normalSize:Rectangle = new Rectangle();
-    private var maximizeButton:Sprite;
-    private var minimizeButton:Sprite;
     
     private static function get_consoleInstance():Console {
         if (_consoleInstance == null) {
