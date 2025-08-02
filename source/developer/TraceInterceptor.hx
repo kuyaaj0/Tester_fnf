@@ -21,8 +21,7 @@ class TraceInterceptor {
         Console.log(message);
     }
     
-    static function customLogLevel(level:ErrorSeverity, x, ?infos:haxe.PosInfos) {
-        // 修改为兼容的写法，不使用元组解构
+    static function customLogLevel(level:crowplexus.iris.ErrorSeverity, x, ?infos:haxe.PosInfos) {
         var head = switch(level) {
             case WARN: "WARN: ";
             case ERROR: "ERROR: ";
