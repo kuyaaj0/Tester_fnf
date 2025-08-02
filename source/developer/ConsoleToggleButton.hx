@@ -28,7 +28,7 @@ class ConsoleToggleButton extends Sprite {
         
         var label = new TextField();
         label.text = "显示控制台";
-        label.setTextFormat(new TextFormat("_sans", 12, 0xFFFFFF));
+        label.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), 12, 0xFFFFFF));
         label.x = 5;
         label.y = 5;
         label.width = 70;

@@ -21,6 +21,8 @@ class Console extends Sprite {
     private var captureEnabled:Bool = true;
     private var autoScroll:Bool = true;
     
+    private var colorBuffer:Array<Int> = []; // 存储每行对应的颜色值
+    
     // 按钮引用
     private var captureButton:Sprite;
     private var autoScrollButton:Sprite;
@@ -46,7 +48,7 @@ class Console extends Sprite {
         
         // 输出文本框
         output = new TextField();
-        output.defaultTextFormat = new TextFormat("_sans", 12, 0xFFFFFF);
+        output.defaultTextFormat = new TextFormat(Paths.font('Lang-ZH.ttf'), 12, 0xFFFFFF);
         output.width = 520;
         output.height = 320;
         output.x = 15;
@@ -72,7 +74,7 @@ class Console extends Sprite {
         // 标题文本
         var title = new TextField();
         title.text = "Trace Console (拖拽移动)";
-        title.setTextFormat(new TextFormat("_sans", 12, 0xFFFFFF));
+        title.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), 12, 0xFFFFFF));
         title.x = 10;
         title.y = 5;
         title.width = 300;
@@ -121,7 +123,7 @@ class Console extends Sprite {
         
         var text = new TextField();
         text.text = label;
-        text.setTextFormat(new TextFormat("_sans", 10, 0xFFFFFF));
+        text.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), 10, 0xFFFFFF));
         text.x = 5;
         text.y = 3;
         text.width = 70;
@@ -215,11 +217,13 @@ class Console extends Sprite {
     
     private function updateCaptureButton():Void {
         var textField:TextField = cast(captureButton.getChildAt(0), TextField);
+        textField.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), 10, 0xFFFFFF));
         textField.text = captureEnabled ? "禁用捕捉" : "启用捕捉";
     }
     
     private function updateAutoScrollButton():Void {
         var textField:TextField = cast(autoScrollButton.getChildAt(0), TextField);
+        textField.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), 10, 0xFFFFFF));
         textField.text = autoScroll ? "自动滚动:开" : "自动滚动:关";
     }
     
@@ -263,6 +267,30 @@ class Console extends Sprite {
             hide();
         } else {
             show();
+        }
+    }
+    
+    public static function logWithColoredHead(head:String, message:String, color:Int):Void {
+        if (consoleInstance != null) {
+            consoleInstance.addLogWithColoredHead(head, message, color);
+        }
+    }
+    
+    private function addLogWithColoredHead(head:String, message:String, color:Int):Void {
+        if (!captureEnabled) return;
+        
+        var fullMessage = head + message;
+        buffer.push(fullMessage);
+        output.text = buffer.join("\n");
+        
+        var startIndex = output.text.length - fullMessage.length;
+        var endIndex = startIndex + head.length;
+        
+        var coloredFormat = new TextFormat(Paths.font('Lang-ZH.ttf'), 12, color);
+        output.setTextFormat(coloredFormat, startIndex, endIndex);
+        
+        if (autoScroll) {
+            scrollToBottom();
         }
     }
 }
