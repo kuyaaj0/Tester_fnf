@@ -9,6 +9,7 @@ import psychlua.FunkinLua;
 #end
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
+import crowplexus.hscript.Tools;
 import crowplexus.hscript.Expr;
 import crowplexus.hscript.Parser;
 import crowplexus.hscript.Interp;
@@ -201,9 +202,9 @@ class HScript implements ISharedScript {
 		if(active && exists(name)) {
 			var field = interp.directorFields.get(name);
 			if(field.isPublic) return field.value;
-			else Iris.warn("This Script -> '" + this.name + "', its field -> '" + name + "' is not public", cast #if hscriptPos (e != null ? {fileName: e.origin, lineNumber: e.line} : {fileName: "hscript", lineNumber: 0}) #else {fileName: "hscript", lineNumber: 0} #end);
+			else Iris.warn("This Script -> '" + this.origin + "', its field -> '" + name + "' is not public", cast #if hscriptPos (e != null ? {fileName: e.origin, lineNumber: e.line} : {fileName: "hscript", lineNumber: 0}) #else {fileName: "hscript", lineNumber: 0} #end);
 		} else if(active && !exists(name)) {
-			Iris.warn("This Script -> '" + this.name + "' has not field -> '" + name + "'", cast #if hscriptPos (e != null ? {fileName: e.origin, lineNumber: e.line} : {fileName: "hscript", lineNumber: 0}) #else {fileName: "hscript", lineNumber: 0} #end);
+			Iris.warn("This Script -> '" + this.origin + "' has not field -> '" + name + "'", cast #if hscriptPos (e != null ? {fileName: e.origin, lineNumber: e.line} : {fileName: "hscript", lineNumber: 0}) #else {fileName: "hscript", lineNumber: 0} #end);
 		}
 
 		return null;
@@ -213,9 +214,9 @@ class HScript implements ISharedScript {
 		if(active && interp != null && exists(name)) {
 			var field = interp.directorFields.get(name);
 			if(field.isPublic) field.value = value;
-			else Iris.warn("This Script -> '" + this.name + "', its field -> '" + name + "' is not public", cast #if hscriptPos (e != null ? {fileName: e.origin, lineNumber: e.line} : {fileName: "hscript", lineNumber: 0}) #else {fileName: "hscript", lineNumber: 0} #end);
+			else Iris.warn("This Script -> '" + this.origin + "', its field -> '" + name + "' is not public", cast #if hscriptPos (e != null ? {fileName: e.origin, lineNumber: e.line} : {fileName: "hscript", lineNumber: 0}) #else {fileName: "hscript", lineNumber: 0} #end);
 		} else if(interp != null && !exists(name)) {
-			Iris.warn("This Script -> '" + this.name + "' has not field -> '" + name + "'", cast #if hscriptPos (e != null ? {fileName: e.origin, lineNumber: e.line} : {fileName: "hscript", lineNumber: 0}) #else {fileName: "hscript", lineNumber: 0} #end);
+			Iris.warn("This Script -> '" + this.origin + "' has not field -> '" + name + "'", cast #if hscriptPos (e != null ? {fileName: e.origin, lineNumber: e.line} : {fileName: "hscript", lineNumber: 0}) #else {fileName: "hscript", lineNumber: 0} #end);
 		}
 	}
 
