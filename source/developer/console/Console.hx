@@ -10,7 +10,7 @@ import openfl.geom.Rectangle;
 
 class Console extends Sprite {
     private var uiScale:Float = 1.0;
-    private var TextScale:Float = 1.0;
+    private static var TextScale:Float = 1.0;
     
     public static var consoleInstance(get, null):Console;
     private var output:TextField;
@@ -80,31 +80,16 @@ class Console extends Sprite {
     
     public function new() {
         super();
+        
+        TextScale = ClientPrefs.data.DevConTextScale;
+        uiScale = ClientPrefs.data.DevConScale;
         createConsoleUI();
-        
-        setUIScale(ClientPrefs.data.DevConScale);
-        
-        updateTextScale(ClientPrefs.data.DevConTextScale);
     }
     
-    public static function setTextScale(scale:Float):Void{
-        if (consoleInstance != null) {
-            consoleInstance.TextScale = scale;
-            consoleInstance.updateTextScale(scale);
-        }
-    }
-    
-    public function updateTextScale(scale:Float){
-        if(output != null){
+    public static function updateText(scale:Float){
+        if(consoleInstance.output != null){
             TextScale = scale;
-            output.defaultTextFormat = new TextFormat(Paths.font('Lang-ZH.ttf'), consoleFontSize(), 0xFFFFFF);
-        }
-    }
-    
-    public static function setUIScale(scale:Float):Void {
-        if (consoleInstance != null) {
-            consoleInstance.uiScale = scale;
-            consoleInstance.redrawConsole(consoleInstance.currentWidth, consoleInstance.currentHeight);
+            consoleInstance.output.scaleX = consoleInstance.output.scaleY = scale;
         }
     }
     

@@ -14,11 +14,10 @@ class MaintenanceGroup extends OptionCata
         
         var option:Option = new Option(this, 'DevConScale', FLOAT, [0.5, 3, 1]);
 		addOption(option);
-		option.onChange = () -> developer.console.Console.setUIScale(ClientPrefs.data.DevConScale);
-		
+	
 		var option:Option = new Option(this, 'DevConTextScale', FLOAT, [0.5, 3, 1]);
 		addOption(option);
-		option.onChange = () -> developer.console.Console.setTextScale(ClientPrefs.data.DevConTextScale);
+		option.onChange = () -> developer.console.Console.updateText(ClientPrefs.data.DevConTextScale);
 
 		/////--App--\\\\\
 
