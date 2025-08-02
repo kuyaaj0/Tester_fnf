@@ -21,6 +21,9 @@ class Console extends Sprite {
     private var captureEnabled:Bool = true;
     private var autoScroll:Bool = true;
     
+    private var currentWidth:Float;
+    private var currentHeight:Float;
+    
     // 按钮引用
     private var captureButton:Sprite;
     private var autoScrollButton:Sprite;
@@ -70,8 +73,11 @@ class Console extends Sprite {
     private function createConsoleUI():Void {
         var initialWidth = openfl.Lib.current.stage.stageWidth * 0.4;
         var initialHeight = openfl.Lib.current.stage.stageHeight * 0.3;
+        
+        currentWidth = initialWidth;
+        currentHeight = initialHeight;
 
-        normalSize = new Rectangle(100, 100, initialWidth, initialHeight);
+        normalSize = new Rectangle(0, 0, initialWidth, initialHeight);
         
         dragReference = new Sprite();
         dragReference.visible = false;
@@ -100,10 +106,12 @@ class Console extends Sprite {
         createResizeHandle();
     }
     
+    var titleBar:Sprite;
+    
     private function createTitleBar():Void {
-        var titleBar = new Sprite();
+        titleBar = new Sprite();
         titleBar.graphics.beginFill(0x444444);
-        titleBar.graphics.drawRoundRect(0, 0, width, 30, 10, 10);
+        titleBar.graphics.drawRoundRect(0, 0, currentWidth, 30, 10, 10);
         titleBar.graphics.endFill();
         addChild(titleBar);
         
@@ -129,17 +137,17 @@ class Console extends Sprite {
     }
     
     private function createWindowButtons():Void {
-        closeButton = createWindowButton("×", 0xFF5555, width - 30, 5);
+        closeButton = createWindowButton("×", 0xFF5555, currentWidth - 30, 5);
         closeButton.addEventListener(MouseEvent.CLICK, function(e) {
             closeConsole();
         });
         
-        maximizeButton = createWindowButton("□", 0x55AA55, width - 60, 5);
+        maximizeButton = createWindowButton("□", 0x55AA55, currentWidth - 60, 5);
         maximizeButton.addEventListener(MouseEvent.CLICK, function(e) {
             toggleMaximize();
         });
         
-        minimizeButton = createWindowButton("_", 0xAAAAAA, width - 90, 5);
+        minimizeButton = createWindowButton("_", 0xAAAAAA, currentWidth - 90, 5);
         minimizeButton.addEventListener(MouseEvent.CLICK, function(e) {
             closeConsole();
         });
@@ -188,8 +196,8 @@ class Console extends Sprite {
     private function onTitleDragMove(e:MouseEvent):Void {
         if (isDragging) {
             // 限制不能拖出屏幕
-            x = Math.max(0, Math.min(openfl.Lib.current.stage.stageWidth - width, e.stageX - dragOffsetX));
-            y = Math.max(0, Math.min(openfl.Lib.current.stage.stageHeight - height, e.stageY - dragOffsetY));
+            x = Math.max(0, Math.min(openfl.Lib.current.stage.stageWidth - currentWidth, e.stageX - dragOffsetX));
+            y = Math.max(0, Math.min(openfl.Lib.current.stage.stageHeight - currentHeight, e.stageY - dragOffsetY));
         }
     }
     
@@ -203,7 +211,7 @@ class Console extends Sprite {
     }
     
     private function createControlButtons():Void {
-        var buttonY = height - 20;
+        var buttonY = currentHeight - 20;
         
         captureButton = createButton("捕捉:开", 0xFF5555, 20, buttonY);
         captureButton.addEventListener(MouseEvent.CLICK, function(e) {
@@ -439,11 +447,11 @@ class Console extends Sprite {
     private function createResizeHandle():Void {
         resizeHandle = new Sprite();
         resizeHandle.graphics.beginFill(0x666666, 0.5);
-        resizeHandle.graphics.drawRect(0, 0, 20, 20);
+        resizeHandle.graphics.drawRect(0, 0, 40, 40);
         resizeHandle.graphics.endFill();
         
-        resizeHandle.x = width - 20;
-        resizeHandle.y = height - 20;
+        resizeHandle.x = currentWidth - 40;
+        resizeHandle.y = currentHeight - 40;
         addChild(resizeHandle);
         
         resizeHandle.addEventListener(MouseEvent.MOUSE_DOWN, startResize);
@@ -459,8 +467,8 @@ class Console extends Sprite {
         isResizing = true;
         startResizeX = e.stageX;
         startResizeY = e.stageY;
-        startWidth = width;
-        startHeight = height;
+        startWidth = currentWidth;
+        startHeight = currentHeight;
         
         // 显示参考线
         drawDragReference(startWidth, startHeight);
@@ -513,8 +521,8 @@ class Console extends Sprite {
         output.height = newHeight - 100;
         
         // 更新缩放手柄位置
-        resizeHandle.x = newWidth - 20;
-        resizeHandle.y = newHeight - 20;
+        resizeHandle.x = newWidth - 40;
+        resizeHandle.y = newHeight - 40;
         
         // 更新标题栏
         updateTitleBar(newWidth);
@@ -533,7 +541,7 @@ class Console extends Sprite {
             y = normalSize.y;
             isMaximized = false;
         } else {
-            normalSize.setTo(x, y, width, height);
+            normalSize.setTo(x, y, currentWidth, currentHeight);
             
             var stage = openfl.Lib.current.stage;
             resizeConsole(stage.stageWidth, stage.stageHeight);
@@ -547,14 +555,14 @@ class Console extends Sprite {
     
     private function updateWindowButtonsPosition():Void {
         if (closeButton != null) {
-            closeButton.x = width - 30;
-            maximizeButton.x = width - 60;
-            minimizeButton.x = width - 90;
+            closeButton.x = currentWidth - 30;
+            maximizeButton.x = currentWidth - 60;
+            minimizeButton.x = currentWidth - 90;
         }
     }
 
     private function updateControlButtonsPosition():Void {
-        var buttonY = height - 20;
+        var buttonY = currentHeight - 20;
         
         if (captureButton != null) {
             captureButton.x = 20;
@@ -573,16 +581,10 @@ class Console extends Sprite {
     }
     
     private function updateTitleBar(newWidth:Float):Void {
-        if (numChildren > 0) {
-            var titleBar = getChildAt(0);
-            if (Std.is(titleBar, Sprite)) {
-                var titleBarSprite:Sprite = cast titleBar;
-                titleBarSprite.graphics.clear();
-                titleBarSprite.graphics.beginFill(0x444444);
-                titleBarSprite.graphics.drawRoundRect(0, 0, newWidth, 30, 10, 10);
-                titleBarSprite.graphics.endFill();
-            }
-        }
+        titleBar.graphics.clear();
+        titleBar.graphics.beginFill(0x444444);
+        titleBar.graphics.drawRoundRect(0, 0, newWidth, 30, 10, 10);
+        titleBar.graphics.endFill();
     }
     
     private function updateControlButtons(newHeight:Float):Void {
@@ -618,9 +620,17 @@ class Console extends Sprite {
         
         dragReference.graphics.lineStyle(1, 0xFFFFFF, 0.7);
         
+        // 左边线
+        dragReference.graphics.moveTo(0, 0);
+        dragReference.graphics.lineTo(0, h);
+        
+        // 右边线
         dragReference.graphics.moveTo(w, 0);
-        dragReference.graphics.lineTo(w, h); // 右边
-        dragReference.graphics.lineTo(0, h); // 下边
+        dragReference.graphics.lineTo(w, h);
+        
+        // 下边线
+        dragReference.graphics.moveTo(0, h);
+        dragReference.graphics.lineTo(w, h);
     }
     
     private function redrawConsole(newWidth:Float, newHeight:Float):Void {
@@ -650,7 +660,7 @@ class Console extends Sprite {
         updateWindowButtons(newWidth);
         
         // 缩放手柄
-        resizeHandle.x = newWidth - 20;
-        resizeHandle.y = newHeight - 20;
+        resizeHandle.x = newWidth - 40;
+        resizeHandle.y = newHeight - 40;
     }
 }
