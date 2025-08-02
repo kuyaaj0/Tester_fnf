@@ -1,7 +1,8 @@
 package developer;
 
 #if HSCRIPT_ALLOWED
-import crowplexus.iris;
+import crowplexus.iris.Iris;
+import crowplexus.iris.ErrorSeverity;
 #end
 
 class TraceInterceptor {
