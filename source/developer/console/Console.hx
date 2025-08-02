@@ -90,8 +90,11 @@ class Console extends Sprite {
     public static function setTextScale(scale:Float):Void{
         if (consoleInstance != null) {
             consoleInstance.TextScale = scale;
+            consoleInstance.updateTextScale();
         }
-        
+    }
+    
+    private function updateTextScale(){
         if(output != null){
             output.setTextFormat = new TextFormat(Paths.font('Lang-ZH.ttf'), consoleFontSize(), 0xFFFFFF);
         }
