@@ -44,7 +44,7 @@ class TraceInterceptor {
         }
     }
 
-    static function getColorByLevel(level:ErrorSeverity):Int {
+    static function getColorByLevel(level:crowplexus.iris.ErrorSeverity):Int {
         return switch(level) {
             case WARN: 0xFFFF00; // 黄色
             case ERROR: 0xFF0000; // 红色
