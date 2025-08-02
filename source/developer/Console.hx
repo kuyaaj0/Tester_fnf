@@ -28,7 +28,7 @@ class Console extends Sprite {
     private var pendingLogs:Array<String> = [];
     private var pendingColoredLogs:Array<{head:String, message:String, color:Int}> = [];
     private var renderTimer:haxe.Timer = null;
-    private var maxBatchSize:Int = 10; // 每批处理的最大日志数
+    private var maxBatchSize:Int = 100; // 每批处理的最大日志数
     private var renderDelay:Int = 100; // 渲染延迟(毫秒)
     
     private static var _consoleInstance:Console = null;
