@@ -22,7 +22,6 @@ class Console extends Sprite {
     private var autoScroll:Bool = true;
     
     private var colorBuffer:Array<Int> = []; // 存储每行对应的颜色值
-    public static inline var MAX_LOG_LINES:Int = 200;
     
     // 按钮引用
     private var captureButton:Sprite;
@@ -57,6 +56,7 @@ class Console extends Sprite {
         output.multiline = true;
         output.wordWrap = true;
         output.selectable = true;
+        output.htmlText = "";
         output.addEventListener(MouseEvent.MOUSE_DOWN, startTextScroll);
         addChild(output);
         
@@ -113,7 +113,7 @@ class Console extends Sprite {
         var buttonY = 10;
         
         // 启用/禁用捕捉按钮
-        captureButton = createButton("禁用捕捉", 0xFF5555, 360, buttonY);
+        captureButton = createButton("捕捉:开", 0xFF5555, 360, buttonY);
         captureButton.addEventListener(MouseEvent.CLICK, function(e) {
             toggleCapture();
         });
@@ -225,12 +225,11 @@ class Console extends Sprite {
     private function toggleAutoScroll(?value:Bool):Void {
         autoScroll = value != null ? value : !autoScroll;
         if (autoScroll) scrollToBottom();
+        updateAutoScrollButton();
     }
     
     private function clearLogs():Void {
-        buffer = [];
-        colorBuffer = [];
-        output.text = "";
+        output.htmlText = "";
     }
     
     private function closeConsole():Void {
@@ -241,7 +240,7 @@ class Console extends Sprite {
     private function updateCaptureButton():Void {
         var textField:TextField = cast(captureButton.getChildAt(0), TextField);
         textField.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), 10, 0xFFFFFF));
-        textField.text = captureEnabled ? "捕捉: 开" : "捕捉: 关";
+        textField.text = captureEnabled ? "捕捉:开" : "捕捉:关";
     }
     
     private function updateAutoScrollButton():Void {
@@ -259,15 +258,11 @@ class Console extends Sprite {
     private function addLog(message:String):Void {
         if (!captureEnabled) return;
         
-        if (buffer.length >= MAX_LOG_LINES) {
-            buffer.shift();
-            colorBuffer.shift();
+        if (output.htmlText != "") {
+            output.htmlText += "<br/>" + StringTools.htmlEscape(message);
+        } else {
+            output.htmlText = StringTools.htmlEscape(message);
         }
-        
-        buffer.push(message);
-        colorBuffer.push(0xFFFFFF);
-        
-        output.text = buffer.join("\n");
         
         if (autoScroll) {
             scrollToBottom();
@@ -309,39 +304,16 @@ class Console extends Sprite {
     private function addLogWithColoredHead(head:String, message:String, color:Int):Void {
         if (!captureEnabled) return;
         
-        var fullMessage = head + message;
+        var htmlLine = '<font color="#${StringTools.hex(color, 6)}">${StringTools.htmlEscape(head)}</font>${StringTools.htmlEscape(message)}';
         
-        if (buffer.length >= MAX_LOG_LINES) {
-            buffer.shift();
-            colorBuffer.shift();
+        if (output.htmlText != "") {
+            output.htmlText += "<br/>" + htmlLine;
+        } else {
+            output.htmlText = htmlLine;
         }
-        
-        buffer.push(fullMessage);
-        colorBuffer.push(color);
-        
-        output.text = buffer.join("\n");
-        
-        applyTextColors();
         
         if (autoScroll) {
             scrollToBottom();
-        }
-    }
-    
-    private function applyTextColors():Void {
-        var currentPos = 0;
-        for (i in 0...buffer.length) {
-            var line = buffer[i];
-            var color = colorBuffer[i];
-            
-            if (color != 0xFFFFFF) {
-                var format = new TextFormat(Paths.font('Lang-ZH.ttf'), 12, color);
-                var headLength = line.indexOf(":") + 1;
-                if (headLength > 0) {
-                    output.setTextFormat(format, currentPos, currentPos + headLength);
-                }
-            }
-            currentPos += line.length + 1;
         }
     }
 }
