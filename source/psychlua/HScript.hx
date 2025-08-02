@@ -201,6 +201,15 @@ class HScript implements ISharedScript {
 	public function hget(name:String, ?e:Expr):Dynamic {
 		if(active && exists(name)) {
 			var field = interp.directorFields.get(name);
+			@:privateAccess
+			if (interp.propertyLinks.get(name) != null && field.isPublic) {
+				var l = interp.propertyLinks.get(name);
+				if (l.inState)
+					return l.get(name);
+				else
+					return l.link_getFunc();
+			}
+
 			if(field.isPublic) return field.value;
 			else Iris.warn("This Script -> '" + this.origin + "', its field -> '" + name + "' is not public", cast #if hscriptPos (e != null ? {fileName: e.origin, lineNumber: e.line} : {fileName: "hscript", lineNumber: 0}) #else {fileName: "hscript", lineNumber: 0} #end);
 		} else if(active && !exists(name)) {
@@ -213,6 +222,16 @@ class HScript implements ISharedScript {
 	public function hset(name:String, value:Dynamic, ?e:Expr):Void {
 		if(active && interp != null && exists(name)) {
 			var field = interp.directorFields.get(name);
+			@:privateAccess
+			if (interp.propertyLinks.get(name) != null && field.isPublic) {
+				var l = interp.propertyLinks.get(name);
+				if (l.inState)
+					l.set(name, value);
+				else
+					l.link_setFunc(value);
+				return;
+			}
+
 			if(field.isPublic) field.value = value;
 			else Iris.warn("This Script -> '" + this.origin + "', its field -> '" + name + "' is not public", cast #if hscriptPos (e != null ? {fileName: e.origin, lineNumber: e.line} : {fileName: "hscript", lineNumber: 0}) #else {fileName: "hscript", lineNumber: 0} #end);
 		} else if(interp != null && !exists(name)) {
@@ -223,9 +242,6 @@ class HScript implements ISharedScript {
 	@:noCompletion
 	private function _importHandler(s:String, as:String):Bool {
 		var path:String = #if MODS_ALLOWED Paths.mods() + #end s.replace(".", "/");
-		trace("import path: " + path);
-		trace("current instances: " + instances);
-		trace("exists: " + instances.exists(path));
 		if(instances.exists(path)) {
 			var sc:HScript = instances.get(path);
 			if(sc.active) {
