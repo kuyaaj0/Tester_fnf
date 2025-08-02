@@ -4451,6 +4451,7 @@ class PlayState extends MusicBeatState
 
 		while (hscriptArray.length > 0)
 			hscriptArray.pop();
+		#end
 
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
