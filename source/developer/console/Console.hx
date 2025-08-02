@@ -94,9 +94,9 @@ class Console extends Sprite {
         }
     }
     
-    private function updateTextScale(){
+    public function updateTextScale(){
         if(output != null){
-            output.setTextFormat = new TextFormat(Paths.font('Lang-ZH.ttf'), consoleFontSize(), 0xFFFFFF);
+            output.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), consoleFontSize(), 0xFFFFFF));
         }
     }
     
