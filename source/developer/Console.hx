@@ -6,9 +6,10 @@ import openfl.text.TextField;
 import openfl.text.TextFormat;
 import openfl.ui.Mouse;
 import openfl.ui.MouseCursor;
+import openfl.geom.Rectangle;
 
 class Console extends Sprite {
-    private static var _instance:Console;
+    public static var instance(get, null):Console;
     private var output:TextField;
     private var buffer:Array<String> = [];
     private var isDragging:Bool = false;
@@ -20,7 +21,13 @@ class Console extends Sprite {
     private var captureEnabled:Bool = true;
     private var autoScroll:Bool = true;
     
-    public static var visible(get, set):Bool;
+    private static function get_instance():Console {
+        if (_instance == null) {
+            _instance = new Console();
+        }
+        return _instance;
+    }
+    private static var _instance:Console = null;
     
     public function new() {
         super();
@@ -212,7 +219,13 @@ class Console extends Sprite {
         btn.text = autoScroll ? "自动滚动:开" : "自动滚动:关";
     }
     
-    public function log(message:String):Void {
+    public static function log(message:String):Void {
+        if (instance != null) {
+            instance.addLog(message);
+        }
+    }
+    
+    private function addLog(message:String):Void {
         if (!captureEnabled) return;
         
         buffer.push(message);
@@ -260,8 +273,23 @@ class Console extends Sprite {
     }
 }
 
+package developer;
+
+import openfl.display.Sprite;
+import openfl.events.MouseEvent;
+import openfl.text.TextField;
+import openfl.text.TextFormat;
+
 class ConsoleToggleButton extends Sprite {
-    private static var _instance:ConsoleToggleButton;
+    public static var instance(get, null):ConsoleToggleButton;
+    
+    private static function get_instance():ConsoleToggleButton {
+        if (_instance == null) {
+            _instance = new ConsoleToggleButton();
+        }
+        return _instance;
+    }
+    private static var _instance:ConsoleToggleButton = null;
     
     public function new() {
         super();
@@ -282,39 +310,23 @@ class ConsoleToggleButton extends Sprite {
         label.selectable = false;
         addChild(label);
         
-        // 初始位置
         x = openfl.Lib.current.stage.stageWidth - 90;
         y = 20;
         
-        // 点击事件
         addEventListener(MouseEvent.CLICK, function(e) {
             Console.show();
+            hide();
         });
-        
-        // 拖动功能
-        addEventListener(MouseEvent.MOUSE_DOWN, startDrag);
-        addEventListener(MouseEvent.MOUSE_UP, stopDrag);
-    }
-    
-    private function startDrag(e:MouseEvent):Void {
-        startDrag();
-    }
-    
-    private function stopDrag(e:MouseEvent):Void {
-        stopDrag();
     }
     
     public static function show():Void {
-        if (_instance == null) {
-            _instance = new ConsoleToggleButton();
-            openfl.Lib.current.stage.addChild(_instance);
+        if (instance.parent == null) {
+            openfl.Lib.current.stage.addChild(instance);
         }
-        _instance.visible = true;
+        instance.visible = true;
     }
     
     public static function hide():Void {
-        if (_instance != null) {
-            _instance.visible = false;
-        }
+        instance.visible = false;
     }
 }

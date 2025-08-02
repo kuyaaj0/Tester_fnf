@@ -14,11 +14,11 @@ class TraceInterceptor {
         } else {
             Std.string(v);
         };
-        
-        if (Console._instance != null && Console._instance.visible) {
-            Console._instance.log(message);
-        }
 
         originalTrace(v, infos);
+        
+        if (Console.instance != null && Console.instance.visible) {
+            Console.log(message);
+        }
     }
 }
