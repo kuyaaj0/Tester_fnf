@@ -1,12 +1,21 @@
 package developer;
 
+#if HSCRIPT_ALLOWED
+import crowplexus.iris;
+#end
+
 class TraceInterceptor {
     static var originalTrace = haxe.Log.trace;
-    static var originalLogLevel = crowplexus.iris.logLevel;
+    #if HSCRIPT_ALLOWED
+    static var originalLogLevel = iris.logLevel;
+    #end
     
     public static function init() {
         haxe.Log.trace = customTrace;
-        crowplexus.iris.logLevel = customLogLevel;
+        
+        #if HSCRIPT_ALLOWED
+        iris.logLevel = customLogLevel;
+        #end
         ConsoleToggleButton.show();
     }
     
@@ -21,7 +30,8 @@ class TraceInterceptor {
         Console.log(message);
     }
     
-    static function customLogLevel(level:crowplexus.iris.ErrorSeverity, x, ?infos:haxe.PosInfos) {
+    #if HSCRIPT_ALLOWED
+    static function customLogLevel(level:iris.ErrorSeverity, x, ?infos:haxe.PosInfos) {
         var head = switch(level) {
             case WARN: "WARN: ";
             case ERROR: "ERROR: ";
@@ -44,7 +54,7 @@ class TraceInterceptor {
         }
     }
 
-    static function getColorByLevel(level:crowplexus.iris.ErrorSeverity):Int {
+    static function getColorByLevel(level:iris.ErrorSeverity):Int {
         return switch(level) {
             case WARN: 0xFFFF00; // 黄色
             case ERROR: 0xFF0000; // 红色
@@ -52,4 +62,5 @@ class TraceInterceptor {
             case NONE: 0xFFFFFF; // 白色
         }
     }
+    #end
 }
