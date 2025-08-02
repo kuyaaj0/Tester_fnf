@@ -64,7 +64,7 @@ class Console extends Sprite {
     }
     
     private function createTitleBar():Void {
-        // 标题栏
+        // 标题栏背景
         var titleBar = new Sprite();
         titleBar.graphics.beginFill(0x444444);
         titleBar.graphics.drawRoundRect(0, 0, 550, 30, 10, 10);
@@ -80,11 +80,35 @@ class Console extends Sprite {
         title.width = 300;
         title.selectable = false;
         titleBar.addChild(title);
-        
-        // 拖动功能
-        titleBar.addEventListener(MouseEvent.MOUSE_DOWN, startDragConsole);
-        titleBar.addEventListener(MouseEvent.MOUSE_UP, stopDragConsole);
-        titleBar.addEventListener(MouseEvent.MOUSE_OUT, stopDragConsole);
+
+        titleBar.addEventListener(MouseEvent.MOUSE_DOWN, function(e:MouseEvent) {
+            isDragging = true;
+            dragOffsetX = e.stageX - x;
+            dragOffsetY = e.stageY - y;
+            
+            stage.addEventListener(MouseEvent.MOUSE_MOVE, onTitleDragMove);
+            
+            stage.addEventListener(MouseEvent.MOUSE_UP, onTitleDragEnd);
+            
+            e.stopPropagation();
+        });
+    
+        function onTitleDragMove(e:MouseEvent):Void {
+            if (isDragging) {
+                x = e.stageX - dragOffsetX;
+                y = e.stageY - dragOffsetY;
+                e.stopPropagation();
+            }
+        }
+    
+        function onTitleDragEnd(e:MouseEvent):Void {
+            if (isDragging) {
+                isDragging = false;
+                stage.removeEventListener(MouseEvent.MOUSE_MOVE, onTitleDragMove);
+                stage.removeEventListener(MouseEvent.MOUSE_UP, onTitleDragEnd);
+                e.stopPropagation();
+            }
+        }
     }
     
     private function createControlButtons():Void {

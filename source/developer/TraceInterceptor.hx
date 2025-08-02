@@ -18,57 +18,33 @@ class TraceInterceptor {
         };
 
         originalTrace(v, infos);
-        
         Console.log(message);
     }
     
     static function customLogLevel(level:ErrorSeverity, x, ?infos:haxe.PosInfos) {
-        var (coloredHead, plainMessage) = switch(level) {
-            case WARN: 
-                var head = "WARN: ";
-                var message = if (infos != null) {
-                    '${infos.fileName}:${infos.lineNumber}: ' + Std.string(x);
-                } else {
-                    Std.string(x);
-                };
-                {head, message};
-            
-            case ERROR: 
-                var head = "ERROR: ";
-                var message = if (infos != null) {
-                    '${infos.fileName}:${infos.lineNumber}: ' + Std.string(x);
-                } else {
-                    Std.string(x);
-                };
-                {head, message};
-            
-            case FATAL: 
-                var head = "FATAL: ";
-                var message = if (infos != null) {
-                    '${infos.fileName}:${infos.lineNumber}: ' + Std.string(x);
-                } else {
-                    Std.string(x);
-                };
-                {head, message};
-            
-            case NONE: 
-                var message = if (infos != null) {
-                    '${infos.fileName}:${infos.lineNumber}: ' + Std.string(x);
-                } else {
-                    Std.string(x);
-                };
-                {"", message};
+        // 修改为兼容的写法，不使用元组解构
+        var head = switch(level) {
+            case WARN: "WARN: ";
+            case ERROR: "ERROR: ";
+            case FATAL: "FATAL: ";
+            case NONE: "";
         };
-    
+
+        var message = if (infos != null) {
+            '${infos.fileName}:${infos.lineNumber}: ' + Std.string(x);
+        } else {
+            Std.string(x);
+        };
+
         originalLogLevel(level, x, infos);
         
         if (level != NONE) {
-            Console.logWithColoredHead(coloredHead, plainMessage, getColorByLevel(level));
+            Console.logWithColoredHead(head, message, getColorByLevel(level));
         } else {
-            Console.log(plainMessage);
+            Console.log(message);
         }
     }
-    
+
     static function getColorByLevel(level:ErrorSeverity):Int {
         return switch(level) {
             case WARN: 0xFFFF00; // 黄色
