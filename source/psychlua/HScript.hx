@@ -13,6 +13,7 @@ import crowplexus.hscript.Expr;
 import crowplexus.hscript.Parser;
 import crowplexus.hscript.Interp;
 import crowplexus.hscript.Printer;
+import crowplexus.hscript.ISharedScript;
 
 typedef HScriptInfos =
 {
@@ -24,8 +25,8 @@ typedef HScriptInfos =
 	#end
 }
 
-class HScript {
-	public static var originError:(Dynamic, ?haxe.PosInfos) -> Void = Iris.error;
+class HScript implements ISharedScript {
+	private static var instances:Map<String, HScript> = new Map<String, HScript>();
 
 	public var active:Bool;
 	public var loaded:Bool;
@@ -36,6 +37,9 @@ class HScript {
 	@:dox(hide) private inline function get_origin():String {
 		return #if MODS_ALLOWED (modFolder != null && modFolder.trim() != "" ? "(" + modFolder + ")" : "") + (filePath.contains(haxe.io.Path.addTrailingSlash(Paths.mods(modFolder.trim()))) ? filePath.substr(haxe.io.Path.addTrailingSlash(Paths.mods(modFolder.trim())).length) : filePath) #else filePath #end;
 	}
+
+	private var withoutExtension:String;
+
 	var scriptCode(default, null):Null<String>;
 	var expr:Expr;
 	var interp:Interp;
@@ -45,6 +49,7 @@ class HScript {
 		active = true;
 
 		filePath = file;
+		withoutExtension = haxe.io.Path.withoutExtension(file);
 		#if MODS_ALLOWED
 		var myFolder:Array<String> = filePath.split('/');
 		if(myFolder.contains("mods")) {
@@ -56,6 +61,7 @@ class HScript {
 		#end
 
 		interp = new Interp();
+		interp.importHandler = _importHandler;
 		parser = new Parser();
 		parser.allowTypes = parser.allowMetadata = parser.allowInterpolation = parser.allowJSON = true;
 		preset(parent);
@@ -63,6 +69,8 @@ class HScript {
 		loadFile();
 		if(manualRun)
 			execute();
+
+		if(!instances.exists(this.withoutExtension)) instances.set(this.withoutExtension, this);
 	}
 
 	public function execute():Dynamic {
@@ -86,18 +94,18 @@ class HScript {
 		return ret;
 	}
 
-	public function get(name:String) {
-		if(interp.directorFields.get(name) != null)
+	public function get(name:String):Dynamic {
+		if(active && interp.directorFields.get(name) != null)
 			return interp.directorFields.get(name).value;
 		else return interp.variables.get(name);
 	}
 
-	public function exists(name:String) {
-		return interp.variables.exists(name) || interp.directorFields.get(name) != null;
+	public function exists(name:String):Bool {
+		return active && (interp.variables.exists(name) || interp.directorFields.get(name) != null);
 	}
 
 	public inline function checkType(name:String):Null<String> {
-		if(interp.directorFields.get(name) != null) {
+		if(active && interp.directorFields.get(name) != null) {
 			return interp.directorFields.get(name).type;
 		}
 		return null;
@@ -129,12 +137,20 @@ class HScript {
 	}
 
 	public function set(name:String, value:Dynamic) {
-		if(value is Class || value is Enum) interp.imports.set(name, value);
-		else interp.variables.set(name, value);
+		if(active) {
+			if(value is Class || value is Enum) interp.imports.set(name, value);
+			else interp.variables.set(name, value);
+		}
 	}
 
 	public function destroy() {
 		active = false;
+
+		if(instances.exists(this.withoutExtension)) instances.remove(this.withoutExtension);
+
+		interp = null;
+		parser = null;
+		expr = null;
 	}
 
 	function loadFile() {
@@ -179,6 +195,41 @@ class HScript {
 				active = false;
 			}
 		}
+	}
+
+	public function hget(name:String, ?e:Expr):Dynamic {
+		if(active && exists(name)) {
+			var field = interp.directorFields.get(name);
+			if(field.isPublic) return field.value;
+			else Iris.warn("This Script -> '" + this.name + "', its field -> '" + name + "' is not public", cast #if hscriptPos (e != null ? {fileName: e.origin, lineNumber: e.line} : {fileName: "hscript", lineNumber: 0}) #else {fileName: "hscript", lineNumber: 0} #end);
+		} else if(active && !exists(name)) {
+			Iris.warn("This Script -> '" + this.name + "' has not field -> '" + name + "'", cast #if hscriptPos (e != null ? {fileName: e.origin, lineNumber: e.line} : {fileName: "hscript", lineNumber: 0}) #else {fileName: "hscript", lineNumber: 0} #end);
+		}
+
+		return null;
+	}
+
+	public function hset(name:String, value:Dynamic, ?e:Expr):Void {
+		if(active && interp != null && exists(name)) {
+			var field = interp.directorFields.get(name);
+			if(field.isPublic) field.value = value;
+			else Iris.warn("This Script -> '" + this.name + "', its field -> '" + name + "' is not public", cast #if hscriptPos (e != null ? {fileName: e.origin, lineNumber: e.line} : {fileName: "hscript", lineNumber: 0}) #else {fileName: "hscript", lineNumber: 0} #end);
+		} else if(interp != null && !exists(name)) {
+			Iris.warn("This Script -> '" + this.name + "' has not field -> '" + name + "'", cast #if hscriptPos (e != null ? {fileName: e.origin, lineNumber: e.line} : {fileName: "hscript", lineNumber: 0}) #else {fileName: "hscript", lineNumber: 0} #end);
+		}
+	}
+
+	@:noCompletion
+	private function _importHandler(s:String, as:String):Bool {
+		var path:String = #if MODS_ALLOWED Paths.mods() + #end s.replace(".", "/");
+		if(instances.exists(path)) {
+			var sc:HScript = instances.get(path);
+			if(sc.active) {
+				this.interp.imports.set((as != null && as.trim != "" ? as : Tools.last(s.split("."))), sc);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	function preset(parent:Dynamic) {

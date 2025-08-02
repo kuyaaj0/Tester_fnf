@@ -14,19 +14,16 @@ class ModuleHandler {
 		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'stageScripts/modules/'))
 			if(FileSystem.exists(folder) && FileSystem.isDirectory(folder)) paths.push(folder);
 
-		Iris.error = function(content:Dynamic, ?pos:haxe.PosInfos) {
-			lime.app.Application.current.window.alert('[${pos.fileName}:${pos.lineNumber}]: ' + Std.string(content), "Script Class Error");
-			HScript.originError(content, pos);
-		};
 		for(path in paths) {
 			for(fn in CoolUtil.readDirectoryRecursive(path)) {
 				if(supportExtension.contains(Path.extension(fn))) {
 					var sc:ModuleHScript = new ModuleHScript(fn);
 					sc.execute();
+					//只进行加载class，然后立刻扔掉（
+					sc.destroy();
 				}
 			}
 		}
-		Iris.error = HScript.originError;
 		#end
 
 		for(fp in ScriptedModule.__sc_scriptClassLists()) {

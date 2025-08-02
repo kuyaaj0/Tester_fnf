@@ -4,6 +4,9 @@ class GlobalHandler {
 	private static var grp:Array<HScript>;
 
 	public static function init() {
+		if(grp != null && grp.length > 0) for(sc in grp) (
+			sc.destroy();
+		}
 		grp = [];
 
 		#if MODS_ALLOWED
@@ -12,10 +15,6 @@ class GlobalHandler {
 		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'stageScripts/globals/'))
 			if(FileSystem.exists(folder) && FileSystem.isDirectory(folder)) paths.push(folder);
 
-		Iris.error = function(content:Dynamic, ?pos:haxe.PosInfos) {
-			lime.app.Application.current.window.alert('[${pos.fileName}:${pos.lineNumber}]: ' + Std.string(content), "Global HScript Error");
-			HScript.originError(content, pos);
-		};
 		for(path in paths) {
 			for(fn in FileSystem.readDirectory(path)) {
 				if(Path.extension(fn) == "hx") {
@@ -26,7 +25,6 @@ class GlobalHandler {
 				}
 			}
 		}
-		Iris.error = HScript.originError;
 		#end
 
 		globalHandler();

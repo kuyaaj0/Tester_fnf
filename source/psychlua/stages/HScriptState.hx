@@ -23,10 +23,6 @@ class HScriptState extends MusicBeatState {
 		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), "stageScripts/" + sign + "/"))
 			if(FileSystem.exists(folder) && FileSystem.isDirectory(folder)) paths.push(folder);
 
-		Iris.error = function(content:Dynamic, ?pos:haxe.PosInfos) {
-			lime.app.Application.current.window.alert('[${pos.fileName}:${pos.lineNumber}]: ' + Std.string(content), "State HScript Error");
-			HScript.originError(content, pos);
-		};
 		for(path in paths) {
 			for(fn in FileSystem.readDirectory(path)) {
 				if(Path.extension(fn) == "hx") {
@@ -38,7 +34,6 @@ class HScriptState extends MusicBeatState {
 				}
 			}
 		}
-		Iris.error = HScript.originError;
 		#end
 
 		super();
