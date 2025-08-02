@@ -93,7 +93,7 @@ class Console extends Sprite {
         }
         
         if(output != null){
-            output.setTextFormat = new TextFormat(Paths.font('Lang-ZH.ttf'), consoleFontSize, 0xFFFFFF);
+            output.setTextFormat = new TextFormat(Paths.font('Lang-ZH.ttf'), consoleFontSize(), 0xFFFFFF);
         }
     }
     
@@ -122,7 +122,7 @@ class Console extends Sprite {
         graphics.endFill();
         
         output = new TextField();
-        output.defaultTextFormat = new TextFormat(Paths.font('Lang-ZH.ttf'), consoleFontSize, 0xFFFFFF);
+        output.defaultTextFormat = new TextFormat(Paths.font('Lang-ZH.ttf'), consoleFontSize(), 0xFFFFFF);
         output.width = initialWidth - 30;
         output.height = initialHeight - 100; // 增加底部空间给按钮
         output.x = 15;
@@ -145,14 +145,14 @@ class Console extends Sprite {
     private function createTitleBar():Void {
         titleBar = new Sprite();
         titleBar.graphics.beginFill(0x444444);
-        titleBar.graphics.drawRoundRect(0, 0, currentWidth, titleBarHeight, 10*uiScale, 10*uiScale);
+        titleBar.graphics.drawRoundRect(0, 0, currentWidth, titleBarHeight(), 10*uiScale, 10*uiScale);
         titleBar.graphics.endFill();
         
         var title = new TextField();
         title.text = "Trace Console (拖拽移动)";
-        title.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), titleFontSize, 0xFFFFFF));
+        title.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), titleFontSize(), 0xFFFFFF));
         title.x = 10 * uiScale;
-        title.y = titleBarHeight/2 - titleFontSize/2;
+        title.y = titleBarHeight()/2 - titleFontSize()/2;
         title.width = 300 * uiScale;
         title.selectable = false;
         titleBar.addChild(title);
@@ -191,14 +191,14 @@ class Console extends Sprite {
     private function createWindowButton(label:String, color:Int, xPos:Float, yPos:Float):Sprite {
         var button = new Sprite();
         button.graphics.beginFill(color, 0.7);
-        button.graphics.drawRoundRect(0, 0, windowButtonSize, windowButtonSize*0.8, 3*uiScale);
+        button.graphics.drawRoundRect(0, 0, windowButtonSize(), windowButtonSize()*0.8, 3*uiScale);
         button.graphics.endFill();
         
         var text = new TextField();
         text.text = label;
-        text.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), windowButtonFontSize, 0xFFFFFF));
-        text.x = windowButtonSize / 2 - text.textWidth / 2;
-        text.y = windowButtonSize * 0.4 - windowButtonFontSize / 2;
+        text.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), windowButtonFontSize(), 0xFFFFFF));
+        text.x = windowButtonSize() / 2 - text.textWidth / 2;
+        text.y = windowButtonSize() * 0.4 - windowButtonFontSize() / 2;
         text.selectable = false;
         button.addChild(text);
         
@@ -265,14 +265,14 @@ class Console extends Sprite {
     private function createButton(label:String, color:Int, xPos:Float, yPos:Float):Sprite {
         var button = new Sprite();
         button.graphics.beginFill(color);
-        button.graphics.drawRoundRect(0, 0, controlButtonWidth, controlButtonHeight, 5*uiScale);
+        button.graphics.drawRoundRect(0, 0, controlButtonWidth(), controlButtonHeight(), 5*uiScale);
         button.graphics.endFill();
         
         var text = new TextField();
         text.text = label;
-        text.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), controlButtonFontSize, 0xFFFFFF));
-        text.x = controlButtonWidth/2 - text.textWidth/2;
-        text.y = controlButtonHeight/2 - controlButtonFontSize/2;
+        text.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), controlButtonFontSize(), 0xFFFFFF));
+        text.x = controlButtonWidth()/2 - text.textWidth/2;
+        text.y = controlButtonHeight()/2 - controlButtonFontSize()/2;
         text.selectable = false;
         button.addChild(text);
         
@@ -479,11 +479,11 @@ class Console extends Sprite {
     private function createResizeHandle():Void {
         resizeHandle = new Sprite();
         resizeHandle.graphics.beginFill(0x666666, 0.5);
-        resizeHandle.graphics.drawRect(0, 0, resizeHandleSize, resizeHandleSize);
+        resizeHandle.graphics.drawRect(0, 0, resizeHandleSize(), resizeHandleSize());
         resizeHandle.graphics.endFill();
         
-        resizeHandle.x = currentWidth - resizeHandleSize;
-        resizeHandle.y = currentHeight - resizeHandleSize;
+        resizeHandle.x = currentWidth - resizeHandleSize();
+        resizeHandle.y = currentHeight - resizeHandleSize();
         addChild(resizeHandle);
         
         resizeHandle.addEventListener(MouseEvent.MOUSE_DOWN, startResize);
@@ -696,7 +696,7 @@ class Console extends Sprite {
         updateWindowButtons(newWidth);
         
         // 更新缩放手柄
-        resizeHandle.x = newWidth - resizeHandleSize;
-        resizeHandle.y = newHeight - resizeHandleSize;
+        resizeHandle.x = newWidth - resizeHandleSize();
+        resizeHandle.y = newHeight - resizeHandleSize();
     }
 }
