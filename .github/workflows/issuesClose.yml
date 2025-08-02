@@ -19,13 +19,16 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              labels: '',
             });
             
             const now = new Date();
-            const threeDaysInMs = 3 * 24 * 60 * 60 * 1000;
+            const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
+            
+            console.log(`Found ${issues.length} open issues. Checking for inactivity...`);
             
             for (const issue of issues) {
+              console.log(`Checking issue #${issue.number}: "${issue.title}"`);
+              
               const { data: events } = await github.rest.issues.listEventsForTimeline({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -38,12 +41,24 @@ jobs:
                 new Date(event.created_at) > new Date(issue.created_at)
               );
               
-              if (!hasAuthorComment && (now - new Date(issue.created_at)) > threeDaysInMs) {
+              const issueAge = now - new Date(issue.created_at);
+              const shouldClose = !hasAuthorComment && issueAge > twoDaysInMs;
+              
+              console.log(`Issue #${issue.number}:`, {
+                created: issue.created_at,
+                ageInDays: (issueAge / (24 * 60 * 60 * 1000)).toFixed(2),
+                hasAuthorComment: hasAuthorComment,
+                shouldClose: shouldClose
+              });
+              
+              if (shouldClose) {
+                console.log(`Closing issue #${issue.number} due to inactivity`);
+                
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: issue.number,
-                  body: 'The issue author has not responded for more than 3 days. This issue will be automatically closed as incomplete.You can create a new issue again if needed.'
+                  body: 'The issue author has not responded for more than 2 days. This issue will be automatically closed as incomplete.You can create a new issue again if needed.'
                 });
                 
                 await github.rest.issues.addLabels({
@@ -59,5 +74,11 @@ jobs:
                   issue_number: issue.number,
                   state: 'closed'
                 });
+                
+                console.log(`Successfully closed issue #${issue.number}`);
+              } else {
+                console.log(`Issue #${issue.number} does not meet closure criteria`);
               }
             }
+            
+            console.log('Finished processing all issues');
