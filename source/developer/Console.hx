@@ -241,7 +241,7 @@ class Console extends Sprite {
     private function updateCaptureButton():Void {
         var textField:TextField = cast(captureButton.getChildAt(0), TextField);
         textField.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), 10, 0xFFFFFF));
-        textField.text = captureEnabled ? "禁用捕捉" : "启用捕捉";
+        textField.text = captureEnabled ? "捕捉: 开" : "捕捉: 关";
     }
     
     private function updateAutoScrollButton():Void {
@@ -334,7 +334,7 @@ class Console extends Sprite {
             var line = buffer[i];
             var color = colorBuffer[i];
             
-            if (color != null && color != 0xFFFFFF) {
+            if (color != 0xFFFFFF) {
                 var format = new TextFormat(Paths.font('Lang-ZH.ttf'), 12, color);
                 var headLength = line.indexOf(":") + 1;
                 if (headLength > 0) {
