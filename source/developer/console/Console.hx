@@ -177,9 +177,9 @@ class Console extends Sprite {
     
     private function onTitleDragMove(e:MouseEvent):Void {
         if (isDragging) {
-            x = e.stageX - dragOffsetX;
-            y = e.stageY - dragOffsetY;
-            e.stopPropagation();
+            // 限制不能拖出屏幕
+            x = Math.max(0, Math.min(openfl.Lib.current.stage.stageWidth - width, e.stageX - dragOffsetX));
+            y = Math.max(0, Math.min(openfl.Lib.current.stage.stageHeight - height, e.stageY - dragOffsetY));
         }
     }
     
@@ -460,14 +460,9 @@ class Console extends Sprite {
     
     private function onResize(e:MouseEvent):Void {
         if (isResizing) {
-            var newWidth = startWidth + (e.stageX - startResizeX);
-            var newHeight = startHeight + (e.stageY - startResizeY);
-            
-            newWidth = Math.max(minWidth, newWidth);
-            newHeight = Math.max(minHeight, newHeight);
-            
+            var newWidth = Math.max(minWidth, startWidth + (e.stageX - startResizeX));
+            var newHeight = Math.max(minHeight, startHeight + (e.stageY - startResizeY));
             resizeConsole(newWidth, newHeight);
-            e.stopPropagation();
         }
     }
     
@@ -482,25 +477,28 @@ class Console extends Sprite {
     }
     
     private function resizeConsole(newWidth:Float, newHeight:Float):Void {
+        // 清除并重绘背景
         graphics.clear();
         graphics.beginFill(0x333333, 0.8);
         graphics.drawRoundRect(0, 0, newWidth, newHeight, 10);
         graphics.endFill();
         
+        // 更新输出区域
         output.width = newWidth - 30;
         output.height = newHeight - 100;
         
+        // 更新缩放手柄位置
         resizeHandle.x = newWidth - 20;
         resizeHandle.y = newHeight - 20;
         
-        // 更新窗口控制按钮位置
-        updateWindowButtonsPosition();
+        // 更新标题栏
+        updateTitleBar(newWidth);
         
-        // 更新底部功能按钮位置
-        updateControlButtonsPosition();
+        // 更新窗口控制按钮
+        updateWindowButtons(newWidth);
         
-        // 更新标题栏宽度
-        updateTitleBarWidth(newWidth);
+        // 更新功能按钮
+        updateControlButtons(newHeight);
     }
     
     private function toggleMaximize():Void {
@@ -509,25 +507,17 @@ class Console extends Sprite {
             x = normalSize.x;
             y = normalSize.y;
             isMaximized = false;
-
-            var maximizeText:TextField = cast(maximizeButton.getChildAt(0), TextField);
-            maximizeText.text = "□";
         } else {
             normalSize.setTo(x, y, width, height);
             
             var stage = openfl.Lib.current.stage;
             resizeConsole(stage.stageWidth, stage.stageHeight);
-            x = 0;
-            y = 0;
+            x = y = 0;
             isMaximized = true;
-            
-            var maximizeText:TextField = cast(maximizeButton.getChildAt(0), TextField);
-            maximizeText.text = "❐";
         }
         
-        // 更新所有按钮位置
-        updateWindowButtonsPosition();
-        updateControlButtonsPosition();
+        var maximizeText:TextField = cast(maximizeButton.getChildAt(0), TextField);
+        maximizeText.text = "□";
     }
     
     private function updateWindowButtonsPosition():Void {
@@ -551,14 +541,13 @@ class Console extends Sprite {
             autoScrollButton.y = buttonY;
         }
         
-        var clearButton = getChildByName("clearButton");
         if (clearButton != null) {
             clearButton.x = 220;
             clearButton.y = buttonY;
         }
     }
     
-    private function updateTitleBarWidth(newWidth:Float):Void {
+    private function updateTitleBar(newWidth:Float):Void {
         if (numChildren > 0) {
             var titleBar = getChildAt(0);
             if (Std.is(titleBar, Sprite)) {
@@ -567,16 +556,23 @@ class Console extends Sprite {
                 titleBarSprite.graphics.beginFill(0x444444);
                 titleBarSprite.graphics.drawRoundRect(0, 0, newWidth, 30, 10, 10);
                 titleBarSprite.graphics.endFill();
-                
-                // 更新标题文本位置
-                if (titleBarSprite.numChildren > 0) {
-                    var titleText = titleBarSprite.getChildAt(0);
-                    if (Std.is(titleText, TextField)) {
-                        var titleTextField:TextField = cast titleText;
-                        titleTextField.width = newWidth - 100; // 留出窗口按钮空间
-                    }
-                }
             }
+        }
+    }
+    
+    private function updateControlButtons(newHeight:Float):Void {
+        var buttonY = newHeight - 40;
+        
+        if (captureButton != null) {
+            captureButton.y = buttonY;
+        }
+        
+        if (autoScrollButton != null) {
+            autoScrollButton.y = buttonY;
+        }
+        
+        if (clearButton != null) {
+            clearButton.y = buttonY;
         }
     }
 }
