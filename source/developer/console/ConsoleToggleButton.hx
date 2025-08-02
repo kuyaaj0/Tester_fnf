@@ -1,4 +1,4 @@
-package developer;
+package developer.console;
 
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;

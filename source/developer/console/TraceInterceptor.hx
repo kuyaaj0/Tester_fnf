@@ -1,4 +1,4 @@
-package developer;
+package developer.console;
 
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;

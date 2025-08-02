@@ -19,7 +19,7 @@ import states.TitleState;
 import states.backend.InitState;
 import mobile.backend.Data;
 
-import developer.TraceInterceptor;
+import developer.console.TraceInterceptor;
 
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
@@ -65,7 +65,9 @@ class Main extends Sprite
 
 	public static function main():Void
 	{
-	    TraceInterceptor.init();
+	    if (ClientPrefs.data.developerMode){
+	        TraceInterceptor.init();
+	    }
 	    
 		#if (cpp && windows)
 		backend.device.Native.fixScaling();

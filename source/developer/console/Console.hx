@@ -1,0 +1,581 @@
+package developer.console;
+
+import openfl.display.Sprite;
+import openfl.events.MouseEvent;
+import openfl.text.TextField;
+import openfl.text.TextFormat;
+import openfl.ui.Mouse;
+import openfl.ui.MouseCursor;
+import openfl.geom.Rectangle;
+
+class Console extends Sprite {
+    public static var consoleInstance(get, null):Console;
+    private var output:TextField;
+    private var buffer:Array<String> = [];
+    private var isDragging:Bool = false;
+    private var dragOffsetX:Float = 0;
+    private var dragOffsetY:Float = 0;
+    private var isScrolling:Bool = false;
+    private var scrollStartY:Float = 0;
+    private var scrollStartV:Int = 0;
+    private var captureEnabled:Bool = true;
+    private var autoScroll:Bool = true;
+    
+    // 按钮引用
+    private var captureButton:Sprite;
+    private var autoScrollButton:Sprite;
+    
+    private var pendingLogs:Array<String> = [];
+    private var pendingColoredLogs:Array<{head:String, message:String, color:Int}> = [];
+    private var renderTimer:haxe.Timer = null;
+    private var maxBatchSize:Int = 100; // 每批处理的最大日志数
+    private var renderDelay:Int = 100; // 渲染延迟(毫秒)
+    
+    private static var _consoleInstance:Console = null;
+    
+    //窗口大小
+    private var minWidth:Float = 400;
+    private var minHeight:Float = 300;
+    private var resizeHandle:Sprite;
+    private var isResizing:Bool = false;
+    private var startResizeX:Float = 0;
+    private var startResizeY:Float = 0;
+    private var startWidth:Float = 0;
+    private var startHeight:Float = 0;
+    
+    private var isMaximized:Bool = false;
+    private var normalSize:Rectangle = new Rectangle();
+    private var maximizeButton:Sprite;
+    private var minimizeButton:Sprite;
+    
+    private static function get_consoleInstance():Console {
+        if (_consoleInstance == null) {
+            _consoleInstance = new Console();
+        }
+        return _consoleInstance;
+    }
+    
+    public function new() {
+        super();
+        createConsoleUI();
+    }
+    
+    private function createConsoleUI():Void {
+        var initialWidth = openfl.Lib.current.stage.stageWidth * 0.4;
+        var initialHeight = openfl.Lib.current.stage.stageHeight * 0.3;
+
+        normalSize = new Rectangle(100, 100, initialWidth, initialHeight);
+        
+        graphics.beginFill(0x333333, 0.8);
+        graphics.drawRoundRect(0, 0, initialWidth, initialHeight, 10);
+        graphics.endFill();
+        
+        output = new TextField();
+        output.defaultTextFormat = new TextFormat(Paths.font('Lang-ZH.ttf'), 14, 0xFFFFFF);
+        output.width = initialWidth - 30;
+        output.height = initialHeight - 100; // 增加底部空间给按钮
+        output.x = 15;
+        output.y = 50;
+        output.multiline = true;
+        output.wordWrap = true;
+        output.selectable = false;
+        output.htmlText = "";
+        output.addEventListener(MouseEvent.MOUSE_DOWN, startTextScroll);
+        addChild(output);
+        
+        createTitleBar();
+        createControlButtons();
+        createWindowButtons();
+        createResizeHandle();
+    }
+    
+    private function createTitleBar():Void {
+        var titleBar = new Sprite();
+        titleBar.graphics.beginFill(0x444444);
+        titleBar.graphics.drawRoundRect(0, 0, width, 30, 10, 10);
+        titleBar.graphics.endFill();
+        addChild(titleBar);
+        
+        var title = new TextField();
+        title.text = "Trace Console (拖拽移动)";
+        title.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), 12, 0xFFFFFF));
+        title.x = 10;
+        title.y = 5;
+        title.width = 300;
+        title.selectable = false;
+        titleBar.addChild(title);
+    
+        titleBar.addEventListener(MouseEvent.MOUSE_DOWN, function(e:MouseEvent) {
+            isDragging = true;
+            dragOffsetX = e.stageX - x;
+            dragOffsetY = e.stageY - y;
+            
+            stage.addEventListener(MouseEvent.MOUSE_MOVE, onTitleDragMove);
+            stage.addEventListener(MouseEvent.MOUSE_UP, onTitleDragEnd);
+            
+            e.stopPropagation();
+        });
+    }
+    
+    private function createWindowButtons():Void {
+        closeButton = createWindowButton("×", 0xFF5555, width - 30, 5);
+        closeButton.addEventListener(MouseEvent.CLICK, function(e) {
+            closeConsole();
+        });
+        
+        maximizeButton = createWindowButton("□", 0x55AA55, width - 60, 5);
+        maximizeButton.addEventListener(MouseEvent.CLICK, function(e) {
+            toggleMaximize();
+        });
+        
+        minimizeButton = createWindowButton("_", 0xAAAAAA, width - 90, 5);
+        minimizeButton.addEventListener(MouseEvent.CLICK, function(e) {
+            closeConsole();
+        });
+    }
+    
+    private function createWindowButton(label:String, color:Int, xPos:Float, yPos:Float):Sprite {
+        var button = new Sprite();
+        button.graphics.beginFill(color, 0.7);
+        button.graphics.drawRoundRect(0, 0, 25, 20, 3);
+        button.graphics.endFill();
+        
+        var text = new TextField();
+        text.text = label;
+        text.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), 14, 0xFFFFFF));
+        text.x = 5;
+        text.y = 0;
+        text.width = 20;
+        text.selectable = false;
+        button.addChild(text);
+        
+        button.x = xPos;
+        button.y = yPos;
+        addChild(button);
+        
+        button.addEventListener(MouseEvent.MOUSE_OVER, function(e) {
+            button.graphics.clear();
+            button.graphics.beginFill(color, 1.0);
+            button.graphics.drawRoundRect(0, 0, 25, 20, 3);
+            button.graphics.endFill();
+            button.addChild(text);
+            Mouse.cursor = MouseCursor.BUTTON;
+        });
+        
+        button.addEventListener(MouseEvent.MOUSE_OUT, function(e) {
+            button.graphics.clear();
+            button.graphics.beginFill(color, 0.7);
+            button.graphics.drawRoundRect(0, 0, 25, 20, 3);
+            button.graphics.endFill();
+            button.addChild(text);
+            Mouse.cursor = MouseCursor.AUTO;
+        });
+        
+        return button;
+    }
+    
+    private function onTitleDragMove(e:MouseEvent):Void {
+        if (isDragging) {
+            x = e.stageX - dragOffsetX;
+            y = e.stageY - dragOffsetY;
+            e.stopPropagation();
+        }
+    }
+    
+    private function onTitleDragEnd(e:MouseEvent):Void {
+        if (isDragging) {
+            isDragging = false;
+            stage.removeEventListener(MouseEvent.MOUSE_MOVE, onTitleDragMove);
+            stage.removeEventListener(MouseEvent.MOUSE_UP, onTitleDragEnd);
+            e.stopPropagation();
+        }
+    }
+    
+    private function createControlButtons():Void {
+        var buttonY = height - 40;
+        
+        captureButton = createButton("捕捉:开", 0xFF5555, 20, buttonY);
+        captureButton.addEventListener(MouseEvent.CLICK, function(e) {
+            toggleCapture();
+        });
+        
+        autoScrollButton = createButton("自动滚动:开", 0x55AA55, 110, buttonY);
+        autoScrollButton.addEventListener(MouseEvent.CLICK, function(e) {
+            toggleAutoScroll();
+        });
+        
+        var clearButton = createButton("清空日志", 0x5555FF, 220, buttonY);
+        clearButton.addEventListener(MouseEvent.CLICK, function(e) {
+            clearLogs();
+        });
+    }
+    
+    private function createButton(label:String, color:Int, xPos:Float, yPos:Float):Sprite {
+        var button = new Sprite();
+        button.graphics.beginFill(color);
+        button.graphics.drawRoundRect(0, 0, 80, 20, 5);
+        button.graphics.endFill();
+        
+        var text = new TextField();
+        text.text = label;
+        text.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), 10, 0xFFFFFF));
+        text.x = 5;
+        text.y = 3;
+        text.width = 70;
+        text.selectable = false;
+        button.addChild(text);
+        
+        button.x = xPos;
+        button.y = yPos;
+        addChild(button);
+        
+        button.addEventListener(MouseEvent.MOUSE_OVER, function(e) {
+            Mouse.cursor = MouseCursor.BUTTON;
+        });
+        
+        button.addEventListener(MouseEvent.MOUSE_OUT, function(e) {
+            Mouse.cursor = MouseCursor.AUTO;
+        });
+        
+        return button;
+    }
+    
+    private function startTextScroll(e:MouseEvent):Void {
+        isScrolling = true;
+        scrollStartY = e.stageY;
+        scrollStartV = output.scrollV;
+        stage.addEventListener(MouseEvent.MOUSE_MOVE, doTextScroll);
+        stage.addEventListener(MouseEvent.MOUSE_UP, stopTextScroll);
+    }
+    
+    private function doTextScroll(e:MouseEvent):Void {
+        if (isScrolling) {
+            var deltaY:Int = Std.int((e.stageY - scrollStartY) / 3);
+            output.scrollV = scrollStartV - deltaY;
+            if (autoScroll) {
+                toggleAutoScroll(false);
+            }
+            updateAutoScrollButton();
+        }
+    }
+    
+    private function stopTextScroll(e:MouseEvent):Void {
+        isScrolling = false;
+        stage.removeEventListener(MouseEvent.MOUSE_MOVE, doTextScroll);
+        stage.removeEventListener(MouseEvent.MOUSE_UP, stopTextScroll);
+    }
+    
+    private function startDragConsole(e:MouseEvent):Void {
+        isDragging = true;
+        dragOffsetX = e.stageX - x;
+        dragOffsetY = e.stageY - y;
+        stage.addEventListener(MouseEvent.MOUSE_MOVE, dragConsole);
+    }
+    
+    private function stopDragConsole(e:MouseEvent):Void {
+        isDragging = false;
+        if (stage != null) {
+            stage.removeEventListener(MouseEvent.MOUSE_MOVE, dragConsole);
+        }
+    }
+    
+    private function dragConsole(e:MouseEvent):Void {
+        if (isDragging) {
+            x = e.stageX - dragOffsetX;
+            y = e.stageY - dragOffsetY;
+        }
+    }
+    
+    private function scrollToBottom():Void {
+        output.scrollV = output.maxScrollV;
+    }
+    
+    private function toggleCapture():Void {
+        captureEnabled = !captureEnabled;
+        updateCaptureButton();
+    }
+    
+    private function toggleAutoScroll(?value:Bool):Void {
+        autoScroll = value != null ? value : !autoScroll;
+        if (autoScroll) scrollToBottom();
+        updateAutoScrollButton();
+    }
+    
+    private function clearLogs():Void {
+        output.htmlText = "";
+    }
+    
+    private function closeConsole():Void {
+        visible = false;
+        ConsoleToggleButton.show();
+    }
+    
+    private function updateCaptureButton():Void {
+        var textField:TextField = cast(captureButton.getChildAt(0), TextField);
+        textField.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), 10, 0xFFFFFF));
+        textField.text = captureEnabled ? "捕捉:开" : "捕捉:关";
+    }
+    
+    private function updateAutoScrollButton():Void {
+        var textField:TextField = cast(autoScrollButton.getChildAt(0), TextField);
+        textField.setTextFormat(new TextFormat(Paths.font('Lang-ZH.ttf'), 10, 0xFFFFFF));
+        textField.text = autoScroll ? "自动滚动:开" : "自动滚动:关";
+    }
+    
+    public static function log(message:String):Void {
+        if (consoleInstance != null) {
+            consoleInstance.addLog(message);
+        }
+    }
+    
+    private function addLog(message:String):Void {
+        if (!captureEnabled) return;
+        
+        pendingLogs.push(StringTools.htmlEscape(message));
+        scheduleRender();
+    }
+    
+    public static function show():Void {
+        if (consoleInstance.parent == null) {
+            openfl.Lib.current.stage.addChild(consoleInstance);
+        }
+        consoleInstance.visible = true;
+        ConsoleToggleButton.hide();
+    }
+    
+    public static function hide():Void {
+        if (consoleInstance != null) {
+            consoleInstance.visible = false;
+        }
+    }
+    
+    public static function isVisible():Bool {
+        return consoleInstance != null && consoleInstance.visible;
+    }
+    
+    public static function toggle():Void {
+        if (isVisible()) {
+            hide();
+        } else {
+            show();
+        }
+    }
+    
+    public static function logWithColoredHead(head:String, message:String, color:Int):Void {
+        if (consoleInstance != null) {
+            consoleInstance.addLogWithColoredHead(head, message, color);
+        }
+    }
+    
+    private function addLogWithColoredHead(head:String, message:String, color:Int):Void {
+        if (!captureEnabled) return;
+        
+        pendingColoredLogs.push({
+            head: head,
+            message: message,
+            color: color
+        });
+        scheduleRender();
+    }
+    
+    private function scheduleRender():Void {
+        if (renderTimer == null) {
+            renderTimer = haxe.Timer.delay(processPendingLogs, renderDelay);
+        }
+    }
+    
+    private function processPendingLogs():Void {
+        renderTimer = null;
+        
+        var hasNewContent = false;
+        var batchCount = 0;
+        
+        // 处理普通日志
+        while (pendingLogs.length > 0 && batchCount < maxBatchSize) {
+            var message = pendingLogs.shift();
+            appendToOutput(message);
+            hasNewContent = true;
+            batchCount++;
+        }
+        
+        // 处理带颜色的日志
+        while (pendingColoredLogs.length > 0 && batchCount < maxBatchSize) {
+            var log = pendingColoredLogs.shift();
+            var htmlLine = '<font color="#${StringTools.hex(log.color, 6)}">${StringTools.htmlEscape(log.head)}</font>${StringTools.htmlEscape(log.message)}';
+            appendToOutput(htmlLine);
+            hasNewContent = true;
+            batchCount++;
+        }
+        
+        if (hasNewContent && autoScroll) {
+            scrollToBottom();
+        }
+        
+        // 如果还有待处理日志，继续调度下一批
+        if (pendingLogs.length > 0 || pendingColoredLogs.length > 0) {
+            scheduleRender();
+        }
+    }
+    
+    private function appendToOutput(content:String):Void {
+        if (output.htmlText != "") {
+            output.htmlText += "<br/>" + content;
+        } else {
+            output.htmlText = content;
+        }
+    }
+    
+    private function createResizeHandle():Void {
+        resizeHandle = new Sprite();
+        resizeHandle.graphics.beginFill(0x666666, 0.5);
+        resizeHandle.graphics.drawRect(0, 0, 20, 20);
+        resizeHandle.graphics.endFill();
+        
+        resizeHandle.x = width - 20;
+        resizeHandle.y = height - 20;
+        addChild(resizeHandle);
+        
+        resizeHandle.addEventListener(MouseEvent.MOUSE_DOWN, startResize);
+        resizeHandle.addEventListener(MouseEvent.MOUSE_OVER, function(e) {
+            Mouse.cursor = MouseCursor.HAND;
+        });
+        resizeHandle.addEventListener(MouseEvent.MOUSE_OUT, function(e) {
+            if (!isResizing) Mouse.cursor = MouseCursor.AUTO;
+        });
+    }
+    
+    private function startResize(e:MouseEvent):Void {
+        isResizing = true;
+        startResizeX = e.stageX;
+        startResizeY = e.stageY;
+        startWidth = width;
+        startHeight = height;
+        
+        stage.addEventListener(MouseEvent.MOUSE_MOVE, onResize);
+        stage.addEventListener(MouseEvent.MOUSE_UP, stopResize);
+        
+        e.stopPropagation();
+    }
+    
+    private function onResize(e:MouseEvent):Void {
+        if (isResizing) {
+            var newWidth = startWidth + (e.stageX - startResizeX);
+            var newHeight = startHeight + (e.stageY - startResizeY);
+            
+            newWidth = Math.max(minWidth, newWidth);
+            newHeight = Math.max(minHeight, newHeight);
+            
+            resizeConsole(newWidth, newHeight);
+            e.stopPropagation();
+        }
+    }
+    
+    private function stopResize(e:MouseEvent):Void {
+        if (isResizing) {
+            isResizing = false;
+            stage.removeEventListener(MouseEvent.MOUSE_MOVE, onResize);
+            stage.removeEventListener(MouseEvent.MOUSE_UP, stopResize);
+            Mouse.cursor = MouseCursor.AUTO;
+            e.stopPropagation();
+        }
+    }
+    
+    private function resizeConsole(newWidth:Float, newHeight:Float):Void {
+        graphics.clear();
+        graphics.beginFill(0x333333, 0.8);
+        graphics.drawRoundRect(0, 0, newWidth, newHeight, 10);
+        graphics.endFill();
+        
+        output.width = newWidth - 30;
+        output.height = newHeight - 100;
+        
+        resizeHandle.x = newWidth - 20;
+        resizeHandle.y = newHeight - 20;
+        
+        // 更新窗口控制按钮位置
+        updateWindowButtonsPosition();
+        
+        // 更新底部功能按钮位置
+        updateControlButtonsPosition();
+        
+        // 更新标题栏宽度
+        updateTitleBarWidth(newWidth);
+    }
+    
+    private function toggleMaximize():Void {
+        if (isMaximized) {
+            resizeConsole(normalSize.width, normalSize.height);
+            x = normalSize.x;
+            y = normalSize.y;
+            isMaximized = false;
+
+            var maximizeText:TextField = cast(maximizeButton.getChildAt(0), TextField);
+            maximizeText.text = "□";
+        } else {
+            normalSize.setTo(x, y, width, height);
+            
+            var stage = openfl.Lib.current.stage;
+            resizeConsole(stage.stageWidth, stage.stageHeight);
+            x = 0;
+            y = 0;
+            isMaximized = true;
+            
+            var maximizeText:TextField = cast(maximizeButton.getChildAt(0), TextField);
+            maximizeText.text = "❐";
+        }
+        
+        // 更新所有按钮位置
+        updateWindowButtonsPosition();
+        updateControlButtonsPosition();
+    }
+    
+    private function updateWindowButtonsPosition():Void {
+        if (closeButton != null) {
+            closeButton.x = width - 30;
+            maximizeButton.x = width - 60;
+            minimizeButton.x = width - 90;
+        }
+    }
+
+    private function updateControlButtonsPosition():Void {
+        var buttonY = height - 40;
+        
+        if (captureButton != null) {
+            captureButton.x = 20;
+            captureButton.y = buttonY;
+        }
+        
+        if (autoScrollButton != null) {
+            autoScrollButton.x = 110;
+            autoScrollButton.y = buttonY;
+        }
+        
+        var clearButton = getChildByName("clearButton");
+        if (clearButton != null) {
+            clearButton.x = 220;
+            clearButton.y = buttonY;
+        }
+    }
+    
+    private function updateTitleBarWidth(newWidth:Float):Void {
+        if (numChildren > 0) {
+            var titleBar = getChildAt(0);
+            if (Std.is(titleBar, Sprite)) {
+                var titleBarSprite:Sprite = cast titleBar;
+                titleBarSprite.graphics.clear();
+                titleBarSprite.graphics.beginFill(0x444444);
+                titleBarSprite.graphics.drawRoundRect(0, 0, newWidth, 30, 10, 10);
+                titleBarSprite.graphics.endFill();
+                
+                // 更新标题文本位置
+                if (titleBarSprite.numChildren > 0) {
+                    var titleText = titleBarSprite.getChildAt(0);
+                    if (Std.is(titleText, TextField)) {
+                        var titleTextField:TextField = cast titleText;
+                        titleTextField.width = newWidth - 100; // 留出窗口按钮空间
+                    }
+                }
+            }
+        }
+    }
+}
