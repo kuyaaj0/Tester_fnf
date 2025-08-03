@@ -25,5 +25,10 @@ class AppData
 	{
 		return AppDetails.getAppName();
 	}
+	
+	public static function verifySignature():String
+	{
+		return AppDetails.verifySignature();
+	}
 }
 #end
