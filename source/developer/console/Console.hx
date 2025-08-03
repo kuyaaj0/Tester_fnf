@@ -197,11 +197,11 @@ class Console extends Sprite {
         if (isDragging) {
             var scaledMinX = 0;
             var scaledMinY = 0;
-            var scaledMaxX = (openfl.Lib.current.stage.stageWidth - currentWidth * scaleX) / scaleX;
-            var scaledMaxY = (openfl.Lib.current.stage.stageHeight - currentHeight * scaleY) / scaleY;
+            var scaledMaxX = (openfl.Lib.current.stage.stageWidth - currentWidth * scaleX) * scaleX;
+            var scaledMaxY = (openfl.Lib.current.stage.stageHeight - currentHeight * scaleY) * scaleY;
             
-            x = Math.max(scaledMinX, Math.min(scaledMaxX, (e.stageX - dragOffsetX * scaleX) / scaleX));
-            y = Math.max(scaledMinY, Math.min(scaledMaxY, (e.stageY - dragOffsetY * scaleY) / scaleY));
+            x = Math.max(scaledMinX, Math.min(scaledMaxX, (e.stageX - dragOffsetX * scaleX) * scaleX));
+            y = Math.max(scaledMinY, Math.min(scaledMaxY, (e.stageY - dragOffsetY * scaleY) * scaleY));
         }
     }
     
@@ -487,11 +487,11 @@ class Console extends Sprite {
     
     private function onResize(e:MouseEvent):Void {
         if (isResizing) {
-            var newWidth = Math.max(minWidth, startWidth + (e.stageX - startResizeX) / scaleX);
-            var newHeight = Math.max(minHeight, startHeight + (e.stageY - startResizeY) / scaleY);
+            var newWidth = Math.max(minWidth, startWidth + (e.stageX - startResizeX) * scaleX);
+            var newHeight = Math.max(minHeight, startHeight + (e.stageY - startResizeY) * scaleY);
     
-            newWidth = Math.min(newWidth, (openfl.Lib.current.stage.stageWidth - x * scaleX) / scaleX);
-            newHeight = Math.min(newHeight, (openfl.Lib.current.stage.stageHeight - y * scaleY) / scaleY);
+            newWidth = Math.min(newWidth, (openfl.Lib.current.stage.stageWidth - x * scaleX) * scaleX);
+            newHeight = Math.min(newHeight, (openfl.Lib.current.stage.stageHeight - y * scaleY) * scaleY);
     
             currentWidth = newWidth;
             currentHeight = newHeight;
@@ -541,7 +541,7 @@ class Console extends Sprite {
     
     private function toggleMaximize():Void {
         if (isMaximized) {
-            resizeConsole(normalSize.width, normalSize.height);
+            resizeConsole(normalSize.width * scaleX, normalSize.height * scaleY);
             x = normalSize.x;
             y = normalSize.y;
             isMaximized = false;
@@ -549,7 +549,7 @@ class Console extends Sprite {
             normalSize.setTo(x, y, currentWidth, currentHeight);
             
             var stage = openfl.Lib.current.stage;
-            resizeConsole(stage.stageWidth / scaleX, stage.stageHeight / scaleY);
+            resizeConsole(stage.stageWidth * scaleX, stage.stageHeight * scaleY);
             x = y = 0;
             isMaximized = true;
         }
