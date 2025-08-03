@@ -2,6 +2,7 @@ package objects;
 
 import flixel.sound.FlxSound;
 import funkin.vis.dsp.SpectralAnalyzer;
+import funkin.vis.dsp.SpectralAnalyzer.Bar;
 
 import shapeEx.Rect;
 
@@ -199,7 +200,7 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	public var amplitude:Float = 0;
 
 	var saveTime:Float = 0;
-	var getValues:Array<funkin.vis.dsp.Bar>;
+	var getValues:Array<Bar>;
 	
 	override function update(elapsed:Float)
 	{
@@ -334,4 +335,5 @@ class AudioCircleDisplay extends FlxSpriteGroup
 			members[i].y = this.y - members[i].scale.y / 2;
 		}
 	}
+
 }
