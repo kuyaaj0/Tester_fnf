@@ -27,10 +27,19 @@ jobs:
         with:
           ndk-version: r21e
 
+      - name: Setup Java JDK
+        uses: actions/setup-java@main
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
       - name: Setup Haxe
         uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.7
+      
+      - name: Set Gradle version
+        run: echo "GRADLE_VERSION=7.4" >> $GITHUB_ENV
 
       - name: Restore Previous Cache
         id: cache-debug-build-android-restore
@@ -57,7 +66,7 @@ jobs:
           haxelib run lime setup -alias -y
           haxelib run lime config ANDROID_SDK $ANDROID_HOME
           haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_HOME
-          haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
+          haxelib run lime config JAVA_HOME $JAVA_HOME
           haxelib run lime config ANDROID_SETUP true
           haxelib list
         env:
