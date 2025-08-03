@@ -196,13 +196,17 @@ class Console extends Sprite {
     
     private function onTitleDragMove(e:MouseEvent):Void {
         if (isDragging) {
-            var scaledMinX = 0;
-            var scaledMinY = 0;
-            var scaledMaxX = (openfl.Lib.current.stage.stageWidth / scaleX - currentWidth);
-            var scaledMaxY = (openfl.Lib.current.stage.stageHeight / scaleY - currentHeight);
+            var unscaledX = e.stageX / scaleX;
+            var unscaledY = e.stageY / scaleY;
             
-            x = Math.max(scaledMinX, Math.min(scaledMaxX, (e.stageX - dragOffsetX) / scaleX));
-            y = Math.max(scaledMinY, Math.min(scaledMaxY, (e.stageY - dragOffsetY) / scaleY));
+            var newX = unscaledX - dragOffsetX;
+            var newY = unscaledY - dragOffsetY;
+            
+            var maxX = (openfl.Lib.current.stage.stageWidth / scaleX) - currentWidth;
+            var maxY = (openfl.Lib.current.stage.stageHeight / scaleY) - currentHeight;
+            
+            x = Math.max(0, Math.min(maxX, newX));
+            y = Math.max(0, Math.min(maxY, newY));
         }
     }
     
@@ -491,16 +495,16 @@ class Console extends Sprite {
             var deltaX = (e.stageX - startResizeX) / scaleX;
             var deltaY = (e.stageY - startResizeY) / scaleY;
             
-            var newWidth = Math.max(minWidth / scaleX, startWidth + deltaX);
-            var newHeight = Math.max(minHeight / scaleY, startHeight + deltaY);
-    
-            newWidth = Math.min(newWidth, (openfl.Lib.current.stage.stageWidth / scaleX - x));
-            newHeight = Math.min(newHeight, (openfl.Lib.current.stage.stageHeight / scaleY - y));
-    
-            currentWidth = newWidth;
-            currentHeight = newHeight;
-    
-            drawDragReference(newWidth, newHeight);
+            var newWidth = Math.max(minWidth, startWidth + deltaX);
+            var newHeight = Math.max(minHeight, startHeight + deltaY);
+            
+            var maxWidth = (openfl.Lib.current.stage.stageWidth / scaleX) - x;
+            var maxHeight = (openfl.Lib.current.stage.stageHeight / scaleY) - y;
+            
+            currentWidth = Math.min(newWidth, maxWidth);
+            currentHeight = Math.min(newHeight, maxHeight);
+            
+            drawDragReference(currentWidth, currentHeight);
         }
     }
     
@@ -545,10 +549,13 @@ class Console extends Sprite {
             y = normalSize.y;
             isMaximized = false;
         } else {
-            normalSize.setTo(x, y, currentWidth, currentHeight);
+            normalSize.setTo(x * scaleX, y * scaleY, 
+                           currentWidth * scaleX, 
+                           currentHeight * scaleY);
             
             var stage = openfl.Lib.current.stage;
-            resizeConsole(stage.stageWidth / scaleX, stage.stageHeight / scaleY);
+            resizeConsole(stage.stageWidth / scaleX, 
+                         stage.stageHeight / scaleY);
             x = y = 0;
             isMaximized = true;
         }
@@ -651,21 +658,39 @@ class Console extends Sprite {
     }
     
     private function updateAllElements(newWidth:Float, newHeight:Float):Void {
-        // 输出区域
         output.width = newWidth - 30;
         output.height = newHeight - 100;
         
-        // 标题栏
         updateTitleBar(newWidth);
         
-        // 控制按钮
         updateControlButtons(newHeight);
         
-        // 窗口按钮
         updateWindowButtons(newWidth);
         
-        // 缩放手柄
         resizeHandle.x = newWidth - 40;
         resizeHandle.y = newHeight - 40;
+    }
+    
+    public function updateScale(newScale:Float):Void {
+        var actualX = x * scaleX;
+        var actualY = y * scaleY;
+        var actualWidth = currentWidth * scaleX;
+        var actualHeight = currentHeight * scaleY;
+        
+        scaleX = scaleY = newScale;
+        
+        x = actualX / newScale;
+        y = actualY / newScale;
+        currentWidth = actualWidth / newScale;
+        currentHeight = actualHeight / newScale;
+        
+        redrawConsole(currentWidth, currentHeight);
+        
+        if (isMaximized) {
+            var stage = openfl.Lib.current.stage;
+            resizeConsole(stage.stageWidth / newScale, 
+                         stage.stageHeight / newScale);
+            x = y = 0;
+        }
     }
 }
