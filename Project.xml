@@ -239,5 +239,10 @@
     <permission name="android.permission.READ_EXTERNAL_STORAGE" />
     <permission name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </android>
+
+<config>
+    <android gradle-version="7.4" />  <!-- Gradle 7.4 -->
+    <android gradle-plugin="7.0.4" /> <!-- AGP 7.0.4 -->
+</config>
     
 </project>

@@ -38,9 +38,6 @@ jobs:
         with:
           haxe-version: 4.3.7
       
-      - name: Set Gradle version
-        run: echo "GRADLE_VERSION=7.4" >> $GITHUB_ENV
-
       - name: Restore Previous Cache
         id: cache-debug-build-android-restore
         uses: actions/cache/restore@main
@@ -50,7 +47,7 @@ jobs:
             ~/.gradle
             export/release/android/haxe
             export/release/android/obj
-          key: cache-android-build
+          key: cache-build-Android
 
       - name: Install Libraries
         run: |
