@@ -55,7 +55,7 @@ jobs:
       - name: Install Libraries
         run: |
           haxelib setup ~/haxelib
-          haxelib run hmm reinstall --force hscript-iris-improved
+          haxelib run hmm reinstall --force extension-androidtools
 
       - name: Configure Android
         if: inputs.name == 'Android'
