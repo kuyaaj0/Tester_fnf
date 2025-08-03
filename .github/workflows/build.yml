@@ -30,6 +30,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@main
+        
+      - name: Setup Android NDK
+        if: inputs.name == 'Android'
+        uses: nttld/setup-ndk@main
+        id: setup-ndk
+        with:
+          ndk-version: r21e
+
+      - name: Setup Java JDK
+        if: inputs.name == 'Android'
+        uses: actions/setup-java@main
+        with:
+          distribution: 'zulu'
+          java-version: '11'
 
       - name: Setup Haxe
         uses: krdlab/setup-haxe@master
