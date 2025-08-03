@@ -163,7 +163,7 @@ class InitState extends MusicBeatState
 		}
 		#end
 		#end
-
+		
 		//clear up
 		crowplexus.hscript.Interp.clearCache();
 	
