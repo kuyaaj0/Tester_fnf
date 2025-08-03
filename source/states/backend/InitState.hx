@@ -84,29 +84,6 @@ class InitState extends MusicBeatState
 			}
 		#end
 
-		//clear up
-		crowplexus.hscript.Interp.clearCache();
-
-		#if LUA_ALLOWED
-		#if (android && EXTERNAL)
-		try
-		{
-		#end
-			Mods.pushGlobalMods();
-		#if (android && EXTERNAL)
-		}
-		catch (e:Dynamic)
-		{
-			SUtil.showPopUp("permission is not obtained, restart the application", "Error!");
-			Sys.exit(1);
-		}
-		#end
-		#end
-
-		Mods.loadTopMod();
-		psychlua.stages.modules.ModuleHandler.init();
-		psychlua.stages.GlobalHandler.init();
-
 		#if CHECK_FOR_UPDATES
 		if (ClientPrefs.data.checkForUpdates)
 		{
@@ -139,10 +116,6 @@ class InitState extends MusicBeatState
 			});
 		}
 		#end
-	
-		
-	
-		Highscore.load();
 
 		#if mobile
 		if (ClientPrefs.data.filesCheck)
@@ -153,7 +126,6 @@ class InitState extends MusicBeatState
 				return;
 			}
 		}
-		
 
 		// 检查assets/version.txt存不存在且里面保存的上一个版本号与当前的版本号一不一致，如果不一致或不存在，强制启动copy。
 		if (!FileSystem.exists(Paths.getSharedPath('version.txt')))
@@ -173,6 +145,8 @@ class InitState extends MusicBeatState
 		}
 		#end
 
+		Highscore.load();
+
 		#if LUA_ALLOWED
 		#if (android && EXTERNAL || MEDIA)
 		try
@@ -188,6 +162,9 @@ class InitState extends MusicBeatState
 		}
 		#end
 		#end
+
+		//clear up
+		crowplexus.hscript.Interp.clearCache();
 	
 		Mods.loadTopMod();
 	
@@ -201,6 +178,8 @@ class InitState extends MusicBeatState
 		persistentUpdate = true;
 		persistentDraw = true;
 		
+		psychlua.stages.modules.ModuleHandler.init();
+		psychlua.stages.GlobalHandler.init();
 	
 		ColorblindFilter.UpdateColors();
 	
