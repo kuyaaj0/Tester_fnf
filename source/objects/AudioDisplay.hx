@@ -44,7 +44,7 @@ class AudioDisplay extends FlxSpriteGroup
 	public var stopUpdate:Bool = false;
 
 	var saveTime:Float = 0;
-	var getValues:Array<funkin.vis.dsp.Bar>;
+	var getValues:Array<Bar>;
 
 	override function update(elapsed:Float)
 	{
@@ -337,3 +337,4 @@ class AudioCircleDisplay extends FlxSpriteGroup
 	}
 
 }
+
