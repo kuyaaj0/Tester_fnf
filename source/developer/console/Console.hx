@@ -200,7 +200,7 @@ class Console extends Sprite {
             var scaledMaxX = (openfl.Lib.current.stage.stageWidth - currentWidth * scaleX) / scaleX;
             var scaledMaxY = (openfl.Lib.current.stage.stageHeight - currentHeight * scaleY) / scaleY;
             
-            x = Math.max(scaledMinX, Math.min(scaledMaxX, (e.stageX - dragOffsetX * scaleX) / scaleX);
+            x = Math.max(scaledMinX, Math.min(scaledMaxX, (e.stageX - dragOffsetX * scaleX) / scaleX));
             y = Math.max(scaledMinY, Math.min(scaledMaxY, (e.stageY - dragOffsetY * scaleY) / scaleY));
         }
     }
