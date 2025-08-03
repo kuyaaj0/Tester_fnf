@@ -452,7 +452,7 @@ class Console extends Sprite {
     
     private function createResizeHandle():Void {
         resizeHandle = new Sprite();
-        resizeHandle.graphics.beginFill(0x666666, 0.5);
+        resizeHandle.graphics.beginFill(0x666666, 0);
         resizeHandle.graphics.drawRect(0, 0, 40, 40);
         resizeHandle.graphics.endFill();
         
@@ -491,8 +491,8 @@ class Console extends Sprite {
             var deltaX = (e.stageX - startResizeX) / scaleX;
             var deltaY = (e.stageY - startResizeY) / scaleY;
             
-            var newWidth = Math.max(minWidth, startWidth + deltaX);
-            var newHeight = Math.max(minHeight, startHeight + deltaY);
+            var newWidth = Math.max(minWidth / scaleX, startWidth + deltaX);
+            var newHeight = Math.max(minHeight / scaleY, startHeight + deltaY);
     
             newWidth = Math.min(newWidth, (openfl.Lib.current.stage.stageWidth / scaleX - x));
             newHeight = Math.min(newHeight, (openfl.Lib.current.stage.stageHeight / scaleY - y));
