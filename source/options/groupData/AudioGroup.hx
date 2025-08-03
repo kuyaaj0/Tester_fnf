@@ -60,7 +60,7 @@ class AudioGroup extends OptionCata
         option.onChange = function() {
         if (ClientPrefs.data.hitsoundType == ClientPrefs.defaultData.hitsoundType)
             {
-                FlxG.sound.play(Paths.sound(ClientPrefs.data.hitsoundType));
+                FlxG.sound.play(Paths.sound('hitsound'));
             }
             else
             {
@@ -71,7 +71,14 @@ class AudioGroup extends OptionCata
         var option:Option = new Option(this, 'hitsoundVolume', FLOAT, [0, 1, 1]);
         addOption(option);
         option.onChange = function() {
-            FlxG.sound.play(Paths.sound('hitsounds/' + ClientPrefs.data.hitsoundType), ClientPrefs.data.hitsoundVolume);
+            if (ClientPrefs.data.hitsoundType == ClientPrefs.defaultData.hitsoundType)
+            {
+                FlxG.sound.play(Paths.sound('hitsound'), ClientPrefs.data.hitsoundVolume);
+            }
+            else
+            {
+                FlxG.sound.play(Paths.sound('hitsounds/' + ClientPrefs.data.hitsoundType), ClientPrefs.data.hitsoundVolume);
+            }
         };
 
 		changeHeight(0); //初始化真正的height
