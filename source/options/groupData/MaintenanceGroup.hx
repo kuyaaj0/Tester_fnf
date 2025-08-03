@@ -1,5 +1,7 @@
 package options.groupData;
 
+import developer.console.Console;
+
 class MaintenanceGroup extends OptionCata
 {
 	public function new(X:Float, Y:Float, width:Float, height:Float)
@@ -14,11 +16,8 @@ class MaintenanceGroup extends OptionCata
         
         var option:Option = new Option(this, 'DevConScale', FLOAT, [0.5, 3, 1]);
 		addOption(option);
+		option.onChange = () -> updateText();
 	
-		var option:Option = new Option(this, 'DevConTextScale', FLOAT, [0.5, 3, 1]);
-		addOption(option);
-		option.onChange = () -> developer.console.Console.updateText(ClientPrefs.data.DevConTextScale);
-
 		/////--App--\\\\\
 
 		var option:Option = new Option(this, 'APP', TEXT);
@@ -47,5 +46,11 @@ class MaintenanceGroup extends OptionCata
 	
 	function changeState(type:Int) {
 		OptionsState.instance.moveState(type);
+	}
+	
+	function updateText(){
+	    if(Console != null) {
+	        Console.scaleX = Console.scaleY = ClientPrefs.data.DevConScale;
+	    }
 	}
 }
