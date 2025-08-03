@@ -67,6 +67,7 @@ class Console extends Sprite {
     
     public function new() {
         super();
+        scaleX = scaleY = ClientPrefs.data.DevConScale;
         createConsoleUI();
     }
     

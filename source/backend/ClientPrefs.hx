@@ -151,7 +151,6 @@ import states.TitleState;
 
 	public var developerMode:Bool = false;
 	public var DevConScale:Float = 1;
-	public var DevConTextScale:Float = 1;
 
 	/////RelaxState Options\\\\\
 	public var NextSongs:String = 'Next';
