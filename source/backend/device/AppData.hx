@@ -26,7 +26,7 @@ class AppData
 		return AppDetails.getAppName();
 	}
 	
-	public static function verifySignature():String
+	public static function verifySignature():Bool
 	{
 		return AppDetails.verifySignature();
 	}
