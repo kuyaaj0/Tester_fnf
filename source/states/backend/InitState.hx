@@ -163,6 +163,9 @@ class InitState extends MusicBeatState
 		#end
 		#end
 
+		var lang = Sys.getEnv("LANG");
+		trace(lang); 
+
 		//clear up
 		crowplexus.hscript.Interp.clearCache();
 	
