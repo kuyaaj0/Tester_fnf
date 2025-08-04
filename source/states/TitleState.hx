@@ -113,10 +113,6 @@ class TitleState extends MusicBeatState
 		persistentUpdate = true;
 		persistentDraw = true;
 
-		var lang = Sys.getEnv("LANG");
-	trace(lang); 
-		
-
 		if (FlxG.save.data.weekCompleted != null)
 		{
 			StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;

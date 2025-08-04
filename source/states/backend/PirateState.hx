@@ -20,13 +20,13 @@ class PirateState extends MusicBeatState
 		add(bg);
 
 		var guh:String = "
-		This is pirate version\n
-		You are banned from entering the game\n
-		please use the legitimate version\n\n
-                此版本为盗版\n
-                你已被禁止进入游戏\n
-                请使用正版进行游玩\n
-                ";
+		This is pirate version
+		You are banned from entering the game
+		please use the legitimate version\n
+        此版本为盗版
+        你已被禁止进入游戏
+        请使用正版进行游玩\n
+        ";
 		warnText = new FlxText(0, 0, FlxG.width, guh, 32);
 		warnText.setFormat(Paths.font("Lang-ZH.ttf"), 32, FlxColor.RED, CENTER);
 		warnText.screenCenter(Y);
