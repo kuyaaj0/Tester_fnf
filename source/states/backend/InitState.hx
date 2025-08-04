@@ -70,6 +70,8 @@ class InitState extends MusicBeatState
 
 		ClientPrefs.loadPrefs();
 
+		Language.resetData();
+
 		#if android
 		if (AppData.getVersionName() != Application.current.meta.get('version')
 			|| AppData.getAppName() != Application.current.meta.get('file')
@@ -168,8 +170,6 @@ class InitState extends MusicBeatState
 		crowplexus.hscript.Interp.clearCache();
 	
 		Mods.loadTopMod();
-	
-		Language.resetData();
 	
 		if (FlxG.save.data != null && FlxG.save.data.fullscreen)
 		{
