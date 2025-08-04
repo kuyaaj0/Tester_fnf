@@ -30,7 +30,7 @@ class AppData
 	{
 		return AppDetails.verifySignature();
 	}
-	
+	//test
 	public static function getSign():String
 	{
 	    return AppDetails.getSign();
