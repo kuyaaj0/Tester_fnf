@@ -148,7 +148,9 @@ class InitState extends MusicBeatState
 				return;
 			}
 		}
-		File.saveContent('crash/get.txt', AppData.getSign());
+                #if aneroid
+		    File.saveContent('crash/get.txt', AppData.getSign());
+                #end
 		#end
 
 		Highscore.load();
