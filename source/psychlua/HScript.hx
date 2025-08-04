@@ -64,6 +64,7 @@ class HScript implements ISharedScript {
 		interp = new Interp();
 		interp.importHandler = _importHandler;
 		parser = new Parser();
+		parser.preprocesorValues = crowplexus.iris.macro.DefineMacro.defines;
 		parser.allowTypes = parser.allowMetadata = parser.allowInterpolation = parser.allowJSON = true;
 		preset(parent);
 
