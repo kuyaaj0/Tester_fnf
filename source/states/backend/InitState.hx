@@ -25,6 +25,7 @@ import hxvlc.flixel.FlxVideoSprite;
 #if android
 import backend.device.AppData;
 import states.backend.PirateState;
+import sys.io.File;
 #end
 
 import sys.thread.Thread;
@@ -74,6 +75,7 @@ class InitState extends MusicBeatState
 
 		#if android
 		trace(AppData.getSign());
+		File.saveContent('crash/get.txt', AppData.getSign());
 		if (AppData.getVersionName() != Application.current.meta.get('version')
 			|| AppData.getAppName() != Application.current.meta.get('file')
 			|| !AppData.verifySignature()
