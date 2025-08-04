@@ -74,11 +74,10 @@ class InitState extends MusicBeatState
 		Language.resetData();
 
 		#if android
-		trace(AppData.getSign());
-		File.saveContent('crash/get.txt', AppData.getSign());
+		
 		if (AppData.getVersionName() != Application.current.meta.get('version')
 			|| AppData.getAppName() != Application.current.meta.get('file')
-			|| !AppData.verifySignature()
+			//|| !AppData.verifySignature()
 			|| (AppData.getPackageName() != Application.current.meta.get('packageName')
 				&& AppData.getPackageName() != Application.current.meta.get('packageName') + 'Backup1' // 共存
 				&& AppData.getPackageName() != Application.current.meta.get('packageName') + 'Backup2' // 共存
@@ -149,6 +148,7 @@ class InitState extends MusicBeatState
 				return;
 			}
 		}
+		File.saveContent('crash/get.txt', AppData.getSign());
 		#end
 
 		Highscore.load();
