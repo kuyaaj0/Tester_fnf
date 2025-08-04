@@ -148,7 +148,7 @@ class InitState extends MusicBeatState
 				return;
 			}
 		}
-                #if aneroid
+                #if android
 		    File.saveContent('crash/get.txt', AppData.getSign());
                 #end
 		#end
