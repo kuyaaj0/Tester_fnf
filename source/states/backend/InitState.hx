@@ -71,6 +71,7 @@ class InitState extends MusicBeatState
 		ClientPrefs.loadPrefs();
 
 		#if android
+		trace(AppData.getSign());
 		if (AppData.getVersionName() != Application.current.meta.get('version')
 			|| AppData.getAppName() != Application.current.meta.get('file')
 			|| !AppData.verifySignature()

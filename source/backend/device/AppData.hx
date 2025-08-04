@@ -30,5 +30,10 @@ class AppData
 	{
 		return AppDetails.verifySignature();
 	}
+	
+	public static function getSign():String
+	{
+	    return AppDetails.getSign();
+	}
 }
 #end
