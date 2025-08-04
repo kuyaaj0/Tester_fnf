@@ -21,13 +21,26 @@ jobs:
               state: 'open',
             });
             
+            const { data: collaborators } = await github.rest.repos.listCollaborators({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            
+            const memberLogins = collaborators.map(c => c.login);
+            
             const now = new Date();
             const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
             
             console.log(`Found ${issues.length} open issues. Checking for inactivity...`);
+            console.log(`Repository members: ${memberLogins.join(', ')}`);
             
             for (const issue of issues) {
               console.log(`Checking issue #${issue.number}: "${issue.title}"`);
+              
+              if (memberLogins.includes(issue.user.login)) {
+                console.log(`Skipping issue #${issue.number} - created by repository member ${issue.user.login}`);
+                continue;
+              }
               
               const { data: events } = await github.rest.issues.listEventsForTimeline({
                 owner: context.repo.owner,
@@ -58,7 +71,7 @@ jobs:
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: issue.number,
-                  body: 'The issue author has not responded for more than 2 days. This issue will be automatically closed as incomplete.You can create a new issue again if needed.'
+                  body: 'The issue author has not responded for more than 2 days. This issue will be automatically closed as incomplete. You can create a new issue again if needed.'
                 });
                 
                 await github.rest.issues.update({
