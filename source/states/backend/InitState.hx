@@ -148,9 +148,6 @@ class InitState extends MusicBeatState
 				return;
 			}
 		}
-                #if android
-		    File.saveContent('crash/get.txt', AppData.getSign());
-                #end
 		#end
 
 		Highscore.load();
