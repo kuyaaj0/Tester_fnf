@@ -100,6 +100,8 @@ class NumButton extends FlxSpriteGroup {
 
         if (!follow.allowUpdate) return;
 
+        if (OptionsState.instance.mouseEvent.overlaps(OptionsState.instance.specBG) || OptionsState.instance.mouseEvent.overlaps(OptionsState.instance.downBG)) return;
+
         var mouse = FlxG.mouse;
 
 		if (mouse.y > rod.y && mouse.y < (rod.y + rod.height) && mouse.x > (rod.x - rod.width * 4) && mouse.x < (rod.x + rod.width * 4) && mouse.justPressed)

@@ -124,6 +124,7 @@ class OptionCata extends FlxSpriteGroup
 		heightSetOffset += outputData;
 
 		changeHeight(time);
+		OptionsState.instance.cataMoveChange();
 	}
 
 	public function peerCheck(str:Option):Bool {

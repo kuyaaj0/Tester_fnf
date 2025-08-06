@@ -84,6 +84,8 @@ class StringSelect extends FlxSpriteGroup
 
         if (!allowUpdate) return;
 
+        if (OptionsState.instance.mouseEvent.overlaps(OptionsState.instance.specBG) || OptionsState.instance.mouseEvent.overlaps(OptionsState.instance.downBG)) return;
+
          for (i in 0...options.length)
         {
             var option = optionSprites[i];

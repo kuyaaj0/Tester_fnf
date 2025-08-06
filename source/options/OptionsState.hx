@@ -36,11 +36,11 @@ class OptionsState extends MusicBeatState
 	public var cataMove:MouseMove;
 	public var cataCount:Array<StringSelect> = []; //string开启的检测
 
-	var downBG:Rect;
+	public var downBG:Rect;
 	var tipButton:TipButton;
 	var specButton:FuncButton;
 
-	var specBG:Rect;
+	public var specBG:Rect;
 	var searchButton:SearchButton;
 	var resetButton:ResetButton;
 	var backButton:GeneralBack;
@@ -255,6 +255,21 @@ class OptionsState extends MusicBeatState
 			if (i == 0) cataGroup[i].y = cataPosiData;
 			else cataGroup[i].y = cataGroup[i - 1].y + cataGroup[i - 1].bg.realHeight + UIScale.adjust(FlxG.width * (0.8 / 40));
 		}
+	}
+
+	public function cataMoveChange()
+	{
+		var moveHeight:Float = 100;
+		for (num in cataGroup) {
+			if (num != cataGroup[cataGroup.length - 1]) {
+				moveHeight -= num.bg.waitHeight;
+				moveHeight -= UIScale.adjust(FlxG.width * (0.8 / 40));
+			} else {
+				moveHeight -= cataGroup[cataGroup.length - 1].bg.waitHeight - UIScale.adjust(FlxG.height * 0.8);
+				moveHeight -= UIScale.adjust(FlxG.width * (0.8 / 40)) * 2;
+			}
+		}
+		cataMove.moveLimit[0] = moveHeight;
 	}
 
 	static public var naviPosiData:Float = 0;

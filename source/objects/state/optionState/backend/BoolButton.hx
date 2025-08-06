@@ -43,6 +43,8 @@ class BoolButton extends FlxSpriteGroup {
         var inputAllow:Bool = true;
 
         if (Math.abs(OptionsState.instance.cataMove.velocity) > 2) inputAllow = false;
+
+        if (OptionsState.instance.mouseEvent.overlaps(OptionsState.instance.specBG) || OptionsState.instance.mouseEvent.overlaps(OptionsState.instance.downBG)) return;
         
         if (inputAllow) {
             // Check if mouse is over the button

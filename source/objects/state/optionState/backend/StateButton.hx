@@ -38,6 +38,8 @@ class StateButton extends FlxSpriteGroup{
 
         if (timeCalc < 0.6) return;
 
+        if (OptionsState.instance.mouseEvent.overlaps(OptionsState.instance.specBG) || OptionsState.instance.mouseEvent.overlaps(OptionsState.instance.downBG)) return;
+
         var mouse = OptionsState.instance.mouseEvent;
 
         if (mouse.overlaps(bg)) {

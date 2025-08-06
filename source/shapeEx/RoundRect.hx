@@ -24,8 +24,10 @@ class RoundRect extends FlxSpriteGroup
 	public var mainX:Float; //可更改，如果用于flxspritegroup需要重新输入
 	public var mainY:Float; //可更改，如果用于flxspritegroup需要重新输入
 
-	public var realWidth:Float; //建议从这里获取数据
-	public var realHeight:Float; //建议从这里获取数据
+	public var realWidth:Float; //建议从这里获取真实数据
+	public var realHeight:Float; //建议从这里获取真实数据
+	public var waitWidth:Float; //建议从这里获取即将到的数据
+	public var waitHeight:Float; //建议从这里获取即将到的数据
 
 	////////////////////////////////////////////////////////////////////////////////
 
@@ -73,6 +75,8 @@ class RoundRect extends FlxSpriteGroup
 
 		realWidth = mainWidth = midRect.width;
         realHeight = mainHeight = leftUpRound.height + midRect.height + leftDownRound.height;
+		waitWidth = realWidth;
+		waitHeight = realHeight;
 		mainRound = Std.int(round);
 	}
 
@@ -88,6 +92,7 @@ class RoundRect extends FlxSpriteGroup
 
 	public function changeWidth(data:Float, time:Float = 0.6, ease:String = 'backInOut')
 	{
+		waitWidth = data;
 		if (time == 0) setChangeWidth(data);
 		else tweenChangeWidth(data, time, ease);
     }
@@ -220,6 +225,7 @@ class RoundRect extends FlxSpriteGroup
 
 	public function changeHeight(data:Float, time:Float = 0.6, ease:String = 'backInOut')
 	{
+		waitHeight = data;
 		if (time == 0) setChangeHeight(data);
 		else tweenChangeHeight(data, time, ease);
     }
