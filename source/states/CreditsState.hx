@@ -37,7 +37,7 @@ class CreditsState extends MusicBeatState
 				'maopou',
 				'Programmer',
 				"Code help\n\n\nA crumb who likes to write code, but doesn't like to look at code :)",
-				'8B8682',
+				'FFFFFF',
 				'https://space.bilibili.com/1548393523?spm_id_from=333.1007.0.0',
 				'https://github.com/MaoPou'
 			],
