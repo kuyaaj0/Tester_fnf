@@ -13,7 +13,7 @@ class StringRect extends FlxSpriteGroup{
     var innerX:Float; //该摁键在option的x
     var innerY:Float; //该摁键在option的y
 
-    var isOpend:Bool = false;
+    public var isOpend:Bool = false;
 
     public function new(X:Float, Y:Float, width:Float, height:Float, follow:Option) {
         super(X, Y);
@@ -89,49 +89,54 @@ class StringRect extends FlxSpriteGroup{
     }
 
     var alphaTween:Array<FlxTween> = [];
+    var changeTimer:Float = 0.45;
     public function change() {
         if (alphaTween.length > 0) {
-            for (tween in alphaTween) 
-                if (tween != null) tween.cancel();
-            if (OptionsState.instance.cataCount.contains(this) && !isOpend) OptionsState.instance.cataCount.remove(this);
+            for (i in alphaTween) {
+                if (i.active) {
+                    return;
+                    break;
+                }
+            }
         }
+        if (!follow.follow.peerCheck(follow)) return;
 
         if (isOpend) { //关闭
             disText.text = 'Tap to choose';
             dis.flipY = true;
             
-            var tween = FlxTween.tween(follow.select.bg, {alpha: 0}, 0.6, {ease: FlxEase.expoOut, onComplete: function(twn:FlxTween){follow.select.active = follow.select.visible = false; if (OptionsState.instance.cataCount.contains(this)) OptionsState.instance.cataCount.remove(this);} });
+            var tween = FlxTween.tween(follow.select.bg, {alpha: 0}, changeTimer, {ease: FlxEase.expoOut, onComplete: function(twn:FlxTween){follow.select.active = follow.select.visible = false; if (OptionsState.instance.cataCount.contains(follow.select)) OptionsState.instance.cataCount.remove(follow.select);} });
             alphaTween.push(tween);
-            var tween = FlxTween.tween(follow.select.slider, {alpha: 0}, 0.6, {ease: FlxEase.expoOut});
+            var tween = FlxTween.tween(follow.select.slider, {alpha: 0}, changeTimer, {ease: FlxEase.expoOut});
             alphaTween.push(tween);
             
             for (i in 0...follow.select.optionSprites.length) {
                 follow.select.optionSprites[i].allowUpdate = false;
-                var tween = FlxTween.tween(follow.select.optionSprites[i].textDis, {alpha: 0}, 0.6, {ease: FlxEase.expoOut, onComplete: function(twn:FlxTween){ } });
+                var tween = FlxTween.tween(follow.select.optionSprites[i].textDis, {alpha: 0}, changeTimer, {ease: FlxEase.expoOut});
                 alphaTween.push(tween);
             }
 
             follow.follow.optionAdjust(follow, -1 * (follow.select.bg.height + follow.inter));
             isOpend = !isOpend;
-        } else { //开启
-            if (OptionsState.instance.cataCount.length < 1){ 
-                if (!OptionsState.instance.cataCount.contains(this)) OptionsState.instance.cataCount.push(this);
-                disText.text = 'Tap to close';
-                dis.flipY = false;
+            follow.select.isOpend = isOpend;
+        } else { //开启 
+            if (!OptionsState.instance.cataCount.contains(follow.select)) OptionsState.instance.cataCount.push(follow.select);
+            disText.text = 'Tap to close';
+            dis.flipY = false;
 
-                follow.select.active = follow.select.visible = true;
-                var tween = FlxTween.tween(follow.select.bg, {alpha: 0.1}, 0.6, {ease: FlxEase.expoIn, onComplete: function(twn:FlxTween){ } });
+            follow.select.active = follow.select.visible = true;
+            var tween = FlxTween.tween(follow.select.bg, {alpha: 0.1}, changeTimer, {ease: FlxEase.expoIn});
+            alphaTween.push(tween);
+            var tween = FlxTween.tween(follow.select.slider, {alpha: 0.8}, changeTimer, {ease: FlxEase.expoIn});
+            alphaTween.push(tween);
+            for (i in 0...follow.select.optionSprites.length) {
+                var tween = FlxTween.tween(follow.select.optionSprites[i].textDis, {alpha: 1}, changeTimer, {ease: FlxEase.expoIn, onComplete: function(twn:FlxTween){ follow.select.optionSprites[i].allowUpdate = true;} });
                 alphaTween.push(tween);
-                var tween = FlxTween.tween(follow.select.slider, {alpha: 0.8}, 0.6, {ease: FlxEase.expoIn});
-                alphaTween.push(tween);
-                for (i in 0...follow.select.optionSprites.length) {
-                    var tween = FlxTween.tween(follow.select.optionSprites[i].textDis, {alpha: 1}, 0.6, {ease: FlxEase.expoIn, onComplete: function(twn:FlxTween){ follow.select.optionSprites[i].allowUpdate = true;} });
-                    alphaTween.push(tween);
-                }
-
-                follow.follow.optionAdjust(follow, follow.select.bg.height + follow.inter);
-                isOpend = !isOpend;
             }
+
+            follow.follow.optionAdjust(follow, follow.select.bg.height + follow.inter);
+            isOpend = !isOpend;
+            follow.select.isOpend = isOpend;
         }
     }
 

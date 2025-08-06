@@ -475,12 +475,11 @@ class Option extends FlxSpriteGroup
 	public var yOff:Float = 0; //用于图形在cata内部位移
 	public var sameY:Bool = false; //用于string展开兼容
 	public var yTween:FlxTween = null;
-	public function changeY(data:Float, isMain:Bool = true, time:Float = 0.6) {
-		var output = isMain ? followY : yOff;
-		output += data;
+	public function changeOffY(data:Float, time:Float) {
+		var finalData = yOff + data;
 
 		if (yTween != null) yTween.cancel();
-		yTween = FlxTween.tween(this, {y: followY + innerY + yOff}, time, {ease: FlxEase.expoInOut});
+		yTween = FlxTween.num(yOff, finalData, time, {ease: FlxEase.expoInOut}, function(v){this.y = followY + innerY + yOff; yOff = v;});
 	}
 
 	public function initY(data:Float, innerData:Float) {

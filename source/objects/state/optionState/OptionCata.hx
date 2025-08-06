@@ -108,7 +108,7 @@ class OptionCata extends FlxSpriteGroup
 		}
 	}
 
-	public function optionAdjust(str:Option, outputData:Float, time:Float = 0.6) {
+	public function optionAdjust(str:Option, outputData:Float, time:Float = 0.45) {
 		var start:Int = -1;
 		for (op in 0...optionArray.length) {
 			if (str == optionArray[op]) {
@@ -118,13 +118,32 @@ class OptionCata extends FlxSpriteGroup
 			}
 
 			if (start != -1 && op > start) { 
-				optionArray[op].yOff += outputData;
-				optionArray[op].changeY(outputData, false, time);
+				optionArray[op].changeOffY(outputData, time);
 			}
 		}
 		heightSetOffset += outputData;
 
 		changeHeight(time);
+	}
+
+	public function peerCheck(str:Option):Bool {
+		for (op in 0...optionArray.length) {
+			if (str == optionArray[op]) {
+				if (optionArray[op].sameY) {
+					if (optionArray[op - 1].type == STRING && optionArray[op - 1].select.isOpend) {
+						return false;
+						break;
+					}
+				} else {
+					if (op != optionArray.length - 1 && optionArray[op + 1].type == STRING && optionArray[op + 1].select.isOpend) {
+						return false;
+						break;
+					}
+				}
+			}
+		}
+
+		return true;
 	}
 
 	public function changeHeight(time:Float = 0.6) {

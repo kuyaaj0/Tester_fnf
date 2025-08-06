@@ -11,8 +11,6 @@ class StringSelect extends FlxSpriteGroup
 
     public var options:Array<String>;
     public var optionSprites:Array<ChooseRect>;
-    
-    public var isDragging:Bool = false;
 
     var mainX:Float = 0;
     var mainY:Float = 0;
@@ -22,6 +20,9 @@ class StringSelect extends FlxSpriteGroup
     public var currentSelection:Int = 0;
     public var posiData:Float = 0;
     var optionMove:MouseMove;
+
+    public var isOpend:Bool = false;
+
 
     public function new(X:Float, Y:Float, width:Float, height:Float, follow:Option)
     {
@@ -106,16 +107,6 @@ class StringSelect extends FlxSpriteGroup
             if (data < optionMove.moveLimit[0]) data = optionMove.moveLimit[0];
             data = Math.abs(data);
             slider.y = follow.y + mainY + (data / Math.abs(optionMove.moveLimit[0])) * (bg.height - slider.height);
-        }
-
-        // 拖动滑块
-        if (isDragging && FlxG.mouse.pressed)
-        {
-
-        }
-        else if (isDragging && FlxG.mouse.justReleased)
-        {
-            isDragging = false;
         }
     }
 

@@ -34,7 +34,7 @@ class OptionsState extends MusicBeatState
 
 	var cataGroup:Array<OptionCata> = [];
 	public var cataMove:MouseMove;
-	public var cataCount:Array<StringRect> = []; //string开启的检测
+	public var cataCount:Array<StringSelect> = []; //string开启的检测
 
 	var downBG:Rect;
 	var tipButton:TipButton;
@@ -161,8 +161,16 @@ class OptionsState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		if (cataCount.length > 0) cataMove.inputAllow = false;
-		else cataMove.inputAllow = true;
+		cataMove.inputAllow = true;
+		for (cata in cataCount) {
+			if (!cata.isOpend) continue;
+			else {
+				if (OptionsState.instance.mouseEvent.overlaps(cata.bg)){
+					cataMove.inputAllow = false;
+					break;
+				}
+			}
+		}
 
 		var posi:Int = -1;
 		for (cata in 0...cataGroup.length - 1) {
@@ -191,7 +199,6 @@ class OptionsState extends MusicBeatState
 	}
 
 	public function changeCata(sort:Int) {
-		if (cataCount.length > 0) return;
 		var outputData:Float = 100;
 		for (cata in 0...sort) {
 			outputData -= cataGroup[cata].bg.realHeight;

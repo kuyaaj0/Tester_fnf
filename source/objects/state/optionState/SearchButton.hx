@@ -49,8 +49,6 @@ class SearchButton extends FlxSpriteGroup
 	var timer:FlxTimer = null;
 	public function startSearch(text:String)
 	{
-		if (OptionsState.instance.cataCount.length > 0) return;
-		
 		if (timer != null) timer.cancel();
 		timer = new FlxTimer().start(0.2, function(tmr:FlxTimer)
 		{

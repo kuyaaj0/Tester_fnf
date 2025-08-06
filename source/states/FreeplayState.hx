@@ -39,9 +39,32 @@ class FreeplayState extends MusicBeatState
 
 	public static var vocals:FlxSound = null;
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
+
 	var background:ChangeSprite;
+
 	var detailRect:DetailRect;
+
+	var detailSongName:FlxText;
+	var detailMusican:FlxText;
+
+	var detailPlaySign:FlxSprite;
+	var detailPlayText:FlxText;
+
+	var detailTimeSign:FlxSprite;
+	var detailTimeText:FlxText;
+
+	var detailBpmSign:FlxSprite;
+	var detailBpmText:FlxText;
+
+	var detailStar:StarRect;
+	var detailMapper:FlxText;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+
 	var downBG:Rect;
+
+	public var test:Float = 0;
 
 	override function create()
 	{
@@ -61,7 +84,6 @@ class FreeplayState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
-
 		
 		for (i in 0...WeekData.weeksList.length)
 		{
@@ -100,7 +122,87 @@ class FreeplayState extends MusicBeatState
 		detailRect = new DetailRect(0, 0);
 		add(detailRect);
 
-		var downBG = new Rect(0, FlxG.height - 50, FlxG.width, 50, 0, 0);
+		detailSongName = new FlxText(0, 0, 0, 'songName', Std.int(detailRect.bg1.height * 0.25));
+		detailSongName.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(detailRect.bg1.height * 0.15), 0xFFFFFFFF, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        detailSongName.borderStyle = NONE;
+		detailSongName.antialiasing = ClientPrefs.data.antialiasing;
+		detailSongName.x = 10;
+		add(detailSongName);
+
+		detailMusican = new FlxText(0, 0, 0, 'musican', Std.int(detailRect.bg1.height * 0.25));
+		detailMusican.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(detailRect.bg1.height * 0.09), 0xFFFFFFFF, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        detailMusican.borderStyle = NONE;
+		detailMusican.antialiasing = ClientPrefs.data.antialiasing;
+		detailMusican.x = detailSongName.x;
+		detailMusican.y = detailSongName.y + detailSongName.textField.textHeight;
+		add(detailMusican);
+
+		detailPlaySign = new FlxSprite(0).loadGraphic(Paths.image(filePath + 'playedCount'));
+		detailPlaySign.setGraphicSize(Std.int(50));
+		detailPlaySign.updateHitbox();
+		detailPlaySign.antialiasing = ClientPrefs.data.antialiasing;
+		detailPlaySign.x = detailSongName.x;
+		detailPlaySign.y = detailMusican.y + detailMusican.height + 5;
+		detailPlaySign.offset.set(0,0);
+		add(detailPlaySign);
+
+		detailPlayText = new FlxText(0, 0, 0, '0', Std.int(detailRect.bg1.height * 0.25));
+		detailPlayText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(detailRect.bg1.height * 0.09), 0xFFFFFFFF, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        detailPlayText.borderStyle = NONE;
+		detailPlayText.antialiasing = ClientPrefs.data.antialiasing;
+		detailPlayText.x = detailPlaySign.x + detailPlaySign.width + 5;
+		detailPlayText.y = detailPlaySign.y + (detailPlaySign.height - detailPlayText.height) / 2;
+		add(detailPlayText);
+
+		detailTimeSign = new FlxSprite(0).loadGraphic(Paths.image(filePath + 'songTime'));
+		detailTimeSign.setGraphicSize(Std.int(50));
+		detailTimeSign.updateHitbox();
+		detailTimeSign.antialiasing = ClientPrefs.data.antialiasing;
+		detailTimeSign.x = detailSongName.x + 150;
+		detailTimeSign.y = detailPlaySign.y;
+		detailTimeSign.offset.set(0,0);
+		add(detailTimeSign);
+
+		detailTimeText = new FlxText(0, 0, 0, '1:00', Std.int(detailRect.bg1.height * 0.25));
+		detailTimeText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(detailRect.bg1.height * 0.09), 0xFFFFFFFF, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        detailTimeText.borderStyle = NONE;
+		detailTimeText.antialiasing = ClientPrefs.data.antialiasing;
+		detailTimeText.x = detailTimeSign.x + detailTimeSign.width + 5;
+		detailTimeText.y = detailTimeSign.y + (detailTimeSign.height - detailTimeText.height) / 2;
+		add(detailTimeText);
+
+		detailBpmSign = new FlxSprite(0).loadGraphic(Paths.image(filePath + 'bpmCount'));
+		detailBpmSign.setGraphicSize(Std.int(50));
+		detailBpmSign.updateHitbox();
+		detailBpmSign.antialiasing = ClientPrefs.data.antialiasing;
+		detailBpmSign.x = detailSongName.x + 300;
+		detailBpmSign.y = detailPlaySign.y;
+		detailBpmSign.offset.set(0,0);
+		add(detailBpmSign);
+
+		detailBpmText = new FlxText(0, 0, 0, '300', Std.int(detailRect.bg1.height * 0.25));
+		detailBpmText.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(detailRect.bg1.height * 0.09), 0xFFFFFFFF, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        detailBpmText.borderStyle = NONE;
+		detailBpmText.antialiasing = ClientPrefs.data.antialiasing;
+		detailBpmText.x = detailBpmSign.x + detailBpmSign.width + 5;
+		detailBpmText.y = detailBpmSign.y + (detailBpmSign.height - detailBpmText.height) / 2;
+		add(detailBpmText);
+
+		detailStar = new StarRect(detailSongName.x, detailRect.bg2.y + (detailRect.bg2.height - detailRect.bg3.height) * 0.15, 60, (detailRect.bg2.height - detailRect.bg3.height) * 0.7);
+		add(detailStar);
+
+		detailMapper = new FlxText(0, 0, 0, 'eazy mapped by test', Std.int(detailRect.bg1.height * 0.25));
+		detailMapper.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(detailRect.bg1.height * 0.09), 0xFFFFFFFF, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        detailMapper.borderStyle = NONE;
+		detailMapper.antialiasing = ClientPrefs.data.antialiasing;
+		detailMapper.x = detailStar.x + detailStar.width + 10;
+		detailMapper.y = detailRect.bg2.y;
+		add(detailMapper);
+
+		//////////////////////////////////////////////////////////////////////////////////////////
+
+
+		downBG = new Rect(0, FlxG.height - 50, FlxG.width, 50, 0, 0);
 		downBG.color = 0x242A2E;
 		add(downBG);
 
@@ -126,6 +228,12 @@ class FreeplayState extends MusicBeatState
 
 	public static function destroyFreeplayVocals() {
 		
+	}
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+		trace(test);
 	}
 }
 
