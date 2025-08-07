@@ -1,7 +1,7 @@
 package substates;
 
-import objects.AudioDisplay.AudioCircleDisplay;
-import objects.AudioDisplay.AudioDisplay;
+import objects.AudioCircleDisplay;
+import objects.AudioDisplay;
 import objects.state.relaxState.*;
 import objects.state.relaxState.windows.PlayListWindow;
 import objects.state.relaxState.windows.OptionWindow;
