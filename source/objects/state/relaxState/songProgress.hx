@@ -10,7 +10,7 @@ import flixel.util.FlxColor;
 import flixel.group.FlxSpriteGroup;
 import flixel.input.mouse.FlxMouseEventManager;
 
-class songProgress extends FlxSpriteGroup
+class SongProgress extends FlxSpriteGroup
 {
     public var background:FlxSprite;
     public var progressBar:FlxSprite;
