@@ -327,11 +327,13 @@ class RelaxSubState extends MusicBeatSubstate
 		else if(ClientPrefs.data.theme == 'Straight')
 		    audio = new AudioDisplay(FlxG.sound.music, 50, FlxG.height - 50, 200, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, ClientPrefs.data.RelaxAudioSymmetry);
 		    
-		audio.alpha = 0;
-		audio.inRelax = true;
-		audio.cameras = [camMidd];
-		add(audio);
-
+		if (audio != null){
+		    audio.alpha = 0;
+    		audio.inRelax = true;
+    		audio.cameras = [camMidd];
+    		add(audio);
+		}
+		
 		var actualRecordImage:FlxGraphicAsset = recordImage;
 		if (actualRecordImage == null && background != null) {
 			actualRecordImage = background;
@@ -1030,9 +1032,11 @@ class RelaxSubState extends MusicBeatSubstate
 		    else if(ClientPrefs.data.theme == 'Straight')
 		        audio = new AudioDisplay(FlxG.sound.music, 50, FlxG.height - 50, 200, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, ClientPrefs.data.RelaxAudioSymmetry);
 		    
-			audio.cameras = [camMidd];
-			audio.inRelax = true;
-			add(audio);
+		    if (audio != null){
+		        audio.cameras = [camMidd];
+    			audio.inRelax = true;
+    			add(audio);
+		    }
 	    }
 	}
 
