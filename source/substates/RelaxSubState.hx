@@ -106,6 +106,35 @@ class RelaxSubState extends MusicBeatSubstate
 	public function new()
 	{
 		super();
+		camBack = new FlxCamera();
+		camHollow = new FlxCamera();
+		camMidd = new FlxCamera();
+		camPic = new FlxCamera();
+		camText = new FlxCamera();
+		camHUD = new FlxCamera();
+		camVpad = new FlxCamera();
+
+		camHUD.bgColor.alpha = 0;
+		camPic.bgColor.alpha = 0;
+		camText.bgColor.alpha = 0;
+		camBack.bgColor.alpha = 0;
+		camHollow.bgColor.alpha = 0;
+		camMidd.bgColor.alpha = 0;
+		camVpad.bgColor.alpha = 0;
+
+		camOption = new FlxCamera();
+		camOption.bgColor.alpha = 0;
+		camOption.y = 0;
+
+		FlxG.cameras.add(camBack, false);
+		FlxG.cameras.add(camHollow, false);
+		FlxG.cameras.add(camMidd, false);
+		FlxG.cameras.add(camPic, false);
+		FlxG.cameras.add(camText, false);
+		FlxG.cameras.add(camHUD, false);
+		FlxG.cameras.add(camOption, false);
+		FlxG.cameras.add(camVpad, false);
+		
         FlxG.state.persistentUpdate = false;
 		FlxG.sound.music.stop();
 	}
@@ -469,34 +498,6 @@ class RelaxSubState extends MusicBeatSubstate
 	override function create()
 	{
 	    instance = this;
-		camBack = new FlxCamera();
-		camHollow = new FlxCamera();
-		camMidd = new FlxCamera();
-		camPic = new FlxCamera();
-		camText = new FlxCamera();
-		camHUD = new FlxCamera();
-		camVpad = new FlxCamera();
-
-		camHUD.bgColor.alpha = 0;
-		camPic.bgColor.alpha = 0;
-		camText.bgColor.alpha = 0;
-		camBack.bgColor.alpha = 0;
-		camHollow.bgColor.alpha = 0;
-		camMidd.bgColor.alpha = 0;
-		camVpad.bgColor.alpha = 0;
-
-		camOption = new FlxCamera();
-		camOption.bgColor.alpha = 0;
-		camOption.y = 0;
-
-		FlxG.cameras.add(camBack, false);
-		FlxG.cameras.add(camHollow, false);
-		FlxG.cameras.add(camMidd, false);
-		FlxG.cameras.add(camPic, false);
-		FlxG.cameras.add(camText, false);
-		FlxG.cameras.add(camHUD, false);
-		FlxG.cameras.add(camOption, false);
-		FlxG.cameras.add(camVpad, false);
 		
 		//virtualPad.cameras = [camVpad];
 
