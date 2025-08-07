@@ -1029,21 +1029,28 @@ class RelaxSubState extends MusicBeatSubstate
 	}
 	
 	function updateOptions(){
-	    if (audio.Number != ClientPrefs.data.RelaxAudioNumber ||
-	        audio.symmetry != ClientPrefs.data.RelaxAudioSymmetry){
+	    if (audio != null && (audio.Number != ClientPrefs.data.RelaxAudioNumber ||
+	        audio.symmetry != ClientPrefs.data.RelaxAudioSymmetry)){
 	       
 	        audio.destroy();
 			audio = null;
 	        if (ClientPrefs.data.theme == 'Circle')
 		        audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 500, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
-		    else if(ClientPrefs.data.theme == 'Straight')
-		        strAudio = new AudioDisplay(FlxG.sound.music, 50, FlxG.height - 50, 200, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, ClientPrefs.data.RelaxAudioSymmetry);
-		    
+		        
 		    if (audio != null){
 		        audio.cameras = [camMidd];
     			audio.inRelax = true;
     			add(audio);
-		    }else if (strAudio != null){
+		    }
+	    }
+	    
+	    if (strAudio != null && strAudio.symmetry != ClientPrefs.data.RelaxAudioSymmetry){
+	        strAudio.destroy();
+			strAudio = null;
+	        if(ClientPrefs.data.theme == 'Straight')
+		        strAudio = new AudioDisplay(FlxG.sound.music, 50, FlxG.height - 50, 200, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, ClientPrefs.data.RelaxAudioSymmetry);
+		    
+	        if (strAudio != null){
 		        strAudio.cameras = [camMidd];
     			strAudio.inRelax = true;
     			add(strAudio);
