@@ -637,7 +637,7 @@ class RelaxSubState extends MusicBeatSubstate
 	private function updateMask():Void
 	{
 	     if (ClientPrefs.data.theme != 'Circle')
-		     return:
+		     return;
 		     
 		 if (circleMask == null) {
 			circleMask = new Shape();
