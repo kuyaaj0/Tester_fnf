@@ -31,7 +31,7 @@ class DataGet
 		if (FlxG.stage.window.frameRate != ClientPrefs.data.framerate)
 			FlxG.stage.window.frameRate = ClientPrefs.data.framerate;
 
-		var mem = FlxMath.roundDecimal(Gc.memInfo64(ClientPrefs.data.memoryType) / 1000000, 1); // 转化为MB
+		var mem = getMem();
 		if (Math.abs(mem) < 1000)
 		{
 			memory = Math.abs(mem);
@@ -48,9 +48,17 @@ class DataGet
 		wait = number = 0;
 	}
 
+	static var memoryTypeArray:Array<String> = ["Usage", "Reserved", "Current", "Large"];
+
 	static public function getMem():Float
 	{
-		return FlxMath.roundDecimal(Gc.memInfo64(ClientPrefs.data.memoryType) / 1000000, 1); // 转化为MB
+		var count:Int = 0;
+		for (type in 0...memoryTypeArray.length)
+			if (ClientPrefs.data.memoryType == memoryTypeArray[type]) {
+				count = type;
+				break;
+			}
+		return FlxMath.roundDecimal(Gc.memInfo64(count) / 1000000, 1); // 转化为MB
 	}
 }
 

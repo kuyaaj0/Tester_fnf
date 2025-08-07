@@ -18,7 +18,6 @@ import states.FreeplayState;
 import backend.Song;
 import backend.StageData;
 import backend.Rating;
-import objects.*;
 import sys.thread.Thread;
 import sys.thread.FixedThreadPool;
 import sys.thread.Mutex;

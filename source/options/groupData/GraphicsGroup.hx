@@ -15,6 +15,7 @@ class GraphicsGroup extends OptionCata
 		addOption(option);
 
 		var option:Option = new Option(this, 'showFPS', BOOL);
+		option.onChange = () -> changeDis();
 		addOption(option);
 
 		var option:Option = new Option(this, 'showExtra', BOOL);
@@ -29,6 +30,7 @@ class GraphicsGroup extends OptionCata
 		addOption(option, true);
 
 		var option:Option = new Option(this, 'FPSScale', FLOAT, [0, 5, 1]);
+		option.onChange = () -> changeDis();
 		addOption(option);
 		
 		/////--Watermark--\\\\\
@@ -37,11 +39,25 @@ class GraphicsGroup extends OptionCata
 		addOption(option);
 
 		var option:Option = new Option(this, 'showWatermark', BOOL);
+		option.onChange = () -> changeDis();
 		addOption(option);
 
 		var option:Option = new Option(this, 'WatermarkScale', FLOAT, [0, 5, 1]);
+		option.onChange = () -> changeDis();
 		addOption(option);
 
 		changeHeight(0); //初始化真正的height
+	}
+
+	function changeDis() {
+		Main.fpsVar.visible = ClientPrefs.data.showFPS;
+		Main.fpsVar.scaleX = Main.fpsVar.scaleY = ClientPrefs.data.FPSScale;
+		Main.fpsVar.change();
+		if (Main.watermark != null)
+		{
+			Main.watermark.scaleX = Main.watermark.scaleY = ClientPrefs.data.WatermarkScale;
+			Main.watermark.y += (1 - ClientPrefs.data.WatermarkScale) * Main.watermark.bitmapData.height;
+			Main.watermark.visible = ClientPrefs.data.showWatermark;
+		}
 	}
 }
