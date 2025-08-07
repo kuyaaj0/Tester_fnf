@@ -33,9 +33,6 @@ class OptionButton extends FlxSpriteGroup
         test = new ArrayType(3, 0, 'theme', ["Circle", "Straight", "None"]);
         pushOption(test);
         
-        test = new ArrayType(3, 0, 'theme', ["Circle", "Straight", "None"]);
-        pushOption(test);
-        
         test = new ArrayType(3, 1, 'songInfo', ["None", "Middle", "topLeft", "downLeft", "topRight", "downRight"]);
         pushOption(test);
         
