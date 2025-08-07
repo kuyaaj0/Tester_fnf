@@ -31,14 +31,14 @@ class ControlButtons
 		var totalWidth = buttonWidth * 3 + buttonSpacing * 2;
 		var startX = (FlxG.width - totalWidth) / 2;
 
-		LeftButton = new ButtonSprite(startX, buttonY, buttonWidth, buttonHeight, 50, "left");
+		LeftButton = new ButtonSprite(startX, buttonY, buttonWidth, buttonHeight, 10, 10);
 		LeftButton.scrollFactor.set(0, 0);
 
 		MiddleButton = new FlxSprite(LeftButton.x + LeftButton.width + buttonSpacing, buttonY);
 		MiddleButton.makeGraphic(buttonWidth, Std.int(buttonHeight), 0xFF24232C);
 		MiddleButton.scrollFactor.set(0, 0);
 
-		RightButton = new ButtonSprite(MiddleButton.x + MiddleButton.width + buttonSpacing, buttonY, buttonWidth, buttonHeight, 50, "right");
+		RightButton = new ButtonSprite(MiddleButton.x + MiddleButton.width + buttonSpacing, buttonY, buttonWidth, buttonHeight, 10, 10);
 		RightButton.scrollFactor.set(0, 0);
 
 		// 重新计算位置确保居中

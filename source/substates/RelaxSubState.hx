@@ -490,7 +490,7 @@ class RelaxSubState extends MusicBeatSubstate
 		}
 		
 		add(backButtons);
-		backButtons.y = FlxG.height - backButtons.height;
+		backButtons.y = FlxG.height - backButtons.height - 8;
 
 		backButtons.back = function() {
 		    Sound1.destroy();
@@ -577,7 +577,7 @@ class RelaxSubState extends MusicBeatSubstate
         add(triangleEmitter);
         
 
-        songProgress = new SongProgress(0, FlxG.height - 50, FlxG.width, 8);
+        songProgress = new SongProgress(0, FlxG.height - 4, FlxG.width, 8);
         songProgress.cameras = [camHUD];
         songProgress.onSeek = function(time:Float) {
             if (FlxG.sound.music != null) {
@@ -1026,6 +1026,9 @@ class RelaxSubState extends MusicBeatSubstate
 	    if(audio != null){
 	        triangleEmitter.externalSpeedFactor = audio.amplitude;
 	    }
+	    
+	    if (strAudio != null)
+	        triangleEmitter.externalSpeedFactor = strAudio.amplitude;
 	}
 	
 	function updateOptions(){

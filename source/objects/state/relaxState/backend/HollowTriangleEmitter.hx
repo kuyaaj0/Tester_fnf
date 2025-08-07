@@ -111,6 +111,8 @@ class HollowTriangleEmitter extends FlxTypedGroup<FlxSprite>
     {
         super.update(elapsed);
         
+        emissionRate = emissionRate * externalSpeedFactor / 50;
+        
         emissionTimer += elapsed;
         while (emissionTimer > 1 / emissionRate)
         {

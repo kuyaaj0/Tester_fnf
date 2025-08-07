@@ -12,7 +12,7 @@ class BackButtons extends FlxSpriteGroup
     {
         super(X, Y);
 
-        backButtons = new ButtonSprite(0, 0, 100, 50, 80, "right");
+        backButtons = new ButtonSprite(0, 0, 100, 50, 10, 10);
         add(backButtons);
 
         backText = new FlxText(5, 10, 0, "Back", 24);
