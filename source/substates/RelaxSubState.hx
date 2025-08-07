@@ -324,7 +324,7 @@ class RelaxSubState extends MusicBeatSubstate
         if (ClientPrefs.data.theme == 'Circle')
 		    audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 500, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
 		else if(ClientPrefs.data.theme == 'Straight')
-		    audio = new AudioDisplay(FlxG.sound.music, 50, FlxG.height - 50, 200, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry);
+		    audio = new AudioDisplay(FlxG.sound.music, 50, FlxG.height - 50, 200, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, ClientPrefs.data.RelaxAudioSymmetry);
 		    
 		audio.alpha = 0;
 		audio.inRelax = true;
@@ -1027,7 +1027,7 @@ class RelaxSubState extends MusicBeatSubstate
 	        if (ClientPrefs.data.theme == 'Circle')
 		        audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 500, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
 		    else if(ClientPrefs.data.theme == 'Straight')
-		        audio = new AudioDisplay(FlxG.sound.music, 50, FlxG.height - 50, 200, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry);
+		        audio = new AudioDisplay(FlxG.sound.music, 50, FlxG.height - 50, 200, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, ClientPrefs.data.RelaxAudioSymmetry);
 		    
 			audio.cameras = [camMidd];
 			audio.inRelax = true;
