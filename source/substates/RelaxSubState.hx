@@ -67,7 +67,7 @@ class RelaxSubState extends MusicBeatSubstate
 	var triangleEmitter:HollowTriangleEmitter;
 	
 	var backendPicture:FlxSprite;
-	public var audio:AudioCircleDisplay;
+	public var audio:Dynamic;
 	var recordPicture:FlxSprite;
 	
 	var oldBackendPicture:FlxSprite;
