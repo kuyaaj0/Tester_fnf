@@ -37,6 +37,7 @@ class OptionButton extends FlxSpriteGroup
         pushOption(test);
         
         test = new ArrayType(3, 1, 'songInfo', ["None", "Middle", "topLeft", "downLeft", "topRight", "downRight"]);
+        pushOption(test);
         
         addOption();
     }
