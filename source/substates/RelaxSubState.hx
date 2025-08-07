@@ -5,6 +5,7 @@ import objects.state.relaxState.*;
 import objects.state.relaxState.windows.PlayListWindow;
 import objects.state.relaxState.windows.OptionWindow;
 import objects.state.relaxState.backend.*;
+import objects.state.relaxState.SongProgress;
 
 import openfl.filters.BlurFilter;
 import openfl.display.Shape;
