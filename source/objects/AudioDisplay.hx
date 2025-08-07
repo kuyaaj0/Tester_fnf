@@ -49,6 +49,8 @@ class AudioDisplay extends FlxSpriteGroup
 	}
 
 	public var stopUpdate:Bool = false;
+	
+	public var amplitude:Float = 0;
 
 	var saveTime:Float = 0;
 	var getValues:Array<Bar>;
@@ -72,6 +74,14 @@ class AudioDisplay extends FlxSpriteGroup
 
 		getValues = analyzer.getLevels();
 		updateLine(elapsed);
+		
+		var Helpamplitude:Float = 0;
+		
+		for (i in 0...5) {
+		    Helpamplitude += getValues[i].value;
+		}
+		
+		amplitude = Helpamplitude / 5;
 
 		super.update(elapsed);
 	}
