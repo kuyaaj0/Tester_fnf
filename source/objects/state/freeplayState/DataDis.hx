@@ -4,7 +4,7 @@ class DataDis extends FlxSpriteGroup{
     var lineBG:Rect;
     var lineDis:Rect;
     var text:FlxText;
-    var data:FlxText
+    var data:FlxText;
 
     public function new(x:Float, y:Float, width:Float, height:Float){
         super(x, y);

@@ -51,6 +51,7 @@ class Paths
 		}
 		// flags everything to be cleared out next unused memory clear
 		Cache.localTrackedAssets = [];
+		Cache.currentTrackedBitmaps = [];
 		#if !html5 openfl.Assets.cache.clear("songs"); #end
 	}
 
@@ -289,7 +290,6 @@ class Paths
 		newGraphic.persist = true;
 		newGraphic.destroyOnNoUse = false;
 		Cache.currentTrackedAssets.set(file, newGraphic);
-		newGraphic.dump();
 		return newGraphic;
 	}
 

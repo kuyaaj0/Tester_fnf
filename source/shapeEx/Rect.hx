@@ -10,7 +10,11 @@ class Rect extends FlxSprite
 
 		this.mainRound = roundWidth;
 
-		loadGraphic(drawRect(width, height, roundWidth, roundHeight));
+		if (Cache.currentTrackedBitmaps.get('rect-w'+width+'-h:'+height+'-rw:'+roundWidth+'-rh:'+roundHeight) != null) 
+			loadGraphic(Cache.currentTrackedBitmaps.get('rect-w'+width+'-h:'+height+'-rw:'+roundWidth+'-rh:'+roundHeight).clone());
+		else {
+			loadGraphic(drawRect(width, height, roundWidth, roundHeight));
+		}
 		antialiasing = ClientPrefs.data.antialiasing;
 		color = Color;
 		alpha = Alpha;
@@ -26,6 +30,7 @@ class Rect extends FlxSprite
 
 		var bitmap:BitmapData = new BitmapData(Std.int(width), Std.int(height), true, 0);
 		bitmap.draw(shape);
+		(Cache.currentTrackedBitmaps.set('rect-w'+width+'-h:'+height+'-rw:'+roundWidth+'-rh:'+roundHeight, bitmap.clone()));
 		return bitmap;
 	}
 }
