@@ -1,28 +1,26 @@
 package objects.state.relaxState;
-//?
+
 import flixel.FlxSprite;
 import flixel.math.FlxMath;
-import flixel.math.FlxPoint;
 import flixel.text.FlxText;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.group.FlxSpriteGroup;
 import flixel.input.mouse.FlxMouseEventManager;
+import flixel.util.FlxSpriteUtil;
 
 class SongProgress extends FlxSpriteGroup
 {
-    public var background:FlxSprite;
+    public var bgBar:FlxSprite;
     public var progressBar:FlxSprite;
-    public var scrubber:FlxSprite;
+    public var handle:FlxSprite;
     public var timeText:FlxText;
     
-    public var xPos:Float = 0;
-    public var yPos:Float = 0;
-    public var width:Float = 300;
-    public var height:Float = 10;
+    public var barX:Float = 0;
+    public var barY:Float = 0;
+    public var barWidth:Float = 300;
+    public var barHeight:Float = 10;
     
-    public var scrubberRadius:Float = 8;
+    public var handleSize:Float = 8;
     
     public var currentTime:Float = 0;
     public var totalTime:Float = 0;
@@ -36,32 +34,33 @@ class SongProgress extends FlxSpriteGroup
     {
         super();
         
-        this.xPos = x;
-        this.yPos = y;
-        this.width = width;
-        this.height = height;
+        this.barX = x;
+        this.barY = y;
+        this.barWidth = width;
+        this.barHeight = height;
 
-        background = new FlxSprite(x, y);
-        background.makeGraphic(Std.int(width), Std.int(height), FlxColor.GRAY);
-        background.alpha = 0.6;
-        add(background);
+        bgBar = new FlxSprite(x, y);
+        bgBar.makeGraphic(Std.int(barWidth), Std.int(barHeight), FlxColor.GRAY);
+        bgBar.alpha = 0.6;
+        add(bgBar);
         
         progressBar = new FlxSprite(x, y);
-        progressBar.makeGraphic(1, Std.int(height), FlxColor.WHITE);
+        progressBar.makeGraphic(1, Std.int(barHeight), FlxColor.WHITE);
         add(progressBar);
         
-        scrubber = new FlxSprite(x, y + height/2);
-        scrubber.makeGraphic(Std.int(scrubberRadius * 2), Std.int(scrubberRadius * 2), FlxColor.TRANSPARENT);
-        scrubber.antialiasing = true;
-        FlxSpriteUtil.drawCircle(scrubber, scrubberRadius, scrubberRadius, scrubberRadius, FlxColor.WHITE);
-        add(scrubber);
+        handle = new FlxSprite(x, y + barHeight/2);
+        handle.makeGraphic(Std.int(handleSize * 2), Std.int(handleSize * 2), FlxColor.TRANSPARENT);
+        handle.antialiasing = true;
+        FlxSpriteUtil.drawCircle(handle, handleSize, handleSize, handleSize, FlxColor.WHITE);
+        add(handle);
         
-        timeText = new FlxText(x, y + height + 5, width, "0:00 / 0:00", 12);
+        timeText = new FlxText(x, y + barHeight + 5, barWidth, "0:00 / 0:00", 12);
         timeText.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE, CENTER);
         add(timeText);
         
-        FlxMouseEventManager.add(background, null, onMouseDown, onMouseOver, onMouseOut);
-        FlxMouseEventManager.add(scrubber, null, onMouseDown, onMouseOver, onMouseOut);
+        var mouseManager = new FlxMouseEventManager();
+        mouseManager.add(bgBar, null, onMouseDown, onMouseOver, onMouseOut);
+        mouseManager.add(handle, null, onMouseDown, onMouseOver, onMouseOut);
     }
     
     public function updateProgress(current:Float, total:Float):Void
@@ -74,15 +73,12 @@ class SongProgress extends FlxSpriteGroup
         var progressRatio:Float = currentTime / totalTime;
         progressRatio = FlxMath.bound(progressRatio, 0, 1);
         
-        progressBar.scale.x = width * progressRatio;
+        progressBar.scale.x = barWidth * progressRatio;
         progressBar.updateHitbox();
         
         if (!dragging)
         {
-            scrubber.x = xPos + (width * progressRatio) - scrubberRadius;
-            
-            FlxTween.cancelTweensOf(scrubber);
-            FlxTween.tween(scrubber, {x: xPos + (width * progressRatio) - scrubberRadius}, 0.2, {ease: FlxEase.quadOut});
+            handle.x = barX + (barWidth * progressRatio) - handleSize;
         }
         
         timeText.text = formatTime(currentTime) + " / " + formatTime(totalTime);
@@ -98,14 +94,13 @@ class SongProgress extends FlxSpriteGroup
     private function onMouseDown(sprite:FlxSprite):Void
     {
         dragging = true;
-        updateScrubberPosition(FlxG.mouse.getScreenPosition().x);
+        updateHandlePosition(FlxG.mouse.getScreenPosition().x);
     }
     
     private function onMouseOver(sprite:FlxSprite):Void
     {
         hovered = true;
-        FlxTween.cancelTweensOf(scrubber);
-        scrubber.scale.set(1.2, 1.2);
+        handle.scale.set(1.2, 1.2);
     }
     
     private function onMouseOut(sprite:FlxSprite):Void
@@ -113,21 +108,21 @@ class SongProgress extends FlxSpriteGroup
         hovered = false;
         if (!dragging)
         {
-            scrubber.scale.set(1.0, 1.0);
+            handle.scale.set(1.0, 1.0);
         }
     }
     
-    private function updateScrubberPosition(mouseX:Float):Void
+    private function updateHandlePosition(mouseX:Float):Void
     {
         if (!dragging) return;
         
-        var newX:Float = mouseX - xPos;
-        newX = FlxMath.bound(newX, 0, width);
+        var newX:Float = mouseX - barX;
+        newX = FlxMath.bound(newX, 0, barWidth);
         
-        scrubber.x = xPos + newX - scrubberRadius;
+        handle.x = barX + newX - handleSize;
         
-        var progressRatio:Float = newX / width;
-        progressBar.scale.x = width * progressRatio;
+        var progressRatio:Float = newX / barWidth;
+        progressBar.scale.x = barWidth * progressRatio;
         progressBar.updateHitbox();
         
         timeText.text = formatTime(totalTime * progressRatio) + " / " + formatTime(totalTime);
@@ -139,33 +134,26 @@ class SongProgress extends FlxSpriteGroup
         
         if (dragging && FlxG.mouse.pressed)
         {
-            updateScrubberPosition(FlxG.mouse.getScreenPosition().x);
+            updateHandlePosition(FlxG.mouse.getScreenPosition().x);
         }
         else if (dragging && !FlxG.mouse.pressed)
         {
             dragging = false;
-            scrubber.scale.set(hovered ? 1.2 : 1.0, hovered ? 1.2 : 1.0);
+            handle.scale.set(hovered ? 1.2 : 1.0, hovered ? 1.2 : 1.0);
             
             if (onSeek != null)
             {
-                var progressRatio:Float = (scrubber.x + scrubberRadius - xPos) / width;
+                var progressRatio:Float = (handle.x + handleSize - barX) / barWidth;
                 onSeek(totalTime * progressRatio);
             }
         }
     }
     
-    public function setColors(background:FlxColor, progress:FlxColor, scrubber:FlxColor, text:FlxColor):Void
+    public function setColors(bgColor:FlxColor, progressColor:FlxColor, handleColor:FlxColor, textColor:FlxColor):Void
     {
-        this.background.color = background;
-        this.progressBar.color = progress;
-        FlxSpriteUtil.drawCircle(this.scrubber, scrubberRadius, scrubberRadius, scrubberRadius, scrubber);
-        this.timeText.color = text;
-    }
-    
-    override public function destroy():Void
-    {
-        FlxMouseEventManager.remove(background);
-        FlxMouseEventManager.remove(scrubber);
-        super.destroy();
+        this.bgBar.color = bgColor;
+        this.progressBar.color = progressColor;
+        FlxSpriteUtil.drawCircle(this.handle, handleSize, handleSize, handleSize, handleColor);
+        this.timeText.color = textColor;
     }
 }
