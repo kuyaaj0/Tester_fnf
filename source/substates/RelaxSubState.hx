@@ -90,6 +90,8 @@ class RelaxSubState extends MusicBeatSubstate
 	var Sound1:FlxSound = new FlxSound();
 	var Sound2:FlxSound = new FlxSound();
 	
+	public var songProgress:SongProgress;
+	
 	var DebugText:FlxText;
 	
 	//options var
@@ -319,9 +321,11 @@ class RelaxSubState extends MusicBeatSubstate
 			backendPicture.alpha = 0;
 			add(backendPicture);
 		}
-
-		audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
-									  500, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
+        if (ClientPrefs.data.theme == 'Circle')
+		    audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 500, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
+		else if(ClientPrefs.data.theme == 'Straight')
+		    audio = new AudioDisplay(FlxG.sound.music, 50, FlxG.height - 50, 200, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry);
+		    
 		audio.alpha = 0;
 		audio.inRelax = true;
 		audio.cameras = [camMidd];
@@ -562,6 +566,18 @@ class RelaxSubState extends MusicBeatSubstate
 		triangleEmitter.cameras = [camHollow];
         add(triangleEmitter);
         
+
+        songProgress = new SongProgress(0, FlxG.height - 50, FlxG.width, 8);
+        songProgress.cameras = [camHUD];
+        songProgress.onSeek = function(time:Float) {
+            if (FlxG.sound.music != null) {
+                FlxG.sound.music.time = time * 1000;
+                if (Sound1 != null && Sound1.playing) Sound1.time = time * 1000;
+                if (Sound2 != null && Sound2.playing) Sound2.time = time * 1000;
+            }
+        };
+        add(songProgress);
+        
         camHollow.alpha = 0.6;
 	}
 
@@ -620,7 +636,10 @@ class RelaxSubState extends MusicBeatSubstate
 
 	private function updateMask():Void
 	{
-		if (circleMask == null) {
+	     if (ClientPrefs.data.theme != 'Circle')
+		     return:
+		     
+		 if (circleMask == null) {
 			circleMask = new Shape();
 		}
 		
@@ -843,6 +862,7 @@ class RelaxSubState extends MusicBeatSubstate
 			var currentTime:Float = FlxG.sound.music.time / 1000;
 			var totalTime:Float = FlxG.sound.music.length / 1000;
 			
+			songProgress.updateProgress(currentTime, totalTime);
 			//我李奶奶的腿要是haxe的毫秒运算能够非常精确那我就不用大费周章了
 			//把所有时间戳排序，并读取当前时间戳小且最接近的歌词
             var sortedTimestamps:Array<Int> = [];
@@ -957,18 +977,19 @@ class RelaxSubState extends MusicBeatSubstate
 				camVpad.alpha = clickLock ? 0 : 1;
 			}
 		}
+		if (ClientPrefs.data.theme == 'Circle'){
+    	    if (recordPicture != null && !isTransitioning && ClientPrefs.data.enableRecordRotation)
+    		{
+    			recordPicture.angle += elapsed * 20;
+    			if (recordPicture.angle >= 360) recordPicture.angle -= 360;
+    		}else if(!ClientPrefs.data.enableRecordRotation){
+    		    if(recordPicture.angle <= 180)
+    		        recordPicture.angle = FlxMath.lerp(recordPicture.angle, 0, 0.1);
+    		    else
+    		        recordPicture.angle = FlxMath.lerp(recordPicture.angle, 360, 0.1);
+    		}
+	    }
 		
-		if (recordPicture != null && !isTransitioning && ClientPrefs.data.enableRecordRotation)
-		{
-			recordPicture.angle += elapsed * 20;
-			if (recordPicture.angle >= 360) recordPicture.angle -= 360;
-		}else if(!ClientPrefs.data.enableRecordRotation){
-		    if(recordPicture.angle <= 180)
-		        recordPicture.angle = FlxMath.lerp(recordPicture.angle, 0, 0.1);
-		    else
-		        recordPicture.angle = FlxMath.lerp(recordPicture.angle, 360, 0.1);
-		}
-
 		if (FlxG.keys.justPressed.B)
 		{
 			ClientPrefs.data.enableBpmZoom = !ClientPrefs.data.enableBpmZoom;
@@ -1003,9 +1024,11 @@ class RelaxSubState extends MusicBeatSubstate
 	       
 	        audio.destroy();
 			audio = null;
-	        audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 
-									  500, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
-									  
+	        if (ClientPrefs.data.theme == 'Circle')
+		        audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 500, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
+		    else if(ClientPrefs.data.theme == 'Straight')
+		        audio = new AudioDisplay(FlxG.sound.music, 50, FlxG.height - 50, 200, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry);
+		    
 			audio.cameras = [camMidd];
 			audio.inRelax = true;
 			add(audio);

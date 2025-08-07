@@ -160,7 +160,12 @@ import states.TitleState;
 	
 	public var enableRecordRotation:Bool = true;
 	public var enableBpmZoom:Bool = true;
-
+	
+	//public var theme:Array<String> = ["Circle", "Straight", "None"];
+	//public var SongInfo:Array<String> = ["None", "topLeft", "downLeft", "topRight", "downRight"];
+	public var theme:String = "Circle";
+	public var SongInfo:String = "None";
+	
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	public var arrowRGB:Array<Array<FlxColor>> = [
