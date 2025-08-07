@@ -67,7 +67,8 @@ class RelaxSubState extends MusicBeatSubstate
 	var triangleEmitter:HollowTriangleEmitter;
 	
 	var backendPicture:FlxSprite;
-	public var audio:FlxSpriteGroup;
+	public var audio:AudioCircleDisplay;
+	public var strAudio:AudioDisplay;
 	var recordPicture:FlxSprite;
 	
 	var oldBackendPicture:FlxSprite;
@@ -354,9 +355,14 @@ class RelaxSubState extends MusicBeatSubstate
         if (ClientPrefs.data.theme == 'Circle')
 		    audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 500, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
 		else if(ClientPrefs.data.theme == 'Straight')
-		    audio = new AudioDisplay(FlxG.sound.music, 50, FlxG.height - 50, 200, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, ClientPrefs.data.RelaxAudioSymmetry);
+		    strAudio = new AudioDisplay(FlxG.sound.music, 50, FlxG.height - 50, 200, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, ClientPrefs.data.RelaxAudioSymmetry);
 		    
-		if (audio != null){
+		if (strAudio != null){
+		    strAudio.alpha = 0;
+    		strAudio.inRelax = true;
+    		strAudio.cameras = [camMidd];
+    		add(strAudio);
+		} else if (audio != null){
 		    audio.alpha = 0;
     		audio.inRelax = true;
     		audio.cameras = [camMidd];
@@ -1037,6 +1043,10 @@ class RelaxSubState extends MusicBeatSubstate
 		        audio.cameras = [camMidd];
     			audio.inRelax = true;
     			add(audio);
+		    }else if (strAudio != null){
+		        strAudio.cameras = [camMidd];
+    			strAudio.inRelax = true;
+    			add(strAudio);
 		    }
 	    }
 	}
