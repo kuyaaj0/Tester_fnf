@@ -4,7 +4,7 @@ import flixel.text.FlxText;
 
 class BackButtons extends FlxSpriteGroup
 {
-    public var backButtons:ButtonSprite;
+    public var backButtons:FlxSprite;
     public var backText:FlxText;
     public var back:Void->Void = null;
 

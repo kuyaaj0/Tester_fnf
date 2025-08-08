@@ -852,7 +852,6 @@ class RelaxSubState extends MusicBeatSubstate
 			}
 			else if (isOverRock) {
 				clickLock = !clickLock;
-				camVpad.alpha = clickLock ? 0 : 1;
 			}
 		}
 		
