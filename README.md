@@ -3,8 +3,12 @@
   <br/>
   <h1 align="center">Friday Night Funkin' - NovaFlare Engine</h1>
   <p align="center">Engine based on Psych originally used on VS Camellia fanmade and focused on optimisation and perfomance to give players best possible experience. It was later moved to support modules.</p>
+<<<<<<< HEAD
   <a href="https://novaflare.top">Our website https://novaflare.top</a>
   <a href="http://xz.novaflare.top/">中国网络请从这里下载</a>
+=======
+  <a href="https://novaflare.top/">Look our new website!!!!!!</a>
+>>>>>>> 1309aac0bdfb8052c0ca24fbf89f85653db5281b
 </div>
 <br />
 

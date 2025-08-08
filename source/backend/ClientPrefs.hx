@@ -41,6 +41,7 @@ import states.TitleState;
 	// Gameplay backend s
 	public var replayBot:Bool = false;
 	public var fixLNL:Int = 0; // fix long note length
+	public var saveScoreBase:String = 'Score';
 	public var mainMusic:String = 'None';
 	public var optionMusic:String = 'None';
 	public var pauseMusic:String = 'Tea Time';
@@ -140,7 +141,7 @@ import states.TitleState;
 	public var showFPS:Bool = true;
 	public var showExtra:Bool = true;
 	public var rainbowFPS:Bool = false;
-	public var memoryType:Int = 0;
+	public var memoryType:String = 'Usage';
 	public var FPSScale:Float = 1;
 	public var WatermarkScale:Float = 1;
 	public var showWatermark:Bool = true;

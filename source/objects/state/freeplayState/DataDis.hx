@@ -2,23 +2,38 @@ package objects.state.freeplayState;
 
 class DataDis extends FlxSpriteGroup{
     var lineBG:Rect;
-    var lineDis:Rect;
+    public var lineDis:Rect;
     var text:FlxText;
-    var data:FlxText
+    public var data:FlxText;
 
-    public function new(x:Float, y:Float, width:Float, height:Float){
+    public function new(x:Float, y:Float, width:Float, height:Float, dataName:String){
         super(x, y);
 
-        bg = new Rect(0, 0, width, height, height, height, 0xffffff);
-		bg.antialiasing = ClientPrefs.data.antialiasing;
-		add(bg);
+        lineBG = new Rect(0, 0, width, height, height, height, 0xffffff);
+		lineBG.antialiasing = ClientPrefs.data.antialiasing;
+		add(lineBG);
 
-        text = new FlxText(0, 0, 0, '0.99', Std.int(height * 0.25));
-		text.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(height * 0.6), 0x242A2E, CENTER, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        lineDis = new Rect(0, 0, width, height, height, height, 0xffffff);
+		lineDis.antialiasing = ClientPrefs.data.antialiasing;
+		add(lineDis);
+
+        text = new FlxText(0, 0, 0, dataName, 20);
+		text.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 16, 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         text.borderStyle = NONE;
 		text.antialiasing = ClientPrefs.data.antialiasing;
-		text.x = (bg.width - text.width) / 2;
-		text.y = (bg.height - text.height) / 2;
+        text.y += height * 1.5;
 		add(text);
+
+        data = new FlxText(0, 0, 0, dataName, 20);
+		data.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), 16, 0xffffff, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        data.borderStyle = NONE;
+		data.antialiasing = ClientPrefs.data.antialiasing;
+        data.y += lineDis.height + text.height;
+		add(data);
     }
+
+    public function chanegData(data:Float) {
+
+    }
+
 }
