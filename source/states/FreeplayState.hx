@@ -60,6 +60,11 @@ class FreeplayState extends MusicBeatState
 	var detailStar:StarRect;
 	var detailMapper:FlxText;
 
+	var noteData:DataDis;
+	var holdNoteData:DataDis;
+	var speedData:DataDis;
+	var keyCountData:DataDis;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
 	var downBG:Rect;
@@ -199,7 +204,22 @@ class FreeplayState extends MusicBeatState
 		detailMapper.y = detailRect.bg2.y;
 		add(detailMapper);
 
+
+
+		noteData = new DataDis(10, detailRect.bg3.y + 10, 120, 5, 'Notes');
+		add(noteData);
+
+		holdNoteData = new DataDis(noteData.x + noteData.lineDis.width * 1.2, detailRect.bg3.y + 10, 120, 5, 'Hold Notes');
+		add(holdNoteData);
+
+		speedData = new DataDis(holdNoteData.x + holdNoteData.lineDis.width * 1.2, detailRect.bg3.y + 10, 120, 5, 'Speed');
+		add(speedData);
+
+		keyCountData = new DataDis(speedData.x + speedData.lineDis.width * 1.2, detailRect.bg3.y + 10, 120, 5, 'Key count');
+		add(keyCountData);
+
 		//////////////////////////////////////////////////////////////////////////////////////////
+		
 
 
 		downBG = new Rect(0, FlxG.height - 50, FlxG.width, 50, 0, 0);
@@ -233,7 +253,7 @@ class FreeplayState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		trace(test);
+
 	}
 }
 

@@ -3194,30 +3194,23 @@ class PlayState extends MusicBeatState
 				percent = 0;
 			if (!ClientPrefs.data.playOpponent && !replayMode)
 			{
-				var details:Array<Dynamic> = [
-					songName,
-					songScore,
-					songLength,
-					songHits,
-					songMisses,
-					ratingPercent,
-					ratingFC,
-					ratingName,
-					highestCombo,
-					NoteTime,
-					NoteMs,
-					songSpeed, // wc之前忘记这个变量了😭
-					playbackRate,
-					healthGain,
-					healthLoss,
-					cpuControlled,
-					practiceMode,
-					instakillOnMiss,
-					ClientPrefs.data.playOpponent,
-					ClientPrefs.data.flipChart,
-					Date.now().toString()
+				var details:Array<Array<Dynamic>> = [
+					[
+						songName, songLength, Date.now().toString()
+					],
+					[
+						songSpeed, playbackRate, healthGain, healthLoss,
+						cpuControlled, practiceMode, instakillOnMiss, ClientPrefs.data.playOpponent, 
+						ClientPrefs.data.flipChart,
+					],
+					[
+						songScore, ratingPercent, ratingFC, songHits, highestCombo, songMisses
+					],
+					[
+						NoteTime, NoteMs
+					]
 				];
-				Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent, Replay.saveData, details);
+				Highscore.saveGameData(SONG.song, storyDifficulty, details, Replay.saveData);
 				Replay.putDetails(details);
 			}
 			#end
