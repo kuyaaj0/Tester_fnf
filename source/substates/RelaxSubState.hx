@@ -856,14 +856,6 @@ class RelaxSubState extends MusicBeatSubstate
 			}
 		}
 		
-		if (FlxG.keys.justPressed.B)
-		{
-			ClientPrefs.data.enableBpmZoom = !ClientPrefs.data.enableBpmZoom;
-			if (!ClientPrefs.data.enableBpmZoom) {
-				camPic.zoom = defaultZoom;
-			}
-		}
-		
 		if (controls.BACK) {
 		    removeVirtualPad();
 		    Sound1.destroy();
@@ -885,8 +877,8 @@ class RelaxSubState extends MusicBeatSubstate
 	}
 	
 	function updateOptions(){
-	    if (audio != null && (audio.Number != ClientPrefs.data.RelaxAudioNumber ||
-	        audio.symmetry != ClientPrefs.data.RelaxAudioSymmetry)){
+	    if (audio != null && 
+	        audio.symmetry != ClientPrefs.data.RelaxAudioSymmetry){
 	       
 	        audio.destroy();
 			audio = null;
@@ -906,13 +898,8 @@ class RelaxSubState extends MusicBeatSubstate
 
 	function onBPMBeat(){
 		var targetZoom = defaultZoom + zoomIntensity;
-		camPic.zoom = targetZoom;
 
 		controlButtons.handleBeatAnimation(beatTime);
-		
-		FlxTween.tween(camPic, {zoom: defaultZoom}, beatTime * 0.5, {
-			ease: FlxEase.quadOut
-		});
 		
 		beatTimess++;
 		helpBool = !helpBool;

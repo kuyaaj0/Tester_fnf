@@ -12,7 +12,7 @@ class BackButtons extends FlxSpriteGroup
     {
         super(X, Y);
 
-        backButtons = new FlxSprite().loadGraphic(Paths.image(FreeplayState.filePath + 'detailsBG1'));
+        backButtons = new FlxSprite().loadGraphic(Paths.image('menuExtendHide/relax/back'));
         add(backButtons);
 
         backText = new FlxText(5, 10, 0, "Back", 24);
