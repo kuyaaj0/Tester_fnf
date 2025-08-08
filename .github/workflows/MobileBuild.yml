@@ -2,6 +2,8 @@ name: MobileBuild
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - 'hmm.json'
   pull_request:
     branches: [ main ]
     
