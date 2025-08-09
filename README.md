@@ -12,7 +12,7 @@
       <a href="http://xz.novaflare.top/" style="font-size: 1.1em; display: block;">🇨🇳 中国网络下载 (Chinese Mirror) 🇨🇳</a>
     </p>
     <p style="margin: 2px 0;">
-      <a href="https://novaflare.top/statistics/dashboard.php" style="font-size: 0.1em; display: block;">-------------------------</a>
+      <a href="https://novaflare.top/index.php" style="font-size: 0.1em; display: block;">-------------------------</a>
     </p>
   </div>
 </div>
