@@ -26,10 +26,13 @@ class GamePlayGroup extends OptionCata
 
         var option:Option = new Option(this, 'noReset', BOOL);
         addOption(option, true);
+
+        var option:Option = new Option(this, 'showKeybinds', BOOL);
+        addOption(option);
         
         var option:Option = new Option(this, 'NoteOffsetState', STATE); //NoteOffsetState
         option.onChange = () -> changeState(1);
-		addOption(option);
+		addOption(option, true);
 
         /////--Opponent--\\\\\
 

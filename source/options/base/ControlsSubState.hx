@@ -1,6 +1,6 @@
 package options.base;
 
-import backend.ExtraKeysHandler;
+import backend.extraKeys.ExtraKeysHandler;
 import backend.InputFormatter;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.display.FlxGridOverlay;

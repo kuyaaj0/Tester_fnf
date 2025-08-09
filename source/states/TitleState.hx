@@ -1,5 +1,6 @@
 package states;
 
+import backend.extraKeys.ExtraKeysHandler;
 import backend.WeekData;
 import backend.Highscore;
 
@@ -86,6 +87,9 @@ class TitleState extends MusicBeatState
 		FlxG.save.bind('funkin', CoolUtil.getSavePath());
 
 		ClientPrefs.loadPrefs();
+
+		if (ExtraKeysHandler.instance.data.scales == null)
+			MusicBeatState.switchState(new ScaleSimulationState());
 
 		Highscore.load();
 

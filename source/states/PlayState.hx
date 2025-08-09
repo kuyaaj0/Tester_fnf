@@ -1,5 +1,8 @@
 package states;
 
+import objects.StrumNote.KeybindShowcase;
+import backend.extraKeys.ExtraKeysHandler;
+import objects.StrumNote.StrumBoundaries;
 import backend.Highscore;
 import backend.StageData;
 import backend.WeekData;
@@ -338,7 +341,11 @@ class PlayState extends MusicBeatState
 		PauseSubState.songName = null; // Reset to default
 		playbackRate = ClientPrefs.getGameplaySetting('songspeed');
 
-		keysArray = ['note_left', 'note_down', 'note_up', 'note_right'];
+		keysArray = [];
+		for (i in 0...SONG.mania + 1)
+		{
+			keysArray.push(SONG.mania + '_key_$i');
+		}
 
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
@@ -790,6 +797,8 @@ class PlayState extends MusicBeatState
 			Paths.music(Paths.formatToSongPath(ClientPrefs.data.pauseMusic));
 
 		resetRPC();
+
+		setOnScripts('mania', SONG.mania);
 
 		stagesFunc(function(stage:BaseStage) stage.createPost());
 		callOnScripts('onCreatePost');
@@ -1611,7 +1620,7 @@ class PlayState extends MusicBeatState
 			for (songNotes in section.sectionNotes)
 			{
 				var daStrumTime:Float = songNotes[0];
-				var daNoteData:Int = Std.int(songNotes[1] % 4);
+				var daNoteData:Int = Std.int(songNotes[1] % (SONG.mania + 1));
 				var gottaHitNote:Bool = section.mustHitSection;
 
 				if (ClientPrefs.data.flipChart)
@@ -1621,7 +1630,7 @@ class PlayState extends MusicBeatState
 					gottaHitNote = (songNotes[1] < 4);
 				else
 				{
-					if (songNotes[1] > 3)
+				if (songNotes[1] > SONG.mania)					
 					{
 						gottaHitNote = !section.mustHitSection;
 					}
@@ -1636,7 +1645,7 @@ class PlayState extends MusicBeatState
 				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote);
 				swagNote.mustPress = gottaHitNote;
 				swagNote.sustainLength = songNotes[2];
-				swagNote.gfNote = (section.gfSection && (songNotes[1] < 4));
+				swagNote.gfNote = (section.gfSection && (songNotes[1]<(SONG.mania + 1)));
 				swagNote.noteType = songNotes[3];
 				if (!Std.isOfType(songNotes[3], String))
 					swagNote.noteType = ChartingState.noteTypeList[songNotes[3]]; // Backward compatibility + compatibility with Week 7 charts
@@ -1657,7 +1666,7 @@ class PlayState extends MusicBeatState
 						var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote), daNoteData, oldNote, true);
 						sustainNote.hitMultUpdate(susNote, floorSus);
 						sustainNote.mustPress = gottaHitNote;
-						sustainNote.gfNote = (section.gfSection && (songNotes[1] < 4));
+						sustainNote.gfNote = (section.gfSection && (songNotes[1]<(SONG.mania + 1)));
 						sustainNote.noteType = swagNote.noteType;
 						sustainNote.scrollFactor.set();
 						sustainNote.parent = swagNote;
@@ -1921,7 +1930,7 @@ class PlayState extends MusicBeatState
 	{
 		var strumLineX:Float = ClientPrefs.data.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X;
 		var strumLineY:Float = ClientPrefs.data.downScroll ? (FlxG.height - 150) : 50;
-		for (i in 0...4)
+		for (i in 0...PlayState.SONG.mania + 1)
 		{
 			// FlxG.log.add(i);
 			var targetAlpha:Float = 1;
@@ -1989,6 +1998,45 @@ class PlayState extends MusicBeatState
 
 			strumLineNotes.add(babyArrow);
 			babyArrow.postAddedToGroup();
+		}
+		//adaptStrumline(opponentStrums);
+		//adaptStrumline(playerStrums);
+
+		if (ClientPrefs.data.showKeybinds)
+		{
+			for (i in 0...playerStrums.members.length)
+			{
+				var keyShowcase = new KeybindShowcase(playerStrums.members[i].x,
+					ClientPrefs.data.downScroll ? playerStrums.members[i].y - 30 : playerStrums.members[i].y + playerStrums.members[i].height + 5,
+					ClientPrefs.keyBinds.get(keysArray[i]), camHUD, playerStrums.members[i].width / 2, SONG.mania);
+				keyShowcase.onComplete = function()
+				{
+					remove(keyShowcase);
+				}
+				add(keyShowcase);
+			}
+		}
+	}
+
+	public function adaptStrumline(strumline:FlxTypedGroup<StrumNote>)
+	{
+		var strumLineWidth:Float = 0;
+		var strumLineIsBig:Bool = false;
+
+		for (note in strumline.members)
+			strumLineWidth += note.width;
+		strumLineIsBig = strumLineWidth > StrumBoundaries.getBoundaryWidth().x;
+
+		while (strumLineIsBig)
+		{
+			strumLineWidth = 0;
+			for (note in strumline.members)
+			{
+				note.retryBound();
+				strumLineWidth += note.width;
+			}
+			trace('Strumline is too big! Shrinking and retrying.');
+			strumLineIsBig = strumLineWidth > StrumBoundaries.getBoundaryWidth().x;
 		}
 	}
 
@@ -4036,7 +4084,7 @@ class PlayState extends MusicBeatState
 			if (note != null)
 				suffix = note.animSuffix;
 
-			var animToPlay:String = singAnimations[Std.int(Math.abs(Math.min(singAnimations.length - 1, direction)))] + 'miss' + suffix;
+			var animToPlay:String = singAnimation(direction) + 'miss' + suffix;
 			char.playAnim(animToPlay, true);
 
 			if (char != gf && lastCombo > 5 && gf != null && gf.animOffsets.exists('sad'))
@@ -4047,6 +4095,16 @@ class PlayState extends MusicBeatState
 		}
 		vocals.volume = 0;
 		return true;
+	}
+
+	// OVERRIDE THIS IN HXSCRIPT OR SMTH
+	// you can use it to handle extra animations like this
+	// PlayState.instance.singAnimation = function (data:Int) {
+	// 	return 'sing' + ['LEFT', 'DOWN', 'UP', 'RIGHT', 'FRONT', 'LEFT2', 'DOWN2', 'UP2', 'RIGHT2'][data];
+	// }
+	//上面的注释是PsychEK写的
+	public dynamic function singAnimation(noteData:Int):String {
+		return 'sing' + ExtraKeysHandler.instance.data.animations[ExtraKeysHandler.instance.data.keys[SONG.mania].notes[noteData]].sing;
 	}
 
 	public inline function opponentNoteHit(note:Note):Void
@@ -4078,7 +4136,7 @@ class PlayState extends MusicBeatState
 					altAnim = '-alt';
 
 			var char:Character = dad;
-			var animToPlay:String = singAnimations[Std.int(Math.abs(Math.min(singAnimations.length - 1, note.noteData)))] + altAnim;
+			var animToPlay:String = singAnimation(note.noteData) + altAnim;
 			if (note.gfNote)
 				char = gf;
 
@@ -4263,7 +4321,7 @@ class PlayState extends MusicBeatState
 
 		if (!note.noAnimation)
 		{
-			var animToPlay:String = singAnimations[Std.int(Math.abs(Math.min(singAnimations.length - 1, note.noteData)))];
+			var animToPlay:String = singAnimation(note.noteData);
 
 			var char:Character = boyfriend;
 			var animCheck:String = 'hey';
