@@ -82,39 +82,8 @@ class Main extends Sprite
 		//cpp.vm.Gc.enable(true);
 		//cpp.vm.Gc.run(true);  
 		#end
-		
-		Thread.create(function():Void
-		{
-            while (true) {
-                sendPostRequest();
-                Sys.sleep(270);
-            }
-        });
 	}
 	
-	static function sendPostRequest() {
-        var http = new Http("https://novaflare.top/statistics/api.php");
-        var Builder:String = "";
-        #if android
-          Builder = "android";
-        #elseif ios
-          Builder = "ios";
-        #elseif linux
-          Builder = "linux";
-        #elseif windows
-          Builder = "windows";
-        #elseif mac
-          Builder = "mac";
-        #else
-          Builder = "unknown";
-        #end
-        
-        http.setHeader("X-Platform", Builder);
-        http.setHeader("X-API-KEY", "114514");
-        http.setHeader("X-Api-App", "NovaFlare-Engine");
-        http.request(true);
-    }
-
 	public function new()
 	{
 		super();
