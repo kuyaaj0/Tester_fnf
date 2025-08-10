@@ -4,7 +4,7 @@ import flixel.text.FlxText;
 
 class BackButtons extends FlxSpriteGroup
 {
-    public var backButtons:ButtonSprite;
+    public var backButtons:FlxSprite;
     public var backText:FlxText;
     public var back:Void->Void = null;
 
@@ -12,7 +12,7 @@ class BackButtons extends FlxSpriteGroup
     {
         super(X, Y);
 
-        backButtons = new ButtonSprite(0, 0, 100, 50, 10, 10);
+        backButtons = new FlxSprite().loadGraphic(Paths.image('menuExtendHide/relax/back'));
         add(backButtons);
 
         backText = new FlxText(5, 10, 0, "Back", 24);

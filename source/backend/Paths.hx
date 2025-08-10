@@ -51,6 +51,8 @@ class Paths
 		}
 		// flags everything to be cleared out next unused memory clear
 		Cache.localTrackedAssets = [];
+		Cache.currentTrackedFrames = [];
+		Cache.currentTrackedAnims = [];
 		Cache.currentTrackedBitmaps = [];
 		#if !html5 openfl.Assets.cache.clear("songs"); #end
 	}
@@ -217,8 +219,6 @@ class Paths
 		var inst = returnSound(null, songKey, 'songs');
 		return inst;
 	}
-
-	
 
 	static public function image(key:String, ?library:String = null, ?allowGPU:Bool = true, ?extraLoad:Bool = false):FlxGraphic
 	{

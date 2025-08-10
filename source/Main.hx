@@ -41,6 +41,9 @@ import lime.graphics.Image;
 ')
 #end
 
+import sys.Http;
+import sys.thread.Thread;
+
 class Main extends Sprite
 {
 	private static var game = {
@@ -81,7 +84,7 @@ class Main extends Sprite
 		//cpp.vm.Gc.run(true);  
 		#end
 	}
-
+	
 	public function new()
 	{
 		super();

@@ -93,6 +93,10 @@ class GamePlayGroup extends OptionCata
         var option:Option = new Option(this, 'fixLNL', BOOL);
         addOption(option, true);
 
+        var group:Array<String> = ['Score', 'Accuracy', 'Misses', 'highestCombo'];
+        var option:Option = new Option(this, 'saveScoreBase', STRING, group);
+        addOption(option);
+
         #if android
 		var option:Option = new Option(this, 'gameOverVibration', BOOL);
 		addOption(option);

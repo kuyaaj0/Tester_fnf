@@ -49,31 +49,23 @@ class RelaxSubState extends MusicBeatSubstate
 	var camBack:FlxCamera;
 	var camHollow:FlxCamera;
 	var camMidd:FlxCamera;
-	var camPic:FlxCamera;
 	var camText:FlxCamera;
 	var camHUD:FlxCamera;
 	public var camOption:FlxCamera;
-	var camVpad:FlxCamera;
-	
+
 	private var currentBPM:Float = 100;
 	private var beatTime:Float = 0.6;
 	private var beatTimer:Float = 0;
 	private var defaultZoom:Float = 1.0;
 	private var zoomIntensity:Float = 0.05;
-
-	var maskRadius:Float = 150;
-	var circleMask:Shape;
 	
 	var triangleEmitter:HollowTriangleEmitter;
 	
 	var backendPicture:FlxSprite;
-	public var audio:AudioCircleDisplay;
-	public var strAudio:AudioDisplay;
-	var recordPicture:FlxSprite;
+	public var audio:AudioDisplay;
 	
 	var oldBackendPicture:FlxSprite;
-	var oldRecordPicture:FlxSprite;
-	var oldAudio:AudioCircleDisplay;
+	var oldAudio:AudioDisplay;
 
 	var transitionTime:Float = 0.5;
 	var isTransitioning:Bool = false;
@@ -94,11 +86,8 @@ class RelaxSubState extends MusicBeatSubstate
 	
 	public var songProgress:SongProgress;
 	
-	var DebugText:FlxText;
-	
 	//options var
 	//public var enableBpmZoom:Bool = true; //启用唱片根据bpm zoom
-	//public var enableRecordRotation:Bool = true; //启用唱片旋转
 	//public var RelaxAudioSymmetry:Bool = true; //启用可视化中间对称
 	//public var RelaxAudioNumber:Int = 5; //解析器的数量
 	//public var RelaxAudioDisplayQuality:Int = 5; //解析器质量（仅用于RelaxState)
@@ -110,18 +99,14 @@ class RelaxSubState extends MusicBeatSubstate
 		camBack = new FlxCamera();
 		camHollow = new FlxCamera();
 		camMidd = new FlxCamera();
-		camPic = new FlxCamera();
 		camText = new FlxCamera();
 		camHUD = new FlxCamera();
-		camVpad = new FlxCamera();
 
 		camHUD.bgColor.alpha = 0;
-		camPic.bgColor.alpha = 0;
 		camText.bgColor.alpha = 0;
 		camBack.bgColor.alpha = 0;
 		camHollow.bgColor.alpha = 0;
 		camMidd.bgColor.alpha = 0;
-		camVpad.bgColor.alpha = 0;
 
 		camOption = new FlxCamera();
 		camOption.bgColor.alpha = 0;
@@ -130,11 +115,9 @@ class RelaxSubState extends MusicBeatSubstate
 		FlxG.cameras.add(camBack, false);
 		FlxG.cameras.add(camHollow, false);
 		FlxG.cameras.add(camMidd, false);
-		FlxG.cameras.add(camPic, false);
 		FlxG.cameras.add(camText, false);
 		FlxG.cameras.add(camHUD, false);
 		FlxG.cameras.add(camOption, false);
-		FlxG.cameras.add(camVpad, false);
 		
         FlxG.state.persistentUpdate = false;
 		FlxG.sound.music.stop();
@@ -180,7 +163,7 @@ class RelaxSubState extends MusicBeatSubstate
 		if (isTransitioning || songInfo == null) return;
 		var res:Array<Dynamic> = inspectFile(songInfo);
 		if (!res[0]){
-		    DebugText.text = res[1];
+		    trace(res[1]);
 		    return;
 		}
 		
@@ -229,11 +212,6 @@ class RelaxSubState extends MusicBeatSubstate
 		if (backendPicture != null) {
 			oldBackendPicture = backendPicture;
 			backendPicture = null;
-		}
-		
-		if (recordPicture != null) {
-			oldRecordPicture = recordPicture;
-			recordPicture = null;
 		}
 		
 		if (audio != null) {
@@ -287,7 +265,6 @@ class RelaxSubState extends MusicBeatSubstate
 		var totalTweens = 0;
 		
 		if (oldBackendPicture != null) totalTweens++;
-		if (oldRecordPicture != null) totalTweens++;
 		if (oldAudio != null) totalTweens++;
 		
 		if (totalTweens == 0) {
@@ -310,19 +287,6 @@ class RelaxSubState extends MusicBeatSubstate
 					oldBackendPicture.destroy();
 					oldBackendPicture.kill();
 					oldBackendPicture = null;
-					checkComplete();
-				}
-			});
-		}
-		
-		if (oldRecordPicture != null) {
-			FlxTween.tween(oldRecordPicture, {alpha: 0, angle: 180}, transitionTime, {
-				ease: FlxEase.quadIn,
-				onComplete: function(twn:FlxTween) {
-					remove(oldRecordPicture);
-					oldRecordPicture.destroy();
-					oldRecordPicture.kill();
-					oldRecordPicture = null;
 					checkComplete();
 				}
 			});
@@ -352,35 +316,17 @@ class RelaxSubState extends MusicBeatSubstate
 			backendPicture.alpha = 0;
 			add(backendPicture);
 		}
-        if (ClientPrefs.data.theme == 'Circle')
-		    audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 500, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
-		else if(ClientPrefs.data.theme == 'Straight')
-		    strAudio = new AudioDisplay(FlxG.sound.music, 50, FlxG.height - 50, 200, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, ClientPrefs.data.RelaxAudioSymmetry);
-		    
-		if (strAudio != null){
-		    strAudio.alpha = 0;
-    		strAudio.inRelax = true;
-    		strAudio.cameras = [camMidd];
-    		add(strAudio);
-		} else if (audio != null){
-		    audio.alpha = 0;
-    		audio.inRelax = true;
-    		audio.cameras = [camMidd];
-    		add(audio);
-		}
+		
+		audio = new AudioDisplay(FlxG.sound.music, 50, FlxG.height - 50, 200, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, ClientPrefs.data.RelaxAudioSymmetry);
+	
+        audio.alpha = 0;
+    	audio.inRelax = true;
+    	audio.cameras = [camMidd];
+    	add(audio);
 		
 		var actualRecordImage:FlxGraphicAsset = recordImage;
 		if (actualRecordImage == null && background != null) {
 			actualRecordImage = background;
-		}
-		
-		if (actualRecordImage != null) {
-			recordPicture = new FlxSprite().loadGraphic(Paths.image(actualRecordImage, null, false, true));
-			recordPicture.antialiasing = ClientPrefs.data.antialiasing;
-			updatePictureScale();
-			recordPicture.cameras = [camPic];
-			recordPicture.alpha = 0;
-			add(recordPicture);
 		}
 	}
 	
@@ -409,7 +355,6 @@ class RelaxSubState extends MusicBeatSubstate
 		var totalTweens = 0;
 		
 		if (backendPicture != null) totalTweens++;
-		if (recordPicture != null) totalTweens++;
 		if (audio != null) totalTweens++;
 		
 		if (totalTweens == 0) {
@@ -426,13 +371,6 @@ class RelaxSubState extends MusicBeatSubstate
 		
 		if (backendPicture != null) {
 			FlxTween.tween(backendPicture, {alpha: 1}, transitionTime, {
-				ease: FlxEase.quadOut,
-				onComplete: function(_) checkComplete()
-			});
-		}
-		
-		if (recordPicture != null) {
-			FlxTween.tween(recordPicture, {alpha: 1, angle: 360}, transitionTime, {
 				ease: FlxEase.quadOut,
 				onComplete: function(_) checkComplete()
 			});
@@ -485,7 +423,7 @@ class RelaxSubState extends MusicBeatSubstate
 
 		for (member in backButtons.members) {
 			if (member != null) {
-				member.cameras = [camVpad];
+				member.cameras = [camHUD];
 			}
 		}
 		
@@ -504,8 +442,6 @@ class RelaxSubState extends MusicBeatSubstate
 	override function create()
 	{
 	    instance = this;
-		
-		//virtualPad.cameras = [camVpad];
 
 		topTrapezoid = new FlxSprite();
 		drawTrapezoid(FlxG.width * 0.7, 40);
@@ -520,7 +456,7 @@ class RelaxSubState extends MusicBeatSubstate
 		createBackButtons();
 		
 		defaultZoom = 1.0;
-		camPic.zoom = defaultZoom;
+		camBack.zoom = defaultZoom;
 
 		super.create();
 
@@ -535,10 +471,6 @@ class RelaxSubState extends MusicBeatSubstate
 		songInfoDisplay.songNameText.cameras = [camText];
 		songInfoDisplay.writerText.cameras = [camText];
 		songInfoDisplay.songLengthText.cameras = [camHUD];
-
-
-		circleMask = new Shape();
-		updateMask();
 
 		initSongsList(0);
 		
@@ -566,11 +498,6 @@ class RelaxSubState extends MusicBeatSubstate
 		    i.cameras = [camOption];
 		}
 		add(optionWindow);
-		
-	    DebugText = new FlxText(0, 0, FlxG.width, SongsArray.name, 25);
-		DebugText.font = Paths.font('Lang-ZH.ttf');
-		add(DebugText);
-		DebugText.cameras = [camHUD];
 		
 		triangleEmitter = new HollowTriangleEmitter();
 		triangleEmitter.cameras = [camHollow];
@@ -644,50 +571,6 @@ class RelaxSubState extends MusicBeatSubstate
 		loadSongs(SongsArray.list[currentSongIndex]);
 	}
 
-	private function updateMask():Void
-	{
-	     if (ClientPrefs.data.theme != 'Circle')
-		     return;
-		     
-		 if (circleMask == null) {
-			circleMask = new Shape();
-		}
-		
-		var maxRadius:Float = Math.min(FlxG.stage.stageWidth, FlxG.stage.stageHeight) / 2;
-		maskRadius = Math.min(maskRadius, maxRadius);
-		
-		circleMask.graphics.clear();
-		circleMask.graphics.beginFill(0xFFFFFF);
-		
-		var scaledRadius:Float = Math.min(
-			maskRadius * (FlxG.stage.stageHeight / FlxG.height), 
-			maskRadius * (FlxG.stage.stageWidth / FlxG.width)
-		);
-		
-		circleMask.graphics.drawCircle(
-			FlxG.stage.stageWidth / 2, 
-			FlxG.stage.stageHeight / 2, 
-			scaledRadius
-		);
-		circleMask.graphics.endFill();
-
-		camPic.flashSprite.mask = circleMask;
-		camText.flashSprite.mask = circleMask;
-	}
-
-	private function updatePictureScale():Void
-	{
-		if (recordPicture == null) return;
-		
-		var scaleX:Float = (maskRadius * 2) / recordPicture.width;
-		var scaleY:Float = (maskRadius * 2) / recordPicture.height;
-		var scale:Float = Math.max(scaleX, scaleY);
-
-		recordPicture.scale.set(scale, scale);
-		recordPicture.updateHitbox();
-		recordPicture.screenCenter();
-	}
-
 	override function destroy()
 	{
 		if (songInfoDisplay.songNameTween != null && songInfoDisplay.songNameTween.active) {
@@ -705,11 +588,6 @@ class RelaxSubState extends MusicBeatSubstate
 			backendPicture = null;
 		}
 		
-		if (recordPicture != null) {
-			recordPicture.destroy();
-			recordPicture = null;
-		}
-		
 		if (audio != null) {
 			audio.destroy();
 			audio = null;
@@ -718,11 +596,6 @@ class RelaxSubState extends MusicBeatSubstate
 		if (oldBackendPicture != null) {
 			oldBackendPicture.destroy();
 			oldBackendPicture = null;
-		}
-		
-		if (oldRecordPicture != null) {
-			oldRecordPicture.destroy();
-			oldRecordPicture = null;
 		}
 		
 		if (oldAudio != null) {
@@ -743,10 +616,6 @@ class RelaxSubState extends MusicBeatSubstate
 		if (songInfoDisplay != null) {
 			songInfoDisplay.destroy();
 			songInfoDisplay = null;
-		}
-		
-		if (circleMask != null) {
-			circleMask = null;
 		}
 		
 		if (topTrapezoid != null) {
@@ -825,7 +694,6 @@ class RelaxSubState extends MusicBeatSubstate
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		updateMask();
 		
 		if (backendPicture != null && !isTransitioning) {
 			var mouseX = FlxG.mouse.getScreenPosition(camHUD).x;
@@ -984,27 +852,6 @@ class RelaxSubState extends MusicBeatSubstate
 			}
 			else if (isOverRock) {
 				clickLock = !clickLock;
-				camVpad.alpha = clickLock ? 0 : 1;
-			}
-		}
-		if (ClientPrefs.data.theme == 'Circle'){
-    	    if (recordPicture != null && !isTransitioning && ClientPrefs.data.enableRecordRotation)
-    		{
-    			recordPicture.angle += elapsed * 20;
-    			if (recordPicture.angle >= 360) recordPicture.angle -= 360;
-    		}else if(!ClientPrefs.data.enableRecordRotation){
-    		    if(recordPicture.angle <= 180)
-    		        recordPicture.angle = FlxMath.lerp(recordPicture.angle, 0, 0.1);
-    		    else
-    		        recordPicture.angle = FlxMath.lerp(recordPicture.angle, 360, 0.1);
-    		}
-	    }
-		
-		if (FlxG.keys.justPressed.B)
-		{
-			ClientPrefs.data.enableBpmZoom = !ClientPrefs.data.enableBpmZoom;
-			if (!ClientPrefs.data.enableBpmZoom) {
-				camPic.zoom = defaultZoom;
 			}
 		}
 		
@@ -1026,37 +873,21 @@ class RelaxSubState extends MusicBeatSubstate
 	    if(audio != null){
 	        triangleEmitter.externalSpeedFactor = audio.amplitude;
 	    }
-	    
-	    if (strAudio != null)
-	        triangleEmitter.externalSpeedFactor = strAudio.amplitude;
 	}
 	
 	function updateOptions(){
-	    if (audio != null && (audio.Number != ClientPrefs.data.RelaxAudioNumber ||
-	        audio.symmetry != ClientPrefs.data.RelaxAudioSymmetry)){
+	    if (audio != null && 
+	        audio.symmetry != ClientPrefs.data.RelaxAudioSymmetry){
 	       
 	        audio.destroy();
 			audio = null;
-	        if (ClientPrefs.data.theme == 'Circle')
-		        audio = new AudioCircleDisplay(FlxG.sound.music, FlxG.width / 2, FlxG.height / 2, 500, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, 150, ClientPrefs.data.RelaxAudioSymmetry, ClientPrefs.data.RelaxAudioNumber);
-		        
+			
+	        audio = new AudioDisplay(FlxG.sound.music, 50, FlxG.height - 50, 200, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, ClientPrefs.data.RelaxAudioSymmetry);
+	
 		    if (audio != null){
 		        audio.cameras = [camMidd];
     			audio.inRelax = true;
     			add(audio);
-		    }
-	    }
-	    
-	    if (strAudio != null && strAudio.symmetry != ClientPrefs.data.RelaxAudioSymmetry){
-	        strAudio.destroy();
-			strAudio = null;
-	        if(ClientPrefs.data.theme == 'Straight')
-		        strAudio = new AudioDisplay(FlxG.sound.music, 50, FlxG.height - 50, 200, 100, Std.int(120 / ClientPrefs.data.RelaxAudioNumber), 4, FlxColor.WHITE, ClientPrefs.data.RelaxAudioSymmetry);
-		    
-	        if (strAudio != null){
-		        strAudio.cameras = [camMidd];
-    			strAudio.inRelax = true;
-    			add(strAudio);
 		    }
 	    }
 	}
@@ -1066,13 +897,8 @@ class RelaxSubState extends MusicBeatSubstate
 
 	function onBPMBeat(){
 		var targetZoom = defaultZoom + zoomIntensity;
-		camPic.zoom = targetZoom;
 
 		controlButtons.handleBeatAnimation(beatTime);
-		
-		FlxTween.tween(camPic, {zoom: defaultZoom}, beatTime * 0.5, {
-			ease: FlxEase.quadOut
-		});
 		
 		beatTimess++;
 		helpBool = !helpBool;

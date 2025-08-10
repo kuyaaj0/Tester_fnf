@@ -435,8 +435,9 @@ class Note extends FlxSprite
 		}
 		else
 		{
-			if (Cache.currentTrackedFrames.get(skin) != null) frames = Cache.currentTrackedFrames.get(skin);
-			else frames = Paths.getSparrowAtlas(skin, null, false);
+			if (Cache.currentTrackedFrames.get(skin) == null) addSkinCache(skin);
+				
+			frames = Cache.currentTrackedFrames.get(skin);
 
 			if (Cache.currentTrackedAnims.get(skin) != null) {
 			    animation.copyFrom(Cache.currentTrackedAnims.get(skin));
@@ -724,6 +725,13 @@ class Note extends FlxSprite
 			defaultNoteSkin = 'NOTE_assets';
 		reloadPath(); // 初始化
 
+		addSkinCache(skin);
+
+		Note.defaultNoteSkin = 'noteSkins/NOTE_assets';
+	}
+
+	static function addSkinCache(skin:String)
+	{
 		var spr:FlxSprite = new FlxSprite();
 		spr.frames = Paths.getSparrowAtlas(skin, null, false);
 
@@ -736,7 +744,5 @@ class Note extends FlxSprite
 		}
 		Cache.currentTrackedFrames.set(skin, spr.frames);
 		Cache.currentTrackedAnims.set(skin, spr.animation);
-
-		Note.defaultNoteSkin = 'noteSkins/NOTE_assets';
 	}
 }
