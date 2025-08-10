@@ -51,6 +51,8 @@ class Paths
 		}
 		// flags everything to be cleared out next unused memory clear
 		Cache.localTrackedAssets = [];
+		Cache.currentTrackedFrames = [];
+		Cache.currentTrackedAnims = [];
 		Cache.currentTrackedBitmaps = [];
 		#if !html5 openfl.Assets.cache.clear("songs"); #end
 	}
