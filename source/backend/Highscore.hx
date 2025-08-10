@@ -94,7 +94,6 @@ class Highscore
 						break;
 					}
 				}
-				
 			}
 			setDetails(daSong, songDetails.get(daSong).length - 1, details);
 			setKeyHit(daSong, songDetails.get(daSong).length - 1, keyHit);
@@ -183,11 +182,14 @@ class Highscore
 		{
 			songDetails = FlxG.save.data.songDetails;
 		}
+		
 
 		if (FlxG.save.data.songKeyHit != null)
 		{
 			songKeyHit = FlxG.save.data.songKeyHit;
 		}
+
+		
 	}
 	
 	public static function formatSong(song:String, diff:Int):String

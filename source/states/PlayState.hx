@@ -164,7 +164,6 @@ class PlayState extends MusicBeatState
 	public var eventNotes:Array<EventNote> = [];
 
 	public var camFollow:FlxObject;
-
 	private static var prevCamFollow:FlxObject;
 
 	public var strumLineNotes:FlxTypedGroup<StrumNote>;
@@ -240,6 +239,7 @@ class PlayState extends MusicBeatState
 	public var practiceMode:Bool = false;
 
 	public static var replayMode:Bool = false;
+	public var replay:Replay;
 
 	public var txtSine:Float = 0;
 	public var botplayTxt:FlxText;
@@ -323,6 +323,7 @@ class PlayState extends MusicBeatState
 	public function new()
 	{
 		super();
+		LoadingState.loadCache();
 	}
 	
 	override public function create()
@@ -353,10 +354,13 @@ class PlayState extends MusicBeatState
 		guitarHeroSustains = ClientPrefs.data.guitarHeroSustains;
 		if (ClientPrefs.data.playOpponent)
 			cpuControlled = ClientPrefs.data.botOpponentFix;
+
+		replay = new Replay(instance);
 		if (!replayMode)
-			Replay.reset();
+			replay.reset();
 		else
-			Replay.init();
+			replay.init();
+
 
 		camGame = initPsychCamera();
 		camHUD = new FlxCamera();
@@ -2358,7 +2362,7 @@ class PlayState extends MusicBeatState
 		{
 			if (!inCutscene)
 			{
-				Replay.keysCheck();
+				replay.keysCheck();
 				if (ClientPrefs.data.playOpponent ? !cpuControlled_opponent : !cpuControlled)
 					keysCheck();
 				else
@@ -2631,7 +2635,7 @@ class PlayState extends MusicBeatState
 		for (key in 0...keysArray.length)
 		{
 			if (controls.pressed(keysArray[key]))
-				Replay.pauseCheck(Conductor.songPosition, key);
+				replay.pauseCheck(Conductor.songPosition, key);
 			// 暂停时候回放数据的保存，防止出现错误;
 		}
 		openSubState(new PauseSubState());
@@ -3210,8 +3214,8 @@ class PlayState extends MusicBeatState
 						NoteTime, NoteMs
 					]
 				];
-				Highscore.saveGameData(SONG.song, storyDifficulty, details, Replay.saveData);
-				Replay.putDetails(details);
+				Highscore.saveGameData(SONG.song, storyDifficulty, details, replay.hitData);
+				replay.saveDetails(details);
 			}
 			#end
 			playbackRate = 1;
@@ -3661,7 +3665,7 @@ class PlayState extends MusicBeatState
 
 		keyboardDisplay.pressed(key);
 
-		Replay.push(Conductor.songPosition, key, 1);
+		replay.push(Conductor.songPosition, key, 1);
 		// 回放数据的保存
 
 		// had to name it like this else it'd break older scripts lol
@@ -3799,7 +3803,7 @@ class PlayState extends MusicBeatState
 		{
 			keyboardDisplay.released(key);
 
-			Replay.push(Conductor.songPosition, key, 0);
+			replay.push(Conductor.songPosition, key, 0);
 			// 回放数据的保存
 
 			var spr:StrumNote = ClientPrefs.data.playOpponent ? opponentStrums.members[key] : playerStrums.members[key];

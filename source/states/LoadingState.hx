@@ -1,26 +1,31 @@
 package states;
 
 import haxe.Json;
-import haxe.ds.StringMap;
+
 import lime.utils.Assets;
+
 import openfl.display.BitmapData;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 import openfl.display.BitmapData;
 import openfl.display.Shape;
+
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxFilterFrames;
 import flixel.FlxState;
-import flash.filters.GlowFilter;
-import states.editors.ChartingState;
+
 import states.FreeplayState;
+
 import backend.Song;
 import backend.StageData;
 import backend.Rating;
+
 import sys.thread.Thread;
 import sys.thread.FixedThreadPool;
 import sys.thread.Mutex;
+
+
 
 class LoadingState extends MusicBeatState
 {
@@ -40,6 +45,63 @@ class LoadingState extends MusicBeatState
 	static var isPlayState:Bool = false; //如果是要进入playstate
 	static var allowPrepare:Bool = false; //允许执行prepare事件
 	static var allowLoad:Bool = false; //允许执行加载
+
+
+
+
+	inline static public function loadAndSwitchState(target:FlxState, stopMusic = false, intrusive:Bool = true)
+		MusicBeatState.switchState(getNextState(target, stopMusic, intrusive));
+
+	static function getNextState(target:FlxState, stopMusic = false, intrusive:Bool = true):FlxState
+	{
+		var directory:String = 'shared';
+		var weekDir:String = StageData.forceNextDirectory;
+		StageData.forceNextDirectory = null;
+
+		if (weekDir != null && weekDir.length > 0 && weekDir != '')
+			directory = weekDir;
+
+		Paths.setCurrentLevel(directory);
+		trace('Setting asset folder to ' + directory);
+
+		var doPrecache:Bool = false; //
+		if (ClientPrefs.data.loadingScreen)
+		{
+			if (intrusive)
+			{
+				if (allowPrepare)
+					return new LoadingState(target, stopMusic);
+			}
+			else
+				doPrecache = true;
+		}
+
+		if (stopMusic && FlxG.sound.music != null)
+			FlxG.sound.music.stop();
+
+		if (doPrecache)
+		{
+			startThreads();
+			while (true)
+			{
+				if (checkLoaded())
+				{
+					imagesToPrepare = [];
+					soundsToPrepare = [];
+					musicToPrepare = [];
+					songsToPrepare = [];
+					if (imageThread != null) imageThread.shutdown(); // kill all workers safely
+					imageThread = null;
+					if (soundThread != null) soundThread.shutdown(); // kill all workers safely
+					soundThread = null;
+					break;
+				}
+				else
+					Sys.sleep(0.01);
+			}
+		}
+		return target;
+	}
 
 	function new(target:FlxState, stopMusic:Bool)
 	{
@@ -142,6 +204,7 @@ class LoadingState extends MusicBeatState
 		});
 	}
 
+
 	public static var imagesToPrepare:Array<String> = [];
 	public static var soundsToPrepare:Array<String> = [];
 	public static var musicToPrepare:Array<String> = [];
@@ -158,6 +221,7 @@ class LoadingState extends MusicBeatState
 		if (music != null)
 			musicToPrepare = musicToPrepare.concat(music);
 	}
+	
 
 	static var dontPreloadDefaultVoices:Bool = false;
 
@@ -574,7 +638,6 @@ class LoadingState extends MusicBeatState
 		soundsToPrepare = [];
 		musicToPrepare = [];
 		songsToPrepare = [];
-		requestedBitmaps.clear();
 
 		if (isPlayState)
 		{
@@ -585,6 +648,7 @@ class LoadingState extends MusicBeatState
 		}
 		else
 		{
+			requestedBitmaps.clear();
 			MusicBeatState.switchState(target);
 		}
 	}
@@ -593,7 +657,7 @@ class LoadingState extends MusicBeatState
 	{
 		for (key => bitmap in requestedBitmaps)
 		{
-			if (bitmap != null && Paths.cacheBitmap(key, bitmap) != null)
+			if (bitmap != null && Paths.cacheBitmap(key, bitmap, false) != null)
 				trace('finished preloading image $key');
 			else
 				trace('failed to cache image $key');
@@ -752,62 +816,21 @@ class LoadingState extends MusicBeatState
 				i++;
 		}
 	}
+
+	static public function loadCache() {
+		for (key => bitmap in requestedBitmaps)
+		{
+			if (bitmap != null) {
+				var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(bitmap, false, key);
+				FlxG.bitmap.add(newGraphic, false, key);
+			}
+		}
+		requestedBitmaps.clear();
+	}
 	
 	//////////////////////////////////////////////
 
-	inline static public function loadAndSwitchState(target:FlxState, stopMusic = false, intrusive:Bool = true)
-		MusicBeatState.switchState(getNextState(target, stopMusic, intrusive));
-
-	static function getNextState(target:FlxState, stopMusic = false, intrusive:Bool = true):FlxState
-	{
-		var directory:String = 'shared';
-		var weekDir:String = StageData.forceNextDirectory;
-		StageData.forceNextDirectory = null;
-
-		if (weekDir != null && weekDir.length > 0 && weekDir != '')
-			directory = weekDir;
-
-		Paths.setCurrentLevel(directory);
-		trace('Setting asset folder to ' + directory);
-
-		var doPrecache:Bool = false;
-		if (ClientPrefs.data.loadingScreen)
-		{
-			if (intrusive)
-			{
-				if (allowPrepare)
-					return new LoadingState(target, stopMusic);
-			}
-			else
-				doPrecache = true;
-		}
-
-		if (stopMusic && FlxG.sound.music != null)
-			FlxG.sound.music.stop();
-
-		if (doPrecache)
-		{
-			startThreads();
-			while (true)
-			{
-				if (checkLoaded())
-				{
-					imagesToPrepare = [];
-					soundsToPrepare = [];
-					musicToPrepare = [];
-					songsToPrepare = [];
-					if (imageThread != null) imageThread.shutdown(); // kill all workers safely
-					imageThread = null;
-					if (soundThread != null) soundThread.shutdown(); // kill all workers safely
-					soundThread = null;
-					break;
-				}
-				else
-					Sys.sleep(0.01);
-			}
-		}
-		return target;
-	}
+	
 }
 
 class LoadButton extends FlxSprite

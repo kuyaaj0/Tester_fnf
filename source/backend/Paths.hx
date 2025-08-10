@@ -218,8 +218,6 @@ class Paths
 		return inst;
 	}
 
-	
-
 	static public function image(key:String, ?library:String = null, ?allowGPU:Bool = true, ?extraLoad:Bool = false):FlxGraphic
 	{
 		var bitmap:BitmapData = null;

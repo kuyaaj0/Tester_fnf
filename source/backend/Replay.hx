@@ -1,69 +1,50 @@
 package backend;
 
-class Replay
+import flixel.FlxBasic;
+
+class Replay extends FlxBasic
 {
 	// 整个组>摁压类型>行数>时间
-	static public var saveData:Array<Array<Array<Float>>> = [[[], [], [], []], [[], [], [], []]];
+	public var hitData:Array<Array<Array<Float>>> = [[[], [], [], []], [[], [], [], []]];
 
-	static public var hitData:Array<Array<Array<Float>>> = [[[], [], [], []], [[], [], [], []]];
-
-	static public var songName:String = '';
-	static public var songScore:Int = 0;
-	static public var songLength:Float = 0;
-	static public var songHits:Int = 0;
-	static public var songMisses:Int = 0;
-
-	static public var ratingPercent:Float = 0;
-	static public var ratingFC:String = '';
-	static public var ratingName:String = '';
-
-	static public var highestCombo:Int = 0;
-	static public var NoteTime:Array<Float> = [];
-	static public var NoteMs:Array<Float> = [];
-
-	static public var songSpeed:Float = 0;
-	static public var playbackRate:Float = 0;
-	static public var healthGain:Float = 0;
-	static public var healthLoss:Float = 0;
-	static public var cpuControlled:Bool = false;
-	static public var practiceMode:Bool = false;
-	static public var instakillOnMiss:Bool = false;
-	static public var opponent:Bool = false;
-	static public var flipChart:Bool = false;
-	static public var nowTime:String = '';
+	var follow:Dynamic; //跟随的state
 
 	/////////////////////////////////////////////
 
-	static public function push(time:Float, type:Int, state:Int)
+	public function new(follow:Dynamic)
 	{
-		if (!PlayState.replayMode)
-			try
-			{
-				saveData[state][type].push(time);
-			}
+		super();
+		this.follow = follow;
 	}
 
-	static var isPaused:Bool = false;
-	static var checkArray:Array<Float> = [-9999, -9999, -9999, -9999];
-
-	static public function pauseCheck(time:Float, type:Int)
+	public function push(time:Float, type:Int, state:Int)
 	{
-		if (PlayState.replayMode)
+		if (!follow.replayMode)
+			hitData[state][type].push(time);
+	}
+
+	var isPaused:Bool = false;
+	var pauseArray:Array<Float> = [-9999, -9999, -9999, -9999];
+
+	public function pauseCheck(time:Float, type:Int)
+	{
+		if (follow.replayMode)
 			return;
-		checkArray[type] = time;
+		pauseArray[type] = time;
+		isPaused = true;
 	}
 
-	static public function keysCheck()
+	public function keysCheck()
 	{
-		if (!PlayState.replayMode)
+		if (!follow.replayMode)
 		{
 			if (isPaused)
 			{
 				for (key in 0...4)
-					if (!PlayState.instance.controls.pressed(PlayState.instance.keysArray[key]) && checkArray[key] != -9999)
-						push(checkArray[key], key, 1);
+					if (!follow.controls.pressed(follow.keysArray[key]) && pauseArray[key] != -9999)
+						push(pauseArray[key], key, 1);
 
-				checkArray = [-9999, -9999, -9999, -9999];
+				pauseArray = [-9999, -9999, -9999, -9999];
 				isPaused = false;
 			}
 		}
@@ -71,82 +52,91 @@ class Replay
 		{
 			for (type in 0...4)
 			{
-				if (hitData[1][type].length > 0 && hitData[1][type][0] < Conductor.songPosition)
+				if (hitData[1][type].length > 0 && hitData[1][type][0] <= Conductor.songPosition)
 					holdCheck(type);
 			}
 		}
 	}
 
-	static var allowHit:Array<Bool> = [true, true, true, true];
+	var allowHit:Array<Bool> = [true, true, true, true];
 
-	static function holdCheck(type:Int)
+	function holdCheck(type:Int)
 	{
 		if (hitData[0][type][0] >= Conductor.songPosition)
 		{
-			PlayState.instance.keysCheck(type, Conductor.songPosition);
+			follow.keysCheck(type, Conductor.songPosition);
 			if (allowHit[type])
 			{
-				PlayState.instance.keyPressed(type, hitData[1][type][0]);
+				follow.keyPressed(type, hitData[1][type][0]);
 				allowHit[type] = false;
 			}
 		}
 		else
 		{
-			PlayState.instance.keysCheck(type, Conductor.songPosition); // 长键多一帧的检测
+			follow.keysCheck(type, Conductor.songPosition);
 			if (allowHit[type])
 			{
-				PlayState.instance.keyPressed(type, hitData[1][type][0]); // 摁下松开时间如果太短导致没检测到
+				follow.keyPressed(type, hitData[1][type][0]);
 			}
-			PlayState.instance.keyReleased(type);
+			follow.keyReleased(type);
 			allowHit[type] = true;
 			hitData[0][type].splice(0, 1);
 			hitData[1][type].splice(0, 1);
 		}
 	}
 
-	static public function init()
+	public function init()
 	{
 		hitData = [[[], [], [], []], [[], [], [], []]];
 		for (state in 0...2)
 			for (type in 0...4)
-				for (hit in 0...saveData[state][type].length)
+				for (hit in 0...hitData[state][type].length)
 				{
-					hitData[state][type].push(saveData[state][type][hit]);
+					hitData[state][type].push(hitData[state][type][hit]);
 				}
 		allowHit = [true, true, true, true];
 
 		// 只能这么复制 --狐月影
 	}
 
-	static public function reset()
+	public function reset()
 	{
-		saveData = hitData = [[[], [], [], []], [[], [], [], []]];
-		checkArray = [-9999, -9999, -9999, -9999];
+		hitData = [[[], [], [], []], [[], [], [], []]];
+		pauseArray = [-9999, -9999, -9999, -9999];
 		isPaused = false;
-	} // 愚蠢但是有用 --狐月影
+	}
 
-	static public function putDetails(putData:Array<Dynamic>)
+	public function saveDetails(input:Array<Array<Dynamic>>)
 	{
-		songName = putData[0];
-		songScore = putData[1];
-		songLength = putData[2];
-		songHits = putData[3];
-		songMisses = putData[4];
-		ratingPercent = putData[5];
-		ratingFC = putData[6];
-		ratingName = putData[7];
-		highestCombo = putData[8];
-		NoteTime = putData[9];
-		NoteMs = putData[10];
-		songSpeed = putData[11];
-		playbackRate = putData[12];
-		healthGain = putData[13];
-		healthLoss = putData[14];
-		cpuControlled = putData[15];
-		practiceMode = putData[16];
-		instakillOnMiss = putData[17];
-		opponent = putData[18];
-		flipChart = putData[19];
-		nowTime = putData[20];
-	} // 六百六十六 -狐月影
+		ReplayData.put(input, hitData);
+	}
+}
+
+class ReplayData {
+	/**
+		Array<Array<Dynamic>> = [
+			[
+				songName, songLength, Date.now().toString()
+			],
+			[
+				songSpeed, playbackRate, healthGain, healthLoss,
+				cpuControlled, practiceMode, instakillOnMiss, ClientPrefs.data.playOpponent, 
+				ClientPrefs.data.flipChart,
+			],
+			[
+				songScore, ratingPercent, ratingFC, songHits, highestCombo, songMisses
+			],
+			[
+				NoteTime, NoteMs
+			]
+		];
+	**/	
+
+	static public var hitData:Array<Array<Array<Float>>> = [];
+	static public var songData:Array<Array<Dynamic>> = [];
+
+	static public function put(song:Array<Array<Dynamic>>, hit:Array<Array<Array<Float>>>) {
+		songData = song;
+		hitData = hit;
+	}
 }
