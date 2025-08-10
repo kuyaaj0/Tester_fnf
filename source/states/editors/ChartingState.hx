@@ -1724,6 +1724,10 @@ class ChartingState extends MusicBeatState
 				case 'song_speed':
 					_song.speed = nums.value;
 
+				case 'song_mania':
+					_song.mania = Std.int(nums.value);
+					//reloadGridLayer();	//PsychEK写的，似乎是为了实时刷新轨道）
+
 				case 'song_bpm':
 					_song.bpm = nums.value;
 					Conductor.mapBPMChanges(_song);
