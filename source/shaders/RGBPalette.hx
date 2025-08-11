@@ -10,6 +10,22 @@ class RGBPalette
 	public var g(default, set):FlxColor;
 	public var b(default, set):FlxColor;
 	public var mult(default, set):Float;
+	public var daAlpha(default, set):Float = 1;
+	public var flash(default, set):Float = 0;
+
+	private function set_daAlpha(value:Float)
+	{
+		daAlpha = value;
+		shader.daAlpha.value[0] = daAlpha;
+		return daAlpha;
+	}
+	
+	private function set_flash(value:Float)
+	{
+		flash = value;
+		shader.flash.value[0] = flash;
+		return flash;
+	}
 
 	private function set_r(color:FlxColor)
 	{
@@ -44,6 +60,8 @@ class RGBPalette
 		r = 0xFFFF0000;
 		g = 0xFF00FF00;
 		b = 0xFF0000FF;
+		daAlpha = 1;
+		flash = 0;
 		mult = 1.0;
 	}
 }
@@ -55,6 +73,8 @@ class RGBShaderReference
 	public var g(default, set):FlxColor;
 	public var b(default, set):FlxColor;
 	public var mult(default, set):Float;
+	public var daAlpha(default, set):Float = 1;
+	public var flash(default, set):Float = 0;
 	public var enabled(default, set):Bool = true;
 
 	public var parent:RGBPalette;
@@ -74,6 +94,8 @@ class RGBShaderReference
 			r = parent.r;
 			g = parent.g;
 			b = parent.b;
+			daAlpha = parent.daAlpha;
+			flash = parent.flash;
 			mult = parent.mult;
 		}
 	}
@@ -106,6 +128,20 @@ class RGBShaderReference
 		return (mult = parent.mult = value);
 	}
 
+	private function set_daAlpha(value:Float)
+	{
+		if (allowNew && value != _original.daAlpha)
+			cloneOriginal();
+		return (daAlpha = parent.daAlpha = value);
+	}
+
+	private function set_flash(value:Float)
+	{
+		if (allowNew && value != _original.flash)
+			cloneOriginal();
+		return (flash = parent.flash = value);
+	}
+
 	private function set_enabled(value:Bool)
 	{
 		_owner.shader = value ? parent.shader : null;
@@ -126,6 +162,8 @@ class RGBShaderReference
 			parent.r = _original.r;
 			parent.g = _original.g;
 			parent.b = _original.b;
+			parent.daAlpha = _original.daAlpha;
+			parent.flash = _original.flash;
 			parent.mult = _original.mult;
 			_owner.shader = parent.shader;
 			// trace('created new shader');
@@ -141,6 +179,8 @@ class RGBPaletteShader extends FlxShader
 		uniform vec3 r;
 		uniform vec3 g;
 		uniform vec3 b;
+        uniform float daAlpha;
+		uniform float flash;
 		uniform float mult;
 
 		vec4 flixel_texture2DCustom(sampler2D bitmap, vec2 coord) {
@@ -154,6 +194,11 @@ class RGBPaletteShader extends FlxShader
 			newColor.a = color.a;
 			
 			color = mix(color, newColor, mult);
+
+           if(flash != 0.0){
+				color = mix(color,vec4(1.0,1.0,1.0,1.0),flash) * color.a;
+			}
+			color *= daAlpha;
 			
 			if(color.a > 0.0) {
 				return vec4(color.rgb, color.a);
