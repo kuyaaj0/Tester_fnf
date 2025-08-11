@@ -62,13 +62,13 @@ class OptionsState extends MusicBeatState
 			'Maintenance'	
 		];
 
-		var path = Paths.mods('stageScripts/options');
+		var path = Paths.mods('stageScripts/options/');
 		if (FileSystem.exists(path) && FileSystem.isDirectory(path))
 			naviArray.push(path);
 
 		for (mod in Mods.parseList().enabled)
 		{
-			var path = Paths.mods(mod + '/stageScripts/options');
+			var path = Paths.mods(mod + '/stageScripts/options/');
 			if (FileSystem.exists(path) && FileSystem.isDirectory(path))
 				naviArray.push(path);
 		}
