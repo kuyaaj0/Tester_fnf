@@ -1,6 +1,7 @@
 package objects.state.optionState;
 
 import psychlua.HScript;
+import objects.state.optionState.Option;
 
 class HScriptGroup extends OptionCata {
 	public var hscriptArray:Array<HScript>;
@@ -11,6 +12,10 @@ class HScriptGroup extends OptionCata {
 		for(fn in FileSystem.readDirectory(path)) {
 			if(fn.toLowerCase().endsWith('.hx')) {
 				var sc:HScript = new HScript(path + fn, this);
+				sc.set("Option", Option);
+				for(construct in Type.getEnumConstructs(OptionType)) {
+					sc.set(construct, Reflect.getProperty(OptionType, construct));
+				}
 				sc.execute();
 				sc.call("onCreate");
 				hscriptArray.push(sc);
