@@ -61,7 +61,7 @@ class Song
 
 	static public var isNewVersion:Bool = false;
 
-	private static function onLoadJson(songJson:Dynamic) // Convert old charts to newest format
+	private static function onLoadJson(songJson:Dynamic) //修复铺面json缺少数据的问题
 	{
 		if (songJson.gfVersion == null)
 		{
@@ -93,8 +93,7 @@ class Song
 				}
 			}
 		}
-		//对，我指的就是这个
-		//针对非多k创建的谱面（即非PsychEK所创建），默认为4k
+
 		if (songJson.mania == null)
 		{
 			songJson.mania = 3;
@@ -176,10 +175,12 @@ class Song
 					{
 						trace('converting chart $nameForError with format $fmt to psych_v1 format...');
 						songJson.format = 'psych_v1_convert';
-						onLoadJson(songJson);
+						
 					}
 			}
 		}
+
+		onLoadJson(songJson);
 		return songJson;
 	}
 
@@ -206,59 +207,4 @@ class Song
 		isNewVersion = false;
 		return songJson;
 	}
-	/*
-		public static function convert(songJson:Dynamic) // 用于0.1到0.3
-		{
-			if(songJson.gfVersion == null)
-			{
-				songJson.gfVersion = songJson.player3;
-				if(Reflect.hasField(songJson, 'player3')) Reflect.deleteField(songJson, 'player3');
-			}
-
-			if(songJson.events == null)
-			{
-				songJson.events = [];
-				for (secNum in 0...songJson.notes.length)
-				{
-					var sec:SwagSection = songJson.notes[secNum];
-
-					var i:Int = 0;
-					var notes:Array<Dynamic> = sec.sectionNotes;
-					var len:Int = notes.length;
-					while(i < len)
-					{
-						var note:Array<Dynamic> = notes[i];
-						if(note[1] < 0)
-						{
-							songJson.events.push([note[0], [[note[2], note[3], note[4]]]]);
-							notes.remove(note);
-							len = notes.length;
-						}
-						else i++;
-					}
-				}
-			}
-
-			var sectionsData:Array<SwagSection> = songJson.notes;
-			if(sectionsData == null) return;
-
-			for (section in sectionsData)
-			{
-				var beats:Null<Float> = cast section.sectionBeats;
-				if (beats == null || Math.isNaN(beats))
-				{
-					section.sectionBeats = 4;
-					if(Reflect.hasField(section, 'lengthInSteps')) Reflect.deleteField(section, 'lengthInSteps');
-				}
-
-				for (note in section.sectionNotes)
-				{
-					var gottaHitNote:Bool = (note[1] < 4) ? section.mustHitSection : !section.mustHitSection;
-					note[1] = (note[1] % 4) + (gottaHitNote ? 0 : 4);
-
-					if(!Std.isOfType(note[3], String))
-						note[3] = Note.defaultNoteTypes[note[3]]; //compatibility with Week 7 and 0.1-0.3 psych charts
-				}
-			}
-	}*/
 }

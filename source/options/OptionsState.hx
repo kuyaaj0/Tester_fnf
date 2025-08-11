@@ -29,7 +29,7 @@ class OptionsState extends MusicBeatState
 	public var mouseEvent:MouseEvent;
 
 	var naviBG:RoundRect;
-	var naviSpriteGroup:Array<NaviSprite> = [];
+	var naviSpriteGroup:Array<NaviGroup> = [];
 	var naviMove:MouseMove;
 
 	var cataGroup:Array<OptionCata> = [];
@@ -62,6 +62,17 @@ class OptionsState extends MusicBeatState
 			'Maintenance'	
 		];
 
+		var path = Paths.mods('stageScripts/options');
+		if (FileSystem.exists(path) && FileSystem.isDirectory(path))
+			naviArray.push(path);
+
+		for (mod in Mods.parseList().enabled)
+		{
+			var path = Paths.mods(mod + '/stageScripts/options');
+			if (FileSystem.exists(path) && FileSystem.isDirectory(path))
+				naviArray.push(path);
+		}
+
 		mouseEvent = new MouseEvent();
 		add(mouseEvent);
 
@@ -73,7 +84,7 @@ class OptionsState extends MusicBeatState
 
 		for (i in 0...naviArray.length)
 		{
-			var naviSprite = new NaviSprite(UIScale.adjust(FlxG.width * 0.005), UIScale.adjust(FlxG.height * 0.005) + i * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.width * 0.19), UIScale.adjust(FlxG.height * 0.09), naviArray[i], i, false);
+			var naviSprite = new NaviGroup(UIScale.adjust(FlxG.width * 0.005), UIScale.adjust(FlxG.height * 0.005) + i * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.width * 0.19), UIScale.adjust(FlxG.height * 0.09), naviArray[i], i, false);
 			naviSprite.antialiasing = ClientPrefs.data.antialiasing;
 			add(naviSprite);
 			naviSpriteGroup.push(naviSprite);
@@ -240,6 +251,7 @@ class OptionsState extends MusicBeatState
 			case 'Maintenance':
 				obj = new MaintenanceGroup(outputX, outputY, outputWidth, outputHeight);
 			default:
+				obj = new HScriptGroup(outputX, outputY, outputWidth, outputHeight, type);
 		}
 		cataGroup.push(obj);
 		add(obj);
