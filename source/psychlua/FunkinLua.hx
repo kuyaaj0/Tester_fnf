@@ -939,55 +939,6 @@ class FunkinLua
 
 		set("startCountdown", game.startCountdown);
 
-		set("setPercent", function(modName:String, val:Float, player:Int = -1)
-		{
-			game.modManager.setPercent(modName, val, player);
-		});
-
-		set("addBlankMod", function(modName:String, defaultVal:Float = 0, player:Int = -1)
-		{
-			game.modManager.quickRegister(new SubModifier(modName, PlayState.instance.modManager));
-			game.modManager.setValue(modName, defaultVal);
-		});
-
-		set("setValue", function(modName:String, val:Float, player:Int = -1)
-		{
-			game.modManager.setValue(modName, val, player);
-		});
-
-		set("getPercent", function(modName:String, player:Int)
-		{
-			return game.modManager.getPercent(modName, player);
-		});
-
-		set("getValue", function(modName:String, player:Int)
-		{
-			return game.modManager.getValue(modName, player);
-		});
-		
-		set("queueSet", function(step:Float, modName:String, target:Float, player:Int = -1)
-		{
-			game.modManager.queueSet(step, modName, target, player);
-		});
-
-		set("queueSetP", function(step:Float, modName:String, perc:Float, player:Int = -1)
-		{
-			game.modManager.queueSetP(step, modName, perc, player);
-		});
-		
-		set("queueEase",
-			function(step:Float, endStep:Float, modName:String, percent:Float, style:String = 'linear', player:Int = -1, ?startVal:Float) // lua is autistic and can only accept 5 args
-			{
-				game.modManager.queueEase(step, endStep, modName, percent, style, player, startVal);
-			}
-		);
-
-		set("queueEaseP",
-			function(step:Float, endStep:Float, modName:String, percent:Float, style:String = 'linear', player:Int = -1, ?startVal:Float) // lua is autistic and can only accept 5 args
-			{
-				game.modManager.queueEaseP(step, endStep, modName, percent, style, player, startVal);
-			}
-		);
 		set("endSong", function()
 		{
 			game.KillNotes();
