@@ -8,6 +8,8 @@ import shaders.RGBPalette.RGBShaderReference;
 import states.editors.EditorPlayState;
 import objects.StrumNote;
 import flixel.math.FlxRect;
+import math.Vector3;
+import flixel.math.FlxPoint;
 
 using StringTools;
 
@@ -115,6 +117,8 @@ class Note extends FlxSprite
 	};
 
 	public var trackedScale:Float = 0.7; // PsychEK的箭头缩放似乎存在问题，尝试使用这个改善
+	public var vec3Cache:Vector3 = new Vector3(); // for vector3 operations in modchart code
+	public var defScale:FlxPoint = FlxPoint.get(); // for modcharts to keep the scaling
 
 	public var offsetX:Float = 0;
 	public var offsetY:Float = 0;
@@ -334,6 +338,7 @@ class Note extends FlxSprite
 			animation.play(animToPlay + 'holdend');
 
 			updateHitbox();
+			defScale.copyFrom(scale);
 
 			offsetX -= width / 2;
 
@@ -354,6 +359,7 @@ class Note extends FlxSprite
 					prevNote.scale.y *= (6 / height); // Auto adjust note size
 				}
 				prevNote.updateHitbox();
+				prevNote.defScale.copyFrom(scale);
 				// prevNote.setGraphicSize();
 			}
 
@@ -368,6 +374,7 @@ class Note extends FlxSprite
 			centerOffsets();
 			centerOrigin();
 		}
+		defScale.copyFrom(scale);
 		x += offsetX;
 	}
 
@@ -620,6 +627,7 @@ class Note extends FlxSprite
 
 	override public function destroy()
 	{
+		defScale.put();
 		super.destroy();
 		_lastValidChecked = '';
 	}
