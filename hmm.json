@@ -84,9 +84,8 @@
     {
       "name": "json2object",
       "type": "haxelib",
-      "version": "3.11.0"
+      "version": null
     },
-
     {
       "name": "linc_luajit",
       "type": "git",
