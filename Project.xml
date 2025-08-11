@@ -121,6 +121,7 @@
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
 	<haxelib name="flxanimate" unless="html5"/>
 	<haxelib name="tjson"/>
+	<haxelib name="modcharts"/>
 	<haxelib name="json2object"/>
 
     <haxelib name="funkin.vis"/>
