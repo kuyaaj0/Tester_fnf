@@ -75,7 +75,7 @@ class FunkinLua
 			&& (Mods.currentModDirectory == myFolder[1] || Mods.getGlobalMods().contains(myFolder[1]))) // is inside mods folder
 			this.modFolder = myFolder[1];
 		#end
-		modcharts.actions.ModchartActions.loadLuaFunctions(this);
+		modcharts.integration.ModchartFuncs.loadLuaFunctions(this);
 		// Lua shit
 		set('Function_StopLua', LuaUtils.Function_StopLua);
 		set('Function_StopHScript', LuaUtils.Function_StopHScript);
