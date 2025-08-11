@@ -46,6 +46,7 @@ import objects.Note.EventNote;
 import objects.*;
 import states.stages.*;
 import states.stages.objects.*;
+import modchart.*;
 #if LUA_ALLOWED
 import psychlua.*;
 #else
@@ -93,6 +94,8 @@ class PlayState extends MusicBeatState
 		['Sick!', 1], // From 90% to 99%
 		['Perfect!!', 1] // The value on this one isn't used actually, since Perfect is always "1"
 	];
+
+	public var modManager:ModManager; // lol
 
 	// event variables
 	private var isCameraOnForcedPos:Bool = false;
@@ -709,6 +712,8 @@ class PlayState extends MusicBeatState
 		playerStrums = new FlxTypedGroup<StrumNote>();
 
 		generateSong(SONG.song);
+		modManager = new ModManager(this);
+		setOnHScript('modManager', this.modManager)
 
 		keyboardDisplay = new KeyboardDisplay(ClientPrefs.data.comboOffset[4], ClientPrefs.data.comboOffset[5]);
 		keyboardDisplay.antialiasing = ClientPrefs.data.antialiasing;
@@ -1217,10 +1222,28 @@ class PlayState extends MusicBeatState
 				// if(ClientPrefs.data.middleScroll) opponentStrums.members[i].visible = false;
 			}
 
+			modManager.receptors = [playerStrums.members, opponentStrums.members];
+			callOnScripts('preModifierRegister');
+			modManager.registerDefaultModifiers();
+			callOnScripts('postModifierRegister');
+
+			if (ClientPrefs.middleScroll)
+			{
+				var off = Math.min(FlxG.width, 1280) / 4;
+				modManager.setValue("transform0X", -off, 1);
+				modManager.setValue("transform1X", -off, 1);
+				modManager.setValue("transform2X", off, 1);
+				modManager.setValue("transform3X", off, 1);
+	
+				modManager.setValue("alpha", 0.6, 1);
+	
+				modManager.setValue("opponentSwap", 0.5);
+			}
+
 			startedCountdown = true;
 			Conductor.songPosition = -Conductor.crochet * 5;
 			setOnScripts('startedCountdown', true);
-			callOnScripts('onCountdownStarted', null);
+			callOnScripts('onCountdownStarted');
 
 			var swagCounter:Int = 0;
 			if (startOnTime > 0)
@@ -1289,6 +1312,8 @@ class PlayState extends MusicBeatState
 				stagesFunc(function(stage:BaseStage) stage.countdownTick(tick, swagCounter));
 				callOnLuas('onCountdownTick', [swagCounter]);
 				callOnHScript('onCountdownTick', [tick, swagCounter]);
+
+				callOnScripts("generateModchart");
 
 				swagCounter += 1;
 			}, 5);
@@ -2377,6 +2402,9 @@ class PlayState extends MusicBeatState
 		}
 		doDeathCheck();
 
+		modManager.updateTimeline(curDecStep);
+		modManager.update(elapsed);
+
 		if (unspawnNotes[0] != null)
 		{
 			var time:Float = spawnTime * playbackRate;
@@ -2406,6 +2434,25 @@ class PlayState extends MusicBeatState
 			}
 		}
 
+				
+		if (startedCountdown){
+		    opponentStrums.forEachAlive(function(strum:StrumNote)
+			{
+				var pos = modManager.getPos(0, 0, 0, curDecBeat, strum.noteData, 1, strum, [], strum.vec3Cache);
+				modManager.updateObject(curDecBeat, strum, pos, 1);
+				strum.x = pos.x;
+				strum.y = pos.y;
+			});
+	
+			playerStrums.forEachAlive(function(strum:StrumNote)
+			{
+				var pos = modManager.getPos(0, 0, 0, curDecBeat, strum.noteData, 0, strum, [], strum.vec3Cache);
+				modManager.updateObject(curDecBeat, strum, pos, 0);
+				strum.x = pos.x;
+				strum.y = pos.y;
+			});
+		}
+
 		if (generatedMusic)
 		{
 			if (!inCutscene)
@@ -2429,6 +2476,35 @@ class PlayState extends MusicBeatState
 
 							var strum:StrumNote = strumGroup.members[daNote.noteData];
 							daNote.followStrumNote(strum, fakeCrochet, songSpeed / playbackRate);
+
+							var pN:Int = daNote.mustPress ? 0 : 1;
+							var pos = modManager.getPos(daNote.strumTime, modManager.getVisPos(Conductor.songPosition, daNote.strumTime, SONG.speed),
+								daNote.strumTime - Conductor.songPosition, curBeat, daNote.noteData, pN, daNote, [], daNote.vec3Cache);
+	
+							modManager.updateObject(curBeat, daNote, pos, pN);
+							pos.x += daNote.offsetX;
+							pos.y += daNote.offsetY;
+							daNote.x = pos.x;
+							daNote.y = pos.y;
+							if (daNote.isSustainNote)
+							{
+								var futureSongPos = Conductor.songPosition + 75;
+								var diff = daNote.strumTime - futureSongPos;
+								var vDiff = modManager.getVisPos(futureSongPos, daNote.strumTime, SONG.speed);
+	
+								var nextPos = modManager.getPos(daNote.strumTime, vDiff, diff, Conductor.getStep(futureSongPos) / 4, daNote.noteData, pN, daNote, [],
+									daNote.vec3Cache);
+								nextPos.x += daNote.offsetX;
+								nextPos.y += daNote.offsetY;
+								var diffX = (nextPos.x - pos.x);
+								var diffY = (nextPos.y - pos.y);
+								var rad = Math.atan2(diffY, diffX);
+								var deg = rad * (180 / Math.PI);
+								if (deg != 0)
+									daNote.mAngle = (deg + 90);
+								else
+									daNote.mAngle = 0;
+							}
 
 							if (daNote.mustPress)
 							{
