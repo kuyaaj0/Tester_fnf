@@ -6,15 +6,11 @@ import backend.extraKeys.ExtraKeysHandler;
 import backend.animation.PsychAnimationController;
 import shaders.RGBPalette;
 import shaders.RGBPalette.RGBShaderReference;
-import flixel.math.FlxPoint;
-import math.*;
 
 class StrumNote extends FlxSprite
 {
 	public var rgbShader:RGBShaderReference;
 
-	public var vec3Cache:Vector3 = new Vector3(); // for vector3 operations in modchart code
-	public var defScale:FlxPoint = FlxPoint.get(); // for modcharts to keep the scaling
 	public var resetAnim:Float = 0;
 
 	private var noteData:Int = 0;
@@ -158,7 +154,6 @@ class StrumNote extends FlxSprite
 			animation.addByPrefix('confirm', '${getAnimSet(getIndex(mania, noteData)).anim} confirm', 24, false);
 
 		}
-		defScale.copyFrom(scale);
 		updateHitbox();
 
 		if (lastAnim != null)
@@ -223,12 +218,6 @@ class StrumNote extends FlxSprite
 			x += ((sWidth * trackedScale) - padding) * (-((PlayState.SONG.mania + 1) / 2) + noteData);
 		}
 		// trace(padding);
-	}
-
-	override function destroy()
-	{
-		defScale.put();
-		super.destroy();
 	}
 
 	override function update(elapsed:Float)
