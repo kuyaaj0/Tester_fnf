@@ -153,11 +153,7 @@ class ModManager {
     }
 
     public function new(state:PlayState) {
-		var modchart = ClientPrefs.getGameplaySetting('modchart', false);
-		if (modchart)
         this.state=state;
-		else
-		this.state=null;
     }
 
 	public function update(elapsed:Float)
