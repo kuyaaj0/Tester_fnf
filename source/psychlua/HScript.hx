@@ -341,7 +341,7 @@ class HScript implements ISharedScript {
                     set('Modifier', Modifier);
                     set('NoteMovement', NoteMovement);
                     set('NotePositionData', NotePositionData);
-                    set('ModchartFile', ModchartFile);
+                    set('ScriptedModifiers', psychlua.scriptClasses.ScriptedModifiers);
 
 					set('debugPrint', function(text:String, ?color:FlxColor = null)
 					{
