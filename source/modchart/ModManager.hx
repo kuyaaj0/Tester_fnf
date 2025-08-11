@@ -1,6 +1,8 @@
 // @author Nebula_Zorua
 
 package modchart;
+
+import objects.StrumNote;
 import flixel.tweens.FlxEase;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxSprite;
