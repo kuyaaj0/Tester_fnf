@@ -45,7 +45,7 @@ class StrumNote extends FlxSprite
 		if (PlayState.SONG != null && (PlayState.SONG.disableNoteRGB || !ClientPrefs.data.noteRGB))
 			useRGBShader = false;
 
-		//先不改mania，要魔改的玩意好像还不少呢，先加上再说————卡昔233
+		//先不改mania，要魔改的玩意好像还不少呢，先加上再说		//算了懒了，能跑起来就不改了————卡昔233
 		var mania = 3;
 		if (PlayState.SONG != null)
 			mania = PlayState.SONG.mania;
@@ -101,9 +101,11 @@ class StrumNote extends FlxSprite
 		if (PlayState.isPixelStage)
 		{
 			loadGraphic(Paths.image(texture));
-			width = width / 6;	//不知道改这个要干啥
+			width = width / 4;	//idk
 			height = height / 5;
 			loadGraphic(Paths.image(texture), true, Math.floor(width), Math.floor(height));
+
+			antialiasing = false;
 
 			antialiasing = false;
 
@@ -125,8 +127,8 @@ class StrumNote extends FlxSprite
 			animation.add('purple', [6]);
 
 			animation.add('static', [noteAnimInt]);
-			animation.add('pressed', [noteAnimInt + 6, noteAnimInt + 12], 12, false);
-			animation.add('confirm', [noteAnimInt + 18, noteAnimInt + 24], 24, false);
+			animation.add('pressed', [noteAnimInt + 4, noteAnimInt + 8], 12, false);
+			animation.add('confirm', [noteAnimInt + 12, noteAnimInt + 16], 24, false);
 
 		}
 		else
@@ -137,11 +139,14 @@ class StrumNote extends FlxSprite
 			animation.addByPrefix('purple', 'arrowLEFT');
 			animation.addByPrefix('red', 'arrowRIGHT');
 
+			initialWidth = width;	//我勒个一行造成死循环————卡昔233
+
 			antialiasing = ClientPrefs.data.antialiasing;
 			setGraphicSize(width * trackedScale);
 
 			var mania = 3;
-			if (PlayState.SONG != null) mania = PlayState.SONG.mania;
+			if (PlayState.SONG != null)
+				mania = PlayState.SONG.mania;
 
 			animation.addByPrefix('static', 'arrow${getAnimSet(getIndex(mania, noteData)).strum}');
 			animation.addByPrefix('pressed', '${getAnimSet(getIndex(mania, noteData)).anim} press', 24, false);
@@ -156,9 +161,10 @@ class StrumNote extends FlxSprite
 		}
 	}
 
-	public function retryBound() {
+	public function retryBound()
+	{
 		trackedScale = trackedScale * 0.85;
-		setGraphicSize(initialWidth * (trackedScale * (PlayState.isPixelStage ? PlayState.daPixelZoom /** (1/ExtraKeysHandler.instance.data.pixelScales[PlayState.SONG.mania])) */: 1)));
+		setGraphicSize(initialWidth * (trackedScale * (PlayState.isPixelStage ? PlayState.daPixelZoom /** (1/ExtraKeysHandler.instance.data.pixelScales[PlayState.SONG.mania])) */ : 1)));
 		trace(trackedScale);
 		updateHitbox();
 		postAddedToGroup();
@@ -260,13 +266,18 @@ class StrumBoundaries {
 	}
 }
 
-class KeybindShowcase extends FlxTypedGroup<FlxBasic> {
+class KeybindShowcase extends FlxTypedGroup<FlxBasic>
+{
 	public var background:FlxSprite;
 	public var keyText:FlxText;
 	public var keyCodes:Array<Int>;
-	public dynamic function onComplete():Void {}
 
-	public function new(x:Float,y:Float,keyCodes:Array<Int>, camera:FlxCamera, strumHalved:Float, mania:Int) {
+	public dynamic function onComplete():Void
+	{
+	}
+
+	public function new(x:Float, y:Float, keyCodes:Array<Int>, camera:FlxCamera, strumHalved:Float, mania:Int)
+	{
 		super();
 
 		this.keyCodes = keyCodes;
@@ -275,12 +286,12 @@ class KeybindShowcase extends FlxTypedGroup<FlxBasic> {
 
 		var size = 20 - (mania - 3);
 
-		keyText = new FlxText(xOffset + 4,y + 4, InputFormatter.getKeyName(keyCodes[0]));
+		keyText = new FlxText(xOffset + 4, y + 4, InputFormatter.getKeyName(keyCodes[0]));
 		keyText.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		keyText.x -= keyText.width / 2;
 		xOffset = keyText.x;
 
-		background = new FlxSprite(xOffset-4,y);
+		background = new FlxSprite(xOffset - 4, y);
 		background.makeGraphic(Std.int(keyText.width + 8), Std.int(keyText.height + 8), 0xFF000000);
 		background.alpha = 0.5;
 
@@ -290,28 +301,40 @@ class KeybindShowcase extends FlxTypedGroup<FlxBasic> {
 		background.cameras = [camera];
 		keyText.cameras = [camera];
 
-		new FlxTimer().start(2, function(tmr:FlxTimer) {
-			FlxTween.tween(keyText, {alpha: 0}, 0.5, {ease: FlxEase.linear, onComplete: function(t) {
-				if (keyCodes.length > 1) {
-					keyText.text = InputFormatter.getKeyName(keyCodes[1]);
-				} else {
-					keyText.text = '---';
+		new FlxTimer().start(2, function(tmr:FlxTimer)
+		{
+			FlxTween.tween(keyText, {alpha: 0}, 0.5, {
+				ease: FlxEase.linear,
+				onComplete: function(t)
+				{
+					if (keyCodes.length > 1)
+					{
+						keyText.text = InputFormatter.getKeyName(keyCodes[1]);
+					}
+					else
+					{
+						keyText.text = '---';
+					}
+
+					FlxTween.tween(keyText, {alpha: 1}, 0.5);
+
+					keyText.x = x + strumHalved + 4;
+					keyText.x -= keyText.width / 2;
+					xOffset = keyText.x;
+					background.x = xOffset - 4;
+					background.makeGraphic(Std.int(keyText.width + 8), Std.int(keyText.height + 8), 0xFF000000);
+					new FlxTimer().start(2.5, function(tmr:FlxTimer)
+					{
+						FlxTween.tween(keyText, {alpha: 0}, 0.5, {
+							ease: FlxEase.linear,
+							onComplete: function(t)
+							{
+								onComplete();
+							}
+						});
+					});
 				}
-
-				FlxTween.tween(keyText, {alpha: 1}, 0.5);
-
-				keyText.x = x + strumHalved + 4;
-				keyText.x -= keyText.width / 2;
-				xOffset = keyText.x;
-				background.x = xOffset - 4;
-				background.makeGraphic(Std.int(keyText.width + 8), Std.int(keyText.height + 8), 0xFF000000);
-				new FlxTimer().start(2.5, function(tmr:FlxTimer) {
-					FlxTween.tween(keyText, {alpha: 0}, 0.5, {ease: FlxEase.linear, onComplete: function(t) {
-						onComplete();
-					}});
-				});
-			}});
+			});
 		});
 	}
 }
-

@@ -94,7 +94,7 @@ class Song
 			}
 		}
 		//对，我指的就是这个
-		//针对非多k创建的谱面（即非PsychEK所创建），默认使用4k //另外github别让我用Tab把下面的3改成4了，我还没搞完呢（半恼）————卡昔233
+		//针对非多k创建的谱面（即非PsychEK所创建），默认为4k
 		if (songJson.mania == null)
 		{
 			songJson.mania = 3;

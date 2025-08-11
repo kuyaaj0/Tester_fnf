@@ -319,11 +319,10 @@ class ClientPrefs
 	public static function saveSettings()
 	{
 		for (key in Reflect.fields(data))
-			for (key in Reflect.fields(data))
-				if (key != 'arrowRGB' && key != 'arrowRGBPixel')
-				{
-					Reflect.setField(FlxG.save.data, key, Reflect.field(data, key));
-				}
+			if (key != 'arrowRGB' && key != 'arrowRGBPixel')
+			{
+				Reflect.setField(FlxG.save.data, key, Reflect.field(data, key));
+			}
 		#if sys
 		else if (key == 'arrowRGB')
 			saveArrowRGBData('arrowRGB.json', data.arrowRGB);
@@ -353,7 +352,7 @@ class ClientPrefs
 		// do NOT put "*key*" in the map or it will die
 		for (k in keyBinds.keys()) {
 			if (k.contains('key')) {
-				//trace('EK Keybind detected: $k');
+				trace('EK Keybind detected: $k');
 				var storeNum = Std.parseInt(k.split('_')[0]);
 
 				var convertKeycodes = keyBinds.get(k);

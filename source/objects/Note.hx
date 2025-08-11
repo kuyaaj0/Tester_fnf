@@ -114,6 +114,8 @@ class Note extends FlxSprite
 		a: ClientPrefs.data.splashAlpha
 	};
 
+	public var trackedScale:Float = 0.7; // PsychEK的箭头缩放似乎存在问题，尝试使用这个改善
+
 	public var offsetX:Float = 0;
 	public var offsetY:Float = 0;
 	public var offsetAngle:Float = 0;
@@ -245,15 +247,24 @@ class Note extends FlxSprite
 		return ExtraKeysHandler.instance.data.keys[mania].notes[note];
 	}
 
-		public function getAnimSet(index:Int):EKAnimation
-		{
-			return ExtraKeysHandler.instance.data.animations[index];
-		}
+	public function getAnimSet(index:Int):EKAnimation
+	{
+		return ExtraKeysHandler.instance.data.animations[index];
+	}
 	
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inEditor:Bool = false, ?createdFrom:Dynamic = null)
 	{
 		super();
+
+		if (PlayState.SONG != null)
+		{
+			trackedScale = ExtraKeysHandler.instance.data.scales[PlayState.SONG.mania];
+			if (PlayState.isPixelStage)
+			{
+				trackedScale = ExtraKeysHandler.instance.data.pixelScales[PlayState.SONG.mania];
+			}
+		}
 
 		if (ClientPrefs.data.hitsoundType != ClientPrefs.defaultData.hitsoundType)
 			hitsound = 'hitsounds/' + ClientPrefs.data.hitsoundType;
@@ -410,19 +421,20 @@ class Note extends FlxSprite
 			if (isSustainNote)
 			{
 				var graphic = Paths.image('pixelUI/' + skinPixel + 'ENDS' + skinPostfix, null, false);
-				loadGraphic(graphic, true, Math.floor(graphic.width / 6), Math.floor(graphic.height / 2));
+				loadGraphic(graphic, true, Math.floor(graphic.width / 4), Math.floor(graphic.height / 2));
 				originalHeight = graphic.height / 2;
 			}
 			else
 			{
 				var graphic = Paths.image('pixelUI/' + skinPixel + skinPostfix, null, false);
-				loadGraphic(graphic, true, Math.floor(graphic.width / 6), Math.floor(graphic.height / 5));
+				loadGraphic(graphic, true, Math.floor(graphic.width / 4), Math.floor(graphic.height / 5));
 			}
 
 			var mania = 3;
 			if (PlayState.SONG != null)
 				mania = PlayState.SONG.mania;
 			setGraphicSize((width * (ExtraKeysHandler.instance.data.pixelScales[mania] + 0.3)) * PlayState.daPixelZoom);
+
 			loadPixelNoteAnims();
 			antialiasing = false;
 
@@ -441,7 +453,7 @@ class Note extends FlxSprite
 
 			if (Cache.currentTrackedAnims.get(skin) != null) {
 			    animation.copyFrom(Cache.currentTrackedAnims.get(skin));
-			    setGraphicSize(Std.int(width * 0.7));
+            	setGraphicSize(Std.int(width * trackedScale));	//等下这都没改吗
 				updateHitbox();
 			}
 			else loadNoteAnims();
@@ -521,8 +533,12 @@ class Note extends FlxSprite
 		else
 			animation.addByPrefix(noteAnim + 'Scroll', noteAnim + '0');
 
-		setGraphicSize(width * ExtraKeysHandler.instance.data.scales[mania]);
+		//setGraphicSize(width * ExtraKeysHandler.instance.data.scales[mania]);
 		// trace(width, ExtraKeysHandler.instance.data.scales[mania]);
+		
+		// 改为使用trackedScale设置大小
+		setGraphicSize(Std.int(width * trackedScale));
+
 		updateHitbox();
 	}
 
@@ -536,11 +552,11 @@ class Note extends FlxSprite
 
 		if (isSustainNote)
 		{
-			animation.add(noteAnimStr + 'holdend', [noteAnimInt + 6], 24, true);
+			animation.add(noteAnimStr + 'holdend', [noteAnimInt + 4], 24, true);
 			animation.add(noteAnimStr + 'hold', [noteAnimInt], 24, true);
 		}
 		else
-			animation.add(noteAnimStr + 'Scroll', [noteAnimInt + 6], 24, true);
+			animation.add(noteAnimStr + 'Scroll', [noteAnimInt + 4], 24, true);
 	}
 
 	function attemptToAddAnimationByPrefix(name:String, prefix:String, framerate:Float = 24, doLoop:Bool = true)
@@ -611,7 +627,7 @@ class Note extends FlxSprite
 	public function followStrumNote(myStrum:StrumNote, fakeCrochet:Float, songSpeed:Float = 1)
 	{
 		var mania = 3;
-		if (PlayState.SONG != null) mania = PlayState.SONG.mania;
+		if (PlayState.SONG != null)	mania = PlayState.SONG.mania;
 		var Mscale = ExtraKeysHandler.instance.data.scales[mania];
 		if (PlayState.isPixelStage) Mscale = ExtraKeysHandler.instance.data.pixelScales[mania];
 		var sWidth = Note.swagWidthUnscaled * Mscale;

@@ -2003,8 +2003,8 @@ class PlayState extends MusicBeatState
 			strumLineNotes.add(babyArrow);
 			babyArrow.postAddedToGroup();
 		}
-		//adaptStrumline(opponentStrums);
-		//adaptStrumline(playerStrums);
+		adaptStrumline(opponentStrums);
+		adaptStrumline(playerStrums);
 
 		if (ClientPrefs.data.showKeybinds)
 		{
@@ -4401,7 +4401,8 @@ class PlayState extends MusicBeatState
 		else if (!note.noAnimation)
 		{
 			var char:Character = boyfriend;
-			var animToPlay:String = singAnimations[Std.int(Math.abs(Math.min(singAnimations.length - 1, note.noteData)))];
+			//var animToPlay:String = singAnimations[Std.int(Math.abs(Math.min(singAnimations.length - 1, note.noteData)))];
+			var animToPlay:String = singAnimation(note.noteData);
 			if (note.gfNote)
 				char = gf;
 

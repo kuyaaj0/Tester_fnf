@@ -81,7 +81,7 @@ class ControlsSubState extends MusicBeatSubstate
 		tipBG.alpha = 0.5;
 		add(tipBG);
 
-		tipTxt = new FlxText(tipX, tipY + 6, 0, 'Press Q/E to change the Extra Keys Page. Hold SHIFT to scroll 3x faster.', 16);
+		tipTxt = new FlxText(tipX, tipY + 6, 0, 'Press Q/E to change the Extra Keys Page.', 16);
 		tipTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.NONE, FlxColor.BLACK);
 		tipTxt.borderSize = 2;
 		add(tipTxt);

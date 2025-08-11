@@ -92,7 +92,7 @@ class ScaleSimulationState extends MusicBeatState {
 		for (note in strumline.members) strumLineWidth += note.width;
 		strumLineIsBig = strumLineWidth > StrumBoundaries.getBoundaryWidth().x;
 
-		/*while (strumLineIsBig) {
+		while (strumLineIsBig) {
 			strumLineWidth = 0;
 			for (note in strumline.members) {
 				note.retryBound();
@@ -100,7 +100,7 @@ class ScaleSimulationState extends MusicBeatState {
 			}
 			trace('Strumline is too big! Shrinking and retrying.');
 			strumLineIsBig = strumLineWidth > StrumBoundaries.getBoundaryWidth().x;
-		}*/
+		}
 	}
 
     public function doScaleSimTest(pixel:Bool = false)
