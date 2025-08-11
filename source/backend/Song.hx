@@ -29,6 +29,9 @@ typedef SwagSong =
 
 	@:optional var arrowSkin:String;
 	@:optional var splashSkin:String;
+
+	@:optional var mania:Int;
+	
 }
 
 class Song
@@ -54,6 +57,7 @@ class Song
 
 	public var mapper:String = 'N/A';
 	public var musican:String = 'N/A';
+	public var mania:Int = 3;	//话说这是不是跟下面的重复了
 
 	static public var isNewVersion:Bool = false;
 
@@ -88,6 +92,12 @@ class Song
 						i++;
 				}
 			}
+		}
+		//对，我指的就是这个
+		//针对非多k创建的谱面（即非PsychEK所创建），默认为4k
+		if (songJson.mania == null)
+		{
+			songJson.mania = 3;
 		}
 	}
 

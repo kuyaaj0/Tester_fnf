@@ -1,5 +1,6 @@
 package objects;
 
+import backend.extraKeys.ExtraKeysHandler;
 import backend.animation.PsychAnimationController;
 import backend.NoteTypesConfig;
 import shaders.RGBPalette;
@@ -99,6 +100,7 @@ class Note extends FlxSprite
 
 	public static var SUSTAIN_SIZE:Int = 44;
 	public static var swagWidth:Float = 160 * 0.7;
+	public static var swagWidthUnscaled:Float = 160;
 	public static var colArray:Array<String> = ['purple', 'blue', 'green', 'red'];
 	public static var defaultNoteSkin:String = 'noteSkins/NOTE_assets';
 
@@ -114,6 +116,7 @@ class Note extends FlxSprite
 		a: ClientPrefs.data.splashAlpha
 	};
 
+	public var trackedScale:Float = 0.7; // PsychEK的箭头缩放似乎存在问题，尝试使用这个改善
 	public var vec3Cache:Vector3 = new Vector3(); // for vector3 operations in modchart code
 	public var defScale:FlxPoint = FlxPoint.get(); // for modcharts to keep the scaling
 
@@ -180,11 +183,15 @@ class Note extends FlxSprite
 
 	public function defaultRGB()
 	{
-		var arr:Array<FlxColor> = ClientPrefs.data.arrowRGB[noteData];
-		if (PlayState.isPixelStage)
-			arr = ClientPrefs.data.arrowRGBPixel[noteData];
+		var mania = 3;
+		if (PlayState.SONG != null)
+			mania = PlayState.SONG.mania;
 
-		if (noteData > -1 && noteData <= arr.length)
+		var arr:Array<FlxColor> = ClientPrefs.data.arrowRGB[getIndex(mania, noteData)];
+		if (PlayState.isPixelStage)
+			arr = ClientPrefs.data.arrowRGBPixel[getIndex(mania, noteData)];
+
+		if (noteData > -1 /*&& noteData <= arr.length*/)
 		{
 			rgbShader.r = arr[0];
 			rgbShader.g = arr[1];
@@ -239,9 +246,29 @@ class Note extends FlxSprite
 		return value;
 	}
 
+	public function getIndex(mania:Int, note:Int):Int
+	{
+		return ExtraKeysHandler.instance.data.keys[mania].notes[note];
+	}
+
+	public function getAnimSet(index:Int):EKAnimation
+	{
+		return ExtraKeysHandler.instance.data.animations[index];
+	}
+	
+
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inEditor:Bool = false, ?createdFrom:Dynamic = null)
 	{
 		super();
+
+		if (PlayState.SONG != null)
+		{
+			trackedScale = ExtraKeysHandler.instance.data.scales[PlayState.SONG.mania];
+			if (PlayState.isPixelStage)
+			{
+				trackedScale = ExtraKeysHandler.instance.data.pixelScales[PlayState.SONG.mania];
+			}
+		}
 
 		if (ClientPrefs.data.hitsoundType != ClientPrefs.defaultData.hitsoundType)
 			hitsound = 'hitsounds/' + ClientPrefs.data.hitsoundType;
@@ -277,10 +304,13 @@ class Note extends FlxSprite
 				rgbShader.enabled = false;
 
 			x += swagWidth * (noteData);
-			if (!isSustainNote && noteData < colArray.length)
+			if (!isSustainNote /* && noteData < colArray.length*/)
 			{ // Doing this 'if' check to fix the warnings on Senpai songs
 				var animToPlay:String = '';
-				animToPlay = colArray[noteData % colArray.length];
+				var mania = 3;
+				if (PlayState.SONG != null)
+					mania = PlayState.SONG.mania;
+				animToPlay = getAnimSet(getIndex(mania, noteData)).note;
 				animation.play(animToPlay + 'Scroll');
 			}
 		}
@@ -301,7 +331,11 @@ class Note extends FlxSprite
 			offsetX += width / 2;
 			copyAngle = false;
 
-			animation.play(colArray[noteData % colArray.length] + 'holdend');
+			var mania = 3;
+			if (PlayState.SONG != null)
+				mania = PlayState.SONG.mania;
+			var animToPlay = getAnimSet(getIndex(mania, noteData)).note;
+			animation.play(animToPlay + 'holdend');
 
 			updateHitbox();
 			defScale.copyFrom(scale);
@@ -313,7 +347,7 @@ class Note extends FlxSprite
 
 			if (prevNote.isSustainNote)
 			{
-				prevNote.animation.play(colArray[prevNote.noteData % colArray.length] + 'hold');
+				prevNote.animation.play(animToPlay + 'hold');
 
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.05;
 				if (createdFrom != null && createdFrom.songSpeed != null)
@@ -351,8 +385,12 @@ class Note extends FlxSprite
 			var newRGB:RGBPalette = new RGBPalette();
 			globalRgbShaders[noteData] = newRGB;
 
-			var arr:Array<FlxColor> = (!PlayState.isPixelStage) ? ClientPrefs.data.arrowRGB[noteData] : ClientPrefs.data.arrowRGBPixel[noteData];
-			if (noteData > -1 && noteData <= arr.length)
+			var mania = 3;
+			if (PlayState.SONG != null)
+				mania = PlayState.SONG.mania;
+
+			var arr:Array<FlxColor> = (!PlayState.isPixelStage) ? ClientPrefs.data.arrowRGB[ExtraKeysHandler.instance.data.keys[mania].notes[noteData]] : ClientPrefs.data.arrowRGBPixel[ExtraKeysHandler.instance.data.keys[mania].notes[noteData]];
+			if (noteData > -1 /*&& noteData <= arr.length*/)
 			{
 				newRGB.r = arr[0];
 				newRGB.g = arr[1];
@@ -398,7 +436,12 @@ class Note extends FlxSprite
 				var graphic = Paths.image('pixelUI/' + skinPixel + skinPostfix, null, false);
 				loadGraphic(graphic, true, Math.floor(graphic.width / 4), Math.floor(graphic.height / 5));
 			}
-			setGraphicSize(Std.int(width * PlayState.daPixelZoom));
+
+			var mania = 3;
+			if (PlayState.SONG != null)
+				mania = PlayState.SONG.mania;
+			setGraphicSize((width * (ExtraKeysHandler.instance.data.pixelScales[mania] + 0.3)) * PlayState.daPixelZoom);
+
 			loadPixelNoteAnims();
 			antialiasing = false;
 
@@ -417,7 +460,7 @@ class Note extends FlxSprite
 
 			if (Cache.currentTrackedAnims.get(skin) != null) {
 			    animation.copyFrom(Cache.currentTrackedAnims.get(skin));
-			    setGraphicSize(Std.int(width * 0.7));
+            	setGraphicSize(Std.int(width * trackedScale));	//等下这都没改吗
 				updateHitbox();
 			}
 			else loadNoteAnims();
@@ -483,28 +526,44 @@ class Note extends FlxSprite
 
 	function loadNoteAnims()
 	{
+		var mania = 3;
+		if (PlayState.SONG != null)
+			mania = PlayState.SONG.mania;
+		var noteAnim = getAnimSet(getIndex(mania, noteData)).note;
+
 		if (isSustainNote)
 		{
 			attemptToAddAnimationByPrefix('purpleholdend', 'pruple end hold', 24, true); // this fixes some retarded typo from the original note .FLA
-			animation.addByPrefix(colArray[noteData] + 'holdend', colArray[noteData] + ' hold end', 24, true);
-			animation.addByPrefix(colArray[noteData] + 'hold', colArray[noteData] + ' hold piece', 24, true);
+			animation.addByPrefix(noteAnim + 'holdend', noteAnim + ' hold end', 24, true);
+			animation.addByPrefix(noteAnim + 'hold', noteAnim + ' hold piece', 24, true);
 		}
 		else
-			animation.addByPrefix(colArray[noteData] + 'Scroll', colArray[noteData] + '0');
+			animation.addByPrefix(noteAnim + 'Scroll', noteAnim + '0');
 
-		setGraphicSize(Std.int(width * 0.7));
+		//setGraphicSize(width * ExtraKeysHandler.instance.data.scales[mania]);
+		// trace(width, ExtraKeysHandler.instance.data.scales[mania]);
+		
+		// 改为使用trackedScale设置大小
+		setGraphicSize(Std.int(width * trackedScale));
+
 		updateHitbox();
 	}
 
 	function loadPixelNoteAnims()
 	{
+		var mania = 3;
+		if (PlayState.SONG != null)
+			mania = PlayState.SONG.mania;
+		var noteAnimStr = getAnimSet(getIndex(mania, noteData)).note;
+		var noteAnimInt = getAnimSet(getIndex(mania, noteData)).pixel;
+
 		if (isSustainNote)
 		{
-			animation.add(colArray[noteData] + 'holdend', [noteData + 4], 24, true);
-			animation.add(colArray[noteData] + 'hold', [noteData], 24, true);
+			animation.add(noteAnimStr + 'holdend', [noteAnimInt + 4], 24, true);
+			animation.add(noteAnimStr + 'hold', [noteAnimInt], 24, true);
 		}
 		else
-			animation.add(colArray[noteData] + 'Scroll', [noteData + 4], 24, true);
+			animation.add(noteAnimStr + 'Scroll', [noteAnimInt + 4], 24, true);
 	}
 
 	function attemptToAddAnimationByPrefix(name:String, prefix:String, framerate:Float = 24, doLoop:Bool = true)
@@ -575,6 +634,12 @@ class Note extends FlxSprite
 
 	public function followStrumNote(myStrum:StrumNote, fakeCrochet:Float, songSpeed:Float = 1)
 	{
+		var mania = 3;
+		if (PlayState.SONG != null)	mania = PlayState.SONG.mania;
+		var Mscale = ExtraKeysHandler.instance.data.scales[mania];
+		if (PlayState.isPixelStage) Mscale = ExtraKeysHandler.instance.data.pixelScales[mania];
+		var sWidth = Note.swagWidthUnscaled * Mscale;
+
 		var strumX:Float = myStrum.x;
 		var strumY:Float = myStrum.y;
 		var strumAngle:Float = myStrum.angle;
@@ -604,14 +669,22 @@ class Note extends FlxSprite
 				{
 					y -= PlayState.daPixelZoom * 9.5;
 				}
-				y -= (frameHeight * scale.y) - (Note.swagWidth / 2);
+				y -= (frameHeight * scale.y) - (sWidth / 2);
 			}
 		}
 	}
 
 	public function clipToStrumNote(myStrum:StrumNote)
 	{
-		var center:Float = myStrum.y + offsetY + Note.swagWidth / 2;
+		var mania = 3;
+		if (PlayState.SONG != null)
+			mania = PlayState.SONG.mania;
+		var Mscale = ExtraKeysHandler.instance.data.scales[mania];
+		if (PlayState.isPixelStage)
+			Mscale = ExtraKeysHandler.instance.data.pixelScales[mania];
+		var sWidth = Note.swagWidthUnscaled * Mscale;
+
+		var center:Float = myStrum.y + offsetY + sWidth / 2;
 		if (isSustainNote && (mustPress || !ignoreNote) && (!mustPress || (wasGoodHit || (prevNote.wasGoodHit && !canBeHit))))
 		{
 			var swagRect:FlxRect = clipRect;

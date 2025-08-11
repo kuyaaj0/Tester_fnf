@@ -71,6 +71,12 @@ class EditorPlayState extends MusicBeatSubstate
 	{
 		super();
 
+		keysArray = [];
+		for (i in 0...PlayState.SONG.mania + 1)
+		{
+			keysArray.push(PlayState.SONG.mania + '_key_$i');
+		}
+
 		/* setting up some important data */
 		this.playbackRate = playbackRate;
 		this.startPos = Conductor.songPosition;
@@ -388,10 +394,10 @@ class EditorPlayState extends MusicBeatSubstate
 				if (daStrumTime < startPos)
 					continue;
 
-				var daNoteData:Int = Std.int(songNotes[1] % 4);
+				var daNoteData:Int = Std.int(songNotes[1] % (PlayState.SONG.mania + 1));
 				var gottaHitNote:Bool = section.mustHitSection;
 
-				if (songNotes[1] > 3)
+				if (songNotes[1] > PlayState.SONG.mania)
 				{
 					gottaHitNote = !section.mustHitSection;
 				}
@@ -484,7 +490,7 @@ class EditorPlayState extends MusicBeatSubstate
 	{
 		var strumLineX:Float = ClientPrefs.data.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X;
 		var strumLineY:Float = ClientPrefs.data.downScroll ? (FlxG.height - 150) : 50;
-		for (i in 0...4)
+		for (i in 0...PlayState.SONG.mania + 1)
 		{
 			// FlxG.log.add(i);
 			var targetAlpha:Float = 1;
@@ -517,6 +523,45 @@ class EditorPlayState extends MusicBeatSubstate
 
 			strumLineNotes.add(babyArrow);
 			babyArrow.postAddedToGroup();
+		}
+		adaptStrumline(opponentStrums);
+		adaptStrumline(playerStrums);
+
+		if (ClientPrefs.data.showKeybinds)
+		{
+			for (i in 0...playerStrums.members.length)
+			{
+				var keyShowcase = new KeybindShowcase(playerStrums.members[i].x,
+					ClientPrefs.data.downScroll ? playerStrums.members[i].y - 30 : playerStrums.members[i].y + playerStrums.members[i].height + 5,
+					ClientPrefs.keyBinds.get(keysArray[i]), FlxG.camera, playerStrums.members[i].width / 2, PlayState.SONG.mania);
+				keyShowcase.onComplete = function()
+				{
+					remove(keyShowcase);
+				}
+				add(keyShowcase);
+			}
+		}
+	}
+
+	public function adaptStrumline(strumline:FlxTypedGroup<StrumNote>)
+	{
+		var strumLineWidth:Float = 0;
+		var strumLineIsBig:Bool = false;
+
+		for (note in strumline.members)
+			strumLineWidth += note.width;
+		strumLineIsBig = strumLineWidth > StrumBoundaries.getBoundaryWidth().x;
+
+		while (strumLineIsBig)
+		{
+			strumLineWidth = 0;
+			for (note in strumline.members)
+			{
+				note.retryBound();
+				strumLineWidth += note.width;
+			}
+			trace('Strumline is too big! Shrinking and retrying.');
+			strumLineIsBig = strumLineWidth > StrumBoundaries.getBoundaryWidth().x;
 		}
 	}
 

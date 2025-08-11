@@ -535,6 +535,12 @@ class ChartingState extends MusicBeatState
 		stepperSpeed.value = _song.speed;
 		stepperSpeed.name = 'song_speed';
 		blockPressWhileTypingOnStepper.push(stepperSpeed);
+
+		var stepperMania:FlxUINumericStepper = new FlxUINumericStepper(100, stepperSpeed.y, 1, 3, ExtraKeysHandler.instance.data.minKeys, ExtraKeysHandler.instance.data.maxKeys, 1);
+		stepperMania.value = _song.mania;
+		stepperMania.name = 'song_mania';
+		blockPressWhileTypingOnStepper.push(stepperMania);
+
 		#if MODS_ALLOWED
 		var directories:Array<String> = [
 			Paths.mods('characters/'),
@@ -680,9 +686,11 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(loadEventJson);
 		tab_group_song.add(stepperBPM);
 		tab_group_song.add(stepperSpeed);
+		tab_group_song.add(stepperMania);
 		tab_group_song.add(new FlxText(stepperBPM.x, stepperBPM.y - 15, 0, 'Song BPM:'));
-		tab_group_song.add(new FlxText(stepperBPM.x + 100, stepperBPM.y - 15, 0, 'Song Offset:'));
+		//tab_group_song.add(new FlxText(stepperBPM.x + 100, stepperBPM.y - 15, 0, 'Song Offset:'));	//论ShadowMario写这行是想干啥
 		tab_group_song.add(new FlxText(stepperSpeed.x, stepperSpeed.y - 15, 0, 'Song Speed:'));
+		tab_group_song.add(new FlxText(stepperMania.x, stepperMania.y - 15, 0, 'Mania:'));
 		tab_group_song.add(new FlxText(player2DropDown.x, player2DropDown.y - 15, 0, 'Opponent:'));
 		tab_group_song.add(new FlxText(gfVersionDropDown.x, gfVersionDropDown.y - 15, 0, 'Girlfriend:'));
 		tab_group_song.add(new FlxText(player1DropDown.x, player1DropDown.y - 15, 0, 'Boyfriend:'));
@@ -1716,6 +1724,10 @@ class ChartingState extends MusicBeatState
 				case 'song_speed':
 					_song.speed = nums.value;
 
+				case 'song_mania':
+					_song.mania = Std.int(nums.value);
+					//reloadGridLayer();	//PsychEK写的，似乎是为了实时刷新轨道）
+
 				case 'song_bpm':
 					_song.bpm = nums.value;
 					Conductor.mapBPMChanges(_song);
@@ -2633,6 +2645,26 @@ class ChartingState extends MusicBeatState
 
 	function reloadGridLayer()
 	{
+
+		if (PlayState.SONG == null) {
+			PlayState.SONG = {
+				song: 'DUMMY',
+				notes: [],
+				events: [],
+				bpm: 1,
+				mania: _song.mania,
+				needsVoices: true,
+				player1: 'bf',
+				player2: 'bf',
+				gfVersion: 'bf',
+				speed: 1,
+				format: 'na',
+				stage: 'stage'
+			};
+		} else {
+			PlayState.SONG.mania = _song.mania;
+		}
+
 		gridLayer.clear();
 		gridBG = FlxGridOverlay.create(1, 1, columns, Std.int(getSectionBeats() * 4 * zoomList[curZoom]));
 		gridBG.antialiasing = false;

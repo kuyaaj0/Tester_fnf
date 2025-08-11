@@ -1,5 +1,6 @@
 package objects;
 
+import backend.extraKeys.ExtraKeysHandler;
 import backend.animation.PsychAnimationController;
 import shaders.RGBPalette;
 import flixel.system.FlxAssets.FlxShader;
@@ -121,15 +122,15 @@ class NoteSplash extends FlxSprite
 			var animID:Int = direction + ((animNum - 1) * Note.colArray.length);
 			// trace('anim: ${animation.curAnim.name}, $animID');
 			var offs:Array<Float> = config.offsets[FlxMath.wrap(animID, 0, config.offsets.length - 1)];
-			offset.x += offs[0];
-			offset.y += offs[1];
+			offset.x += offs[0] * (ExtraKeysHandler.instance.data.scales[PlayState.SONG.mania] + 0.3);
+			offset.y += offs[1] * (ExtraKeysHandler.instance.data.scales[PlayState.SONG.mania] + 0.3);
 			minFps = config.minFps;
 			maxFps = config.maxFps;
 		}
 		else
 		{
-			offset.x += -58;
-			offset.y += -55;
+			offset.x += -58 * (ExtraKeysHandler.instance.data.scales[PlayState.SONG.mania] + 0.3);
+			offset.y += -55 * (ExtraKeysHandler.instance.data.scales[PlayState.SONG.mania] + 0.3);
 		}
 
 		if (animation.curAnim != null)
@@ -159,6 +160,10 @@ class NoteSplash extends FlxSprite
 				frames = Paths.getSparrowAtlas(skin);
 			}
 		}
+
+		setGraphicSize(width * (ExtraKeysHandler.instance.data.scales[PlayState.SONG.mania] + 0.3));
+		updateHitbox();
+
 		config = precacheConfig(skin);
 		_configLoaded = skin;
 
@@ -168,9 +173,9 @@ class NoteSplash extends FlxSprite
 		while (true)
 		{
 			var animID:Int = maxAnims + 1;
-			for (i in 0...Note.colArray.length)
+			for (i in 0...ExtraKeysHandler.instance.data.maxKeys + 1)
 			{
-				if (!addAnimAndCheck('note$i-$animID', '$animName ${Note.colArray[i]} $animID', 24, false))
+				if (!addAnimAndCheck('note$i-$animID', '$animName ${ExtraKeysHandler.instance.data.animations[i].note} $animID', 24, false))
 				{
 					// trace('maxAnims: $maxAnims');
 					return config;
