@@ -1227,7 +1227,7 @@ class PlayState extends MusicBeatState
 			modManager.registerDefaultModifiers();
 			callOnScripts('postModifierRegister');
 
-			if (ClientPrefs.middleScroll)
+			if (ClientPrefs.data.middleScroll)
 			{
 				var off = Math.min(FlxG.width, 1280) / 4;
 				modManager.setValue("transform0X", -off, 1);
