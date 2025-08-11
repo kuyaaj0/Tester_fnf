@@ -176,6 +176,12 @@ class StrumNote extends FlxSprite
 		ID = noteData;
 	}
 
+	override function destroy()
+	{
+		defScale.put();
+		super.destroy();
+	}
+
 	override function update(elapsed:Float)
 	{
 		if (resetAnim > 0)
