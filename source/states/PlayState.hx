@@ -52,6 +52,7 @@ import psychlua.*;
 import psychlua.LuaUtils;
 import psychlua.HScript;
 #end
+import modcharts.engine.*;
 import modcharts.integration.*;
 #if HSCRIPT_ALLOWED
 import psychlua.HScript.HScriptInfos;
