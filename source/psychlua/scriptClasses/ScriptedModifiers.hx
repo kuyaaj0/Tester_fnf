@@ -3,4 +3,4 @@ package psychlua.scriptClasses;
 /**
  * Modifier适用于在script class上继承
  */
-class ScriptedState extends modcharts.modifiers.Modifier implements IScriptedClass {}
+class ScriptedModifiers extends modcharts.modifiers.Modifier implements IScriptedClass {}
