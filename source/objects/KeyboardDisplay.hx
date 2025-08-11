@@ -8,15 +8,15 @@ import flixel.util.FlxSave;
 import states.PlayState;
 import backend.InputFormatter;
 import options.OptionsHelpers;
+import backend.Song;
 
 class KeyboardDisplay extends FlxSpriteGroup
 {
 	public static var saveBitmap:DisBitmap;
 
-	public var leftArray:Array<TimeDis> = [];
-	public var downArray:Array<TimeDis> = [];
-	public var upArray:Array<TimeDis> = [];
-	public var rightArray:Array<TimeDis> = [];
+	public var noteArrays:Array<Array<TimeDis>> = []; // 存储所有键位的数组
+	public var keyAlphas:Array<KeyButtonAlpha> = []; // 存储键位透明度对象
+	public var keyTexts:Array<FlxText> = []; // 存储键位文本对象
 
 	public var _x:Float;
 	public var _y:Float;
@@ -24,6 +24,8 @@ class KeyboardDisplay extends FlxSpriteGroup
 	public var _height:Float;
 	public var kpsText:FlxText;
 	public var totalText:FlxText;
+
+	public var keys:Int = 4; // 默认键位数
 
 	var total:Int = 0;
 
@@ -36,40 +38,56 @@ class KeyboardDisplay extends FlxSpriteGroup
 
 		_x = X;
 		_y = Y;
-		_width = (KeyButton.size + 4) * 4;
+
+		var mania:Int = 3;
+		if(PlayState.SONG != null) mania = PlayState.SONG.mania;
+		keys = mania + 1; 
+
+		for(i in 0...keys) noteArrays.push([]);
+
+		_width = (KeyButton.size + 4) * keys; 
 		_height = (KeyButton.size + 4) * 2;
 
-		for (i in 0...4)
+		for (i in 0...keys)
 		{
 			var obj:KeyButton = new KeyButton(X + (KeyButton.size + 4) * i, Y, KeyButton.size, KeyButton.size);
 			add(obj);
 		}
-		for (i in 0...4)
+
+		for (i in 0...keys)
 		{
 			var obj:KeyButtonAlpha = new KeyButtonAlpha(X + (KeyButton.size + 4) * i, Y);
+			keyAlphas.push(obj);
 			add(obj);
 		}
+
 		var textArray:Array<String> = createArray();
-		for (i in 0...4)
+		for (i in 0...keys)
 		{
-			var obj:FlxText = new FlxText(X + (KeyButton.size + 4) * i + members[4 + i].width / 2, Y + members[4 + i].height / 2, 50, textArray[i], 10, false);
+			var obj:FlxText = new FlxText(X + (KeyButton.size + 4) * i + keyAlphas[i].width / 2, Y + keyAlphas[i].height / 2, 50, textArray[i], 10, false);
 			obj.setFormat(Assets.getFont("assets/fonts/montserrat.ttf").fontName, 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, 0x00);
 			obj.x -= obj.width / 2;
 			obj.y -= obj.height / 2;
 			obj.color = OptionsHelpers.colorArray(ClientPrefs.data.keyboardTextColor);
 			obj.alpha = ClientPrefs.data.keyboardAlpha;
+			keyTexts.push(obj);
 			add(obj);
 		}
+		
+
+		var bigButtonWidth:Int = Std.int((KeyButton.size * 2 + 4) * (keys / 4));
+		var startX = X + (_width - bigButtonWidth * 2 - 4) / 2;
+
 		for (i in 0...2)
 		{
-			var obj:KeyButton = new KeyButton(X + (KeyButton.size + 4) * i * 2, Y + KeyButton.size + 4, KeyButton.size * 2 + 4, KeyButton.size);
+			var obj:KeyButton = new KeyButton(startX + (bigButtonWidth + 4) * i, Y + KeyButton.size + 4, bigButtonWidth, KeyButton.size);
 			add(obj);
 		}
 		var textArray:Array<String> = ['KPS', 'total'];
 		for (i in 0...2)
 		{
-			var obj:FlxText = new FlxText(members[12 + i].x + members[12 + i].width / 2, members[12 + i].y + members[12 + i].height / 4,
-				KeyButton.size * 2 + 4, textArray[i], 20, false);
+			var obj:FlxText = new FlxText(startX + (bigButtonWidth + 4) * i + bigButtonWidth / 2, Y + KeyButton.size + 4 + KeyButton.size / 4, 
+				bigButtonWidth, textArray[i], 20, false);
 			obj.setFormat(Assets.getFont("assets/fonts/montserrat.ttf").fontName, 25, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, 0x00);
 			obj.x -= obj.width / 2;
 			obj.y -= obj.height / 2;
@@ -78,7 +96,8 @@ class KeyboardDisplay extends FlxSpriteGroup
 			obj.antialiasing = ClientPrefs.data.antialiasing;
 			add(obj);
 		}
-		kpsText = new FlxText(members[12].x + members[12].width / 2, members[12].y + members[12].height / 5 * 3.5, KeyButton.size * 2 + 4, '0', 15, false);
+
+		kpsText = new FlxText(startX + bigButtonWidth / 2, Y + KeyButton.size + 4 + KeyButton.size / 5 * 3.5, bigButtonWidth, '0', 15, false);
 		kpsText.setFormat(Assets.getFont("assets/fonts/montserrat.ttf").fontName, 15, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, 0x00);
 		kpsText.x -= kpsText.width / 2;
 		kpsText.y -= kpsText.height / 2;
@@ -87,7 +106,7 @@ class KeyboardDisplay extends FlxSpriteGroup
 
 		if (FlxG.save.data.keyboardtotal != null)
 			total = FlxG.save.data.keyboardtotal;
-		totalText = new FlxText(members[13].x + members[13].width / 2, members[13].y + members[13].height / 5 * 3.5, KeyButton.size * 2 + 4,
+		totalText = new FlxText(startX + bigButtonWidth + 4 + bigButtonWidth / 2, Y + KeyButton.size + 4 + KeyButton.size / 5 * 3.5, bigButtonWidth,
 			Std.string(total), 15, false);
 		totalText.setFormat(Assets.getFont("assets/fonts/montserrat.ttf").fontName, 15, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, 0x00);
 		totalText.x -= totalText.width / 2;
@@ -105,8 +124,10 @@ class KeyboardDisplay extends FlxSpriteGroup
 
 	public function pressed(key:Int)
 	{
-		members[4 + key].alpha = 1 * ClientPrefs.data.keyboardAlpha;
-		members[8 + key].color = FlxColor.BLACK;
+		if(key < keyAlphas.length) {
+			keyAlphas[key].alpha = 1 * ClientPrefs.data.keyboardAlpha;
+			keyTexts[key].color = FlxColor.BLACK;
+		}
 
 		if (!PlayState.replayMode)
 			total++;
@@ -119,46 +140,25 @@ class KeyboardDisplay extends FlxSpriteGroup
 		var obj:TimeDis = new TimeDis(key, Conductor.songPosition, _x, _y);
 		add(obj);
 
-		switch (key)
-		{
-			case 0:
-				if (leftArray.length > 0 && leftArray[leftArray.length - 1].endTime == -999999)
-					leftArray[leftArray.length - 1].endTime = Conductor.songPosition;
-				leftArray.push(obj);
-			case 1:
-				if (downArray.length > 0 && downArray[downArray.length - 1].endTime == -999999)
-					downArray[downArray.length - 1].endTime = Conductor.songPosition;
-				downArray.push(obj);
-			case 2:
-				if (upArray.length > 0 && upArray[upArray.length - 1].endTime == -999999)
-					upArray[upArray.length - 1].endTime = Conductor.songPosition;
-				upArray.push(obj);
-			case 3:
-				if (rightArray.length > 0 && rightArray[rightArray.length - 1].endTime == -999999)
-					rightArray[rightArray.length - 1].endTime = Conductor.songPosition;
-				rightArray.push(obj);
+		if(key < noteArrays.length) {
+			var arr = noteArrays[key];
+			if(arr.length > 0 && arr[arr.length - 1].endTime == -999999)
+				arr[arr.length - 1].endTime = Conductor.songPosition;
+			arr.push(obj);
 		}
 	}
 
 	public function released(key:Int)
 	{
-		members[4 + key].alpha = 0;
-		members[8 + key].color = OptionsHelpers.colorArray(ClientPrefs.data.keyboardTextColor);
+		if(key < keyAlphas.length) {
+			keyAlphas[key].alpha = 0;
+			keyTexts[key].color = OptionsHelpers.colorArray(ClientPrefs.data.keyboardTextColor);
+		}
 
-		switch (key)
-		{
-			case 0:
-				if (leftArray.length > 0 && leftArray[leftArray.length - 1].endTime == -999999)
-					leftArray[leftArray.length - 1].endTime = Conductor.songPosition;
-			case 1:
-				if (downArray.length > 0 && downArray[downArray.length - 1].endTime == -999999)
-					downArray[downArray.length - 1].endTime = Conductor.songPosition;
-			case 2:
-				if (upArray.length > 0 && upArray[upArray.length - 1].endTime == -999999)
-					upArray[upArray.length - 1].endTime = Conductor.songPosition;
-			case 3:
-				if (rightArray.length > 0 && rightArray[rightArray.length - 1].endTime == -999999)
-					rightArray[rightArray.length - 1].endTime = Conductor.songPosition;
+		if(key < noteArrays.length) {
+			var arr = noteArrays[key];
+			if(arr.length > 0 && arr[arr.length - 1].endTime == -999999)
+				arr[arr.length - 1].endTime = Conductor.songPosition;
 		}
 	}
 
@@ -171,25 +171,30 @@ class KeyboardDisplay extends FlxSpriteGroup
 	public function createArray():Array<String>
 	{
 		var array:Array<String> = [];
-		array.push(InputFormatter.getKeyName(Controls.instance.keyboardBinds['note_left'][0]));
-		array.push(InputFormatter.getKeyName(Controls.instance.keyboardBinds['note_down'][0]));
-		array.push(InputFormatter.getKeyName(Controls.instance.keyboardBinds['note_up'][0]));
-		array.push(InputFormatter.getKeyName(Controls.instance.keyboardBinds['note_right'][0]));
+		var mania:Int = (PlayState.SONG != null) ? PlayState.SONG.mania : 3;
+		var keys:Int = mania + 1;
+		
+		// Get current keybinds for this mania mode
+		var keybindID = '${mania}_key';
+		
+		for (i in 0...keys)
+		{
+			// Get the keybind name using the format used in ClientPrefs
+			var bindName = '${keybindID}_${i}';
+			var keysArray = Controls.instance.keyboardBinds.get(bindName);
+			
+			if(keysArray != null && keysArray.length > 0)
+				array.push(InputFormatter.getKeyName(keysArray[0]));
+			else
+				array.push('?');
+		}
 		return array;
 	}
 
 	public function removeObj(obj:TimeDis)
 	{
-		switch (obj.line)
-		{
-			case 0:
-				leftArray.remove(obj);
-			case 1:
-				downArray.remove(obj);
-			case 2:
-				upArray.remove(obj);
-			case 3:
-				rightArray.remove(obj);
+		if(obj.line < noteArrays.length) {
+			noteArrays[obj.line].remove(obj);
 		}
 		remove(obj, true);
 		obj.destroy();
@@ -201,15 +206,15 @@ class KeyboardDisplay extends FlxSpriteGroup
 
 	public function dataUpdate(elapsed:Float)
 	{
-		var balls = hitArray.length - 1;
-		while (balls >= 0)
+		var i = hitArray.length - 1;
+		while (i >= 0)
 		{
-			var cock:Date = hitArray[balls];
-			if (cock != null && cock.getTime() + 1000 < Date.now().getTime())
-				hitArray.remove(cock);
+			var time:Date = hitArray[i];
+			if (time != null && time.getTime() + 1000 < Date.now().getTime())
+				hitArray.remove(time);
 			else
-				balls = 0;
-			balls--;
+				i = -1; // 跳出循环
+			i--;
 		}
 		kps = hitArray.length;
 

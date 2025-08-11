@@ -154,8 +154,8 @@ import states.TitleState;
 	public var developerMode:Bool = false;
 	public var DevConScale:Float = #if mobile 1.8 #else 1.5 #end;
 
-	//Extra Keys (maybe)
-	public var showKeybinds:Bool = true;
+	//For Extra Keys (maybe)
+	public var showKeybinds:Bool = false;
 
 	/////RelaxState Options\\\\\
 	public var NextSongs:String = 'Next';
