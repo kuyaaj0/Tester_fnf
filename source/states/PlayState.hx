@@ -2278,8 +2278,6 @@ class PlayState extends MusicBeatState
 			FlxG.camera.followLerp = 0;
 		callOnScripts('onUpdate', [elapsed]);
 
-		modManager.update(elapsed);
-
 		super.update(elapsed);
 
 		setOnScripts('curDecStep', curDecStep);
@@ -2387,6 +2385,8 @@ class PlayState extends MusicBeatState
 			trace("RESET = True");
 		}
 		doDeathCheck();
+
+		modManager.update(elapsed);
 
 		if (unspawnNotes[0] != null)
 		{
