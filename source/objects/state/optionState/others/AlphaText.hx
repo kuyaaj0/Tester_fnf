@@ -1,4 +1,4 @@
-package objects.state.optionState;
+package objects.state.optionState.others;
 
 class AlphaText extends FlxSpriteGroup
 {

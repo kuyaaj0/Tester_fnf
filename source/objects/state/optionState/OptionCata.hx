@@ -15,6 +15,9 @@ class OptionCata extends FlxSpriteGroup
 
 	public var bg:RoundRect;
 
+	public var follow:NaviGroup;
+	public var mem:NaviMember;
+
 	public function new(X:Float, Y:Float, width:Float, height:Float)
 	{
 		super(X, Y);
@@ -65,6 +68,13 @@ class OptionCata extends FlxSpriteGroup
 		bg.mainY = mainY;
 
 		super.update(elapsed);
+
+		
+		if (checkPoint()) {
+			mem.cataChoose = true;
+		} else {
+			mem.cataChoose = false;
+		}
 	}
 
 	public function resetData() {
@@ -149,5 +159,10 @@ class OptionCata extends FlxSpriteGroup
 
 	public function changeHeight(time:Float = 0.6) {
 		bg.changeHeight(heightSet + heightSetOffset, time, 'expoInOut');
+	}
+
+	public function checkPoint():Bool {
+		if (this.y < FlxG.height / 2 && this.y + bg.realHeight > FlxG.height / 2) return true;
+		return false;
 	}
 }

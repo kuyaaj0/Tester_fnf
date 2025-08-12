@@ -1,8 +1,6 @@
-package objects.state.optionState;
+package objects.state.optionState.navi;
 
-//左边的导航摁键
-
-class NaviGroup extends FlxSpriteGroup
+class NaviMember extends FlxSpriteGroup
 {
     var filePath:String = 'menuExtend/OptionsState/icons/';
 
@@ -10,59 +8,54 @@ class NaviGroup extends FlxSpriteGroup
     public var isModsAdd:Bool = false;
 
     public var background:Rect;
-    public var icon:FlxSprite;
     public var textDis:FlxText;
     var specRect:Rect;
 
-    var mainWidth:Float;
-    var mainHeight:Float;
+    public var offsetX:Float;
+    public var offsetY:Float;
+    public var mainWidth:Float;
+    public var mainHeight:Float;
 
     var name:String;
 
+    var follow:NaviGroup;
+
     ///////////////////////////////////////////////////////////////////////////////
 
-    public function new(X:Float, Y:Float, width:Float, height:Float, name:String, sort:Int, modsAdd:Bool = false) {
-        super(X, Y);
+    public function new(follow:NaviGroup, name:String, sort:Int, modsAdd:Bool = false) {
+        super(0, 0);
+        this.follow = follow;
         optionSort = sort;
 
-        mainWidth = width;
-        mainHeight = height;
+        mainWidth = follow.mainWidth;
+        mainHeight = follow.mainHeight * 0.75;
 
         this.name = name;
 
-        background = new Rect(0, 0, width, height, height / 5, height / 5, EngineSet.mainColor, 0.0000001);
+        background = new Rect(0, 0, mainWidth, mainHeight, mainHeight / 5, mainHeight / 5, EngineSet.mainColor, 0.0000001);
         add(background);
 
-        specRect = new Rect(0, 0, 5, height * 0.5, 5, 5, EngineSet.mainColor);
-        specRect.x += height * 0.25;
-        specRect.y += height * 0.25;
+        specRect = new Rect(0, 0, 5, mainHeight * 0.6, 4, 4, EngineSet.mainColor);
+        specRect.x += mainHeight * 0.25;
+        specRect.y += mainHeight * 0.2;
 		specRect.alpha = 1;
 		specRect.scale.y = 1;
 		specRect.antialiasing = ClientPrefs.data.antialiasing;
 		add(specRect);
 
-        icon = new FlxSprite().loadGraphic(Paths.image(filePath + name));
-        icon.setGraphicSize(Std.int(height * 0.8));
-        icon.updateHitbox();
-        icon.antialiasing = ClientPrefs.data.antialiasing;
-        icon.color = EngineSet.mainColor;
-        icon.x += height * 0.15;
-        icon.y += height * 0.1;
-        add(icon);
-
-        textDis = new FlxText(0, 0, 0, Language.get(name, 'op'), Std.int(height * 0.15));
-		textDis.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(height * 0.25), EngineSet.mainColor, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        textDis = new FlxText(0, 0, 0, Language.get(name, 'op'), Std.int(mainHeight * 0.15));
+		textDis.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(mainHeight * 0.25), EngineSet.mainColor, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         textDis.borderStyle = NONE;
 		textDis.antialiasing = ClientPrefs.data.antialiasing;
-        textDis.x += height * (0.8 + 0.15 + 0.25);
-        textDis.y += height * 0.5 - textDis.height * 0.5;
+        textDis.x += mainHeight * 0.4;
+        textDis.y += mainHeight * 0.5 - textDis.height * 0.5;
 		add(textDis);
     }
 
     public var onFocus:Bool = false;
     public var cataChoose:Bool = false;
+    public var allowChoose:Bool = false;
     var focusTime:Float = 0;
-
     override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -93,22 +86,16 @@ class NaviGroup extends FlxSpriteGroup
             }
 
             if (mouse.justReleased) {
-                OptionsState.instance.changeCata(optionSort);
+                OptionsState.instance.changeCata(follow.optionSort, optionSort);
             }
         } else {
             if (background.alpha > 0) background.alpha -= EngineSet.FPSfix(0.015);
-        }
-
-        if (!mouse.pressed)
-        {
-            //if (this.scale.x < 1)
-                //this.scale.x = this.scale.y += ((1 - this.scale.x) * (1 - this.scale.x) * 0.75); //haxe太粑粑了
         }
 	}
 
     public function changeLanguage() {
         textDis.text = Language.get(name, 'op');
-        textDis.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(height * 0.25), EngineSet.mainColor, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
+        textDis.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(mainHeight * 0.25), EngineSet.mainColor, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         textDis.borderStyle = NONE;
     }
 }

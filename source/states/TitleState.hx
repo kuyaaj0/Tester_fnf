@@ -74,6 +74,8 @@ class TitleState extends MusicBeatState
 	override public function create():Void
 	{
 		Paths.clearStoredMemory();
+		super.create();
+		Paths.clearUnusedMemory();
 
 		#if LUA_ALLOWED
 		Mods.pushGlobalMods();
@@ -81,8 +83,6 @@ class TitleState extends MusicBeatState
 		Mods.loadTopMod();
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
-
-		super.create();
 
 		FlxG.save.bind('funkin', CoolUtil.getSavePath());
 

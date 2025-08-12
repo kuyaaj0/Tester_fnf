@@ -4,35 +4,22 @@ import psychlua.HScript;
 import objects.state.optionState.Option;
 
 class HScriptGroup extends OptionCata {
-	public var hscriptArray:Array<HScript>;
+	var sc:HScript;
 
-	public function new(X:Float, Y:Float, width:Float, height:Float, path:String) {
+	public function new(X:Float, Y:Float, width:Float, height:Float, path:String, file:String) {
 		super(X, Y, width, height);
-		hscriptArray = new Array<HScript>();
-		for(fn in FileSystem.readDirectory(path)) {
-			if(fn.toLowerCase().endsWith('.hx')) {
-				var sc:HScript = new HScript(path + fn, this);
-				sc.set("Option", Option);
-				for(construct in Type.getEnumConstructs(OptionType)) {
-					sc.set(construct, Reflect.getProperty(OptionType, construct));
-				}
-				sc.execute();
-				sc.call("onCreate");
-				hscriptArray.push(sc);
-			}
+		sc = new HScript(path + file + ".hx", this);
+		sc.set("Option", Option);
+		for(construct in Type.getEnumConstructs(OptionType)) {
+			sc.set(construct, Reflect.getProperty(OptionType, construct));
 		}
+		sc.execute();
+		sc.call("onCreate");
 	}
 
 	override function destroy():Void {
-		if(hscriptArray.length > 0) {
-			var i:Int = -1;
-			while(i++ < hscriptArray.length - 1) {
-				final sc = hscriptArray[i];
-				sc.call("onDestroy");
-				sc.destroy();
-			}
-		}
-		hscriptArray = null;
+		sc.call("onDestroy");
+		sc.destroy();
 
 		super.destroy();
 	}

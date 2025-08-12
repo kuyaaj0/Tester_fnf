@@ -18,9 +18,7 @@ enum OptionType
 	TITLE;
 	TEXT;
 	
-	//特殊化处理
-	NOTE;
-	SPLASH;
+	COLOR;
 }
 
 class Option extends FlxSpriteGroup
@@ -473,13 +471,14 @@ class Option extends FlxSpriteGroup
 	public var followY:Float = 0;  //optioncata在主体的位置
 	public var innerY:Float = 0; //optioncata内部位置
 	public var yOff:Float = 0; //用于图形在cata内部位移
+	public var waitYOff:Float = 0; //用于图形在cata内部位移
 	public var sameY:Bool = false; //用于string展开兼容
 	public var yTween:FlxTween = null;
 	public function changeOffY(data:Float, time:Float) {
-		var finalData = yOff + data;
+		waitYOff += data;
 
 		if (yTween != null) yTween.cancel();
-		yTween = FlxTween.num(yOff, finalData, time, {ease: FlxEase.expoInOut}, function(v){this.y = followY + innerY + yOff; yOff = v;});
+		yTween = FlxTween.num(yOff, waitYOff, time, {ease: FlxEase.expoInOut}, function(v){this.y = followY + innerY + yOff; yOff = v;});
 	}
 
 	public function initY(data:Float, innerData:Float) {
