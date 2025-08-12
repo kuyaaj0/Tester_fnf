@@ -53,6 +53,7 @@ import psychlua.LuaUtils;
 import psychlua.HScript;
 #end
 import modcharts.engine.*;
+import modcharts.ModManager;
 import modcharts.integration.*;
 #if HSCRIPT_ALLOWED
 import psychlua.HScript.HScriptInfos;
@@ -99,7 +100,7 @@ class PlayState extends MusicBeatState
 	// event variables
 	private var isCameraOnForcedPos:Bool = false;
 
-	public var playfieldRenderer:PlayfieldRenderer; //lol modchart
+	public var modManager:ModManager; //lol modchart
 
 	public var boyfriendMap:Map<String, Character> = new Map<String, Character>();
 	public var dadMap:Map<String, Character> = new Map<String, Character>();
@@ -713,9 +714,8 @@ class PlayState extends MusicBeatState
 
 		generateSong(SONG.song);
 
-		playfieldRenderer = new PlayfieldRenderer(strumLineNotes, notes, this);
-	    playfieldRenderer.cameras = [camHUD];
-	    add(playfieldRenderer);
+		modManager = new ModManager(strumLineNotes, notes, camHUD, this);
+
 		noteGroup.add(grpNoteSplashes);
 
 		keyboardDisplay = new KeyboardDisplay(ClientPrefs.data.comboOffset[4], ClientPrefs.data.comboOffset[5]);
@@ -2277,6 +2277,8 @@ class PlayState extends MusicBeatState
 		else
 			FlxG.camera.followLerp = 0;
 		callOnScripts('onUpdate', [elapsed]);
+
+		modManager.update(elapsed);
 
 		super.update(elapsed);
 
