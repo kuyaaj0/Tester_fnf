@@ -39,13 +39,6 @@
       "version": "1.5.1"
     },
     {
-      "name": "modcharts",
-      "type": "git",
-      "dir": null,
-      "ref": "main",
-      "url": "https://github.com/NovaFlare-Engine-Concentration/Modcharts-Pro"
-    },
-    {
       "name": "hxcpp",
       "type": "git",
       "dir": null,
