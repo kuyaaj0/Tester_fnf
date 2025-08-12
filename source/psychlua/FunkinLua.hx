@@ -960,7 +960,7 @@ class FunkinLua
 
 		set("getSubModifierValue", function(name:String, subValueName:String)
 		{
-			return game.modManager.getModifierValue(name, subValueName);
+			return game.modManager.getSubModifierValue(name, subValueName);
 		});
 
 		set("tweenModifier", function(modifier:String, value:Float, time:Float, ease:String = "linear")
