@@ -75,7 +75,6 @@ class FunkinLua
 			&& (Mods.currentModDirectory == myFolder[1] || Mods.getGlobalMods().contains(myFolder[1]))) // is inside mods folder
 			this.modFolder = myFolder[1];
 		#end
-		modcharts.integration.ModchartFuncs.loadLuaFunctions(this);
 		// Lua shit
 		set('Function_StopLua', LuaUtils.Function_StopLua);
 		set('Function_StopHScript', LuaUtils.Function_StopHScript);
@@ -927,102 +926,6 @@ class FunkinLua
 		});
 		set("precacheSound", Paths.sound);
 		set("precacheMusic", Paths.music);
-
-		set("addModifier", function(name:String, modClass:String, type:String = "ALL", playfield:Int = -1)
-		{
-			game.modManager.addModifier(name, modClass, type, playfield);
-		});
-
-		set("setModifier", function(name:String, value:Float)
-		{
-			game.modManager.setModifier(name, value);
-		});
-
-		set("setSubModifier", function(name:String, subValueName:String, value:Float)
-		{
-			game.modManager.setSubModifier(name, subValueName, value);
-		});
-
-		set("setModifierTargetLane", function(name:String, lane:Int)
-		{
-			game.modManager.setModifierTargetLane(name, lane);
-		});
-
-		set("setModifierPlayfield", function(name:String, playfield:Int)
-		{
-			game.modManager.setModifierPlayfield(name, playfield);
-		});
-
-		set("getModifierValue", function(name:String)
-		{
-			return game.modManager.getModifierValue(name);
-		});
-
-		set("getSubModifierValue", function(name:String, subValueName:String)
-		{
-			return game.modManager.getSubModifierValue(name, subValueName);
-		});
-
-		set("tweenModifier", function(modifier:String, value:Float, time:Float, ease:String = "linear")
-		{
-			game.modManager.tweenModifier(modifier, value, time, ease);
-		});
-
-		set("tweenSubModifier", function(modifier:String, subValue:String, value:Float, time:Float, ease:String = "linear")
-		{
-		    game.modManager.tweenSubModifier(modifier, subValue, value, time, ease);
-		});
-		
-		set("setModifierEaseFunc", function(name:String, ease:String)
-		{
-		    game.modManager.setModifierEaseFunc(name, ease);
-		});
-		
-		set("removeModifier", function(name:String)
-		{
-		    game.modManager.removeModifier(name);
-		});
-		
-		set("clearModifiers", function()
-		{
-		    game.modManager.clearModifiers();
-		});
-		
-		set("resetModifiers", function()
-		{
-		    game.modManager.resetModifiers();
-		});
-		
-		set("addPlayfield", function(?x:Float = 0, ?y:Float = 0, ?z:Float = 0, ?alpha:Float = 1)
-		{
-		    game.modManager.addPlayfield(x, y, z, alpha);
-		});
-		
-		set("removePlayfield", function(index:Int)
-		{
-		    game.modManager.removePlayfield(index);
-		});
-		
-		set("getPlayfieldCount", function()
-		{
-		    return game.modManager.getPlayfieldCount();
-		});
-		
-		set("setPlayfield", function(index:Int, ?x:Float, ?y:Float, ?z:Float, ?alpha:Float)
-		{
-		    game.modManager.setPlayfield(index, x, y, z, alpha);
-		});
-		
-		set("addSetEvent", function(beat:Float, args:String)
-		{
-		    game.modManager.addSetEvent(beat, args);
-		});
-		
-		set("addEaseEvent", function(beat:Float, time:Float, ease:String, args:String)
-		{
-		    game.modManager.addEaseEvent(beat, time, ease, args);
-		});
-
 
 		// others
 		set("triggerEvent", function(name:String, arg1:Dynamic, arg2:Dynamic)

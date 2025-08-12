@@ -52,9 +52,6 @@ import psychlua.*;
 import psychlua.LuaUtils;
 import psychlua.HScript;
 #end
-import modcharts.engine.*;
-import modcharts.ModManager;
-import modcharts.integration.*;
 #if HSCRIPT_ALLOWED
 import psychlua.HScript.HScriptInfos;
 import crowplexus.iris.Iris;
@@ -99,8 +96,6 @@ class PlayState extends MusicBeatState
 
 	// event variables
 	private var isCameraOnForcedPos:Bool = false;
-
-	public var modManager:ModManager; //lol modchart
 
 	public var boyfriendMap:Map<String, Character> = new Map<String, Character>();
 	public var dadMap:Map<String, Character> = new Map<String, Character>();
@@ -708,15 +703,12 @@ class PlayState extends MusicBeatState
 		splash.setupNoteSplash(100, 100);
 		grpNoteSplashes.add(splash);
 		splash.alpha = 0.000001; // cant make it invisible or it won't allow precaching
+		noteGroup.add(grpNoteSplashes);
 
 		opponentStrums = new FlxTypedGroup<StrumNote>();
 		playerStrums = new FlxTypedGroup<StrumNote>();
 
 		generateSong(SONG.song);
-
-		modManager = new ModManager(strumLineNotes, notes, camHUD, this);
-
-		noteGroup.add(grpNoteSplashes);
 
 		keyboardDisplay = new KeyboardDisplay(ClientPrefs.data.comboOffset[4], ClientPrefs.data.comboOffset[5]);
 		keyboardDisplay.antialiasing = ClientPrefs.data.antialiasing;
@@ -1213,7 +1205,6 @@ class PlayState extends MusicBeatState
 
 			generateStaticArrows(0);
 			generateStaticArrows(1);
-			NoteMovement.getDefaultStrumPos(this);
 			for (i in 0...playerStrums.length)
 			{
 				setOnScripts('defaultPlayerStrumX' + i, playerStrums.members[i].x);
@@ -2277,8 +2268,6 @@ class PlayState extends MusicBeatState
 		else
 			FlxG.camera.followLerp = 0;
 		callOnScripts('onUpdate', [elapsed]);
-
-		modManager.update(elapsed);
 
 		super.update(elapsed);
 
