@@ -57,6 +57,7 @@ class RGBShaderReference
 	public var b(default, set):FlxColor;
 	public var mult(default, set):Float;
 	public var parent:RGBPalette;
+	public var enabled(default, set):Bool = true;
 
 	private var _owner:FlxSprite;
 	private var _original:RGBPalette;
