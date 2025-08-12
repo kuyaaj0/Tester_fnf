@@ -73,8 +73,6 @@ class RGBShaderReference
 			r = parent.r;
 			g = parent.g;
 			b = parent.b;
-			daAlpha = parent.daAlpha;
-			flash = parent.flash;
 			mult = parent.mult;
 		}
 	}
@@ -142,8 +140,6 @@ class RGBPaletteShader extends FlxShader
 		uniform vec3 r;
 		uniform vec3 g;
 		uniform vec3 b;
-        uniform float daAlpha;
-		uniform float flash;
 		uniform float mult;
 
 		vec4 flixel_texture2DCustom(sampler2D bitmap, vec2 coord) {
