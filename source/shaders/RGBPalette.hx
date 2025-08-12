@@ -10,6 +10,7 @@ class RGBPalette
 	public var g(default, set):FlxColor;
 	public var b(default, set):FlxColor;
 	public var mult(default, set):Float;
+	
 
 	private function set_r(color:FlxColor)
 	{
@@ -55,9 +56,8 @@ class RGBShaderReference
 	public var g(default, set):FlxColor;
 	public var b(default, set):FlxColor;
 	public var mult(default, set):Float;
-	public var enabled(default, set):Bool = true;
-
 	public var parent:RGBPalette;
+	public var enabled(default, set):Bool = true;
 
 	private var _owner:FlxSprite;
 	private var _original:RGBPalette;
@@ -154,7 +154,7 @@ class RGBPaletteShader extends FlxShader
 			newColor.a = color.a;
 			
 			color = mix(color, newColor, mult);
-			
+
 			if(color.a > 0.0) {
 				return vec4(color.rgb, color.a);
 			}
