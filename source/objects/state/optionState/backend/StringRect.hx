@@ -93,21 +93,17 @@ class StringRect extends FlxSpriteGroup{
     var alphaTween:Array<FlxTween> = [];
     var changeTimer:Float = 0.45;
     public function change() {
-        if (alphaTween.length > 0) {
-            for (i in alphaTween) {
-                if (i.active) {
-                    return;
-                    break;
-                }
-            }
+        for (tween in alphaTween) {
+            tween.cancel();
         }
+
         if (!follow.follow.peerCheck(follow)) return;
 
         if (isOpend) { //关闭
             disText.text = 'Tap to choose';
             dis.flipY = true;
             
-            var tween = FlxTween.tween(follow.select.bg, {alpha: 0}, changeTimer, {ease: FlxEase.expoOut, onComplete: function(twn:FlxTween){follow.select.active = follow.select.visible = false; if (OptionsState.instance.cataCount.contains(follow.select)) OptionsState.instance.cataCount.remove(follow.select);} });
+            var tween = FlxTween.tween(follow.select.bg, {alpha: 0}, changeTimer, {ease: FlxEase.expoOut, onComplete: function(twn:FlxTween){follow.select.active = follow.select.visible = false; if (OptionsState.instance.stringCount.contains(follow.select)) OptionsState.instance.stringCount.remove(follow.select);} });
             alphaTween.push(tween);
             var tween = FlxTween.tween(follow.select.slider, {alpha: 0}, changeTimer, {ease: FlxEase.expoOut});
             alphaTween.push(tween);
@@ -122,7 +118,7 @@ class StringRect extends FlxSpriteGroup{
             isOpend = !isOpend;
             follow.select.isOpend = isOpend;
         } else { //开启 
-            if (!OptionsState.instance.cataCount.contains(follow.select)) OptionsState.instance.cataCount.push(follow.select);
+            if (!OptionsState.instance.stringCount.contains(follow.select)) OptionsState.instance.stringCount.push(follow.select);
             disText.text = 'Tap to close';
             dis.flipY = false;
 

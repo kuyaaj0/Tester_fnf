@@ -938,6 +938,7 @@ class FunkinLua
 		});
 
 		set("startCountdown", game.startCountdown);
+
 		set("endSong", function()
 		{
 			game.KillNotes();

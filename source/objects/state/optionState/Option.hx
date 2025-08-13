@@ -18,23 +18,13 @@ enum OptionType
 	TITLE;
 	TEXT;
 	
-	//特殊化处理
-	NOTE;
-	SPLASH;
+	COLOR;
 }
 
 class Option extends FlxSpriteGroup
 {
 	public var onChange:Void->Void = null;
 	public var type:OptionType = BOOL;
-
-	public var saveHeight:Float = 0; //仅仅用作最开始设置的时候使用
-	public var inter:Float = 10; //设置与设置间的y轴间隔
-
-	public var variable:String = null; // Variable from ClientPrefs.hx
-	public var defaultValue:Dynamic = null; //获取出来的数值
-	public var description:String = ''; //简短的描述
-	public var tips:String; //真正的解释
 
 	//STRING
 	public var strGroup:Array<String> = null;
@@ -45,7 +35,18 @@ class Option extends FlxSpriteGroup
 	public var decimals:Int = 0; //数据需要精确到小数点几位
 	public var extraDisplay:String = '';
 
+	public var variable:String = null; // Variable from ClientPrefs.hx
+	public var defaultValue:Dynamic = null; //获取出来的数值
+	public var resetValue:Dynamic = null; //重置时候赋予的数值（脚本专用）
+	public var description:String = ''; //简短的描述
+	public var tips:String; //真正的解释
+
+	public var saveHeight:Float = 0; //仅仅用作最开始设置的时候使用
+	public var inter:Float = 10; //设置与设置间的y轴间隔
+
 	public var follow:OptionCata;
+	public var modsData:Map<String, Dynamic> = []; //mod数据
+	public var modAdd:Bool;
 
 	/////////////////////////////////////////////
 
@@ -54,6 +55,13 @@ class Option extends FlxSpriteGroup
 		super();
 
 		this.follow = follow;
+		this.modAdd = follow.modAdd;
+		if (modAdd){
+			if (ClientPrefs.modsData.get(follow.modsName) == null) {
+				ClientPrefs.modsData.set(follow.modsName, []);
+			}
+			modsData = ClientPrefs.modsData.get(follow.modsName);
+		}
 
 		this.variable = variable;
 		this.type = type;
@@ -63,26 +71,10 @@ class Option extends FlxSpriteGroup
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 
 		if (this.type != STATE && variable != '')
-			this.defaultValue = Reflect.getProperty(ClientPrefs.data, variable);
-
-		switch (type)
-		{
-			case BOOL:
-				if (defaultValue == null)
-					defaultValue = false;
-			case INT, FLOAT, PERCENT:
-				if (defaultValue == null)
-					defaultValue = 0;
-			case STRING:
-				strGroup = data;
-				if (strGroup.indexOf(defaultValue) == -1) {
-					if (data.length > 0)
-						defaultValue = data[0];
-					if (defaultValue == null)
-						defaultValue = '';
-				}
-			default:
-		}
+			if (!modAdd)
+				this.defaultValue = Reflect.getProperty(ClientPrefs.data, variable);
+			else
+				this.defaultValue = modsData.get(variable);
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -113,7 +105,7 @@ class Option extends FlxSpriteGroup
 			default:
 		}
 
-		///////////////////////////////////////////////////////////////////////////////////////////////////
+		defaultDataCheck();
 
 		switch (type)
 		{
@@ -129,6 +121,85 @@ class Option extends FlxSpriteGroup
 				addTitle();
 			case STATE:
 				addState();
+			default:
+		}
+	}
+
+	///////////////////////////////////////////////
+
+	public function change()
+	{
+		if (onChange != null)
+			onChange();
+	}
+
+	dynamic public function getValue():Dynamic
+	{
+		var value;
+		if (!modAdd) {
+			value = Reflect.getProperty(ClientPrefs.data, variable);
+		} else {
+			value = modsData.get(variable);
+		}
+		return value;
+	}
+
+	dynamic public function setValue(value:Dynamic)
+	{
+		defaultValue = value;
+		if (!modAdd) {
+			return Reflect.setProperty(ClientPrefs.data, variable, value);
+		} else {
+			return modsData.set(variable, defaultValue);
+		}
+		return Reflect.setProperty(ClientPrefs.data, variable, value);
+	}
+
+	public function resetData()
+	{
+		if (variable == '' || type == STATE ||  type == TEXT || type == TITLE)
+			return;
+		try {
+			if (!modAdd) {
+				Reflect.setProperty(ClientPrefs.data, variable, Reflect.getProperty(ClientPrefs.defaultData, variable));
+				defaultValue = Reflect.getProperty(ClientPrefs.defaultData, variable);
+			} else {
+				this.defaultValue = resetValue; 
+				defaultDataCheck();
+				modsData.set(variable, defaultValue);
+			}
+		}
+
+		switch (type)
+		{
+			case BOOL:
+				boolButton.updateDisplay();
+			case INT, FLOAT, PERCENT:
+				numButton.initData();
+				updateDisText();
+			case STRING:
+				updateDisText();
+			default:
+		}
+		change();
+	}
+
+	function defaultDataCheck() {
+		switch (type)
+		{
+			case BOOL:
+				if (defaultValue == null)
+					defaultValue = false;
+			case INT, FLOAT, PERCENT:
+				if (defaultValue == null)
+					defaultValue = minValue;
+			case STRING:
+				if (strGroup.indexOf(defaultValue) == -1) {
+					if (strGroup.length > 0)
+						defaultValue = strGroup[0];
+					if (defaultValue == null)
+						defaultValue = '';
+				}
 			default:
 		}
 	}
@@ -361,49 +432,6 @@ class Option extends FlxSpriteGroup
 		saveHeight = baseBG.height + inter;
 	}
 
-	///////////////////////////////////////////////
-
-	public function change()
-	{
-		if (onChange != null)
-			onChange();
-	}
-
-	dynamic public function getValue():Dynamic
-	{
-		var value = Reflect.getProperty(ClientPrefs.data, variable);
-		return value;
-	}
-
-	dynamic public function setValue(value:Dynamic)
-	{
-		defaultValue = value;
-		return Reflect.setProperty(ClientPrefs.data, variable, value);
-	}
-
-	public function resetData()
-	{
-		if (variable == '' || type == STATE ||  type == TEXT || type == TITLE)
-			return;
-		try {
-			Reflect.setProperty(ClientPrefs.data, variable, Reflect.getProperty(ClientPrefs.defaultData, variable));
-			defaultValue = Reflect.getProperty(ClientPrefs.defaultData, variable);
-		}
-
-		switch (type)
-		{
-			case BOOL:
-				boolButton.updateDisplay();
-			case INT, FLOAT, PERCENT:
-				numButton.initData();
-				updateDisText();
-			case STRING:
-				updateDisText();
-			default:
-		}
-		change();
-	}
-
 	public function changeLanguage() {
 		this.description = Language.get(variable, 'op');
 		this.tips = Language.get(variable, 'opTip');
@@ -445,7 +473,9 @@ class Option extends FlxSpriteGroup
 		return false;
 	}
 
-	////////////////////////////////////////////////
+
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
 
 	public var followX:Float = 0;  //optioncata位置
 	public var innerX:Float = 0; //这个option在optioncata内部位置
@@ -473,13 +503,14 @@ class Option extends FlxSpriteGroup
 	public var followY:Float = 0;  //optioncata在主体的位置
 	public var innerY:Float = 0; //optioncata内部位置
 	public var yOff:Float = 0; //用于图形在cata内部位移
+	public var waitYOff:Float = 0; //用于图形在cata内部位移
 	public var sameY:Bool = false; //用于string展开兼容
 	public var yTween:FlxTween = null;
 	public function changeOffY(data:Float, time:Float) {
-		var finalData = yOff + data;
+		waitYOff += data;
 
 		if (yTween != null) yTween.cancel();
-		yTween = FlxTween.num(yOff, finalData, time, {ease: FlxEase.expoInOut}, function(v){this.y = followY + innerY + yOff; yOff = v;});
+		yTween = FlxTween.num(yOff, waitYOff, time, {ease: FlxEase.expoInOut}, function(v){this.y = followY + innerY + yOff; yOff = v;});
 	}
 
 	public function initY(data:Float, innerData:Float) {

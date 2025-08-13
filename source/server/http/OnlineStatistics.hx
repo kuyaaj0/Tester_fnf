@@ -5,7 +5,7 @@ import sys.thread.Thread;
 
 class OnlineStatistics {
     public static final REQUEST_INTERVAL:Float = 60;
-    public static final API_URL:String = "https://novaflare.top/api.php";
+    public static final API_URL:String = "http://online.novaflare.top/api.php";
     public static final API_KEY:String = "114514";
     public static final APP_NAME:String = "NovaFlare-Engine";
 

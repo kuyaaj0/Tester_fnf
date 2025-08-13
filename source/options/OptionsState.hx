@@ -16,7 +16,7 @@ class OptionsState extends MusicBeatState
 
 	var filePath:String = 'menuExtend/OptionsState/';
 
-	var naviArray = [];
+	var naviArray:Array<NaviData> = [];
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -29,12 +29,12 @@ class OptionsState extends MusicBeatState
 	public var mouseEvent:MouseEvent;
 
 	var naviBG:RoundRect;
-	var naviSpriteGroup:Array<NaviSprite> = [];
+	var naviGroup:Array<NaviGroup> = [];
 	var naviMove:MouseMove;
 
 	var cataGroup:Array<OptionCata> = [];
 	public var cataMove:MouseMove;
-	public var cataCount:Array<StringSelect> = []; //string开启的检测
+	public var stringCount:Array<StringSelect> = []; //string开启的检测
 
 	public var downBG:Rect;
 	var tipButton:TipButton;
@@ -51,16 +51,41 @@ class OptionsState extends MusicBeatState
 		instance = this;
 
 		naviArray = [
-			'General',
-			'User Interface',
-			'GamePlay',
-			'Game UI',
-			'Skin',
-			'Input',
-			'Audio',
-			'Graphics',
-			'Maintenance'	
+			new NaviData('NovaFlare Engine', ['General','User Interface','GamePlay','Game UI','Skin','Input','Audio','Graphics','Maintenance'])
 		];
+		
+		var path = Paths.mods('stageScripts/options/');
+		if (FileSystem.exists(path) && FileSystem.isDirectory(path)){
+			var naviData = new NaviData('Global mod', []);
+			
+			var group:Array<String> = [];
+			for (file in FileSystem.readDirectory(path))
+			{
+				if (file.toLowerCase().endsWith('.hx'))
+					group.push(StringTools.replace(file, ".hx", ""));
+			}
+			naviData.group = group;
+			naviData.extraPath = path;
+			naviArray.push(naviData);
+		}
+
+		for (mod in Mods.parseList().enabled)
+		{
+			var path = Paths.mods(mod + '/stageScripts/options/');
+			if (FileSystem.exists(path) && FileSystem.isDirectory(path)){
+				var naviData = new NaviData(mod, []);
+			
+				var group:Array<String> = [];
+				for (file in FileSystem.readDirectory(path))
+				{
+					if (file.toLowerCase().endsWith('.hx'))
+						group.push(StringTools.replace(file, ".hx", ""));
+				}
+				naviData.group = group;
+				naviData.extraPath = path;
+				naviArray.push(naviData);
+			}
+		}
 
 		mouseEvent = new MouseEvent();
 		add(mouseEvent);
@@ -73,15 +98,15 @@ class OptionsState extends MusicBeatState
 
 		for (i in 0...naviArray.length)
 		{
-			var naviSprite = new NaviSprite(UIScale.adjust(FlxG.width * 0.005), UIScale.adjust(FlxG.height * 0.005) + i * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.width * 0.19), UIScale.adjust(FlxG.height * 0.09), naviArray[i], i, false);
+			var naviSprite = new NaviGroup(FlxG.width * 0.005, UIScale.adjust(FlxG.height * 0.005) + i * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.width * 0.19), UIScale.adjust(FlxG.height * 0.09), naviArray[i], i, false);
 			naviSprite.antialiasing = ClientPrefs.data.antialiasing;
 			add(naviSprite);
-			naviSpriteGroup.push(naviSprite);
+			naviGroup.push(naviSprite);
 		}
 		naviMoveEvent(true);
 
 		naviMove = new MouseMove(OptionsState, 'naviPosiData', 
-								[-1 * (naviSpriteGroup.length - 9) * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.height * 0.005)],
+								[-1 * Math.max(0, (naviGroup.length - 9)) * UIScale.adjust(FlxG.height * 0.1), UIScale.adjust(FlxG.height * 0.005)],
 								[	
 									[UIScale.adjust(FlxG.width * 0.005), 
 									UIScale.adjust(FlxG.width * 0.19)], [0, FlxG.height]
@@ -91,8 +116,12 @@ class OptionsState extends MusicBeatState
 
 		/////////////////////////////////////////////////////////////////
 
-		for (i in 0...naviArray.length) {
-			addCata(naviArray[i]);
+		for (data in 0...naviArray.length) {
+			var naviData:NaviData = naviArray[data];
+			for (mem in 0...naviData.group.length) {
+				if (naviData.extraPath != '') addCata(naviData.group[mem], naviGroup[data], naviGroup[data].parent[mem], naviData.extraPath);
+				else addCata(naviData.group[mem], naviGroup[data], naviGroup[data].parent[mem]);
+			}
 		}
 
 		var moveHeight:Float = 100;
@@ -100,9 +129,6 @@ class OptionsState extends MusicBeatState
 			if (num != cataGroup[cataGroup.length - 1]) {
 				moveHeight -= num.bg.realHeight;
 				moveHeight -= UIScale.adjust(FlxG.width * (0.8 / 40));
-			} else {
-				moveHeight -= cataGroup[cataGroup.length - 1].bg.realHeight - UIScale.adjust(FlxG.height * 0.8);
-				moveHeight -= UIScale.adjust(FlxG.width * (0.8 / 40)) * 2;
 			}
 		}
 		cataMove = new MouseMove(OptionsState, 'cataPosiData', 
@@ -162,7 +188,7 @@ class OptionsState extends MusicBeatState
 		super.update(elapsed);
 
 		cataMove.inputAllow = true;
-		for (cata in cataCount) {
+		for (cata in stringCount) {
 			if (!cata.isOpend) continue;
 			else {
 				if (OptionsState.instance.mouseEvent.overlaps(cata.bg)){
@@ -172,17 +198,12 @@ class OptionsState extends MusicBeatState
 			}
 		}
 
-		var posi:Int = -1;
-		for (cata in 0...cataGroup.length - 1) {
-			if (cataGroup[cata].y < FlxG.height / 2 && cataGroup[cata].y + cataGroup[cata].bg.realHeight > FlxG.height / 2) {
-				posi = cata;
+		for (navi in naviGroup) navi.cataChoose = false;
+		for (cata in cataGroup){
+			if (cata.checkPoint()) {
+				cata.follow.cataChoose = true;
 				break;
 			}
-		}
-
-		for (spr in 0...naviSpriteGroup.length -1) {
-			if (spr == posi) naviSpriteGroup[spr].cataChoose = true;
-			else naviSpriteGroup[spr].cataChoose = false;
 		}
 	}
 
@@ -198,12 +219,20 @@ class OptionsState extends MusicBeatState
 		}
 	}
 
-	public function changeCata(sort:Int) {
+	public function changeCata(cataSort:Int, memSort:Int) {
 		var outputData:Float = 100;
-		for (cata in 0...sort) {
+
+		var realSort:Int = memSort;
+		for (navi in 0...naviGroup.length) {
+			if (navi < cataSort) realSort += naviGroup[navi].parent.length;
+			else break;
+		}
+
+		for (cata in 0...realSort) {
 			outputData -= cataGroup[cata].bg.realHeight;
 			outputData -= UIScale.adjust(FlxG.width * (0.8 / 40));
 		}
+		outputData = Math.max(outputData, cataMove.moveLimit[0]);
 		cataMove.lerpData = outputData;
 	}
 
@@ -211,7 +240,7 @@ class OptionsState extends MusicBeatState
 		tipButton.changeText(str);
 	}
 
-	public function addCata(type:String) {
+	public function addCata(type:String, follow:NaviGroup, mem:NaviMember, extraPath:String = '') {
 		var obj:OptionCata = null;
 
 		var outputX:Float = naviBG.width + UIScale.adjust(FlxG.width * (0.8 / 40)); //已被初始化
@@ -240,8 +269,11 @@ class OptionsState extends MusicBeatState
 			case 'Maintenance':
 				obj = new MaintenanceGroup(outputX, outputY, outputWidth, outputHeight);
 			default:
+				obj = new HScriptGroup(outputX, outputY, outputWidth, outputHeight, type, extraPath, type);
 		}
 		cataGroup.push(obj);
+		obj.follow = follow;
+		obj.mem = mem;
 		add(obj);
 	}
 
@@ -265,7 +297,7 @@ class OptionsState extends MusicBeatState
 				moveHeight -= num.bg.waitHeight;
 				moveHeight -= UIScale.adjust(FlxG.width * (0.8 / 40));
 			} else {
-				moveHeight -= cataGroup[cataGroup.length - 1].bg.waitHeight - UIScale.adjust(FlxG.height * 0.8);
+				moveHeight -= cataGroup[cataGroup.length - 1].bg.waitHeight - UIScale.adjust(FlxG.height * 0.8) * 2;
 				moveHeight -= UIScale.adjust(FlxG.width * (0.8 / 40)) * 2;
 			}
 		}
@@ -274,9 +306,37 @@ class OptionsState extends MusicBeatState
 
 	static public var naviPosiData:Float = 0;
 	public function naviMoveEvent(init:Bool = false){
-		for (i in 0...naviSpriteGroup.length) {
-			naviSpriteGroup[i].y = naviPosiData + i * UIScale.adjust(FlxG.height * 0.1);
+		for (i in 0...naviGroup.length) {
+			naviGroup[i].y = naviPosiData + i * UIScale.adjust(FlxG.height * 0.1) + naviGroup[i].offsetY;
 		}
+	}
+
+	var naviTween:Array<FlxTween> = [];
+	var naviTime = 0.35;
+	var alreadyDetele:Bool = false;
+	public function changeNavi(navi:NaviGroup, isOpened:Bool) {
+		for (tween in naviTween) {
+			if (tween != null) tween.cancel();
+		}
+
+		for (i in 0...naviGroup.length) {
+			if (i <= navi.optionSort) continue;
+			else {
+				naviGroup[i].offsetWaitY += (navi.parent.length * 50 + 15) * (isOpened? -1 : 1);
+				var tween = FlxTween.num(naviGroup[i].offsetY, naviGroup[i].offsetWaitY, naviTime, {ease: FlxEase.expoInOut}, function(v){naviGroup[i].offsetY = v;});
+				naviTween.push(tween);
+			}
+		}
+		
+		var moveHeight:Float = 0;
+		for (i in 0...naviGroup.length) {
+			if (naviGroup[i] == navi) continue;
+			else {
+				if (naviGroup[i].isOpened) moveHeight += naviGroup[i].parent.length * 50 + 15;
+			}
+		}
+		if (!isOpened) moveHeight += (navi.parent.length * 50 + 15);
+		naviMove.moveLimit[0] = -1 * Math.max(0, ((naviGroup.length - 9)) * UIScale.adjust(FlxG.height * 0.1) + moveHeight);
 	}
 
 	var specOpen:Bool = false;
@@ -332,8 +392,8 @@ class OptionsState extends MusicBeatState
 
 	public function resetData()
 	{
-		for (spr in 0...naviSpriteGroup.length) {
-			if (naviSpriteGroup[spr].cataChoose == true) {
+		for (spr in 0...naviGroup.length) {
+			if (naviGroup[spr].cataChoose == true) {
 				cataGroup[spr].resetData();
 				break;
 			}
@@ -341,9 +401,12 @@ class OptionsState extends MusicBeatState
 	}
 
 	public function changeLanguage() {
-		for (spr in 0...naviSpriteGroup.length) {
-				naviSpriteGroup[spr].changeLanguage();
+		for (spr in 0...naviGroup.length) {
+				naviGroup[spr].changeLanguage();
 				cataGroup[spr].changeLanguage();
+				for (mem in 0...naviGroup[spr].parent.length) {
+					naviGroup[spr].parent[mem].changeLanguage();
+				}
 		}
 		tipButton.changeLanguage();
 		resetButton.changeLanguage();

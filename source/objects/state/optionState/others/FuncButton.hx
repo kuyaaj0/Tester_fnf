@@ -1,5 +1,4 @@
-package objects.state.optionState;
-
+package objects.state.optionState.others;
 //右下角的特殊功能摁键
 
 class FuncButton extends FlxSpriteGroup

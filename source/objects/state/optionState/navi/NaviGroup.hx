@@ -1,8 +1,8 @@
-package objects.state.optionState;
+package objects.state.optionState.navi;
 
 //左边的导航摁键
 
-class NaviSprite extends FlxSpriteGroup
+class NaviGroup extends FlxSpriteGroup
 {
     var filePath:String = 'menuExtend/OptionsState/icons/';
 
@@ -14,21 +14,30 @@ class NaviSprite extends FlxSpriteGroup
     public var textDis:FlxText;
     var specRect:Rect;
 
-    var mainWidth:Float;
-    var mainHeight:Float;
+    public var mainWidth:Float;
+    public var mainHeight:Float;
+
+    public var mainX:Float;
+    public var mainY:Float;
+    public var offsetY:Float;
+    public var offsetWaitY:Float;
 
     var name:String;
 
+    public var parent:Array<NaviMember> = [];
+
     ///////////////////////////////////////////////////////////////////////////////
 
-    public function new(X:Float, Y:Float, width:Float, height:Float, name:String, sort:Int, modsAdd:Bool = false) {
+    public function new(X:Float, Y:Float, width:Float, height:Float, naviData:NaviData, sort:Int, modsAdd:Bool = false) {
         super(X, Y);
         optionSort = sort;
 
         mainWidth = width;
         mainHeight = height;
 
-        this.name = name;
+        isModsAdd = modsAdd;
+
+        this.name = naviData.name;
 
         background = new Rect(0, 0, width, height, height / 5, height / 5, EngineSet.mainColor, 0.0000001);
         add(background);
@@ -57,6 +66,14 @@ class NaviSprite extends FlxSpriteGroup
         textDis.x += height * (0.8 + 0.15 + 0.25);
         textDis.y += height * 0.5 - textDis.height * 0.5;
 		add(textDis);
+
+        for (num in 0...naviData.group.length){
+            var member:NaviMember = new NaviMember(this, naviData.group[num], num);
+            add(member);
+            member.y += 15 + (num + 1) * 50;
+            member.x -= member.background.width;
+            parent.push(member);
+        }
     }
 
     public var onFocus:Bool = false;
@@ -66,10 +83,12 @@ class NaviSprite extends FlxSpriteGroup
     override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+        mainX = this.x;
+        mainY = this.y;
 
         var mouse = OptionsState.instance.mouseEvent;
 
-		onFocus = mouse.overlaps(this);
+		onFocus = mouse.overlaps(this.background);
 
         if (cataChoose) {
             if (focusTime > 0.2) {
@@ -88,21 +107,11 @@ class NaviSprite extends FlxSpriteGroup
 		if (onFocus) {
             if (background.alpha < 0.2) background.alpha += EngineSet.FPSfix(0.015);
 
-            if (mouse.justPressed) {
-                
-            }
-
             if (mouse.justReleased) {
-                OptionsState.instance.changeCata(optionSort);
+                moveParent();
             }
         } else {
             if (background.alpha > 0) background.alpha -= EngineSet.FPSfix(0.015);
-        }
-
-        if (!mouse.pressed)
-        {
-            //if (this.scale.x < 1)
-                //this.scale.x = this.scale.y += ((1 - this.scale.x) * (1 - this.scale.x) * 0.75); //haxe太粑粑了
         }
 	}
 
@@ -110,5 +119,22 @@ class NaviSprite extends FlxSpriteGroup
         textDis.text = Language.get(name, 'op');
         textDis.setFormat(Paths.font(Language.get('fontName', 'ma') + '.ttf'), Std.int(height * 0.25), EngineSet.mainColor, LEFT, FlxTextBorderStyle.OUTLINE, 0xFFFFFFFF);
         textDis.borderStyle = NONE;
+    }
+
+    public var isOpened:Bool = false;
+    var moveTweens:Array<FlxTween> = [];
+    var changeTimer:Float = 0.45;
+    public function moveParent() {
+        for (tween in moveTweens) {
+			if (tween != null) tween.cancel();
+		}
+
+        for (mem in 0...parent.length) {
+            var tween = FlxTween.tween(parent[mem], {x: isOpened ? -parent[mem].background.width : FlxG.width * 0.005}, changeTimer + mem * 0.025 * (isOpened ? -1 : 1), {ease: FlxEase.expoInOut});
+            moveTweens.push(tween);
+        }
+
+        OptionsState.instance.changeNavi(this, isOpened);
+        isOpened = !isOpened;
     }
 }
