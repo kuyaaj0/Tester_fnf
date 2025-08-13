@@ -604,13 +604,20 @@ class ClientPrefs
 	public static function set(variable:String, data:Bool = true, path:String = '') {
 		switch (path) {
 			case '':
-				if (Mods.currentModDirectory != '')
+				if (Mods.currentModDirectory != '') {
+					if (modsData.get(Mods.currentModDirectory) == null)
+						modsData.set(Mods.currentModDirectory, []);
 					modsData.get(Mods.currentModDirectory).set(variable, data);
-				else 
+				} else {
+					if (modsData.get('Global mod') == null)
+						modsData.set('Global mod', []);
 					modsData.get('Global mod').set(variable, data);
+				}
 			case 'data':
 				try{ Reflect.setProperty(ClientPrefs.data, variable, data); }
 			case _:
+				if (modsData.get(path) == null)
+						modsData.set(path, []);
 				modsData.get(path).set(variable, data);
 		}
 	}

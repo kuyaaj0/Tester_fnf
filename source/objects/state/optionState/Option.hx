@@ -37,6 +37,7 @@ class Option extends FlxSpriteGroup
 
 	public var variable:String = null; // Variable from ClientPrefs.hx
 	public var defaultValue:Dynamic = null; //获取出来的数值
+	public var resetValue:Dynamic = null; //重置时候赋予的数值（脚本专用）
 	public var description:String = ''; //简短的描述
 	public var tips:String; //真正的解释
 
@@ -163,7 +164,7 @@ class Option extends FlxSpriteGroup
 				Reflect.setProperty(ClientPrefs.data, variable, Reflect.getProperty(ClientPrefs.defaultData, variable));
 				defaultValue = Reflect.getProperty(ClientPrefs.defaultData, variable);
 			} else {
-				this.defaultValue = null; 
+				this.defaultValue = resetValue; 
 				defaultDataCheck();
 				modsData.set(variable, defaultValue);
 			}
