@@ -129,9 +129,6 @@ class OptionsState extends MusicBeatState
 			if (num != cataGroup[cataGroup.length - 1]) {
 				moveHeight -= num.bg.realHeight;
 				moveHeight -= UIScale.adjust(FlxG.width * (0.8 / 40));
-			} else {
-				moveHeight -= cataGroup[cataGroup.length - 1].bg.realHeight - UIScale.adjust(FlxG.height * 0.8);
-				moveHeight -= UIScale.adjust(FlxG.width * (0.8 / 40)) * 2;
 			}
 		}
 		cataMove = new MouseMove(OptionsState, 'cataPosiData', 
@@ -300,7 +297,7 @@ class OptionsState extends MusicBeatState
 				moveHeight -= num.bg.waitHeight;
 				moveHeight -= UIScale.adjust(FlxG.width * (0.8 / 40));
 			} else {
-				moveHeight -= cataGroup[cataGroup.length - 1].bg.waitHeight - UIScale.adjust(FlxG.height * 0.8);
+				moveHeight -= cataGroup[cataGroup.length - 1].bg.waitHeight - UIScale.adjust(FlxG.height * 0.8) * 2;
 				moveHeight -= UIScale.adjust(FlxG.width * (0.8 / 40)) * 2;
 			}
 		}
