@@ -598,4 +598,16 @@ class ClientPrefs
 
 		return null;
 	}
+
+	public static function set(variable:String, data:Bool = true, path:String = '') {
+
+		switch (path) {
+			case '':
+				modsData.get(Mods.currentModDirectory).set(variable, data);
+			case 'data':
+				Reflect.setProperty(ClientPrefs.data, variable, data);
+			case _:
+				modsData.get(path).set(variable, data);
+		}
+	}
 }
