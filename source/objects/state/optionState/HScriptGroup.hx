@@ -6,8 +6,11 @@ import objects.state.optionState.Option;
 class HScriptGroup extends OptionCata {
 	var sc:HScript;
 
-	public function new(X:Float, Y:Float, width:Float, height:Float, path:String, file:String) {
+	public function new(X:Float, Y:Float, width:Float, height:Float, modName:String, path:String, file:String) {
 		super(X, Y, width, height);
+		modAdd = true;
+		this.modsName = modName;
+
 		sc = new HScript(path + file + ".hx", this);
 		sc.set("Option", Option);
 		for(construct in Type.getEnumConstructs(OptionType)) {

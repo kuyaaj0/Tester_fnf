@@ -191,16 +191,6 @@ import states.TitleState;
 	public var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
 		'scrolltype' => 'multiplicative',
-		// anyone reading this, amod is multiplicative speed mod, cmod is constant speed mod, and xmod is bpm based speed mod.
-		// an amod example would be chartSpeed * multiplier
-		// cmod would just be constantSpeed = chartSpeed
-		// and xmod basically works by basing the speed on the bpm.
-		// iirc (beatsPerSecond * (conductorToNoteDifference / 1000)) * noteSize (110 or something like that depending on it, prolly just use note.height)
-		// bps is calculated by bpm / 60
-		// oh yeah and you'd have to actually convert the difference to seconds which I already do, because this is based on beats and stuff. but it should work
-		// just fine. but I wont implement it because I don't know how you handle sustains and other stuff like that.
-		// oh yeah when you calculate the bps divide it by the songSpeed or rate because it wont scroll correctly when speeds exist.
-		// -kade
 		'songspeed' => 1.0,
 		'healthgain' => 1.0,
 		'healthloss' => 1.0,
@@ -215,6 +205,7 @@ class ClientPrefs
 {
 	public static var data:SaveVariables = {};
 	public static var defaultData:SaveVariables = {};
+	public static var modsData:Map<String, Map<String, Dynamic>>= [];
 
 	// Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
@@ -322,13 +313,15 @@ class ClientPrefs
 			if (key != 'arrowRGB' && key != 'arrowRGBPixel')
 			{
 				Reflect.setField(FlxG.save.data, key, Reflect.field(data, key));
-			}
+			} //遍历data输入到flxsave里
 		#if sys
 		else if (key == 'arrowRGB')
 			saveArrowRGBData('arrowRGB.json', data.arrowRGB);
 		else if (key == 'arrowRGBPixel')
 			saveArrowRGBData('arrowRGBPixel.json', data.arrowRGBPixel);
 		#end
+
+		FlxG.save.data.modsData = modsData;
 
 		#if ACHIEVEMENTS_ALLOWED Achievements.save(); #end
 		FlxG.save.flush();
@@ -471,6 +464,8 @@ class ClientPrefs
 				loadArrowRGBData('arrowRGBPixel.json', true, ExtraKeysHandler.instance.data.pixelNoteColors);
 			}
 
+		modsData = FlxG.save.data.modsData;
+
 		if (Main.fpsVar != null)
 			Main.fpsVar.visible = data.showFPS;
 
@@ -581,5 +576,23 @@ class ClientPrefs
 		FlxG.sound.muteKeys = turnOn ? TitleState.muteKeys : [];
 		FlxG.sound.volumeDownKeys = turnOn ? TitleState.volumeDownKeys : [];
 		FlxG.sound.volumeUpKeys = turnOn ? TitleState.volumeUpKeys : [];
+	}
+
+	public static function get(variable:String, supportMods:Bool = true):Dynamic {
+		if (supportMods) {
+			if (modsData.get(Mods.currentModDirectory).get(variable) != null)
+					return modsData.get(Mods.currentModDirectory).get(variable);
+			
+			for (mod in Mods.parseList().enabled)
+			{
+				if (modsData.get(mod).get(variable) != null)
+					return modsData.get(mod).get(variable);
+			}
+		}
+
+		if (Reflect.getProperty(ClientPrefs.data, variable) != null)
+			return Reflect.getProperty(ClientPrefs.data, variable);
+
+		return null;
 	}
 }

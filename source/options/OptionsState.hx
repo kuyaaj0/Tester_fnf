@@ -272,7 +272,7 @@ class OptionsState extends MusicBeatState
 			case 'Maintenance':
 				obj = new MaintenanceGroup(outputX, outputY, outputWidth, outputHeight);
 			default:
-				obj = new HScriptGroup(outputX, outputY, outputWidth, outputHeight, extraPath, type);
+				obj = new HScriptGroup(outputX, outputY, outputWidth, outputHeight, type, extraPath, type);
 		}
 		cataGroup.push(obj);
 		obj.follow = follow;
