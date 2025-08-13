@@ -58,6 +58,7 @@ import crowplexus.iris.Iris;
 import crowplexus.hscript.Expr.Error as IrisError;
 import crowplexus.hscript.Printer;
 #end
+import modchart.Manager;
 
 @:allow(backend.Replay)
 /**
@@ -96,6 +97,8 @@ class PlayState extends MusicBeatState
 
 	// event variables
 	private var isCameraOnForcedPos:Bool = false;
+
+	public var modManager:Manager;
 
 	public var boyfriendMap:Map<String, Character> = new Map<String, Character>();
 	public var dadMap:Map<String, Character> = new Map<String, Character>();
@@ -709,6 +712,9 @@ class PlayState extends MusicBeatState
 		playerStrums = new FlxTypedGroup<StrumNote>();
 
 		generateSong(SONG.song);
+		
+		modManager:Manager = new Manager();
+        add(modManager);
 
 		keyboardDisplay = new KeyboardDisplay(ClientPrefs.data.comboOffset[4], ClientPrefs.data.comboOffset[5]);
 		keyboardDisplay.antialiasing = ClientPrefs.data.antialiasing;
