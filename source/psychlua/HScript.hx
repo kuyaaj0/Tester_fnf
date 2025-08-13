@@ -2,10 +2,6 @@ package psychlua;
 
 import flixel.FlxBasic;
 import objects.Character;
-import modcharts.modifiers.*;
-import modcharts.integration.*;
-import modcharts.math.*;
-import modcharts.engine.*;
 import psychlua.LuaUtils;
 import psychlua.CustomSubstate;
 #if LUA_ALLOWED
@@ -298,7 +294,7 @@ class HScript implements ISharedScript {
 			#if flxanimate
 			set('FlxAnimate', FlxAnimate);
 			#end
-				
+
 			//scriptedclass
 			set("ScriptedBaseStage", psychlua.scriptClasses.ScriptedBaseStage);
 			set('ScriptedSprite', psychlua.scriptClasses.ScriptedSprite);
@@ -336,13 +332,6 @@ class HScript implements ISharedScript {
 				});
 
 				if(parent is PlayState) {
-                    set('PlayfieldRenderer', PlayfieldRenderer);
-                    set('ModchartUtil', ModchartUtil);
-                    set('Modifier', Modifier);
-                    set('NoteMovement', NoteMovement);
-                    set('NotePositionData', NotePositionData);
-                    set('ScriptedModifiers', psychlua.scriptClasses.ScriptedModifiers);
-
 					set('debugPrint', function(text:String, ?color:FlxColor = null)
 					{
 						if (color == null)

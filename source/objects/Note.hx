@@ -116,9 +116,6 @@ class Note extends FlxSprite
 
 	public var trackedScale:Float = 0.7; // PsychEK的箭头缩放似乎存在问题，尝试使用这个改善
 
-	public var mesh:modcharts.math.SustainStrip = null;
-    public var z:Float = 0;
-
 	public var offsetX:Float = 0;
 	public var offsetY:Float = 0;
 	public var offsetAngle:Float = 0;
