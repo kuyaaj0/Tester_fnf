@@ -98,8 +98,6 @@ class PlayState extends MusicBeatState
 	// event variables
 	private var isCameraOnForcedPos:Bool = false;
 
-	public var modManager:Manager;
-
 	public var boyfriendMap:Map<String, Character> = new Map<String, Character>();
 	public var dadMap:Map<String, Character> = new Map<String, Character>();
 	public var gfMap:Map<String, Character> = new Map<String, Character>();
@@ -809,8 +807,9 @@ class PlayState extends MusicBeatState
 
 		stagesFunc(function(stage:BaseStage) stage.createPost());
 
-		// 直接在数组中创建实例（仅当不需要后续引用时）
-        callOnHScript('onModChartStart', [new Manager()]);
+		// 请原谅我
+		var mod = new Manager();
+        callOnHScript('onModChartStart', [mod]);
 		
 		callOnScripts('onCreatePost');
 
