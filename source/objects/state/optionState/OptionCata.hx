@@ -10,11 +10,13 @@ class OptionCata extends FlxSpriteGroup
 	public var heightSet:Float = 0;
 	public var heightSetOffset:Float = 0; //用于特殊的高度处理
 
+	public var modAdd:Bool = false;
+	public var modsName:String;
+
 	public var optionArray:Array<Option> = [];
 	public var saveArray:Array<Option> = []; //用于保存最初所有的option
 
 	public var bg:RoundRect;
-
 	public var follow:NaviGroup;
 	public var mem:NaviMember;
 
