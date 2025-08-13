@@ -1342,7 +1342,7 @@ class PlayState extends MusicBeatState
 		insert(members.indexOf(dadGroup), obj);
 	}
 
-	public function addManager(obj:FlxBasic)
+	public function addManager(obj:Manager)
 	{
 		if (obj.playfields == null || obj.playfields == [])
 			return;
