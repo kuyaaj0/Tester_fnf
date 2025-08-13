@@ -121,7 +121,6 @@
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
 	<haxelib name="flxanimate" unless="html5"/>
 	<haxelib name="tjson"/>
-	<haxelib name="modchart"/>
 	<haxelib name="json2object"/>
 
     <haxelib name="funkin.vis"/>
@@ -133,8 +132,11 @@
 	<haxelib name="extension-androidtools" if="android" />
 
 	<!-- ModChart Specific-->
-	<haxedef name="FM_ENGINE" value="NF"/>
-    <haxeflag name="--macro" value="modchart.backend.macros.Macro.includeFiles()"/>
+	<haxedef name="FM_ENGINE" value="PSYCH"/>
+	<haxedef name="FM_ENGINE_VERSION" value="0.7.3"/>
+
+	<haxelib name="funkin-modchart" />
+	<haxeflag name="--macro" value="modchart.backend.macros.Macro.includeFiles()"/>
 		
 	<!--<haxelib name="hx-ios-uikit" if="ios" />-->
 	<haxedef name="SHARE_MOBILE_FILES" if="ios" />
