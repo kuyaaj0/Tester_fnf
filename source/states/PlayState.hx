@@ -58,7 +58,7 @@ import crowplexus.iris.Iris;
 import crowplexus.hscript.Expr.Error as IrisError;
 import crowplexus.hscript.Printer;
 #end
-import modcharts.ModManager;
+import modchart.Manager;
 
 @:allow(backend.Replay)
 /**
@@ -1222,7 +1222,7 @@ class PlayState extends MusicBeatState
 			}
 			modManager = new Manager();
 			callOnScripts('onModChartStart'); //test
-			add(modManager)
+			add(modManager);
 
 			startedCountdown = true;
 			Conductor.songPosition = -Conductor.crochet * 5;
