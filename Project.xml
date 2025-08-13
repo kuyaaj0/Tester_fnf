@@ -131,6 +131,11 @@
 	
 	<!-- Mobile Specific-->
 	<haxelib name="extension-androidtools" if="android" />
+
+	<!-- ModChart Specific-->
+	<haxedef name="FM_ENGINE" value="NF"/>
+	<haxeflag name="--macro" value="modchart.backend.macros.Macro.includeFiles()"/>
+		
 	<!--<haxelib name="hx-ios-uikit" if="ios" />-->
 	<haxedef name="SHARE_MOBILE_FILES" if="ios" />
 
