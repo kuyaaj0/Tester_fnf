@@ -3,6 +3,8 @@ on:
   push:
     branches: [ main ]
     paths-ignore:
+      - 'docs/'
+      - 'example_mods/'
       - 'hmm.json'
       - 'README.md'
   pull_request:
