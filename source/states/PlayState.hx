@@ -808,8 +808,7 @@ class PlayState extends MusicBeatState
 		stagesFunc(function(stage:BaseStage) stage.createPost());
 
 		// 请原谅我
-		var mod = new Manager();
-        callOnHScript('onModChartStart', [mod]);
+        callOnHScript('onModChartStart', [null]);
 		
 		callOnScripts('onCreatePost');
 
@@ -1347,6 +1346,7 @@ class PlayState extends MusicBeatState
 		if (obj.playfields == null || obj.playfields.length == 0)
 			return;
 
+		obj = new Manager();
 		add(obj);
 	}
 
