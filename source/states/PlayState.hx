@@ -713,7 +713,7 @@ class PlayState extends MusicBeatState
 
 		generateSong(SONG.song);
 		
-		modManager:Manager = new Manager();
+		modManager = new Manager();
         add(modManager);
 
 		keyboardDisplay = new KeyboardDisplay(ClientPrefs.data.comboOffset[4], ClientPrefs.data.comboOffset[5]);
