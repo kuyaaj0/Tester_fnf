@@ -602,12 +602,14 @@ class ClientPrefs
 	}
 
 	public static function set(variable:String, data:Bool = true, path:String = '') {
-
 		switch (path) {
 			case '':
-				modsData.get(Mods.currentModDirectory).set(variable, data);
+				if (Mods.currentModDirectory != '')
+					modsData.get(Mods.currentModDirectory).set(variable, data);
+				else 
+					modsData.get('Global mod').set(variable, data);
 			case 'data':
-				Reflect.setProperty(ClientPrefs.data, variable, data);
+				try{ Reflect.setProperty(ClientPrefs.data, variable, data); }
 			case _:
 				modsData.get(path).set(variable, data);
 		}
