@@ -808,6 +808,10 @@ class PlayState extends MusicBeatState
 		setOnScripts('mania', SONG.mania);
 
 		stagesFunc(function(stage:BaseStage) stage.createPost());
+
+		// 直接在数组中创建实例（仅当不需要后续引用时）
+        callOnHScript('onModChartStart', [new Manager()]);
+		
 		callOnScripts('onCreatePost');
 
 		cacheCountdown();
@@ -1220,9 +1224,6 @@ class PlayState extends MusicBeatState
 				setOnScripts('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
 				// if(ClientPrefs.data.middleScroll) opponentStrums.members[i].visible = false;
 			}
-			modManager = new Manager();
-			callOnScripts('onModChartStart'); //test
-			add(modManager);
 
 			startedCountdown = true;
 			Conductor.songPosition = -Conductor.crochet * 5;
