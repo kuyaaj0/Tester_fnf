@@ -37,7 +37,7 @@ typedef NoteSplashData =
  * 
  * If you want to make a custom note type, you should search for: "function set_noteType"
 **/
-class Note extends flixel.addons.effects.FlxSkewedSprite
+class Note extends FlxSprite
 {
 	// This is needed for the hardcoded note types to appear on the Chart Editor,
 	// It's also used for backwards compatibility with 0.1 - 0.3.2 charts.
