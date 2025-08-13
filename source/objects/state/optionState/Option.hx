@@ -44,7 +44,7 @@ class Option extends FlxSpriteGroup
 	public var inter:Float = 10; //设置与设置间的y轴间隔
 
 	public var follow:OptionCata;
-	public var modsData:Map<String, Dynamic>; //mod数据
+	public var modsData:Map<String, Dynamic> = []; //mod数据
 	public var modAdd:Bool;
 
 	/////////////////////////////////////////////
@@ -57,7 +57,7 @@ class Option extends FlxSpriteGroup
 		this.modAdd = follow.modAdd;
 		if (modAdd){
 			if (ClientPrefs.modsData.get(follow.modsName) == null) {
-				ClientPrefs.modsData.set(follow.modsName, new Map<String, Dynamic>());
+				ClientPrefs.modsData.set(follow.modsName, []);
 			}
 			modsData = ClientPrefs.modsData.get(follow.modsName);
 		}

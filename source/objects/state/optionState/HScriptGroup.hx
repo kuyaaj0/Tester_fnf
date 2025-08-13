@@ -8,7 +8,7 @@ class HScriptGroup extends OptionCata {
 
 	public function new(X:Float, Y:Float, width:Float, height:Float, modName:String, path:String, file:String) {
 		super(X, Y, width, height);
-		modAdd = true;
+		this.modAdd = true;
 		this.modsName = modName;
 
 		sc = new HScript(path + file + ".hx", this);

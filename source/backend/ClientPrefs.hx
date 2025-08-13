@@ -464,7 +464,9 @@ class ClientPrefs
 				loadArrowRGBData('arrowRGBPixel.json', true, ExtraKeysHandler.instance.data.pixelNoteColors);
 			}
 
-		modsData = FlxG.save.data.modsData;
+		if (FlxG.save.data.modsData != null)
+			modsData = FlxG.save.data.modsData;
+		else modsData = [];
 
 		if (Main.fpsVar != null)
 			Main.fpsVar.visible = data.showFPS;
