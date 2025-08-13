@@ -582,8 +582,11 @@ class ClientPrefs
 		if (supportMods) {
 			if (modsData.get(Mods.currentModDirectory).get(variable) != null)
 					return modsData.get(Mods.currentModDirectory).get(variable);
-			
-			for (mod in Mods.parseList().enabled)
+
+			if (modsData.get('Global mod').get(variable) != null)
+					return modsData.get('Global mod').get(variable);
+
+			for (mod in Mods.getGlobalMods())
 			{
 				if (modsData.get(mod).get(variable) != null)
 					return modsData.get(mod).get(variable);
