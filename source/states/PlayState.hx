@@ -1344,7 +1344,7 @@ class PlayState extends MusicBeatState
 
 	public function addManager(obj:Manager)
 	{
-		if (obj.playfields == null || obj.playfields == [])
+		if (obj.playfields == null || obj.playfields.length == 0)
 			return;
 
 		add(obj);
@@ -2391,8 +2391,6 @@ class PlayState extends MusicBeatState
 			trace("RESET = True");
 		}
 		doDeathCheck();
-
-		modManager.update(elapsed);
 
 		if (unspawnNotes[0] != null)
 		{
