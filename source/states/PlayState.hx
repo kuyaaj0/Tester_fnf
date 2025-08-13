@@ -58,7 +58,8 @@ import crowplexus.iris.Iris;
 import crowplexus.hscript.Expr.Error as IrisError;
 import crowplexus.hscript.Printer;
 #end
-import modchart.Manager;
+import modcharts.ModManager;
+import modcharts.integration.NoteMovement;
 
 @:allow(backend.Replay)
 /**
@@ -98,7 +99,7 @@ class PlayState extends MusicBeatState
 	// event variables
 	private var isCameraOnForcedPos:Bool = false;
 
-	public var modManager:Manager;
+	public var modManager:ModManager;
 
 	public var boyfriendMap:Map<String, Character> = new Map<String, Character>();
 	public var dadMap:Map<String, Character> = new Map<String, Character>();
@@ -706,15 +707,14 @@ class PlayState extends MusicBeatState
 		splash.setupNoteSplash(100, 100);
 		grpNoteSplashes.add(splash);
 		splash.alpha = 0.000001; // cant make it invisible or it won't allow precaching
-		noteGroup.add(grpNoteSplashes);
 
 		opponentStrums = new FlxTypedGroup<StrumNote>();
 		playerStrums = new FlxTypedGroup<StrumNote>();
 
 		generateSong(SONG.song);
 		
-		modManager = new Manager();
-        add(modManager);
+		modManager = new ModManager(strumLineNotes, notes, camHUD, this);
+		noteGroup.add(grpNoteSplashes);
 
 		keyboardDisplay = new KeyboardDisplay(ClientPrefs.data.comboOffset[4], ClientPrefs.data.comboOffset[5]);
 		keyboardDisplay.antialiasing = ClientPrefs.data.antialiasing;
@@ -1211,6 +1211,7 @@ class PlayState extends MusicBeatState
 
 			generateStaticArrows(0);
 			generateStaticArrows(1);
+			NoteMovement.getDefaultStrumPos(this);
 			for (i in 0...playerStrums.length)
 			{
 				setOnScripts('defaultPlayerStrumX' + i, playerStrums.members[i].x);
