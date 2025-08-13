@@ -214,6 +214,73 @@ class ClientPrefs
 		'note_left' => [A, LEFT],
 		'note_down' => [S, DOWN],
 		'note_right' => [D, RIGHT],
+
+		//multi keys support (maybe)	//屎山）
+		'0_key_0' => [SPACE],
+
+		'1_key_0' => [D],
+		'1_key_1' => [K],
+
+		'2_key_0' => [D],
+		'2_key_1' => [SPACE],
+		'2_key_2' => [K],
+
+		'3_key_0' => [D],	//比较神奇的一点，游戏没有用这里的键位，还是默认的wasd）
+		'3_key_1' => [F],
+		'3_key_2' => [J],
+		'3_key_3' => [K],
+
+		'4_key_0' => [D],
+		'4_key_1' => [F],
+		'4_key_2' => [SPACE],
+		'4_key_3' => [J],
+		'4_key_4' => [K],
+
+		'5_key_0' => [S],
+		'5_key_1' => [D],
+		'5_key_2' => [F],
+		'5_key_3' => [J],
+		'5_key_4' => [K],
+		'5_key_5' => [L],
+
+		'6_key_0' => [S],
+		'6_key_1' => [D],
+		'6_key_2' => [F],
+		'6_key_3' => [SPACE],
+		'6_key_4' => [J],
+		'6_key_5' => [K],
+		'6_key_6' => [L],
+
+		'7_key_0' => [S],
+		'7_key_1' => [D],
+		'7_key_2' => [F],
+		'7_key_3' => [SPACE],
+		'7_key_4' => [J],
+		'7_key_5' => [K],
+		'7_key_6' => [L],
+		'7_key_7' => [L],
+
+		'8_key_0' => [A],
+		'8_key_1' => [S],
+		'8_key_2' => [D],
+		'8_key_3' => [F],
+		'8_key_4' => [SPACE],
+		'8_key_5' => [H],
+		'8_key_6' => [J],
+		'8_key_7' => [K],
+		'8_key_8' => [L],
+
+		'9_key_0' => [A],
+		'9_key_1' => [S],
+		'9_key_2' => [D],
+		'9_key_3' => [F],
+		'9_key_4' => [G],
+		'9_key_5' => [SPACE],
+		'9_key_6' => [H],
+		'9_key_7' => [J],
+		'9_key_8' => [K],
+		'9_key_9' => [L],
+
 		'ui_up' => [W, UP],
 		'ui_left' => [A, LEFT],
 		'ui_down' => [S, DOWN],
@@ -293,18 +360,6 @@ class ClientPrefs
 		defaultButtons = gamepadBinds.copy();
 		defaultMobileBinds = mobileBinds.copy();
 
-		var saveDataKeybinds = ExtraKeysHandler.instance.data.keybinds;
-
-		// if resetting keybinds to default doesnt work, hmu
-		for (i in 0...saveDataKeybinds.length) {
-			var maniaKeybinds = saveDataKeybinds[i];
-			var maniaID = '${i}_key';
-			for (j in 0...maniaKeybinds.length) {
-				var keybindID = '${maniaID}_$j';
-				var codes = maniaKeybinds[j];
-				defaultKeys.set(keybindID, codes);
-			}
-		}
 	}
 
 	public static function saveSettings()
@@ -332,41 +387,6 @@ class ClientPrefs
 		save.data.keyboard = keyBinds;
 		save.data.gamepad = gamepadBinds;
 		save.data.mobile = mobileBinds;
-
-		// this was NOT that easy
-		var saveDataKeybinds:Array<Array<Array<Int>>> = [];
-			//[], [], [], [], [], [], [], [], []
-
-		for (i in 0...ExtraKeysHandler.instance.data.maxKeys+1) {
-			saveDataKeybinds.push([]);
-		}
-
-		// loads keybinds in a very specific way
-		// do NOT put "*key*" in the map or it will die
-		for (k in keyBinds.keys()) {
-			if (k.contains('key')) {
-				trace('EK Keybind detected: $k');
-				var storeNum = Std.parseInt(k.split('_')[0]);
-
-				var convertKeycodes = keyBinds.get(k);
-				var newKeycodes:Array<Int> = [];
-				for (key in convertKeycodes) { newKeycodes.push(key); }
-
-				var index = Std.parseInt(k.split('_')[2]);
-
-				saveDataKeybinds[storeNum].insert(index, newKeycodes);
-
-				//trace('$k saved to $storeNum with codes ${keyBinds.get(k)} and index $index');
-			}
-		}
-
-		var saveKeybindData:EKKeybindSavedData = new EKKeybindSavedData(saveDataKeybinds);
-		var writer = new json2object.JsonWriter<EKKeybindSavedData>();
-		var content = writer.write(saveKeybindData, '  ');
-		#if sys
-		trace('Saved ekkeybinds.json');
-		File.saveContent('ekkeybinds.json', content);
-		#end
 
 		save.flush();
 		FlxG.log.add("Settings saved!");
@@ -534,24 +554,6 @@ class ClientPrefs
 				for (control => keys in loadedControls)
 					if (mobileBinds.exists(control))
 						mobileBinds.set(control, keys);
-			}
-
-			var savedKeybindJson = CoolUtil.getKeybinds('ekkeybinds.json', ExtraKeysHandler.instance.data.keybinds);
-			//trace(savedKeybindJson.keybinds);
-			var saveDataKeybinds = savedKeybindJson.keybinds;
-
-			for (i in 0...saveDataKeybinds.length) 
-			{
-				var maniaKeybinds = saveDataKeybinds[i];
-				var maniaID = '${i}_key';
-				for (j in 0...maniaKeybinds.length) 
-				{
-					var keybindID = '${maniaID}_$j';
-					var codes = maniaKeybinds[j];
-					//trace('Set $keybindID to $codes');
-
-					keyBinds.set(keybindID, codes);
-				}
 			}
 
 			reloadVolumeKeys();
