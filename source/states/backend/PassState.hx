@@ -11,7 +11,7 @@ import flixel.util.FlxSave;
 
 import server.online.LoginClient;
 
-class PassStates extends FlxState {
+class PassState extends FlxState {
     private var username:FlxInputText;
     private var password:FlxInputText;
     private var submitButton:FlxButton;
