@@ -153,6 +153,9 @@
 	<haxedef name="HX_HAS_ATOMIC"/>
 
 
+	<haxedef name="haxeui-core"/>
+	<haxedef name="haxeui-openfl"/>
+
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->

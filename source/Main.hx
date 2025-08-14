@@ -23,8 +23,6 @@ import backend.extraKeys.ExtraKeysHandler;
 
 import developer.console.TraceInterceptor;
 
-import haxe.ui.Toolkit;
-
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import psychlua.HScript.HScriptInfos;
@@ -199,8 +197,6 @@ class Main extends Sprite
 
 		var effect = new MouseEffect();
 		addChild(effect);
-
-		Toolkit.init();
 
 		#if linux
 		var icon = Image.fromFile("icon.png");
