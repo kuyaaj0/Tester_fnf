@@ -808,7 +808,9 @@ class PlayState extends MusicBeatState
 		stagesFunc(function(stage:BaseStage) stage.createPost());
 
 		// 请原谅我
-        callOnHScript('onModChartStart', [null]);
+		var mod = new Manager();
+        callOnHScript('onModChartStart', [mod]);
+		addManager(mod);
 		
 		callOnScripts('onCreatePost');
 
@@ -1341,14 +1343,12 @@ class PlayState extends MusicBeatState
 		insert(members.indexOf(dadGroup), obj);
 	}
 
-	public function addManager(obj:FlxBasic)
+	public function addManager(obj:Manager)
 	{
-		obj = new Manager();
-
-		add(obj);
-
 		if (obj.playfields == null || obj.playfields.length == 0)
 			return;
+
+		add(obj);
 	}
 
 	public function clearNotesBefore(time:Float)
