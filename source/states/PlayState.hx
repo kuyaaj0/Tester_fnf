@@ -1242,6 +1242,7 @@ class PlayState extends MusicBeatState
 
 			
             callOnHScript('onModChartStart', [mod]);
+            addManager(mod);
 
 			startTimer = new FlxTimer().start(Conductor.crochet / 1000 / playbackRate, function(tmr:FlxTimer)
 			{
@@ -1547,7 +1548,6 @@ class PlayState extends MusicBeatState
 		if (autoUpdateRPC)
 			DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter(), true, songLength);
 		#end
-		addManager(mod);
 		setOnScripts('songLength', songLength);
 		callOnScripts('onSongStart');
 	}
