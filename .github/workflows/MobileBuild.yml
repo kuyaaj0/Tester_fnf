@@ -138,6 +138,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@main
+        
+      - name: Select Xcode 15.4
+        uses: actions/xcode@v1
+        with:
+          xcode-version: '15.4'
   
       - name: Setup Haxe
         uses: krdlab/setup-haxe@master
