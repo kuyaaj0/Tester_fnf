@@ -39,7 +39,7 @@
       "version": "1.5.1"
     },
     {
-      "name": "funkin-modchart",
+      "name": "modcharts",
       "type": "git",
       "dir": null,
       "ref": "main",
