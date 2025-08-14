@@ -254,10 +254,11 @@ class CurrentManager
 		if (MobileControls.mode == 4)
 		{
 			target = control.hitbox;
-			buttonLeft = control.hitbox.buttonLeft;
-			buttonDown = control.hitbox.buttonDown;
-			buttonUp = control.hitbox.buttonUp;
-			buttonRight = control.hitbox.buttonRight;
+			// Use buttonNotes array instead of individual button fields
+			buttonLeft = control.hitbox.buttonNotes[0];
+			buttonDown = control.hitbox.buttonNotes[1];
+			buttonUp = control.hitbox.buttonNotes[2];
+			buttonRight = control.hitbox.buttonNotes[3];
 			buttonExtra1 = control.hitbox.buttonExtra1;
 			buttonExtra2 = control.hitbox.buttonExtra2;
 			buttonExtra3 = control.hitbox.buttonExtra3;

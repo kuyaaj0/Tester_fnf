@@ -16,10 +16,102 @@ class ControlsSubState extends MusicBeatSubstate
 	var curSelected:Int = 0;
 	var curAlt:Bool = false;
 
-	var curEKPage:Int = 3;
-
 	// Show on gamepad - Display name - Save file key - Rebind display name
-	var options:Array<Dynamic> = [];
+	var options:Array<Dynamic> = [
+		[true, 'NOTES'],
+		[true, '1K', '0_key_0', '0k_0'],
+		[true],
+		[true, '2K 0', '1_key_0', '1k_0'],
+		[true, '2K 1', '1_key_1', '1k_1'],
+		[true],
+		[true, '3K 0', '2_key_0', '2k_0'],
+		[true, '3K 1', '2_key_1', '2k_1'],
+		[true, '3K 2', '2_key_2', '2k_2'],
+		[true],
+		[true, '4K 0', '3_key_0', '3k_0'],
+		[true, '4K 1', '3_key_1', '3k_1'],
+		[true, '4K 2', '3_key_2', '3k_2'],
+		[true, '4K 3', '3_key_3', '3k_3'],
+		[true],
+		[true, '5K 0', '4_key_0', '4k_0'],
+		[true, '5K 1', '4_key_1', '4k_1'],
+		[true, '5K 2', '4_key_2', '4k_2'],
+		[true, '5K 3', '4_key_3', '4k_3'],
+		[true, '5K 4', '4_key_4', '4k_4'],
+		[true],
+		[true, '6K 0', '5_key_0', '5k_0'],
+		[true, '6K 1', '5_key_1', '5k_1'],
+		[true, '6K 2', '5_key_2', '5k_2'],
+		[true, '6K 3', '5_key_3', '5k_3'],
+		[true, '6K 4', '5_key_4', '5k_4'],
+		[true, '6K 5', '5_key_5', '5k_5'],
+		[true],
+		[true, '7K 0', '6_key_0', '6k_0'],
+		[true, '7K 1', '6_key_1', '6k_1'],
+		[true, '7K 2', '6_key_2', '6k_2'],
+		[true, '7K 3', '6_key_3', '6k_3'],
+		[true, '7K 4', '6_key_4', '6k_4'],
+		[true, '7K 5', '6_key_5', '6k_5'],
+		[true, '7K 6', '6_key_6', '6k_6'],
+		[true],
+		[true, '8K 0', '7_key_0', '7k_0'],
+		[true, '8K 1', '7_key_1', '7k_1'],
+		[true, '8K 2', '7_key_2', '7k_2'],
+		[true, '8K 3', '7_key_3', '7k_3'],
+		[true, '8K 4', '7_key_4', '7k_4'],
+		[true, '8K 5', '7_key_5', '7k_5'],
+		[true, '8K 6', '7_key_6', '7k_6'],
+		[true, '8K 7', '7_key_7', '7k_7'],
+		[true],
+		[true, '9K 0', '8_key_0', '8k_0'],
+		[true, '9K 1', '8_key_1', '8k_1'],
+		[true, '9K 2', '8_key_2', '8k_2'],
+		[true, '9K 3', '8_key_3', '8k_3'],
+		[true, '9K 4', '8_key_4', '8k_4'],
+		[true, '9K 5', '8_key_5', '8k_5'],
+		[true, '9K 6', '8_key_6', '8k_6'],
+		[true, '9K 7', '8_key_7', '8k_7'],
+		[true, '9K 8', '8_key_8', '8k_8'],
+		[true],
+		[true, '10K 0', '9_key_0', '9k_0'],
+		[true, '10K 1', '9_key_1', '9k_1'],
+		[true, '10K 2', '9_key_2', '9k_2'],
+		[true, '10K 3', '9_key_3', '9k_3'],
+		[true, '10K 4', '9_key_4', '9k_4'],
+		[true, '10K 5', '9_key_5', '9k_5'],
+		[true, '10K 6', '9_key_6', '9k_6'],
+		[true, '10K 7', '9_key_7', '9k_7'],
+		[true, '10K 8', '9_key_8', '9k_8'],
+		[true, '10K 9', '9_key_9', '9k_9'],
+		[true],
+		/*[true, 'NOTES Basic'],
+		[true, 'Left', 'note_left', 'Note Left'],
+		[true, 'Down', 'note_down', 'Note Down'],
+		[true, 'Up', 'note_up', 'Note Up'],
+		[true, 'Right', 'note_right', 'Note Right'],
+		[true],*/
+		[true, 'UI'],
+		[true, 'Left', 'ui_left', 'UI Left'],
+		[true, 'Down', 'ui_down', 'UI Down'],
+		[true, 'Up', 'ui_up', 'UI Up'],
+		[true, 'Right', 'ui_right', 'UI Right'],
+		[true],
+		[true, 'Reset', 'reset', 'Reset'],
+		[true, 'Accept', 'accept', 'Accept'],
+		[true, 'Back', 'back', 'Back'],
+		[true, 'Pause', 'pause', 'Pause'],
+		[false],
+		[false, 'VOLUME'],
+		[false, 'Mute', 'volume_mute', 'Volume Mute'],
+		[false, 'Up', 'volume_up', 'Volume Up'],
+		[false, 'Down', 'volume_down', 'Volume Down'],
+		[false],
+		[false, 'DEBUG'],
+		[false, 'Key 1', 'debug_1', 'Debug Key #1'],
+		[false, 'Key 2', 'debug_2', 'Debug Key #2'],
+		[false, 'WINDOW'],
+		[false, 'Fullscreen', 'fullscreen', 'Fullscreen Toggel']
+	];
 	var curOptions:Array<Int>;
 	var curOptionsValid:Array<Int>;
 
@@ -36,8 +128,6 @@ class ControlsSubState extends MusicBeatSubstate
 	var keyboardColor:FlxColor = 0xff7192fd;
 	var onKeyboardMode:Bool = true;
 
-	var tipTxt:FlxText;
-
 	var controllerSpr:FlxSprite;
 
 	public function new()
@@ -47,6 +137,10 @@ class ControlsSubState extends MusicBeatSubstate
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Controls Menu", null);
 		#end
+
+		options.push([true]);
+		options.push([true]);
+		options.push([true, defaultKey]);
 
 		var bg:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.WHITE);
 		bg.scrollFactor.set();
@@ -74,18 +168,6 @@ class ControlsSubState extends MusicBeatSubstate
 		controllerSpr.animation.add('gamepad', [1], 1, false);
 		add(controllerSpr);
 
-		var tipX = 20;
-		var tipY = FlxG.height - 28;
-		var tipBG = new FlxSprite(0, tipY);
-		tipBG.makeGraphic(FlxG.width, 28, 0xFF000000);
-		tipBG.alpha = 0.5;
-		add(tipBG);
-
-		tipTxt = new FlxText(tipX, tipY + 6, 0, 'Press Q/E to change the Extra Keys Page.', 16);
-		tipTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.NONE, FlxColor.BLACK);
-		tipTxt.borderSize = 2;
-		add(tipTxt);
-
 		var text:Alphabet = new Alphabet(60, 90, 'CTRL', false);
 		text.alignment = CENTERED;
 		text.setScale(0.4);
@@ -112,60 +194,6 @@ class ControlsSubState extends MusicBeatSubstate
 		grpBinds.clear();
 
 		var myID:Int = 0;
-
-		// this approach is also null safe. you wont run to NORs with this way
-		options = [[false, 'NOTES']];
-		var uhhh:Array<Array<Dynamic>> = [];
-
-		for (k in ClientPrefs.keyBinds.keys()) {
-			var idxPage = Std.parseInt(k.split('_')[0]);
-			var nteIdx = Std.parseInt(k.split('_')[2]);
-			if (idxPage == curEKPage) {
-				uhhh.push([idxPage, nteIdx, k]);
-			}
-		}
-
-		uhhh.sort(function(a, b) {
-			return Std.parseInt(a[1]) - Std.parseInt(b[1]);
-		});
-
-		for (what in uhhh) {
-			//trace(what);
-			options.push([false, '${what[0] + 1}K ${what[1] + 1}', what[2], '${what[0] + 1} Keys Note ${what[1] + 1}']);
-		}
-
-		var optionsTemplate:Array<Dynamic> = [
-			[false],
-			[true, 'UI'],
-			[true, 'Left', 'ui_left', 'UI Left'],
-			[true, 'Down', 'ui_down', 'UI Down'],
-			[true, 'Up', 'ui_up', 'UI Up'],
-			[true, 'Right', 'ui_right', 'UI Right'],
-			[true],
-			[true, 'Reset', 'reset', 'Reset'],
-			[true, 'Accept', 'accept', 'Accept'],
-			[true, 'Back', 'back', 'Back'],
-			[true, 'Pause', 'pause', 'Pause'],
-			[false],
-			[false, 'VOLUME'],
-			[false, 'Mute', 'volume_mute', 'Volume Mute'],
-			[false, 'Up', 'volume_up', 'Volume Up'],
-			[false, 'Down', 'volume_down', 'Volume Down'],
-			[false],
-			[false, 'DEBUG'],
-			[false, 'Key 1', 'debug_1', 'Debug Key #1'],
-			[false, 'Key 2', 'debug_2', 'Debug Key #2'],
-			[true],
-			[true],
-			[true, defaultKey]
-		];
-
-		// end of template making
-
-		for (thing in optionsTemplate) {
-			options.push(thing);
-		}
-
 		for (i in 0...options.length)
 		{
 			var option:Array<Dynamic> = options[i];
@@ -347,16 +375,6 @@ class ControlsSubState extends MusicBeatSubstate
 				|| FlxG.gamepads.anyJustPressed(DPAD_DOWN)
 				|| FlxG.gamepads.anyJustPressed(LEFT_STICK_DIGITAL_DOWN))
 				updateText(1);
-			
-			if (FlxG.keys.justPressed.Q || FlxG.keys.justPressed.E && onKeyboardMode)
-			{
-				curEKPage += FlxG.keys.justPressed.E ? 1 : -1;
-				if (curEKPage < 0)
-					curEKPage = 0;
-				if (curEKPage > ExtraKeysHandler.instance.data.maxKeys)
-					curEKPage = ExtraKeysHandler.instance.data.maxKeys;
-				createTexts();
-			}
 
 			if (controls.ACCEPT || FlxG.gamepads.anyJustPressed(START) || FlxG.gamepads.anyJustPressed(A))
 			{
@@ -553,8 +571,6 @@ class ControlsSubState extends MusicBeatSubstate
 
 	function updateText(?move:Int = 0)
 	{
-		if (onKeyboardMode && FlxG.keys.pressed.SHIFT) move = move * 3;
-
 		if (move != 0)
 		{
 			// var dir:Int = Math.round(move / Math.abs(move));
@@ -605,8 +621,6 @@ class ControlsSubState extends MusicBeatSubstate
 		curAlt = false;
 		controllerSpr.animation.play(onKeyboardMode ? 'keyboard' : 'gamepad');
 		createTexts();
-		if (onKeyboardMode) tipTxt.text = 'Press Q/E to change the Extra Keys Page. Hold SHIFT to scroll 3x faster.';
-		else tipTxt.text = 'Extra Keys Not supported yet.';
 	}
 
 	function updateAlt(?doSwap:Bool = false)
