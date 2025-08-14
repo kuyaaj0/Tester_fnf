@@ -27,6 +27,16 @@
       "version": "3.2.2"
     },
     {
+      "name": "haxeui-core",
+      "type": "haxelib",
+      "version": "1.7.0"
+    },
+    {
+      "name": "haxeui-openfl",
+      "type": "haxelib",
+      "version": "1.2.3"
+    },
+    {
       "name": "flixel-ui",
       "type": "git",
       "dir": null,
