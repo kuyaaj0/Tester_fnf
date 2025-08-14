@@ -210,25 +210,25 @@ class ClientPrefs
 	// Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
 		// Key Bind, Name for ControlsSubState
-		'note_up' => [W, UP],
-		'note_left' => [A, LEFT],
-		'note_down' => [S, DOWN],
-		'note_right' => [D, RIGHT],
+		//'note_up' => [W, UP],
+		//'note_left' => [A, LEFT],
+		//'note_down' => [S, DOWN],
+		//'note_right' => [D, RIGHT],
 
 		//multi keys support (maybe)	//屎山）
 		'0_key_0' => [SPACE],
 
-		'1_key_0' => [D],
-		'1_key_1' => [K],
+		'1_key_0' => [D, LEFT],
+		'1_key_1' => [K, RIGHT],
 
 		'2_key_0' => [D],
 		'2_key_1' => [SPACE],
 		'2_key_2' => [K],
 
-		'3_key_0' => [D],	//比较神奇的一点，游戏没有用这里的键位，还是默认的wasd）
-		'3_key_1' => [F],
-		'3_key_2' => [J],
-		'3_key_3' => [K],
+		'3_key_0' => [D, LEFT],	//将原有的note_xx替代
+		'3_key_1' => [F, DOWN],
+		'3_key_2' => [J, UP],
+		'3_key_3' => [K, RIGHT],
 
 		'4_key_0' => [D],
 		'4_key_1' => [F],
