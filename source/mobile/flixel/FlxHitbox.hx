@@ -6,6 +6,8 @@ import mobile.flixel.FlxButton;
 import openfl.display.Shape;
 import mobile.flixel.input.FlxMobileInputID;
 import states.PlayState;
+import backend.extraKeys.ExtraKeysHandler;
+import flixel.util.FlxColor;
 
 /**
  * A zone with dynamic hint's based on mania.
@@ -265,6 +267,32 @@ class FlxHitbox extends FlxMobileInputManager
 	 */
 	private function getColor(index:Int, mania:Int):Int
 	{
+		// 动态颜色设置优先
+		if (ClientPrefs.data.dynamicColors)
+		{
+			var keyMode = ExtraKeysHandler.instance.data.keys[mania];
+			if (keyMode != null)
+			{
+				var noteIndex = keyMode.notes[index];
+				if (ClientPrefs.data.arrowRGB != null && noteIndex < ClientPrefs.data.arrowRGB.length)
+				{
+					return ClientPrefs.data.arrowRGB[noteIndex][0];
+				}
+			}
+		}
+		
+		// 使用extrakeys.json中的默认颜色
+		var keyMode = ExtraKeysHandler.instance.data.keys[mania];
+		if (keyMode != null)
+		{
+			var noteIndex = keyMode.notes[index];
+			if (noteIndex < ExtraKeysHandler.instance.data.colors.length)
+			{
+				var colorObj = ExtraKeysHandler.instance.data.colors[noteIndex];
+				return FlxColor.fromString('#' + colorObj.inner);
+			}
+		}
+
 		return switch (mania)
 		{
 			case 0: 0xFFC24B99; // 1K - Purple
@@ -280,7 +308,6 @@ class FlxHitbox extends FlxMobileInputManager
 	override function destroy()
 	{
 		super.destroy();
-
 
 		for (button in buttonNotes)
 		{
