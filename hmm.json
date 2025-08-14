@@ -39,6 +39,11 @@
       "version": "1.5.1"
     },
     {
+      "name": "crypto",
+      "type": "haxelib",
+      "version": "1.0.4"
+    },
+    {
       "name": "modcharts",
       "type": "git",
       "dir": null,
