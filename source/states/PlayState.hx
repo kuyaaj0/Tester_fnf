@@ -1158,6 +1158,7 @@ class PlayState extends MusicBeatState
 
 	var startTimer:FlxTimer;
 	var finishTimer:FlxTimer = null;
+    var mod = new Manager();
 
 	// For being able to mess with the sprites on Lua
 	public var countdownReady:FlxSprite;
@@ -1239,6 +1240,9 @@ class PlayState extends MusicBeatState
 			}
 			moveCameraSection();
 
+			
+            callOnHScript('onModChartStart', [mod]);
+
 			startTimer = new FlxTimer().start(Conductor.crochet / 1000 / playbackRate, function(tmr:FlxTimer)
 			{
 				characterBopper(tmr.loopsLeft);
@@ -1292,10 +1296,6 @@ class PlayState extends MusicBeatState
 				stagesFunc(function(stage:BaseStage) stage.countdownTick(tick, swagCounter));
 				callOnLuas('onCountdownTick', [swagCounter]);
 				callOnHScript('onCountdownTick', [tick, swagCounter]);
-
-				var mod = new Manager();
-                callOnHScript('onModChartStart', [mod]);
-		        addManager(mod);
 
 				swagCounter += 1;
 			}, 5);
