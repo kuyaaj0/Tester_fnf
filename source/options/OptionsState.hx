@@ -23,7 +23,6 @@ class OptionsState extends MusicBeatState
 	public var baseColor = 0x302E3A;
 	public var mainColor = 0x24232C;
 
-
 	////////////////////////////////////////////////////////////////////////////////////////////
 
 	public var mouseEvent:MouseEvent;
@@ -113,6 +112,8 @@ class OptionsState extends MusicBeatState
 								],
 								naviMoveEvent);
 		add(naviMove);
+
+		naviGroup[0].moveParent(0.01);
 
 		/////////////////////////////////////////////////////////////////
 
@@ -312,9 +313,8 @@ class OptionsState extends MusicBeatState
 	}
 
 	var naviTween:Array<FlxTween> = [];
-	var naviTime = 0.35;
 	var alreadyDetele:Bool = false;
-	public function changeNavi(navi:NaviGroup, isOpened:Bool) {
+	public function changeNavi(navi:NaviGroup, isOpened:Bool, naviTime:Float = 0.45) {
 		for (tween in naviTween) {
 			if (tween != null) tween.cancel();
 		}

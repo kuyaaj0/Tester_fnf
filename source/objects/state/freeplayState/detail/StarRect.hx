@@ -1,4 +1,4 @@
-package objects.state.freeplayState;
+package objects.state.freeplayState.detail;
 
 class StarRect extends FlxSpriteGroup{
     public var bg:Rect;

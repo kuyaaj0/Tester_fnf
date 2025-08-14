@@ -12,8 +12,8 @@ import flixel.util.FlxSave;
 import server.online.LoginClient;
 
 class PassState extends FlxState {
-    private var username:FlxInputText;
-    private var password:FlxInputText;
+    private var username:PsychUIInputText;
+    private var password:PsychUIInputText;
     private var submitButton:FlxButton;
     
     private var loginclient:LoginClient;
@@ -32,28 +32,29 @@ class PassState extends FlxState {
             loginFunc(save.data.user, save.data.pass);
         }
         
-        username = new FlxInputText(
+        username = new PsychUIInputText(
             FlxG.width / 2 - 150,
             FlxG.height / 2 - 60,
             300,
             "UserName",
-            16,
-            FlxColor.BLACK,
-            FlxColor.WHITE
+            16
+            
         );
-        username.alignment = CENTER;
+        username.textObj.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
+		username.textObj.antialiasing = ClientPrefs.data.antialiasing;
+        //username.alignment = CENTER;
         add(username);
         
-        password = new FlxInputText(
+        password = new PsychUIInputText(
             FlxG.width / 2 - 150,
             FlxG.height / 2,
             300,
             "PassWord",
-            16,
-            FlxColor.BLACK,
-            FlxColor.WHITE
+            16
         );
-        password.alignment = CENTER;
+        //password.alignment = CENTER;
+        password.textObj.font = Paths.font(Language.get('fontName', 'ma') + '.ttf');
+		password.textObj.antialiasing = ClientPrefs.data.antialiasing;
         add(password);
         
         submitButton = new FlxButton(
@@ -86,9 +87,9 @@ class PassState extends FlxState {
                     FlxG.switchState(new InitState());
                 }
             } else if (response.message == "Bad") {
-            //trace("登录失败: " + response.message);
+            trace("登录失败: " + response.message);
             } else {
-            //trace("请求错误: " + response.message);
+            trace("请求错误: " + response.message);
             }
         };
     }

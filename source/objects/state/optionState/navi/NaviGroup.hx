@@ -123,8 +123,7 @@ class NaviGroup extends FlxSpriteGroup
 
     public var isOpened:Bool = false;
     var moveTweens:Array<FlxTween> = [];
-    var changeTimer:Float = 0.45;
-    public function moveParent() {
+    public function moveParent(changeTimer:Float = 0.45) {
         for (tween in moveTweens) {
 			if (tween != null) tween.cancel();
 		}
@@ -134,7 +133,7 @@ class NaviGroup extends FlxSpriteGroup
             moveTweens.push(tween);
         }
 
-        OptionsState.instance.changeNavi(this, isOpened);
+        OptionsState.instance.changeNavi(this, isOpened, changeTimer);
         isOpened = !isOpened;
     }
 }

@@ -14,7 +14,9 @@ import backend.diffCalc.DiffCalc;
 import backend.Replay;
 import backend.diffCalc.StarRating;
 
-import objects.state.freeplayState.*;
+import objects.state.freeplayState.detail.*;
+import objects.state.freeplayState.down.*;
+import objects.state.freeplayState.others.*;
 
 import substates.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
@@ -38,6 +40,8 @@ class FreeplayState extends MusicBeatState
 	var songs:Array<SongMetadata> = [];
 
 	public static var vocals:FlxSound = null;
+
+	public var mouse:MouseEvent;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -67,9 +71,15 @@ class FreeplayState extends MusicBeatState
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	var downBG:Rect;
+	var historyGroup:Array<HistoryRect> = [];
 
-	public var test:Float = 0;
+	//////////////////////////////
+
+	var funcData:Array<String> = ['option', 'mod', 'changer', 'editor', 'reset', 'random'];
+	var funcColors:Array<FlxColor> = [0x63d6ff, 0xd1fc52, 0xff354e, 0xff617e, 0xfd6dff, 0x6dff6d];
+	var downBG:Rect;
+	var backRect:BackButton;
+	var funcGroup:Array<FuncButton> = [];
 
 	override function create()
 	{
@@ -80,6 +90,9 @@ class FreeplayState extends MusicBeatState
 		#if !mobile
 		FlxG.mouse.visible = true;
 		#end
+
+		mouse = new MouseEvent();
+		add(mouse);
 
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;
@@ -219,12 +232,21 @@ class FreeplayState extends MusicBeatState
 		add(keyCountData);
 
 		//////////////////////////////////////////////////////////////////////////////////////////
-		
-
 
 		downBG = new Rect(0, FlxG.height - 50, FlxG.width, 50, 0, 0);
 		downBG.color = 0x242A2E;
 		add(downBG);
+
+		backRect = new BackButton(0, FlxG.height - 65, 195, 65);
+		add(backRect);
+
+
+		for (data in 0...funcData.length)
+		{
+			var button = new FuncButton(backRect.x + backRect.width + 15 + 140 * data, backRect.y, funcData[data], funcColors[data]);
+			add(button);
+			funcGroup.push(button);
+		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 

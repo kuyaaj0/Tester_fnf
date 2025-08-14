@@ -1,4 +1,4 @@
-package objects.state.freeplayState;
+package objects.state.freeplayState.detail;
 
 class DetailRect extends FlxSpriteGroup{
     public var bg1:FlxSprite;

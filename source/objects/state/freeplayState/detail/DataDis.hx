@@ -1,4 +1,4 @@
-package objects.state.freeplayState;
+package objects.state.freeplayState.detail;
 
 class DataDis extends FlxSpriteGroup{
     var lineBG:Rect;
