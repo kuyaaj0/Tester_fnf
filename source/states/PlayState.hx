@@ -58,6 +58,7 @@ import crowplexus.iris.Iris;
 import crowplexus.hscript.Expr.Error as IrisError;
 import crowplexus.hscript.Printer;
 #end
+import modchart.Manager;
 
 @:allow(backend.Replay)
 /**
@@ -702,8 +703,8 @@ class PlayState extends MusicBeatState
 		var splash:NoteSplash = new NoteSplash(100, 100);
 		splash.setupNoteSplash(100, 100);
 		grpNoteSplashes.add(splash);
-		splash.alpha = 0.000001; // cant make it invisible or it won't allow precaching
 		noteGroup.add(grpNoteSplashes);
+		splash.alpha = 0.000001; // cant make it invisible or it won't allow precaching
 
 		opponentStrums = new FlxTypedGroup<StrumNote>();
 		playerStrums = new FlxTypedGroup<StrumNote>();
@@ -805,6 +806,7 @@ class PlayState extends MusicBeatState
 		setOnScripts('mania', SONG.mania);
 
 		stagesFunc(function(stage:BaseStage) stage.createPost());
+		
 		callOnScripts('onCreatePost');
 
 		cacheCountdown();
@@ -1156,6 +1158,7 @@ class PlayState extends MusicBeatState
 
 	var startTimer:FlxTimer;
 	var finishTimer:FlxTimer = null;
+    var mod = new Manager();
 
 	// For being able to mess with the sprites on Lua
 	public var countdownReady:FlxSprite;
@@ -1205,6 +1208,7 @@ class PlayState extends MusicBeatState
 
 			generateStaticArrows(0);
 			generateStaticArrows(1);
+
 			for (i in 0...playerStrums.length)
 			{
 				setOnScripts('defaultPlayerStrumX' + i, playerStrums.members[i].x);
@@ -1235,6 +1239,9 @@ class PlayState extends MusicBeatState
 				return true;
 			}
 			moveCameraSection();
+
+			
+            callOnHScript('onModChartStart', [mod]);
 
 			startTimer = new FlxTimer().start(Conductor.crochet / 1000 / playbackRate, function(tmr:FlxTimer)
 			{
@@ -1333,6 +1340,14 @@ class PlayState extends MusicBeatState
 	public function addBehindDad(obj:FlxBasic)
 	{
 		insert(members.indexOf(dadGroup), obj);
+	}
+
+	public function addManager(obj:Manager)
+	{
+		if (obj.playfields == null || obj.playfields.length == 0)
+			return;
+
+		add(obj);
 	}
 
 	public function clearNotesBefore(time:Float)
@@ -1532,6 +1547,7 @@ class PlayState extends MusicBeatState
 		if (autoUpdateRPC)
 			DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter(), true, songLength);
 		#end
+		addManager(mod);
 		setOnScripts('songLength', songLength);
 		callOnScripts('onSongStart');
 	}
