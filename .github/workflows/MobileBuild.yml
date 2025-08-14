@@ -140,7 +140,7 @@ jobs:
         uses: actions/checkout@main
         
       - name: Select Xcode 15.4
-        uses: actions/xcode@v1
+        uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: '15.4'
   
