@@ -83,12 +83,12 @@ class PassState extends FlxState {
 
             if (response.message == "Good") {
                 if(response.member == 'admin'){
+                    trace("登录成功: 欢迎登录");
                     FlxG.switchState(new InitState());
                 }
-            } else if (response.message == "Bad") {
-            //trace("登录失败: " + response.message);
+                trace("登录成功: 但是你不是管理员");
             } else {
-            //trace("请求错误: " + response.message);
+                trace("登录失败: " + response.message);
             }
         };
     }
