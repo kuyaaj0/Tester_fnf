@@ -28,7 +28,7 @@ class PassState extends FlxState {
         
         save.bind("MyUserPass");
         
-        if(save.data.user =! null && save.data.pass =! null){
+        if(save.data.user != null && save.data.pass != null){
             loginFunc(save.data.user, save.data.pass);
         }
         
@@ -79,7 +79,7 @@ class PassState extends FlxState {
     private function loginFunc(user:String, pass:String):Void{
         loginclient.login(user,pass);
 
-        client.decision = function(response:Dynamic) {
+        loginclient.decision = function(response:Dynamic) {
 
             if (response.message == "Good") {
                 if(response.member == 'admin'){
