@@ -45,9 +45,10 @@ class Replay extends FlxBasic
 		{
 			if (isPaused)
 			{
+				if (follow.instance.paused) return; //刚进入的时候此函数会输出一次，需要刚进入时禁止此函数调用
 				for (key in 0...currectKey)
-					if (key < pauseArray.length && !follow.instance.controls.pressed(follow.instance.keysArray[key]) && pauseArray[key] != -9999)
-						push(pauseArray[key], key, 1); //这块应该有问题，需要去等着修一下
+					if (key < pauseArray.length && !Controls.instance.pressed(follow.instance.keysArray[key]) && pauseArray[key] != -9999)
+						push(pauseArray[key], key, 1);
 
 				// 重置暂停数组
 				for (i in 0...currectKey)

@@ -2700,6 +2700,8 @@ class PlayState extends MusicBeatState
 		{
 			if (controls.pressed(keysArray[key]))
 				replayExam.pauseCheck(Conductor.songPosition, key);
+			else
+				replayExam.pauseCheck(-9999, key);
 			// 暂停时候回放数据的保存，防止出现错误;
 		}
 		openSubState(new PauseSubState());
