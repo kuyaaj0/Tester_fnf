@@ -36,7 +36,7 @@ class Replay extends FlxBasic
 		if (follow.replayMode || type >= currectKey - 1)
 			return;
 		pauseArray[type] = time;
-		//isPaused = true;
+		isPaused = true;
 	}
 
 	public function keysCheck()
@@ -47,7 +47,7 @@ class Replay extends FlxBasic
 			{
 				for (key in 0...currectKey)
 					if (key < pauseArray.length && !follow.instance.controls.pressed(follow.instance.keysArray[key]) && pauseArray[key] != -9999)
-						push(pauseArray[key], key, 1);
+						push(pauseArray[key], key, 1); //这块应该有问题，需要去等着修一下
 
 				// 重置暂停数组
 				for (i in 0...currectKey)
