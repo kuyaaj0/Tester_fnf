@@ -181,7 +181,7 @@ class LoginClient {
                 } else {
                     //trace('登录失败: ${result.message}');
                     decision({
-                        message: 'Bad'
+                        message: result.message
                     });
                 }
             } catch (e:Dynamic) {

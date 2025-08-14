@@ -210,10 +210,77 @@ class ClientPrefs
 	// Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
 		// Key Bind, Name for ControlsSubState
-		'note_up' => [W, UP],
-		'note_left' => [A, LEFT],
-		'note_down' => [S, DOWN],
-		'note_right' => [D, RIGHT],
+		//'note_up' => [W, UP],
+		//'note_left' => [A, LEFT],
+		//'note_down' => [S, DOWN],
+		//'note_right' => [D, RIGHT],
+
+		//multi keys support (maybe)	//屎山）
+		'0_key_0' => [SPACE],
+
+		'1_key_0' => [D, LEFT],
+		'1_key_1' => [K, RIGHT],
+
+		'2_key_0' => [D],
+		'2_key_1' => [SPACE],
+		'2_key_2' => [K],
+
+		'3_key_0' => [D, LEFT],	//将原有的note_xx替代
+		'3_key_1' => [F, DOWN],
+		'3_key_2' => [J, UP],
+		'3_key_3' => [K, RIGHT],
+
+		'4_key_0' => [D],
+		'4_key_1' => [F],
+		'4_key_2' => [SPACE],
+		'4_key_3' => [J],
+		'4_key_4' => [K],
+
+		'5_key_0' => [S],
+		'5_key_1' => [D],
+		'5_key_2' => [F],
+		'5_key_3' => [J],
+		'5_key_4' => [K],
+		'5_key_5' => [L],
+
+		'6_key_0' => [S],
+		'6_key_1' => [D],
+		'6_key_2' => [F],
+		'6_key_3' => [SPACE],
+		'6_key_4' => [J],
+		'6_key_5' => [K],
+		'6_key_6' => [L],
+
+		'7_key_0' => [S],
+		'7_key_1' => [D],
+		'7_key_2' => [F],
+		'7_key_3' => [SPACE],
+		'7_key_4' => [J],
+		'7_key_5' => [K],
+		'7_key_6' => [L],
+		'7_key_7' => [L],
+
+		'8_key_0' => [A],
+		'8_key_1' => [S],
+		'8_key_2' => [D],
+		'8_key_3' => [F],
+		'8_key_4' => [SPACE],
+		'8_key_5' => [H],
+		'8_key_6' => [J],
+		'8_key_7' => [K],
+		'8_key_8' => [L],
+
+		'9_key_0' => [A],
+		'9_key_1' => [S],
+		'9_key_2' => [D],
+		'9_key_3' => [F],
+		'9_key_4' => [G],
+		'9_key_5' => [SPACE],
+		'9_key_6' => [H],
+		'9_key_7' => [J],
+		'9_key_8' => [K],
+		'9_key_9' => [L],
+
 		'ui_up' => [W, UP],
 		'ui_left' => [A, LEFT],
 		'ui_down' => [S, DOWN],
@@ -229,6 +296,7 @@ class ClientPrefs
 		'debug_2' => [EIGHT],
 		'fullscreen' => [F11]
 	];
+	//不打算弄手柄支持，毕竟谁闲的去会用手柄打阴游hhh————卡昔233
 	public static var gamepadBinds:Map<String, Array<FlxGamepadInputID>> = [
 		'note_up' => [DPAD_UP, Y],
 		'note_left' => [DPAD_LEFT, X],
@@ -244,10 +312,76 @@ class ClientPrefs
 		'reset' => [BACK]
 	];
 	public static var mobileBinds:Map<String, Array<FlxMobileInputID>> = [
-		'note_up' => [noteUP, UP2],
-		'note_left' => [noteLEFT, LEFT2],
-		'note_down' => [noteDOWN, DOWN2],
-		'note_right' => [noteRIGHT, RIGHT2],
+		//'note_up' => [noteUP, UP2],
+		//'note_left' => [noteLEFT, LEFT2],
+		//'note_down' => [noteDOWN, DOWN2],
+		//'note_right' => [noteRIGHT, RIGHT2],
+		
+		'0_key_0' => [EK_0_0],
+
+		'1_key_0' => [EK_1_0],
+		'1_key_1' => [EK_1_1],
+
+		'2_key_0' => [EK_2_0],
+		'2_key_1' => [EK_2_1],
+		'2_key_2' => [EK_2_2],
+
+		'3_key_0' => [noteLEFT, LEFT2],
+		'3_key_1' => [noteDOWN, DOWN2],
+		'3_key_2' => [noteUP, UP2],
+		'3_key_3' => [noteRIGHT, RIGHT2],
+
+		'4_key_0' => [EK_4_0],
+		'4_key_1' => [EK_4_1],
+		'4_key_2' => [EK_4_2],
+		'4_key_3' => [EK_4_3],
+		'4_key_4' => [EK_4_4],
+
+		'5_key_0' => [EK_5_0],
+		'5_key_1' => [EK_5_1],
+		'5_key_2' => [EK_5_2],
+		'5_key_3' => [EK_5_3],
+		'5_key_4' => [EK_5_4],
+		'5_key_5' => [EK_5_5],
+
+		'6_key_0' => [EK_6_0],
+		'6_key_1' => [EK_6_1],
+		'6_key_2' => [EK_6_2],
+		'6_key_3' => [EK_6_3],
+		'6_key_4' => [EK_6_4],
+		'6_key_5' => [EK_6_5],
+		'6_key_6' => [EK_6_6],
+
+		'7_key_0' => [EK_7_0],
+		'7_key_1' => [EK_7_1],
+		'7_key_2' => [EK_7_2],
+		'7_key_3' => [EK_7_3],
+		'7_key_4' => [EK_7_4],
+		'7_key_5' => [EK_7_5],
+		'7_key_6' => [EK_7_6],
+		'7_key_7' => [EK_7_7],
+
+		'8_key_0' => [EK_8_0],
+		'8_key_1' => [EK_8_1],
+		'8_key_2' => [EK_8_2],
+		'8_key_3' => [EK_8_3],
+		'8_key_4' => [EK_8_4],
+		'8_key_5' => [EK_8_5],
+		'8_key_6' => [EK_8_6],
+		'8_key_7' => [EK_8_7],
+		'8_key_8' => [EK_8_8],
+
+		'9_key_0' => [EK_9_0],
+		'9_key_1' => [EK_9_1],
+		'9_key_2' => [EK_9_2],
+		'9_key_3' => [EK_9_3],
+		'9_key_4' => [EK_9_4],
+		'9_key_5' => [EK_9_5],
+		'9_key_6' => [EK_9_6],
+		'9_key_7' => [EK_9_7],
+		'9_key_8' => [EK_9_8],
+		'9_key_9' => [EK_9_9],
+
 		'ui_up' => [UP, noteUP],
 		'ui_left' => [LEFT, noteLEFT],
 		'ui_down' => [DOWN, noteDOWN],
@@ -293,18 +427,6 @@ class ClientPrefs
 		defaultButtons = gamepadBinds.copy();
 		defaultMobileBinds = mobileBinds.copy();
 
-		var saveDataKeybinds = ExtraKeysHandler.instance.data.keybinds;
-
-		// if resetting keybinds to default doesnt work, hmu
-		for (i in 0...saveDataKeybinds.length) {
-			var maniaKeybinds = saveDataKeybinds[i];
-			var maniaID = '${i}_key';
-			for (j in 0...maniaKeybinds.length) {
-				var keybindID = '${maniaID}_$j';
-				var codes = maniaKeybinds[j];
-				defaultKeys.set(keybindID, codes);
-			}
-		}
 	}
 
 	public static function saveSettings()
@@ -332,41 +454,6 @@ class ClientPrefs
 		save.data.keyboard = keyBinds;
 		save.data.gamepad = gamepadBinds;
 		save.data.mobile = mobileBinds;
-
-		// this was NOT that easy
-		var saveDataKeybinds:Array<Array<Array<Int>>> = [];
-			//[], [], [], [], [], [], [], [], []
-
-		for (i in 0...ExtraKeysHandler.instance.data.maxKeys+1) {
-			saveDataKeybinds.push([]);
-		}
-
-		// loads keybinds in a very specific way
-		// do NOT put "*key*" in the map or it will die
-		for (k in keyBinds.keys()) {
-			if (k.contains('key')) {
-				trace('EK Keybind detected: $k');
-				var storeNum = Std.parseInt(k.split('_')[0]);
-
-				var convertKeycodes = keyBinds.get(k);
-				var newKeycodes:Array<Int> = [];
-				for (key in convertKeycodes) { newKeycodes.push(key); }
-
-				var index = Std.parseInt(k.split('_')[2]);
-
-				saveDataKeybinds[storeNum].insert(index, newKeycodes);
-
-				//trace('$k saved to $storeNum with codes ${keyBinds.get(k)} and index $index');
-			}
-		}
-
-		var saveKeybindData:EKKeybindSavedData = new EKKeybindSavedData(saveDataKeybinds);
-		var writer = new json2object.JsonWriter<EKKeybindSavedData>();
-		var content = writer.write(saveKeybindData, '  ');
-		#if sys
-		trace('Saved ekkeybinds.json');
-		File.saveContent('ekkeybinds.json', content);
-		#end
 
 		save.flush();
 		FlxG.log.add("Settings saved!");
@@ -534,24 +621,6 @@ class ClientPrefs
 				for (control => keys in loadedControls)
 					if (mobileBinds.exists(control))
 						mobileBinds.set(control, keys);
-			}
-
-			var savedKeybindJson = CoolUtil.getKeybinds('ekkeybinds.json', ExtraKeysHandler.instance.data.keybinds);
-			//trace(savedKeybindJson.keybinds);
-			var saveDataKeybinds = savedKeybindJson.keybinds;
-
-			for (i in 0...saveDataKeybinds.length) 
-			{
-				var maniaKeybinds = saveDataKeybinds[i];
-				var maniaID = '${i}_key';
-				for (j in 0...maniaKeybinds.length) 
-				{
-					var keybindID = '${maniaID}_$j';
-					var codes = maniaKeybinds[j];
-					//trace('Set $keybindID to $codes');
-
-					keyBinds.set(keybindID, codes);
-				}
 			}
 
 			reloadVolumeKeys();

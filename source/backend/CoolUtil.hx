@@ -298,47 +298,6 @@ class CoolUtil
 		return result;
 	}
 
-	public static function getKeybinds(path:String = 'ekkeybinds.json', defaultKeybinds:Array<Array<Array<Int>>>):EKKeybindSavedData
-	{
-		var result:EKKeybindSavedData;
-		var content:String = '';
-		#if sys
-		if (FileSystem.exists(path))
-		{
-			content = File.getContent(path);
-			// trace('Keybind file $path $content');
-		}
-		else
-		{
-			var defaultKeybindSave:EKKeybindSavedData = new EKKeybindSavedData(defaultKeybinds);
-			// write it
-			var writer = new json2object.JsonWriter<EKKeybindSavedData>();
-			content = writer.write(defaultKeybindSave, '  ');
-			File.saveContent(path, content);
-			trace(path + ' (Keybind save) didn\'t exist. Written.');
-		}
-		#else
-		if (Assets.exists(path))
-			content = Assets.getText(path);
-		#end
-
-		var parser = new json2object.JsonParser<EKKeybindSavedData>();
-		parser.fromJson(content);
-		result = parser.value;
-
-		// automatically (?) sets keybinds of #keys that have no keybinds
-		for (i in 0...ExtraKeysHandler.instance.data.maxKeys + 1)
-		{
-			// keybinds dont exist, keybinds are not enough
-			if (result.keybinds[i] == null || result.keybinds[i].length != (i + 1))
-			{
-				result.keybinds[i] = defaultKeybinds[i];
-			}
-		}
-
-		return result;
-	}
-
 	/**
 	 * Replacement for `FlxG.mouse.overlaps` because it's currently broken when using a camera with a different position or size.
 	 * It will be fixed eventually by HaxeFlixel v5.4.0.
@@ -393,10 +352,3 @@ class ArrowRGBSavedData {
 	}
 }
 
-class EKKeybindSavedData {
-	public var keybinds:Array<Array<Array<Int>>>;
-
-	public function new(keybinds){
-		this.keybinds = keybinds;
-	}
-}
