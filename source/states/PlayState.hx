@@ -1220,11 +1220,6 @@ class PlayState extends MusicBeatState
 				// if(ClientPrefs.data.middleScroll) opponentStrums.members[i].visible = false;
 			}
 
-			// 请原谅我
-		    var mod = new Manager();
-            callOnHScript('onModChartStart', [mod]);
-		    addManager(mod);
-
 			startedCountdown = true;
 			Conductor.songPosition = -Conductor.crochet * 5;
 			setOnScripts('startedCountdown', true);
@@ -1297,6 +1292,10 @@ class PlayState extends MusicBeatState
 				stagesFunc(function(stage:BaseStage) stage.countdownTick(tick, swagCounter));
 				callOnLuas('onCountdownTick', [swagCounter]);
 				callOnHScript('onCountdownTick', [tick, swagCounter]);
+
+				var mod = new Manager();
+                callOnHScript('onModChartStart', [mod]);
+		        addManager(mod);
 
 				swagCounter += 1;
 			}, 5);
