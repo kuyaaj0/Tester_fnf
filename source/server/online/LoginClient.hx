@@ -16,6 +16,8 @@ class LoginClient {
     static final ENCRYPTION_KEY_STR:String = "c138265b0f77cccd86192a7173668090";
     static final ENCRYPTION_KEY:Bytes = Bytes.ofString(ENCRYPTION_KEY_STR);
     
+    public var decision:Dynamic->Void = null;
+    
     public function new() {}
     
     /**
@@ -143,6 +145,9 @@ class LoginClient {
         
         http.onError = function(error:String) {
             //trace('请求失败: $error');
+            decision({
+                message: error
+            });
         };
         
         http.onData = function(encryptedResponse:String) {
@@ -152,8 +157,16 @@ class LoginClient {
                 var result:Dynamic = Json.parse(decryptedResponse);
                 if (result.success) {
                     //trace('登录成功！用户组: ${result.user_info.user_group}');
+                    decision({
+                        message: 'Good',
+                        name: result.user_info.username,
+                        member: result.user_info.user_group,
+                    });
                 } else {
                     //trace('登录失败: ${result.message}');
+                    decision({
+                        message: 'Bad'
+                    });
                 }
             } catch (e:Dynamic) {
                 //trace('解密失败: $e');
