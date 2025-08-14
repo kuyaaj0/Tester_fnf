@@ -112,6 +112,7 @@
 	<haxelib name="flixel" />
 	<haxelib name="flixel-ui" />
 	<haxelib name="flixel-addons" />
+	<haxelib name="crypto" />
 
 	<!--Psych stuff needed-->
 	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
