@@ -1,4 +1,4 @@
-<package states.backend;
+package states.backend;
 
 import flixel.FlxGame;
 import flixel.FlxState;
