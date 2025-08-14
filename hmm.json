@@ -44,6 +44,11 @@
       "version": "1.0.4"
     },
     {
+      "name": "trandom",
+      "type": "haxelib",
+      "version": "1.0.0"
+    },
+    {
       "name": "modcharts",
       "type": "git",
       "dir": null,

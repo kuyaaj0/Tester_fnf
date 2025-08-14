@@ -9,6 +9,8 @@ import haxe.crypto.Aes;
 import haxe.Http;
 import haxe.Json;
 
+import trandom.Native;
+
 class LoginClient {
     static final API_URL:String = "http://online.novaflare.top/user/login/api.php";
     static final BLOCK_SIZE:Int = 16;
@@ -116,13 +118,27 @@ class LoginClient {
     /**
      * 生成随机IV
      */
+
     private function generateRandomIV():Bytes {
         var iv = Bytes.alloc(BLOCK_SIZE);
-
-        var rand = sys.io.File.read("/dev/urandom", true);
-        rand.readBytes(iv, 0, BLOCK_SIZE);
-        rand.close();
-
+        
+        // 每次处理 4 字节（Native.get() 返回 Int32）
+        for (i in 0...Std.int(BLOCK_SIZE / 4)) {
+            iv.setInt32(i * 4, Native.get());
+        }
+        
+        // 处理剩余字节（如果 BLOCK_SIZE 不是 4 的倍数）
+        var remaining = BLOCK_SIZE % 4;
+        if (remaining > 0) {
+            var lastChunk = Native.get();
+            for (i in 0...remaining) {
+                iv.set(
+                    (BLOCK_SIZE - remaining) + i,
+                    (lastChunk >> (8 * i)) & 0xFF  // 按位截取
+                );
+            }
+        }
+        
         return iv;
     }
     
@@ -174,10 +190,5 @@ class LoginClient {
         };
         
         http.request(true);
-    }
-    
-    public static function main() {
-        var client = new LoginClient();
-        //client.login("MaoPou", "114514");
     }
 }
