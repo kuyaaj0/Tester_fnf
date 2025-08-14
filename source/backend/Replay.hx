@@ -6,7 +6,7 @@ class Replay extends FlxBasic
 {
 	// 整个组>摁压类型>行数>时间
 	public var hitData:Array<Array<Array<Float>>> = [[], []];
-	public var mania:Int = 3; // 添加键位数变量
+	public var currectKey:Int = 4; // 添加键位数变量
 
 	var follow:Dynamic; //跟随的state
 
@@ -18,15 +18,13 @@ class Replay extends FlxBasic
 		this.follow = follow;
 		// 初始化键位数
 		if (follow.SONG != null) {
-			mania = follow.SONG.mania;
+			currectKey = follow.SONG.mania + 1;
 		}
-		// 初始化数据结构
-		reset();
 	}
 
 	public function push(time:Float, type:Int, state:Int)
 	{
-		if (!follow.replayMode && type < mania)
+		if (!follow.replayMode && type < currectKey - 1)
 			hitData[state][type].push(time);
 	}
 
@@ -35,10 +33,10 @@ class Replay extends FlxBasic
 
 	public function pauseCheck(time:Float, type:Int)
 	{
-		if (follow.replayMode || type >= mania)
+		if (follow.replayMode || type >= currectKey - 1)
 			return;
 		pauseArray[type] = time;
-		isPaused = true;
+		//isPaused = true;
 	}
 
 	public function keysCheck()
@@ -47,19 +45,19 @@ class Replay extends FlxBasic
 		{
 			if (isPaused)
 			{
-				for (key in 0...mania)
-					if (key < pauseArray.length && !follow.controls.pressed(follow.keysArray[key]) && pauseArray[key] != -9999)
+				for (key in 0...currectKey)
+					if (key < pauseArray.length && !follow.instance.controls.pressed(follow.instance.keysArray[key]) && pauseArray[key] != -9999)
 						push(pauseArray[key], key, 1);
 
 				// 重置暂停数组
-				for (i in 0...mania)
+				for (i in 0...currectKey)
 					pauseArray[i] = -9999;
 				isPaused = false;
 			}
 		}
 		else
 		{
-			for (type in 0...mania)
+			for (type in 0...currectKey)
 			{
 				if (type < hitData[1].length && hitData[1][type].length > 0 && hitData[1][type][0] <= Conductor.songPosition)
 					holdCheck(type);
@@ -76,21 +74,21 @@ class Replay extends FlxBasic
 			
 		if (hitData[0][type][0] >= Conductor.songPosition)
 		{
-			follow.keysCheck(type, Conductor.songPosition);
+			follow.instance.keysCheck(type, Conductor.songPosition);
 			if (allowHit[type])
 			{
-				follow.keyPressed(type, hitData[1][type][0]);
+				follow.instance.keyPressed(type, hitData[1][type][0]);
 				allowHit[type] = false;
 			}
 		}
 		else
 		{
-			follow.keysCheck(type, Conductor.songPosition);
+			follow.instance.keysCheck(type, Conductor.songPosition);
 			if (allowHit[type])
 			{
-				follow.keyPressed(type, hitData[1][type][0]);
+				follow.instance.keyPressed(type, hitData[1][type][0]);
 			}
-			follow.keyReleased(type);
+			follow.instance.keyReleased(type);
 			allowHit[type] = true;
 			hitData[0][type].splice(0, 1);
 			hitData[1][type].splice(0, 1);
@@ -103,7 +101,7 @@ class Replay extends FlxBasic
 		hitData = [[], []];
 		for (state in 0...2) {
 			hitData[state] = [];
-			for (type in 0...mania) {
+			for (type in 0...currectKey) {
 				hitData[state][type] = [];
 				for (hit in 0...hitData[state][type].length) {
 					hitData[state][type].push(hitData[state][type][hit]);
@@ -113,7 +111,7 @@ class Replay extends FlxBasic
 		
 		// 初始化允许命中数组
 		allowHit = [];
-		for (i in 0...mania)
+		for (i in 0...currectKey)
 			allowHit.push(true);
 	}
 
@@ -123,19 +121,19 @@ class Replay extends FlxBasic
 		hitData = [[], []];
 		for (state in 0...2) {
 			hitData[state] = [];
-			for (type in 0...mania) {
+			for (type in 0...currectKey) {
 				hitData[state][type] = [];
 			}
 		}
 		
 		// 初始化暂停数组
 		pauseArray = [];
-		for (i in 0...mania)
+		for (i in 0...currectKey)
 			pauseArray.push(-9999);
 		
 		// 初始化允许命中数组
 		allowHit = [];
-		for (i in 0...mania)
+		for (i in 0...currectKey)
 			allowHit.push(true);
 			
 		isPaused = false;
