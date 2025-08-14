@@ -133,6 +133,7 @@
 	
 	<!-- Mobile Specific-->
 	<haxelib name="extension-androidtools" if="android" />
+	<set name="IPHONEOS_DEPLOYMENT_TARGET" value="12.0" if="ios" />
 	<!--<haxelib name="hx-ios-uikit" if="ios" />-->
 	<haxedef name="SHARE_MOBILE_FILES" if="ios" />
 

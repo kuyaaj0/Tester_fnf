@@ -27,11 +27,7 @@ class PassState extends FlxState {
         loginclient = new LoginClient();
         
         save.bind("MyUserPass");
-        
-        if(save.data.user != null && save.data.pass != null){
-            loginFunc(save.data.user, save.data.pass);
-        }
-        
+
         username = new FlxInputText(
             FlxG.width / 2 - 150,
             FlxG.height / 2 - 60,
@@ -65,6 +61,10 @@ class PassState extends FlxState {
         submitButton.setGraphicSize(100, 40);
         submitButton.updateHitbox();
         add(submitButton);
+
+        if(save.data.user != null && save.data.pass != null){
+            loginFunc(save.data.user, save.data.pass);
+        }
     }
     
     private function onSubmit():Void {
@@ -85,6 +85,7 @@ class PassState extends FlxState {
                 if(response.member == 'Admin'){
                     trace("登录成功: 欢迎登录");
                     FlxG.switchState(new InitState());
+                    return;
                 }
                 trace("登录成功: 但是你不是管理员");
             } else {
