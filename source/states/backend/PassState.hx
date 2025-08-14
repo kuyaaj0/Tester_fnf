@@ -76,7 +76,7 @@ class PassState extends FlxState {
         loginFunc(user, pass);
     }
     
-    private loginFunc(user:String, pass:String):Void{
+    private function loginFunc(user:String, pass:String):Void{
         loginclient.login(user,pass);
 
         client.decision = function(response:Dynamic) {
