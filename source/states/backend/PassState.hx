@@ -1,4 +1,4 @@
-package states.backend;
+<package states.backend;
 
 import flixel.FlxGame;
 import flixel.FlxState;
@@ -82,7 +82,7 @@ class PassState extends FlxState {
         loginclient.decision = function(response:Dynamic) {
 
             if (response.message == "Good") {
-                if(response.member == 'admin'){
+                if(response.member == 'Admin'){
                     trace("登录成功: 欢迎登录");
                     FlxG.switchState(new InitState());
                 }
