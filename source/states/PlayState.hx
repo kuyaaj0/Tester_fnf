@@ -324,6 +324,8 @@ class PlayState extends MusicBeatState
 
 	var diffBotplay:Bool;
 
+	public var modchart:Manager;
+
 	public function new()
 	{
 		super();
@@ -1158,7 +1160,7 @@ class PlayState extends MusicBeatState
 
 	var startTimer:FlxTimer;
 	var finishTimer:FlxTimer = null;
-    var mod = new Manager();
+    
 
 	// For being able to mess with the sprites on Lua
 	public var countdownReady:FlxSprite;
@@ -1209,6 +1211,9 @@ class PlayState extends MusicBeatState
 			generateStaticArrows(0);
 			generateStaticArrows(1);
 
+			modchart = new Manager();
+			addManager(modchart);
+
 			for (i in 0...playerStrums.length)
 			{
 				setOnScripts('defaultPlayerStrumX' + i, playerStrums.members[i].x);
@@ -1241,8 +1246,8 @@ class PlayState extends MusicBeatState
 			moveCameraSection();
 
 			
-            callOnHScript('onModChartStart', [mod]);
-            addManager(mod);
+            callOnHScript('onModChartStart', [modchart]);
+            
 
 			startTimer = new FlxTimer().start(Conductor.crochet / 1000 / playbackRate, function(tmr:FlxTimer)
 			{
