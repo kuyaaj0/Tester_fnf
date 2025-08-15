@@ -42,7 +42,7 @@ class ReflectionFunctions
 				return null;
 			}
 
-			if (MusicBeatState.instance.mobileControls != null && myClass == 'flixel.FlxG' && variable.indexOf('key') != -1)
+			if (MusicBeatState.instance.mobileControls.visible == true && myClass == 'flixel.FlxG' && variable.indexOf('key') != -1)
 			{
 				var check:Dynamic;
 				check = specialKeyCheck(variable); // fuck you old lua 🙃
