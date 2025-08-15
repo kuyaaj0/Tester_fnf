@@ -12,7 +12,7 @@ import haxe.Json;
 import trandom.Native;
 
 class LoginClient {
-    static final API_URL:String = "http://online.novaflare.top/user/login/api.php";
+    static final API_URL:String = "https://online.novaflare.top/user/login/api.php";
     static final BLOCK_SIZE:Int = 16;
 
     static final ENCRYPTION_KEY_STR:String = "c138265b0f77cccd86192a7173668090";
