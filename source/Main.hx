@@ -50,7 +50,7 @@ class Main extends Sprite
 	private static var game = {
 		width: 1280, // WINDOW width
 		height: 720, // WINDOW height
-		initialState: InitState, // initial game state
+		initialState: PassState, // initial game state
 		zoom: -1.0, // game state bounds
 		framerate: 60, // default framerate
 		skipSplash: true, // if the default flixel splash screen should be skipped
@@ -63,7 +63,7 @@ class Main extends Sprite
 	#if mobile
 	public static final platform:String = "Phones";
 	#else
-	public static final platform:String = "PCs";
+	public static final platform:String = "PCs"
 	#end
 
 	// You can pretty much ignore everything from here on - your code should go in your states.

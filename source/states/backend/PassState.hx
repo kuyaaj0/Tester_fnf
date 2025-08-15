@@ -19,6 +19,8 @@ class PassState extends FlxState {
     private var loginclient:LoginClient;
     
     var save:FlxSave = new FlxSave();
+    var usn:String = 'UserName';
+    var psw:String = 'Password';
     
     override public function create():Void {
         super.create();
@@ -27,12 +29,18 @@ class PassState extends FlxState {
         loginclient = new LoginClient();
         
         save.bind("MyUserPass");
+        
+        if(save.data.user != null && save.data.pass != null){
+            usn = save.data.user;
+            psw = save.data.pass;
+            loginFunc(save.data.user, save.data.pass);
+        }
 
         username = new FlxInputText(
             FlxG.width / 2 - 150,
             FlxG.height / 2 - 60,
             300,
-            "UserName",
+            usn,
             16,
             FlxColor.BLACK,
             FlxColor.WHITE
@@ -44,7 +52,7 @@ class PassState extends FlxState {
             FlxG.width / 2 - 150,
             FlxG.height / 2,
             300,
-            "PassWord",
+            psw,
             16,
             FlxColor.BLACK,
             FlxColor.WHITE
@@ -61,10 +69,6 @@ class PassState extends FlxState {
         submitButton.setGraphicSize(100, 40);
         submitButton.updateHitbox();
         add(submitButton);
-
-        if(save.data.user != null && save.data.pass != null){
-            loginFunc(save.data.user, save.data.pass);
-        }
     }
     
     private function onSubmit():Void {
