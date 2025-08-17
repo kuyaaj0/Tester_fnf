@@ -30,7 +30,6 @@ class Replay extends FlxBasic
 
 	var isPaused:Bool = false;
 	var pauseArray:Array<Float> = [];
-
 	public function pauseCheck(time:Float, type:Int)
 	{
 		if (follow.replayMode || type >= currectKey - 1)
@@ -48,7 +47,7 @@ class Replay extends FlxBasic
 				if (follow.instance.paused) return; //刚进入的时候此函数会输出一次，需要刚进入时禁止此函数调用
 				for (key in 0...currectKey)
 					if (key < pauseArray.length && !Controls.instance.pressed(follow.instance.keysArray[key]) && pauseArray[key] != -9999)
-						push(pauseArray[key], key, 1);
+						push(pauseArray[key], key, 0);
 
 				// 重置暂停数组
 				for (i in 0...currectKey)

@@ -4,6 +4,9 @@ import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.Shape;
 import openfl.utils.Assets;
+
+import flixel.graphics.FlxGraphic;
+
 import flixel.util.FlxSave;
 import states.PlayState;
 import backend.InputFormatter;
@@ -12,8 +15,6 @@ import backend.Song;
 
 class KeyboardDisplay extends FlxSpriteGroup
 {
-	public static var saveBitmap:DisBitmap;
-
 	public var noteArrays:Array<Array<TimeDis>> = []; // 存储所有键位的数组
 	public var keyAlphas:Array<KeyButtonAlpha> = []; // 存储键位透明度对象
 	public var keyTexts:Array<FlxText> = []; // 存储键位文本对象
@@ -116,10 +117,8 @@ class KeyboardDisplay extends FlxSpriteGroup
 		add(kpsText);
 		add(totalText);
 
-		saveBitmap = new DisBitmap();
+		DisBitmap.addCache();
 
-		var obj:TimeDis = new TimeDis(0, 0, _x, _y);
-		obj.visible = false; // 把纹理保存在运存中，如果你愿意这玩意出bug就试试删了它
 	}
 
 	public function pressed(key:Int)
@@ -204,8 +203,9 @@ class KeyboardDisplay extends FlxSpriteGroup
 	public var kpsCheck:Int = 0;
 	public var hitArray:Array<Date> = [];
 
-	public function dataUpdate(elapsed:Float)
+	override function update(elapsed:Float)
 	{
+		super.update(elapsed);
 		var i = hitArray.length - 1;
 		while (i >= 0)
 		{
@@ -289,9 +289,9 @@ class TimeDis extends FlxSprite
 	public function new(Line:Int, Time:Float, X:Float, Y:Float)
 	{
 		this.line = Line;
-		super(X + Line * (KeyButton.size + 4), Y - 4 - KeyboardDisplay.saveBitmap.bitmapData.height);
+		super(X + Line * (KeyButton.size + 4), Y - 4 - DisBitmap.Height);
 		this.startTime = Time;
-		loadGraphic(KeyboardDisplay.saveBitmap.bitmapData);
+		frames = Cache.currentTrackedFrames.get('keyboardDisplay');
 		_frame.frame.height = 1;
 		color = OptionsHelpers.colorArray(ClientPrefs.data.keyboardBGColor);
 		alpha = ClientPrefs.data.keyboardAlpha;
@@ -303,9 +303,9 @@ class TimeDis extends FlxSprite
 	{
 		if (endTime == -999999)
 		{
-			_frame.frame.y = (1 - ((Conductor.songPosition - startTime) / durationTime)) * KeyboardDisplay.saveBitmap.bitmapData.height;
-			_frame.frame.height = ((Conductor.songPosition - startTime) / durationTime) * KeyboardDisplay.saveBitmap.bitmapData.height;
-			offset.y = -(1 - ((Conductor.songPosition - startTime) / durationTime)) * KeyboardDisplay.saveBitmap.bitmapData.height;
+			_frame.frame.y = (1 - ((Conductor.songPosition - startTime) / durationTime)) * DisBitmap.Height;
+			_frame.frame.height = ((Conductor.songPosition - startTime) / durationTime) * DisBitmap.Height;
+			offset.y = -(1 - ((Conductor.songPosition - startTime) / durationTime)) * DisBitmap.Height;
 			if (_frame.frame.y < 0)
 				_frame.frame.y = 0;
 			if (Conductor.songPosition - startTime > durationTime)
@@ -315,14 +315,14 @@ class TimeDis extends FlxSprite
 		else
 		{
 			if (endTime - startTime < durationTime)
-				_frame.frame.y = (1 - ((Conductor.songPosition - startTime) / durationTime)) * KeyboardDisplay.saveBitmap.bitmapData.height;
+				_frame.frame.y = (1 - ((Conductor.songPosition - startTime) / durationTime)) * DisBitmap.Height;
 			else
-				_frame.frame.y = (1 - ((Conductor.songPosition - (endTime - durationTime)) / durationTime)) * KeyboardDisplay.saveBitmap.bitmapData.height;
-			offset.y -= -((Conductor.songPosition - saveTime) / durationTime) * KeyboardDisplay.saveBitmap.bitmapData.height;
+				_frame.frame.y = (1 - ((Conductor.songPosition - (endTime - durationTime)) / durationTime)) * DisBitmap.Height;
+			offset.y -= -((Conductor.songPosition - saveTime) / durationTime) * DisBitmap.Height;
 			saveTime = Conductor.songPosition;
 		}
-		if (_frame.frame.height > KeyboardDisplay.saveBitmap.bitmapData.height)
-			_frame.frame.height = KeyboardDisplay.saveBitmap.bitmapData.height;
+		if (_frame.frame.height > DisBitmap.Height)
+			_frame.frame.height = DisBitmap.Height;
 		if (_frame.frame.height <= 0)
 			_frame.frame.height = 1; // fix bug
 
@@ -333,29 +333,30 @@ class TimeDis extends FlxSprite
 
 class DisBitmap extends Bitmap
 {
-	var Width:Int = KeyButton.size;
-	var Height:Int = Std.int(KeyButton.size * 3);
+	static public var Width:Int = KeyButton.size;
+	static public var Height:Int = Std.int(KeyButton.size * 3);
 
-	var colorArray:Array<FlxColor> = [];
+	static public var colorArray:Array<FlxColor> = [];
 
-	public function new()
-	{
-		super();
-
+	static public function addCache() {
 		var BitmapData:BitmapData = new BitmapData(Width, Height, true, 0);
 		var shape:Shape = new Shape();
 
-		for (i in 0...Width + 1)
+		for (i in 0...Std.int(Height / 10))
 		{
-			shape.graphics.beginFill(FlxColor.WHITE, i / Width);
+			shape.graphics.beginFill(FlxColor.WHITE, i / Std.int(Height / 10));
 			shape.graphics.drawRect(0, i, Width, 1);
 			shape.graphics.endFill();
 		}
 		shape.graphics.beginFill(FlxColor.WHITE);
-		shape.graphics.drawRect(0, Width, Width, Height - Width);
+		shape.graphics.drawRect(0, Std.int(Height / 10), Width, Height - Std.int(Height / 10));
 		shape.graphics.endFill();
 		BitmapData.draw(shape);
 
-		this.bitmapData = BitmapData;
+		var spr:FlxSprite = new FlxSprite();
+		var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(BitmapData);
+		spr.loadGraphic(newGraphic);
+
+		Cache.currentTrackedFrames.set('keyboardDisplay', spr.frames);
 	}
 }

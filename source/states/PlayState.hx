@@ -189,8 +189,6 @@ class PlayState extends MusicBeatState
 	public var NoteMs:Array<Float> = [];
 	public var NoteTime:Array<Float> = [];
 
-	var rsCheck:Bool = false;
-
 	var numItems:FlxTypedGroup<FlxSprite>;
 
 	var comboOffsetFix:Array<Array<Int>> = [
@@ -2117,6 +2115,11 @@ class PlayState extends MusicBeatState
 				callOnScripts('onResume');
 				resetRPC(startTimer != null && startTimer.finished);
 			});
+
+			for (key in 0...keyboardDisplay.keys) {
+				if (!Controls.instance.pressed(keysArray[key]))
+					keyboardDisplay.released(key);
+			}
 		}
 	}
 
@@ -2267,8 +2270,6 @@ class PlayState extends MusicBeatState
 				}
 			}
 		}
-
-		keyboardDisplay.dataUpdate(elapsed);
 
 		if (!inCutscene && !paused && !freezeCamera)
 		{
@@ -2677,8 +2678,6 @@ class PlayState extends MusicBeatState
 		paused = true;
 
 		keyboardDisplay.save();
-		for (i in 0...4)
-			keyboardDisplay.released(i);
 
 		if (FlxG.sound.music != null)
 		{
@@ -2690,16 +2689,6 @@ class PlayState extends MusicBeatState
 		{
 			videoCutscene.pause();
 		};
-		if (ClientPrefs.data.playOpponent ? !cpuControlled_opponent : !cpuControlled)
-		{
-			var Strums = ClientPrefs.data.playOpponent ? opponentStrums : playerStrums;
-			for (note in Strums)
-				if (note.animation.curAnim != null && note.animation.curAnim.name != 'static')
-				{
-					note.playAnim('static');
-					note.resetAnim = 0;
-				}
-		}
 
 		for (key in 0...keysArray.length)
 		{
@@ -3348,7 +3337,6 @@ class PlayState extends MusicBeatState
 
 				if (ClientPrefs.data.resultsScreen)
 				{
-					rsCheck = true;
 					openSubState(new ResultsScreen(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.7);
 				}
@@ -4469,7 +4457,7 @@ class PlayState extends MusicBeatState
 
 	public function invalidateNote(note:Note):Void
 	{
-		killNotes.push(note); // I want detele this function but make sure not have bug so retain it
+		killNotes.push(note); //为了防止某些神人用脚本调用这个函数我就保留了 -狐月影
 	}
 
 	public function destroyNotes():Void

@@ -3,5 +3,10 @@
         
         ".github/workflows/android.yml"
     ],
-    "haxelib.executable": "D:/FNF-NovaFlare-Engine/.haxelib"
+    "haxelib.executable": "D:/FNF-NovaFlare-Engine/.haxelib",
+    "workbench.editor.scrollToSwitchTabs": true,
+    "workbench.editor.sharedViewState": true,
+    "workbench.editor.titleScrollbarSizing": "large",
+    "editor.scrollbar.horizontal": "visible",
+    "editor.scrollbar.vertical": "auto"
 }
