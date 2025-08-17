@@ -1214,8 +1214,8 @@ class PlayState extends MusicBeatState
 			generateStaticArrows(0);
 			generateStaticArrows(1);
 
-			modchart = new Manager();
-			addManager(modchart);
+			//modchart = new Manager(); //目前版本的modchart有问题
+			//addManager(modchart);
 
 			for (i in 0...playerStrums.length)
 			{
@@ -1249,7 +1249,7 @@ class PlayState extends MusicBeatState
 			moveCameraSection();
 
 			
-            callOnHScript('onModChartStart', [modchart]);
+            //callOnHScript('onModChartStart', [modchart]);
             
 
 			startTimer = new FlxTimer().start(Conductor.crochet / 1000 / playbackRate, function(tmr:FlxTimer)
