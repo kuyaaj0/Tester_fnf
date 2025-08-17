@@ -63,7 +63,7 @@ class Main extends Sprite
 	#if mobile
 	public static final platform:String = "Phones";
 	#else
-	public static final platform:String = "PCs"
+	public static final platform:String = "PCs";
 	#end
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
