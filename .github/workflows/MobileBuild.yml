@@ -62,7 +62,7 @@ jobs:
             console.log("Available caches:", caches.data.actions_caches);
             
       - name: cache Build
-        if: [ "${{ github.event.inputs.dependencies_to_update }}" != "all" ] || [ "${{ github.event.inputs.dependencies_to_update }}" != "android" ];
+        if: github.event.inputs.dependencies_to_update != 'all' || github.event.inputs.dependencies_to_update != 'android'
         uses: actions/cache@v3
         with:
           key: cache-build-Android
@@ -151,7 +151,7 @@ jobs:
           haxe-version: 4.3.7
    
       - name: cache Build
-        if: [ "${{ github.event.inputs.dependencies_to_update }}" != "all" ] || [ "${{ github.event.inputs.dependencies_to_update }}" != "ios" ];
+        if: github.event.inputs.dependencies_to_update != 'all' || github.event.inputs.dependencies_to_update != 'ios'
         uses: actions/cache/restore@v4
         with:
           enableCrossOsArchive: true
