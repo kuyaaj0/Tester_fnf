@@ -343,11 +343,16 @@ class PlayState extends MusicBeatState
 		PauseSubState.songName = null; // Reset to default
 		playbackRate = ClientPrefs.getGameplaySetting('songspeed');
 
-		keysArray = [];
-		for (i in 0...SONG.mania + 1)
+		if (SONG.mania != 3)
 		{
-			keysArray.push(SONG.mania + '_key_$i');
+			keysArray = [];
+			for (i in 0...SONG.mania + 1)
+			{
+				keysArray.push(SONG.mania + '_key_$i');
+			}
 		}
+		else keysArray = ['note_left', 'note_down', 'note_up', 'note_right'];
+
 
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();

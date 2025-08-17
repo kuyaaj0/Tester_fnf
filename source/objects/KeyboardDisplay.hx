@@ -42,80 +42,144 @@ class KeyboardDisplay extends FlxSpriteGroup
 
 		var mania:Int = 3;
 		if(PlayState.SONG != null) mania = PlayState.SONG.mania;
-		keys = mania + 1; 
+		keys = mania + 1;
 
 		for(i in 0...keys) noteArrays.push([]);
 
-		_width = (KeyButton.size + 4) * keys; 
+		_width = (KeyButton.size + 4) * keys;
 		_height = (KeyButton.size + 4) * 2;
 
-		for (i in 0...keys)
+		if (mania == 3)
 		{
-			var obj:KeyButton = new KeyButton(X + (KeyButton.size + 4) * i, Y, KeyButton.size, KeyButton.size);
-			add(obj);
-		}
+			for (i in 0...4)
+			{
+				var obj:KeyButton = new KeyButton(X + (KeyButton.size + 4) * i, Y, KeyButton.size, KeyButton.size);
+				add(obj);
+			}
+			for (i in 0...4)
+			{
+				var obj:KeyButtonAlpha = new KeyButtonAlpha(X + (KeyButton.size + 4) * i, Y);
+				keyAlphas.push(obj);
+				add(obj);
+			}
+			var textArray:Array<String> = createArray();
+			for (i in 0...4)
+			{
+				var obj:FlxText = new FlxText(X + (KeyButton.size + 4) * i + keyAlphas[i].width / 2, Y + keyAlphas[i].height / 2, 50, textArray[i], 10, false);
+				obj.setFormat(Assets.getFont("assets/fonts/montserrat.ttf").fontName, 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, 0x00);
+				obj.x -= obj.width / 2;
+				obj.y -= obj.height / 2;
+				obj.color = OptionsHelpers.colorArray(ClientPrefs.data.keyboardTextColor);
+				obj.alpha = ClientPrefs.data.keyboardAlpha;
+				keyTexts.push(obj);
+				add(obj);
+			}
+			for (i in 0...2)
+			{
+				var obj:KeyButton = new KeyButton(X + (KeyButton.size + 4) * i * 2, Y + KeyButton.size + 4, KeyButton.size * 2 + 4, KeyButton.size);
+				add(obj);
+			}
+			var textArray:Array<String> = ['KPS', 'total'];
+			for (i in 0...2)
+			{
+				var obj:FlxText = new FlxText(members[12 + i].x + members[12 + i].width / 2, members[12 + i].y + members[12 + i].height / 4,
+					KeyButton.size * 2 + 4, textArray[i], 20, false);
+				obj.setFormat(Assets.getFont("assets/fonts/montserrat.ttf").fontName, 25, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, 0x00);
+				obj.x -= obj.width / 2;
+				obj.y -= obj.height / 2;
+				obj.color = OptionsHelpers.colorArray(ClientPrefs.data.keyboardTextColor);
+				obj.alpha = ClientPrefs.data.keyboardAlpha;
+				obj.antialiasing = ClientPrefs.data.antialiasing;
+				add(obj);
+			}
+			kpsText = new FlxText(members[12].x + members[12].width / 2, members[12].y + members[12].height / 5 * 3.5, KeyButton.size * 2 + 4, '0', 15, false);
+			kpsText.setFormat(Assets.getFont("assets/fonts/montserrat.ttf").fontName, 15, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, 0x00);
+			kpsText.x -= kpsText.width / 2;
+			kpsText.y -= kpsText.height / 2;
+			kpsText.color = OptionsHelpers.colorArray(ClientPrefs.data.keyboardTextColor);
+			kpsText.alpha = ClientPrefs.data.keyboardAlpha;
 
-		for (i in 0...keys)
+			if (FlxG.save.data.keyboardtotal != null)
+				total = FlxG.save.data.keyboardtotal;
+			totalText = new FlxText(members[13].x + members[13].width / 2, members[13].y + members[13].height / 5 * 3.5, KeyButton.size * 2 + 4,
+				Std.string(total), 15, false);
+			totalText.setFormat(Assets.getFont("assets/fonts/montserrat.ttf").fontName, 15, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, 0x00);
+			totalText.x -= totalText.width / 2;
+			totalText.y -= totalText.height / 2;
+			totalText.color = OptionsHelpers.colorArray(ClientPrefs.data.keyboardTextColor);
+			totalText.alpha = ClientPrefs.data.keyboardAlpha;
+			add(kpsText);
+			add(totalText);
+		}
+		else // 多键模式
 		{
-			var obj:KeyButtonAlpha = new KeyButtonAlpha(X + (KeyButton.size + 4) * i, Y);
-			keyAlphas.push(obj);
-			add(obj);
+			for (i in 0...keys)
+			{
+				var obj:KeyButton = new KeyButton(X + (KeyButton.size + 4) * i, Y, KeyButton.size, KeyButton.size);
+				add(obj);
+			}
+
+			for (i in 0...keys)
+			{
+				var obj:KeyButtonAlpha = new KeyButtonAlpha(X + (KeyButton.size + 4) * i, Y);
+				keyAlphas.push(obj);
+				add(obj);
+			}
+
+			var textArray:Array<String> = createArray();
+			for (i in 0...keys)
+			{
+				var obj:FlxText = new FlxText(X + (KeyButton.size + 4) * i + keyAlphas[i].width / 2, Y + keyAlphas[i].height / 2, 50, textArray[i], 10, false);
+				obj.setFormat(Assets.getFont("assets/fonts/montserrat.ttf").fontName, 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, 0x00);
+				obj.x -= obj.width / 2;
+				obj.y -= obj.height / 2;
+				obj.color = OptionsHelpers.colorArray(ClientPrefs.data.keyboardTextColor);
+				obj.alpha = ClientPrefs.data.keyboardAlpha;
+				keyTexts.push(obj);
+				add(obj);
+			}
+
+			var bigButtonWidth:Int = Std.int((KeyButton.size * 2 + 4) * (keys / 4));
+			var startX = X + (_width - bigButtonWidth * 2 - 4) / 2;
+
+			for (i in 0...2)
+			{
+				var obj:KeyButton = new KeyButton(startX + (bigButtonWidth + 4) * i, Y + KeyButton.size + 4, bigButtonWidth, KeyButton.size);
+				add(obj);
+			}
+			var textArray:Array<String> = ['KPS', 'total'];
+			for (i in 0...2)
+			{
+				var obj:FlxText = new FlxText(startX + (bigButtonWidth + 4) * i + bigButtonWidth / 2, Y + KeyButton.size + 4 + KeyButton.size / 4,
+					bigButtonWidth, textArray[i], 20, false);
+				obj.setFormat(Assets.getFont("assets/fonts/montserrat.ttf").fontName, 25, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, 0x00);
+				obj.x -= obj.width / 2;
+				obj.y -= obj.height / 2;
+				obj.color = OptionsHelpers.colorArray(ClientPrefs.data.keyboardTextColor);
+				obj.alpha = ClientPrefs.data.keyboardAlpha;
+				obj.antialiasing = ClientPrefs.data.antialiasing;
+				add(obj);
+			}
+
+			kpsText = new FlxText(startX + bigButtonWidth / 2, Y + KeyButton.size + 4 + KeyButton.size / 5 * 3.5, bigButtonWidth, '0', 15, false);
+			kpsText.setFormat(Assets.getFont("assets/fonts/montserrat.ttf").fontName, 15, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, 0x00);
+			kpsText.x -= kpsText.width / 2;
+			kpsText.y -= kpsText.height / 2;
+			kpsText.color = OptionsHelpers.colorArray(ClientPrefs.data.keyboardTextColor);
+			kpsText.alpha = ClientPrefs.data.keyboardAlpha;
+
+			if (FlxG.save.data.keyboardtotal != null)
+				total = FlxG.save.data.keyboardtotal;
+			totalText = new FlxText(startX + bigButtonWidth + 4 + bigButtonWidth / 2, Y + KeyButton.size + 4 + KeyButton.size / 5 * 3.5, bigButtonWidth,
+				Std.string(total), 15, false);
+			totalText.setFormat(Assets.getFont("assets/fonts/montserrat.ttf").fontName, 15, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, 0x00);
+			totalText.x -= totalText.width / 2;
+			totalText.y -= totalText.height / 2;
+			totalText.color = OptionsHelpers.colorArray(ClientPrefs.data.keyboardTextColor);
+			totalText.alpha = ClientPrefs.data.keyboardAlpha;
+			add(kpsText);
+			add(totalText);
 		}
-
-		var textArray:Array<String> = createArray();
-		for (i in 0...keys)
-		{
-			var obj:FlxText = new FlxText(X + (KeyButton.size + 4) * i + keyAlphas[i].width / 2, Y + keyAlphas[i].height / 2, 50, textArray[i], 10, false);
-			obj.setFormat(Assets.getFont("assets/fonts/montserrat.ttf").fontName, 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, 0x00);
-			obj.x -= obj.width / 2;
-			obj.y -= obj.height / 2;
-			obj.color = OptionsHelpers.colorArray(ClientPrefs.data.keyboardTextColor);
-			obj.alpha = ClientPrefs.data.keyboardAlpha;
-			keyTexts.push(obj);
-			add(obj);
-		}
-		
-
-		var bigButtonWidth:Int = Std.int((KeyButton.size * 2 + 4) * (keys / 4));
-		var startX = X + (_width - bigButtonWidth * 2 - 4) / 2;
-
-		for (i in 0...2)
-		{
-			var obj:KeyButton = new KeyButton(startX + (bigButtonWidth + 4) * i, Y + KeyButton.size + 4, bigButtonWidth, KeyButton.size);
-			add(obj);
-		}
-		var textArray:Array<String> = ['KPS', 'total'];
-		for (i in 0...2)
-		{
-			var obj:FlxText = new FlxText(startX + (bigButtonWidth + 4) * i + bigButtonWidth / 2, Y + KeyButton.size + 4 + KeyButton.size / 4, 
-				bigButtonWidth, textArray[i], 20, false);
-			obj.setFormat(Assets.getFont("assets/fonts/montserrat.ttf").fontName, 25, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, 0x00);
-			obj.x -= obj.width / 2;
-			obj.y -= obj.height / 2;
-			obj.color = OptionsHelpers.colorArray(ClientPrefs.data.keyboardTextColor);
-			obj.alpha = ClientPrefs.data.keyboardAlpha;
-			obj.antialiasing = ClientPrefs.data.antialiasing;
-			add(obj);
-		}
-
-		kpsText = new FlxText(startX + bigButtonWidth / 2, Y + KeyButton.size + 4 + KeyButton.size / 5 * 3.5, bigButtonWidth, '0', 15, false);
-		kpsText.setFormat(Assets.getFont("assets/fonts/montserrat.ttf").fontName, 15, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, 0x00);
-		kpsText.x -= kpsText.width / 2;
-		kpsText.y -= kpsText.height / 2;
-		kpsText.color = OptionsHelpers.colorArray(ClientPrefs.data.keyboardTextColor);
-		kpsText.alpha = ClientPrefs.data.keyboardAlpha;
-
-		if (FlxG.save.data.keyboardtotal != null)
-			total = FlxG.save.data.keyboardtotal;
-		totalText = new FlxText(startX + bigButtonWidth + 4 + bigButtonWidth / 2, Y + KeyButton.size + 4 + KeyButton.size / 5 * 3.5, bigButtonWidth,
-			Std.string(total), 15, false);
-		totalText.setFormat(Assets.getFont("assets/fonts/montserrat.ttf").fontName, 15, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, 0x00);
-		totalText.x -= totalText.width / 2;
-		totalText.y -= totalText.height / 2;
-		totalText.color = OptionsHelpers.colorArray(ClientPrefs.data.keyboardTextColor);
-		totalText.alpha = ClientPrefs.data.keyboardAlpha;
-		add(kpsText);
-		add(totalText);
 
 		DisBitmap.addCache();
 
@@ -172,16 +236,24 @@ class KeyboardDisplay extends FlxSpriteGroup
 		var array:Array<String> = [];
 		var mania:Int = (PlayState.SONG != null) ? PlayState.SONG.mania : 3;
 		var keys:Int = mania + 1;
-		
-		// Get current keybinds for this mania mode
+
+		if (mania == 3)
+		{
+			array.push(InputFormatter.getKeyName(Controls.instance.keyboardBinds['note_left'][0]));
+			array.push(InputFormatter.getKeyName(Controls.instance.keyboardBinds['note_down'][0]));
+			array.push(InputFormatter.getKeyName(Controls.instance.keyboardBinds['note_up'][0]));
+			array.push(InputFormatter.getKeyName(Controls.instance.keyboardBinds['note_right'][0]));
+			return array;
+		}
+
 		var keybindID = '${mania}_key';
-		
+
 		for (i in 0...keys)
 		{
 			// Get the keybind name using the format used in ClientPrefs
 			var bindName = '${keybindID}_${i}';
 			var keysArray = Controls.instance.keyboardBinds.get(bindName);
-			
+
 			if(keysArray != null && keysArray.length > 0)
 				array.push(InputFormatter.getKeyName(keysArray[0]));
 			else

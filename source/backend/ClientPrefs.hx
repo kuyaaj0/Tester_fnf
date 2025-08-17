@@ -210,10 +210,10 @@ class ClientPrefs
 	// Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
 		// Key Bind, Name for ControlsSubState
-		//'note_up' => [W, UP],
-		//'note_left' => [A, LEFT],
-		//'note_down' => [S, DOWN],
-		//'note_right' => [D, RIGHT],
+		'note_up' => [D, UP],
+		'note_left' => [F, LEFT],
+		'note_down' => [J, DOWN],
+		'note_right' => [K, RIGHT],
 
 		//multi keys support (maybe)	//屎山）
 		'0_key_0' => [SPACE],
@@ -224,11 +224,6 @@ class ClientPrefs
 		'2_key_0' => [D],
 		'2_key_1' => [SPACE],
 		'2_key_2' => [K],
-
-		'3_key_0' => [D, LEFT],	//将原有的note_xx替代
-		'3_key_1' => [F, DOWN],
-		'3_key_2' => [J, UP],
-		'3_key_3' => [K, RIGHT],
 
 		'4_key_0' => [D],
 		'4_key_1' => [F],
@@ -312,10 +307,10 @@ class ClientPrefs
 		'reset' => [BACK]
 	];
 	public static var mobileBinds:Map<String, Array<FlxMobileInputID>> = [
-		//'note_up' => [noteUP, UP2],
-		//'note_left' => [noteLEFT, LEFT2],
-		//'note_down' => [noteDOWN, DOWN2],
-		//'note_right' => [noteRIGHT, RIGHT2],
+		'note_up' => [noteUP, UP2],
+		'note_left' => [noteLEFT, LEFT2],
+		'note_down' => [noteDOWN, DOWN2],
+		'note_right' => [noteRIGHT, RIGHT2],
 		
 		'0_key_0' => [EK_0_0],
 
@@ -325,11 +320,6 @@ class ClientPrefs
 		'2_key_0' => [EK_2_0],
 		'2_key_1' => [EK_2_1],
 		'2_key_2' => [EK_2_2],
-
-		'3_key_0' => [noteLEFT, LEFT2],
-		'3_key_1' => [noteDOWN, DOWN2],
-		'3_key_2' => [noteUP, UP2],
-		'3_key_3' => [noteRIGHT, RIGHT2],
 
 		'4_key_0' => [EK_4_0],
 		'4_key_1' => [EK_4_1],
