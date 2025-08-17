@@ -81,20 +81,19 @@ class PassState extends FlxState {
     }
     
     private function loginFunc(user:String, pass:String):Void{
-        loginclient.login(user,pass);
-
         loginclient.decision = function(response:Dynamic) {
-
             if (response.message == "Good") {
                 if(response.member == 'Admin'){
                     trace("登录成功: 欢迎登录");
                     FlxG.switchState(new InitState());
-                    return;
                 }
+            } else if(response.message == "Good" && response.member != 'Admin'){
                 trace("登录成功: 但是你不是管理员");
             } else {
                 trace("登录失败: " + response.message);
             }
         };
+        
+        loginclient.login(user,pass);
     }
 }
