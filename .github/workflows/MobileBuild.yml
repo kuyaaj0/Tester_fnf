@@ -62,6 +62,7 @@ jobs:
             console.log("Available caches:", caches.data.actions_caches);
             
       - name: cache Build
+        if: [ "${{ github.event.inputs.dependencies_to_update }}" != "all" ] || [ "${{ github.event.inputs.dependencies_to_update }}" != "android" ];
         uses: actions/cache@v3
         with:
           key: cache-build-Android
@@ -76,7 +77,7 @@ jobs:
           if [ "${{ github.event.inputs.dependencies_to_update }}" == "all" ] || [ "${{ github.event.inputs.dependencies_to_update }}" == "android" ]; then
             echo "Installing all dependencies..."
             haxelib install hmm 
-            haxelib run hmm reinstall -f
+            haxelib run hmm install
           elif [ -n "${{ github.event.inputs.dependencies_to_update }}" ] && [ "${{ github.event.inputs.dependencies_to_update }}" != "ios" ]; then
             echo "Updating specified dependencies: ${{ github.event.inputs.dependencies_to_update }}"
             haxelib install hmm
@@ -150,6 +151,7 @@ jobs:
           haxe-version: 4.3.7
    
       - name: cache Build
+        if: [ "${{ github.event.inputs.dependencies_to_update }}" != "all" ] || [ "${{ github.event.inputs.dependencies_to_update }}" != "ios" ];
         uses: actions/cache/restore@v4
         with:
           enableCrossOsArchive: true
@@ -164,7 +166,7 @@ jobs:
           if [ "${{ github.event.inputs.dependencies_to_update }}" == "all" ] || [ "${{ github.event.inputs.dependencies_to_update }}" == "ios" ]; then
             echo "Installing all dependencies..."
             haxelib install hmm 
-            haxelib run hmm reinstall -f
+            haxelib run hmm install
           elif [ -n "${{ github.event.inputs.dependencies_to_update }}" ] && [ "${{ github.event.inputs.dependencies_to_update }}" != "android" ]; then
               echo "Updating specified dependencies: ${{ github.event.inputs.dependencies_to_update }}"
             haxelib install hmm
