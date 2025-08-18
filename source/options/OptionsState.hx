@@ -387,6 +387,8 @@ class OptionsState extends MusicBeatState
 				openSubState(new MobileExtraControl());
 			case 6: // CopyStates
 				LoadingState.loadAndSwitchState(new CopyState(true));
+			case 7: // NotesSubStateLegacy
+				LoadingState.loadAndSwitchState(new NotesSubStateLegacy());
 		}
 	}
 

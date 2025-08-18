@@ -7,7 +7,7 @@ noteSkin => Change your current noteSkin
 noteRGB => RGB for Note
 noteColorSwap => Use HSV Coloring like old psych for Note
 NotesSubState => Note color setup
-
+NotesSubStateLegacy => Note HSV setup
 
 Splash => Splash
 
