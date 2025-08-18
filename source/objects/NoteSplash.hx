@@ -17,7 +17,7 @@ typedef NoteSplashConfig =
 class NoteSplash extends FlxSprite
 {
 	public var rgbShader:PixelSplashShaderRef;
-
+	public var colorSwap:ColorSwap = null;
 	private var idleAnim:String;
 	private var _textureLoaded:String = null;
 	private var _configLoaded:String = null;
@@ -43,7 +43,14 @@ class NoteSplash extends FlxSprite
 				skin = defaultNoteSplash + getSplashSkinPostfix();
 		}
 		rgbShader = new PixelSplashShaderRef();
-		shader = rgbShader.shader;
+
+		if (ClientPrefs.data.noteColorSwap)
+			{
+			colorSwap = new ColorSwap();
+			shader = colorSwap.shader;
+			}else{
+			shader = rgbShader.shader;
+			}
 		precacheConfig(skin);
 		_configLoaded = skin;
 		scrollFactor.set();
@@ -104,6 +111,20 @@ class NoteSplash extends FlxSprite
 			alpha = note.noteSplashData.a;
 		rgbShader.copyValues(tempShader);
 
+		var hue:Float = ClientPrefs.data.arrowHSV[data % 4][0] / 360;
+		var sat:Float = ClientPrefs.data.arrowHSV[data % 4][1] / 100;
+		var brt:Float = ClientPrefs.data.arrowHSV[data % 4][2] / 100;
+		
+		if(note != null) {
+			hue = note.noteSplashHue;
+			sat = note.noteSplashSat;
+			brt = note.noteSplashBrt;
+		}
+
+
+		colorSwap.hue = hueColor;
+		colorSwap.saturation = satColor;
+		colorSwap.brightness = brtColor;
 		if (note != null)
 			antialiasing = note.noteSplashData.antialiasing;
 		if (PlayState.isPixelStage || !ClientPrefs.data.antialiasing)

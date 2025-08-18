@@ -4,6 +4,7 @@ import backend.extraKeys.ExtraKeysHandler;
 import backend.animation.PsychAnimationController;
 import backend.NoteTypesConfig;
 import shaders.RGBPalette;
+import shaders.ColorSwap;
 import shaders.RGBPalette.RGBShaderReference;
 import states.editors.EditorPlayState;
 import objects.StrumNote;
@@ -87,6 +88,10 @@ class Note extends FlxSprite
 	public var rgbShader:RGBShaderReference;
 
 	public static var globalRgbShaders:Array<RGBPalette> = [];
+
+	public var colorSwap:ColorSwap;
+
+	//public static var globalColorSwapShaders:Array<ColorSwap> = [];
 
 	public var inEditor:Bool = false;
 
@@ -199,6 +204,9 @@ class Note extends FlxSprite
 	{
 		noteSplashData.texture = PlayState.SONG != null ? PlayState.SONG.splashSkin : 'noteSplashes';
 		defaultRGB();
+		colorSwap.hue = ClientPrefs.data.arrowHSV[noteData % 4][0] / 360;
+		colorSwap.saturation = ClientPrefs.data.arrowHSV[noteData % 4][1] / 100;
+		colorSwap.brightness = ClientPrefs.data.arrowHSV[noteData % 4][2] / 100;
 
 		if (noteData > -1 && noteType != value)
 		{
@@ -239,6 +247,9 @@ class Note extends FlxSprite
 				Paths.sound(hitsound); // precache new sound for being idiot-proof
 			noteType = value;
 		}
+		noteSplashHue = colorSwap.hue;
+		noteSplashSat = colorSwap.saturation;
+		noteSplashBrt = colorSwap.brightness;
 		return value;
 	}
 
@@ -296,9 +307,13 @@ class Note extends FlxSprite
 		{
 			texture = '';
 			rgbShader = new RGBShaderReference(this, initializeGlobalRGBShader(noteData));
-			if (PlayState.SONG != null && (PlayState.SONG.disableNoteRGB || !ClientPrefs.data.noteRGB))
+			if (PlayState.SONG != null && (PlayState.SONG.disableNoteRGB || !ClientPrefs.data.noteRGB || ClientPrefs.data.noteColorSwap))
 				rgbShader.enabled = false;
+			if (noteColorSwap){
+			colorSwap = new ColorSwap();
+			shader = colorSwap.shader;
 
+			}
 			x += swagWidth * (noteData);
 			if (!isSustainNote /* && noteData < colArray.length*/)
 			{ // Doing this 'if' check to fix the warnings on Senpai songs
