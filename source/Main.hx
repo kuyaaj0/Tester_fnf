@@ -20,8 +20,6 @@ import states.backend.InitState;
 import mobile.backend.Data;
 import backend.extraKeys.ExtraKeysHandler;
 
-import developer.console.TraceInterceptor;
-
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import psychlua.HScript.HScriptInfos;
@@ -69,13 +67,7 @@ class Main extends Sprite
 
 	public static function main():Void
 	{
-	    TraceInterceptor.init();
-		#if (cpp && windows)
-		backend.device.Native.fixScaling();
-		backend.device.Native.setWindowDarkMode(true, true);
-		#end
-		
-		Lib.current.addChild(new Main());
+	    Lib.current.addChild(new Main());
 		#if cpp
 		cpp.NativeGc.enable(true);
 		cpp.NativeGc.run(true);
