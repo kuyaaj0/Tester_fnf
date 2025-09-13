@@ -40,8 +40,8 @@
       "name": "flixel-ui",
       "type": "git",
       "dir": null,
-      "ref": "dev",
-      "url": "https://github.com/MaoPou/flixel-ui-beauty"
+      "ref": "main",
+      "url": "https://github.com/NovaFlare-Engine-haxelib/flixel-ui"
     },
     {
       "name": "flixel-tools",
@@ -63,7 +63,7 @@
       "type": "git",
       "dir": null,
       "ref": "main",
-      "url": "https://github.com/kuyaaj0/modcharts_test"
+      "url": "https://github.com/NovaFlare-Engine-haxelib/modcharts"
     },
     {
       "name": "hxcpp",
